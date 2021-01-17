@@ -1,3 +1,5 @@
-struct DistributedChat {
-    var text = "Hello, World!"
+public struct DistributedChat {
+    public var text = "Hello, World!"
+    
+    public init() {}
 }
