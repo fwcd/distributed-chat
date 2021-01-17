@@ -1,3 +1,2 @@
-# DistributedChat
+# Distributed Chat
 
-A description of this package.
