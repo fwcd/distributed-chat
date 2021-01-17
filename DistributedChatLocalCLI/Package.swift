@@ -4,27 +4,27 @@
 import PackageDescription
 
 let package = Package(
-    name: "DistributedChat",
+    name: "DistributedChatLocalCLI",
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
-            name: "DistributedChat",
-            targets: ["DistributedChat"]
+        .executable(
+            name: "DistributedChatLocalCLI",
+            targets: ["DistributedChatLocalCLI"]
         )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
+        .package(path: "../DistributedChat")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "DistributedChat",
+            name: "DistributedChatLocalCLI",
             dependencies: []
         ),
         .testTarget(
-            name: "DistributedChatTests",
-            dependencies: ["DistributedChat"]
+            name: "DistributedChatLocalCLITests",
+            dependencies: ["DistributedChatLocalCLI"]
         )
     ]
 )
