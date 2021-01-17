@@ -1,6 +1,10 @@
 # Distributed Chat
 
-A cross-platform distributed chat application that is comprised of the following components:
+A cross-platform distributed chat application.
+
+![Logo](logo.svg)
+
+The project consists of the following components:
 
 * `DistributedChat`: The core application, platform-independent, with interfaces for broadcasting/receiving messages
 * `DistributedChatApp`: The iOS implementation, uses Bluetooth as transport
