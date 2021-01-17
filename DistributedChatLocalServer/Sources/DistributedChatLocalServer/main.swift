@@ -4,7 +4,7 @@ let app = try Application(.detect())
 
 defer { app.shutdown() }
 
-app.get("/") { req in
+app.get { req in
     return "Hello World!"
 }
 
