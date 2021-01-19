@@ -1,7 +1,7 @@
 import XCTest
 import class Foundation.Bundle
 
-final class DistributedChatLocalServerTests: XCTestCase {
+final class DistributedChatCLITests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
@@ -12,7 +12,7 @@ final class DistributedChatLocalServerTests: XCTestCase {
             return
         }
 
-        let fooBinary = productsDirectory.appendingPathComponent("DistributedChatLocalServer")
+        let fooBinary = productsDirectory.appendingPathComponent("DistributedChatCLI")
 
         let process = Process()
         process.executableURL = fooBinary
