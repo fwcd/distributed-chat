@@ -1,5 +1,4 @@
 public enum SimulationProtocol {
-    // client -> server
     public struct Hello: Codable {
         public let name: String
 
@@ -8,8 +7,7 @@ public enum SimulationProtocol {
         }
     }
 
-    // server -> client
-    public struct HelloNotification: Codable {
+    public struct HelloOrGoodbyeWithUUID: Codable {
         public let name: String
         public let uuid: String
 
@@ -19,37 +17,15 @@ public enum SimulationProtocol {
         }
     }
 
-    // server -> client
-    public struct GoodbyeNotification: Codable {
-        public let name: String
-        public let uuid: String
-        
-        public init(name: String, uuid: String) {
-            self.name = name
-            self.uuid = uuid
-        }
-    }
-
-    // client -> server
     public struct Broadcast: Codable {
         public let content: String
-        
-        public init(content: String) {
-            self.content = content
-        }
-    }
-
-    // server -> client
-    public struct BroadcastNotification: Codable {
-        public let content: String
 
         public init(content: String) {
             self.content = content
         }
     }
 
-    // (web) client -> server
-    public struct AddLink: Codable {
+    public struct Link: Codable {
         public let fromUUID: String
         public let toUUID: String
 
@@ -59,29 +35,19 @@ public enum SimulationProtocol {
         }
     }
 
-    // (web) client -> server
-    public struct RemoveLink: Codable {
-        public let fromUUID: String
-        public let toUUID: String
-
-        public init(fromUUID: String, toUUID: String) {
-            self.fromUUID = fromUUID
-            self.toUUID = toUUID
-        }
-    }
-
-    // bidirectional
     public enum Message: Codable {
         // client -> server
         case hello(Hello)
         case broadcast(Broadcast)
-        case addLink(AddLink)
-        case removeLink(RemoveLink)
+        case addLink(Link)
+        case removeLink(Link)
 
         // server -> client
-        case helloNotification(HelloNotification)
-        case goodbyeNotification(GoodbyeNotification)
-        case broadcastNotification(BroadcastNotification)
+        case helloNotification(HelloOrGoodbyeWithUUID)
+        case goodbyeNotification(HelloOrGoodbyeWithUUID)
+        case addLinkNotification(Link)
+        case removeLinkNotification(Link)
+        case broadcastNotification(Broadcast)
 
         public enum CodingKeys: String, CodingKey {
             case type
@@ -102,15 +68,19 @@ public enum SimulationProtocol {
             case "broadcast":
                 self = .broadcast(try container.decode(Broadcast.self, forKey: .data))
             case "addLink":
-                self = .addLink(try container.decode(AddLink.self, forKey: .data))
+                self = .addLink(try container.decode(Link.self, forKey: .data))
             case "removeLink":
-                self = .removeLink(try container.decode(RemoveLink.self, forKey: .data))
+                self = .removeLink(try container.decode(Link.self, forKey: .data))
             case "helloNotification":
-                self = .helloNotification(try container.decode(HelloNotification.self, forKey: .data))
+                self = .helloNotification(try container.decode(HelloOrGoodbyeWithUUID.self, forKey: .data))
             case "goodbyeNotification":
-                self = .goodbyeNotification(try container.decode(GoodbyeNotification.self, forKey: .data))
+                self = .goodbyeNotification(try container.decode(HelloOrGoodbyeWithUUID.self, forKey: .data))
+            case "addLinkNotification":
+                self = .addLinkNotification(try container.decode(Link.self, forKey: .data))
+            case "removeLinkNotification":
+                self = .removeLinkNotification(try container.decode(Link.self, forKey: .data))
             case "broadcastNotification":
-                self = .broadcastNotification(try container.decode(BroadcastNotification.self, forKey: .data))
+                self = .broadcastNotification(try container.decode(Broadcast.self, forKey: .data))
             default:
                 throw MessageError.unknownType(type)
             }
@@ -138,6 +108,12 @@ public enum SimulationProtocol {
             case .goodbyeNotification(let goodbyeNotification):
                 try container.encode("goodbyeNotification", forKey: .type)
                 try container.encode(goodbyeNotification, forKey: .data)
+            case .addLinkNotification(let addLinkNotification):
+                try container.encode("addLinkNotification", forKey: .type)
+                try container.encode(addLinkNotification, forKey: .data)
+            case .removeLinkNotification(let removeLinkNotification):
+                try container.encode("removeLinkNotification", forKey: .type)
+                try container.encode(removeLinkNotification, forKey: .data)
             case .broadcastNotification(let broadcastNotification):
                 try container.encode("broadcastNotification", forKey: .type)
                 try container.encode(broadcastNotification, forKey: .data)

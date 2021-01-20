@@ -55,17 +55,32 @@ class MessagingHandler {
     }
 
     private func onConnect(to sender: UUID) throws {
+        // Inform the newly connected client about other
+        // clients that have already identified themselves
+        // with a hello message and their links (while
+        // making sure that no duplicate links are emitted).
+
+        var sentLinks: Set<Set<UUID>> = []
+        let senderClient = clients[sender]!
+
         for (uuid, client) in clients {
             if let name = client.name {
-                try clients[sender]?.send(.helloNotification(.init(name: name, uuid: "\(uuid)")))
+                try senderClient.send(.helloNotification(.init(name: name, uuid: "\(uuid)")))
+
+                for linked in client.links where !sentLinks.contains([uuid, linked]) {
+                    try senderClient.send(.addLinkNotification(.init(fromUUID: "\(uuid)", toUUID: "\(linked)")))
+                    sentLinks.insert([uuid, linked])
+                }
             }
         }
     }
 
     private func onReceive(from sender: UUID, message: SimulationProtocol.Message) throws {
+        let senderClient = clients[sender]!
+
         switch message {
         case .hello(let hello):
-            clients[sender]!.name = hello.name
+            senderClient.name = hello.name
             for (_, client) in clients {
                 try client.send(.helloNotification(.init(name: hello.name, uuid: "\(sender)")))
             }
@@ -78,6 +93,9 @@ class MessagingHandler {
                let toClient = clients[toUUID] {
                 fromClient.links.insert(toUUID)
                 toClient.links.insert(fromUUID)
+                for (_, client) in clients {
+                    try client.send(.addLinkNotification(link))
+                }
                 log.info("Added link from \(name(of: fromUUID)) to \(name(of: toUUID))")
             } else {
                 log.error("Could not create link, invalid UUID(s)")
@@ -90,13 +108,16 @@ class MessagingHandler {
                let toClient = clients[toUUID] {
                 fromClient.links.remove(toUUID)
                 toClient.links.remove(fromUUID)
+                for (_, client) in clients {
+                    try client.send(.removeLinkNotification(link))
+                }
                 log.info("Removed link from \(name(of: fromUUID)) to \(name(of: toUUID))")
             } else {
                 log.error("Could not remove link, invalid UUID(s)")
             }
 
         case .broadcast(let broadcast):
-            for uuid in clients[sender]!.links {
+            for uuid in senderClient.links {
                 try clients[uuid]?.send(.broadcastNotification(.init(content: broadcast.content)))
             }
             log.info("Broadcasted '\(broadcast.content)' from \(name(of: sender))")
