@@ -1,3 +1,4 @@
+import DistributedChatSimulationProtocol
 import Foundation
 import Vapor
 
@@ -21,7 +22,7 @@ class MessagingHandler {
 
         ws.onText { _, raw in
             do {
-                let message = try decoder.decode(MessagingProtocol.Message.self, from: raw.data(using: .utf8)!)
+                let message = try decoder.decode(SimulationProtocol.Message.self, from: raw.data(using: .utf8)!)
                 try self.onReceive(from: uuid, message: message)
             } catch {
                 log.error("Error while handling '\(raw)': \(error)")
@@ -34,13 +35,13 @@ class MessagingHandler {
         }
     }
 
-    private func onReceive(from sender: UUID, message: MessagingProtocol.Message) throws {
+    private func onReceive(from sender: UUID, message: SimulationProtocol.Message) throws {
         switch message {
         case .hello(let hello):
             clients[sender]!.name = hello.name
             log.info("Hello, \(hello.name)!")
         case .broadcast(let broadcast):
-            let notification = MessagingProtocol.Message.notification(.init(content: broadcast.content))
+            let notification = SimulationProtocol.Message.notification(.init(content: broadcast.content))
             for (uuid, client) in clients where uuid != sender {
                 client.ws.send(String(data: try encoder.encode(notification), encoding: .utf8)!)
             }

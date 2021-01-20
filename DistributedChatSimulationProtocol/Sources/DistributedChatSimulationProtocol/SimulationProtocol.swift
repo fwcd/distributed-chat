@@ -1,35 +1,47 @@
-enum MessagingProtocol {
+public enum SimulationProtocol {
     // client -> server
-    struct Hello: Codable {
-        let name: String
+    public struct Hello: Codable {
+        public let name: String
+
+        public init(name: String) {
+            self.name = name
+        }
     }
 
     // client -> server
-    struct Broadcast: Codable {
-        let content: String
+    public struct Broadcast: Codable {
+        public let content: String
+        
+        public init(content: String) {
+            self.content = content
+        }
     }
 
     // server -> client
-    struct Notification: Codable {
-        let content: String
+    public struct Notification: Codable {
+        public let content: String
+
+        public init(content: String) {
+            self.content = content
+        }
     }
 
     // bidirectional
-    enum Message: Codable {
+    public enum Message: Codable {
         case hello(Hello)
         case broadcast(Broadcast)
         case notification(Notification)
 
-        enum CodingKeys: String, CodingKey {
+        public enum CodingKeys: String, CodingKey {
             case type
             case data
         }
 
-        enum MessageError: Error {
+        public enum MessageError: Error {
             case unknownType(String)
         }
 
-        init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let type = try container.decode(String.self, forKey: .type)
 
@@ -45,7 +57,7 @@ enum MessagingProtocol {
             }
         }
 
-        func encode(to encoder: Encoder) throws {
+        public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             switch self {

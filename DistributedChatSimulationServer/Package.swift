@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(path: "../DistributedChat"),
+        .package(path: "../DistributedChatSimulationProtocol"),
         .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
         .package(url: "https://github.com/vapor/leaf.git", from: "4.0.0"),
     ],
@@ -27,7 +27,8 @@ let package = Package(
             name: "DistributedChatSimulationServer",
             dependencies: [
                 .product(name: "Vapor", package: "vapor"),
-                .product(name: "Leaf", package: "leaf")
+                .product(name: "Leaf", package: "leaf"),
+                .product(name: "DistributedChatSimulationProtocol", package: "DistributedChatSimulationProtocol")
             ]
         ),
         .testTarget(
