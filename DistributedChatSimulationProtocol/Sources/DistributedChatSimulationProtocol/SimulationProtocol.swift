@@ -12,12 +12,22 @@ public enum SimulationProtocol {
     public struct HelloNotification: Codable {
         public let name: String
         public let uuid: String
+
+        public init(name: String, uuid: String) {
+            self.name = name
+            self.uuid = uuid
+        }
     }
 
     // server -> client
     public struct GoodbyeNotification: Codable {
         public let name: String
         public let uuid: String
+        
+        public init(name: String, uuid: String) {
+            self.name = name
+            self.uuid = uuid
+        }
     }
 
     // client -> server

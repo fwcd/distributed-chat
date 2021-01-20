@@ -12,6 +12,10 @@ class MessagingHandler {
     private struct ClientState {
         let ws: WebSocket
         var name: String? = nil
+
+        func send(_ message: SimulationProtocol.Message) throws {
+            ws.send(String(data: try encoder.encode(message), encoding: .utf8)!)
+        }
     }
 
     func connect(_ ws: WebSocket) {
@@ -25,12 +29,17 @@ class MessagingHandler {
                 let message = try decoder.decode(SimulationProtocol.Message.self, from: raw.data(using: .utf8)!)
                 try self.onReceive(from: uuid, message: message)
             } catch {
-                log.error("Error while handling '\(raw)': \(error)")
+                log.error("Error while handling '\(raw)' from \(uuid): \(error)")
             }
         }
 
         ws.onClose.whenComplete { _ in
             log.info("Closed connection to \(uuid)")
+            do {
+                try self.onClose(uuid)
+            } catch {
+                log.error("Error while closing connection to \(uuid): \(error)")
+            }
             self.clients[uuid] = nil
         }
     }
@@ -39,15 +48,25 @@ class MessagingHandler {
         switch message {
         case .hello(let hello):
             clients[sender]!.name = hello.name
+            for (_, client) in clients {
+                try client.send(.helloNotification(.init(name: hello.name, uuid: "\(sender)")))
+            }
             log.info("Hello, \(hello.name)!")
         case .broadcast(let broadcast):
-            let notification = SimulationProtocol.Message.broadcastNotification(.init(content: broadcast.content))
             for (uuid, client) in clients where uuid != sender {
-                client.ws.send(String(data: try encoder.encode(notification), encoding: .utf8)!)
+                try client.send(.broadcastNotification(.init(content: broadcast.content)))
             }
             log.info("Broadcasted '\(broadcast.content)' from \(name(of: sender))")
         default:
             log.info("Unexpected message \(message) from \(name(of: sender))")
+        }
+    }
+
+    private func onClose(_ sender: UUID) throws {
+        if let name = clients[sender]?.name {
+            for (_, client) in clients {
+                try client.send(.goodbyeNotification(.init(name: name, uuid: "\(sender)")))
+            }
         }
     }
 
