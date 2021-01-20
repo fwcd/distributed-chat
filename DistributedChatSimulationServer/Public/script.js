@@ -29,7 +29,6 @@ function setUpGraph() {
                         }
                     }));
                 }
-                graph.addEdgeMode();
             },
             deleteEdge: (data, callback) => {
                 // We remove the edge first once the server has confirmed it
@@ -50,6 +49,10 @@ function setUpGraph() {
 
     graph = new vis.Network(container, data, options);
     graph.enableEditMode();
+
+    edges.on("*", () => {
+        graph.enableEditMode();
+    });
 }
 
 function updateDynamically(nodes, edges) {
@@ -79,6 +82,7 @@ function updateDynamically(nodes, edges) {
         default:
             break;
         }
+        graph.enableEditMode();
     });
     return ws;
 }
