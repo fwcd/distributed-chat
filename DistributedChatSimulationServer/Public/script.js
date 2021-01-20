@@ -6,6 +6,8 @@ function updateDynamically(nodes, edges) {
     // Connects to the /messaging WebSocket endpoint to
     // dynamically update the graph with nodes.
     const ws = new WebSocket(`ws://${location.host}/messaging`);
+    var highlightTimeout;
+
     ws.addEventListener("message", ev => {
         const message = JSON.parse(ev.data);
         console.log(`Got ${JSON.stringify(message)}.`);
@@ -28,11 +30,14 @@ function updateDynamically(nodes, edges) {
                 edges.remove(edge.id);
             }
             break;
+        case "broadcast":
+            
         default:
             break;
         }
         graph.enableEditMode();
     });
+
     return ws;
 }
 

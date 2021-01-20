@@ -118,7 +118,7 @@ class MessagingHandler {
 
         case .broadcast(let broadcast):
             for uuid in senderClient.links {
-                try clients[uuid]?.send(.broadcastNotification(.init(content: broadcast.content)))
+                try clients[uuid]?.send(.broadcastNotification(.init(content: broadcast.content, link: .init(fromUUID: "\(sender)", toUUID: "\(uuid)"))))
             }
             log.info("Broadcasted '\(broadcast.content)' from \(name(of: sender))")
 
