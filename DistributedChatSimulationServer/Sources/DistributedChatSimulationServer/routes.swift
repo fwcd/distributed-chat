@@ -2,7 +2,7 @@ import Vapor
 
 func routes(_ app: Application) throws {
     app.get { req in
-        return req.view.render("index", [
+        req.view.render("index", [
             "title": "Distributed Chat Simulation Server"
         ])
     }
