@@ -48,11 +48,35 @@ public enum SimulationProtocol {
         }
     }
 
+    // (web) client -> server
+    public struct AddLink: Codable {
+        public let fromUUID: String
+        public let toUUID: String
+
+        public init(fromUUID: String, toUUID: String) {
+            self.fromUUID = fromUUID
+            self.toUUID = toUUID
+        }
+    }
+
+    // (web) client -> server
+    public struct RemoveLink: Codable {
+        public let fromUUID: String
+        public let toUUID: String
+
+        public init(fromUUID: String, toUUID: String) {
+            self.fromUUID = fromUUID
+            self.toUUID = toUUID
+        }
+    }
+
     // bidirectional
     public enum Message: Codable {
         // client -> server
         case hello(Hello)
         case broadcast(Broadcast)
+        case addLink(AddLink)
+        case removeLink(RemoveLink)
 
         // server -> client
         case helloNotification(HelloNotification)
@@ -77,6 +101,10 @@ public enum SimulationProtocol {
                 self = .hello(try container.decode(Hello.self, forKey: .data))
             case "broadcast":
                 self = .broadcast(try container.decode(Broadcast.self, forKey: .data))
+            case "addLink":
+                self = .addLink(try container.decode(AddLink.self, forKey: .data))
+            case "removeLink":
+                self = .removeLink(try container.decode(RemoveLink.self, forKey: .data))
             case "helloNotification":
                 self = .helloNotification(try container.decode(HelloNotification.self, forKey: .data))
             case "goodbyeNotification":
@@ -98,6 +126,12 @@ public enum SimulationProtocol {
             case .broadcast(let broadcast):
                 try container.encode("broadcast", forKey: .type)
                 try container.encode(broadcast, forKey: .data)
+            case .addLink(let addLink):
+                try container.encode("addLink", forKey: .type)
+                try container.encode(addLink, forKey: .data)
+            case .removeLink(let removeLink):
+                try container.encode("removeLink", forKey: .type)
+                try container.encode(removeLink, forKey: .data)
             case .helloNotification(let helloNotification):
                 try container.encode("helloNotification", forKey: .type)
                 try container.encode(helloNotification, forKey: .data)
