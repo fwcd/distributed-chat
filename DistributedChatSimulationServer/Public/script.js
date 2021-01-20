@@ -1,3 +1,7 @@
+function lookupEdge(from, to, edges) {
+    return edges.get().find((({ f, t }) => (f === from && t === to) || (t === from && f == to)));
+}
+
 function setUpGraph() {
     const nodes = new vis.DataSet([]);
     const edges = new vis.DataSet([]);
@@ -13,11 +17,30 @@ function setUpGraph() {
             addNode: false,
             deleteNode: false,
             addEdge: (data, callback) => {
-                const exists = edges.get().find((({ from, to }) => (from === data.from && to === data.to) || (to === data.from && from === data.to)));
+                const exists = lookupEdge(data.from, data.to, edges);
                 if (data.from !== data.to && !exists) {
-                    callback(data);
+                    // We add the edge first once the server has confirmed it
+                    // callback(data);
+                    ws.send(JSON.stringify({
+                        type: "addLink",
+                        data: {
+                            fromUUID: data.from,
+                            toUUID: data.to
+                        }
+                    }));
                 }
                 graph.addEdgeMode();
+            },
+            deleteEdge: (data, callback) => {
+                // We remove the edge first once the server has confirmed it
+                // callback(data);
+                ws.send(JSON.stringify({
+                    type: "removeLink",
+                    data: {
+                        fromUUID: data.from,
+                        toUUID: data.to
+                    }
+                }));
             }
         }
     };
