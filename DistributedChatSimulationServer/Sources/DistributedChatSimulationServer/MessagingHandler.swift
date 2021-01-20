@@ -13,6 +13,7 @@ class MessagingHandler {
         private let ws: WebSocket
         var name: String? = nil
         var links: Set<UUID> = []
+        var isObserver: Bool = false
 
         init(ws: WebSocket) {
             self.ws = ws
@@ -55,24 +56,9 @@ class MessagingHandler {
     }
 
     private func onConnect(to sender: UUID) throws {
-        // Inform the newly connected client about other
-        // clients that have already identified themselves
-        // with a hello message and their links (while
-        // making sure that no duplicate links are emitted).
-
-        var sentLinks: Set<Set<UUID>> = []
-        let senderClient = clients[sender]!
-
-        for (uuid, client) in clients {
-            if let name = client.name {
-                try senderClient.send(.helloNotification(.init(name: name, uuid: "\(uuid)")))
-
-                for linked in client.links where !sentLinks.contains([uuid, linked]) {
-                    try senderClient.send(.addLinkNotification(.init(fromUUID: "\(uuid)", toUUID: "\(linked)")))
-                    sentLinks.insert([uuid, linked])
-                }
-            }
-        }
+        // Uncomment to let everyone (not just observers)
+        // receive the entire state upon connecting.
+        // try sendClientsAndLinks(to: sender)
     }
 
     private func onReceive(from sender: UUID, message: SimulationProtocol.Message) throws {
@@ -85,6 +71,11 @@ class MessagingHandler {
                 try client.send(.helloNotification(.init(name: hello.name, uuid: "\(sender)")))
             }
             log.info("Hello, \(hello.name)!")
+        
+        case .observe:
+            senderClient.isObserver = true
+            try sendClientsAndLinks(to: sender)
+            log.info("\(name(of: sender)) is now an observer!")
 
         case .addLink(let link):
             if let fromUUID = UUID(uuidString: link.fromUUID),
@@ -131,6 +122,27 @@ class MessagingHandler {
         if let name = clients[sender]?.name {
             for (_, client) in clients {
                 try client.send(.goodbyeNotification(.init(name: name, uuid: "\(sender)")))
+            }
+        }
+    }
+
+    private func sendClientsAndLinks(to sender: UUID) throws {
+        // Inform the client about other
+        // clients that have already identified themselves
+        // with a hello message and their links (while
+        // making sure that no duplicate links are emitted).
+
+        var sentLinks: Set<Set<UUID>> = []
+        let senderClient = clients[sender]!
+
+        for (uuid, client) in clients {
+            if let name = client.name {
+                try senderClient.send(.helloNotification(.init(name: name, uuid: "\(uuid)")))
+
+                for linked in client.links where !sentLinks.contains([uuid, linked]) {
+                    try senderClient.send(.addLinkNotification(.init(fromUUID: "\(uuid)", toUUID: "\(linked)")))
+                    sentLinks.insert([uuid, linked])
+                }
             }
         }
     }

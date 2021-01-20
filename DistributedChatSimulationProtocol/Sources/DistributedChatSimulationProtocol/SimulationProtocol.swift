@@ -49,6 +49,9 @@ public enum SimulationProtocol {
         // client -> server
         case hello(Hello)
         case broadcast(Broadcast)
+
+        // web client -> server
+        case observe
         case addLink(Link)
         case removeLink(Link)
 
@@ -77,6 +80,8 @@ public enum SimulationProtocol {
                 self = .hello(try container.decode(Hello.self, forKey: .data))
             case "broadcast":
                 self = .broadcast(try container.decode(Broadcast.self, forKey: .data))
+            case "observe":
+                self = .observe
             case "addLink":
                 self = .addLink(try container.decode(Link.self, forKey: .data))
             case "removeLink":
@@ -106,6 +111,8 @@ public enum SimulationProtocol {
             case .broadcast(let broadcast):
                 try container.encode("broadcast", forKey: .type)
                 try container.encode(broadcast, forKey: .data)
+            case .observe:
+                try container.encode("observe", forKey: .type)
             case .addLink(let addLink):
                 try container.encode("addLink", forKey: .type)
                 try container.encode(addLink, forKey: .data)
