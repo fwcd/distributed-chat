@@ -2,6 +2,40 @@ function lookupEdge(from, to, edges) {
     return edges.get().find((({ from: f, to: t }) => (f === from && t === to) || (t === from && f == to)));
 }
 
+function updateDynamically(nodes, edges) {
+    // Connects to the /messaging WebSocket endpoint to
+    // dynamically update the graph with nodes.
+    const ws = new WebSocket(`ws://${location.host}/messaging`);
+    ws.addEventListener("message", ev => {
+        const message = JSON.parse(ev.data);
+        console.log(`Got ${JSON.stringify(message)}.`);
+
+        switch (message.type) {
+        case "helloNotification":
+            const angle = 2 * Math.PI * Math.random();
+            const radius = 0.2;
+            nodes.add({ id: message.data.uuid, label: message.data.name, x: Math.cos(angle) * radius, y: Math.sin(angle) * radius });
+            break;
+        case "goodbyeNotification":
+            nodes.remove(message.data.uuid);
+            break;
+        case "addLinkNotification":
+            edges.add({ from: message.data.fromUUID, to: message.data.toUUID });
+            break;
+        case "removeLinkNotification":
+            const edge = lookupEdge(message.data.fromUUID, message.data.toUUID, edges);
+            if (edge) {
+                edges.remove(edge.id);
+            }
+            break;
+        default:
+            break;
+        }
+        graph.enableEditMode();
+    });
+    return ws;
+}
+
 function setUpGraph() {
     const nodes = new vis.DataSet([]);
     const edges = new vis.DataSet([]);
@@ -59,40 +93,6 @@ function setUpGraph() {
     edges.on("*", () => {
         graph.enableEditMode();
     });
-}
-
-function updateDynamically(nodes, edges) {
-    // Connects to the /messaging WebSocket endpoint to
-    // dynamically update the graph with nodes.
-    const ws = new WebSocket(`ws://${location.host}/messaging`);
-    ws.addEventListener("message", ev => {
-        const message = JSON.parse(ev.data);
-        console.log(`Got ${JSON.stringify(message)}.`);
-
-        switch (message.type) {
-        case "helloNotification":
-            const angle = 2 * Math.PI * Math.random();
-            const radius = 0.2;
-            nodes.add({ id: message.data.uuid, label: message.data.name, x: Math.cos(angle) * radius, y: Math.sin(angle) * radius });
-            break;
-        case "goodbyeNotification":
-            nodes.remove(message.data.uuid);
-            break;
-        case "addLinkNotification":
-            edges.add({ from: message.data.fromUUID, to: message.data.toUUID });
-            break;
-        case "removeLinkNotification":
-            const edge = lookupEdge(message.data.fromUUID, message.data.toUUID, edges);
-            if (edge) {
-                edges.remove(edge.id);
-            }
-            break;
-        default:
-            break;
-        }
-        graph.enableEditMode();
-    });
-    return ws;
 }
 
 window.addEventListener("load", () => {
