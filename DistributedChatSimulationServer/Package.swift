@@ -32,7 +32,10 @@ let package = Package(
         ),
         .testTarget(
             name: "DistributedChatSimulationServerTests",
-            dependencies: ["DistributedChatSimulationServer"]
+            dependencies: [
+                .target(name: "DistributedChatSimulationServer"),
+                .product(name: "XCTVapor", package: "vapor"),
+            ]
         )
     ]
 )
