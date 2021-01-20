@@ -2,6 +2,8 @@ function setUpGraph() {
     const nodes = new vis.DataSet([]);
     const edges = new vis.DataSet([]);
 
+    const ws = updateDynamically(nodes);
+
     let graph = undefined;
     const container = document.getElementById("graph");
     const data = { nodes, edges };
@@ -11,7 +13,8 @@ function setUpGraph() {
             addNode: false,
             deleteNode: false,
             addEdge: (data, callback) => {
-                if (data.from !== data.to) {
+                const exists = edges.get().find((({ from, to }) => (from === data.from && to === data.to) || (to === data.from && from === data.to)));
+                if (data.from !== data.to && !exists) {
                     callback(data);
                 }
                 graph.addEdgeMode();
@@ -21,11 +24,9 @@ function setUpGraph() {
 
     graph = new vis.Network(container, data, options);
     graph.enableEditMode();
-
-    return [nodes, graph];
 }
 
-function updateDynamically(nodes, graph) {
+function updateDynamically(nodes) {
     // Connects to the /messaging WebSocket endpoint to
     // dynamically update the graph with nodes.
     const ws = new WebSocket(`ws://${location.host}/messaging`);
@@ -44,9 +45,9 @@ function updateDynamically(nodes, graph) {
             break;
         }
     });
+    return ws;
 }
 
 window.addEventListener("load", () => {
-    const [nodes, graph] = setUpGraph();
-    updateDynamically(nodes, graph);
+    setUpGraph();
 });
