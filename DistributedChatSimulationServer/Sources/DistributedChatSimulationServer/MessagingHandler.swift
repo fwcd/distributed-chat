@@ -67,7 +67,7 @@ class MessagingHandler {
         switch message {
         case .hello(let hello):
             senderClient.name = hello.name
-            for (_, client) in clients {
+            for (_, client) in clients where client.isObserver {
                 try client.send(.helloNotification(.init(name: hello.name, uuid: "\(sender)")))
             }
             log.info("Hello, \(hello.name)!")
@@ -84,7 +84,7 @@ class MessagingHandler {
                let toClient = clients[toUUID] {
                 fromClient.links.insert(toUUID)
                 toClient.links.insert(fromUUID)
-                for (_, client) in clients {
+                for (_, client) in clients where client.isObserver {
                     try client.send(.addLinkNotification(link))
                 }
                 log.info("Added link from \(name(of: fromUUID)) to \(name(of: toUUID))")
@@ -99,7 +99,7 @@ class MessagingHandler {
                let toClient = clients[toUUID] {
                 fromClient.links.remove(toUUID)
                 toClient.links.remove(fromUUID)
-                for (_, client) in clients {
+                for (_, client) in clients where client.isObserver {
                     try client.send(.removeLinkNotification(link))
                 }
                 log.info("Removed link from \(name(of: fromUUID)) to \(name(of: toUUID))")
@@ -120,7 +120,7 @@ class MessagingHandler {
 
     private func onClose(_ sender: UUID) throws {
         if let name = clients[sender]?.name {
-            for (_, client) in clients {
+            for (_, client) in clients where client.isObserver {
                 try client.send(.goodbyeNotification(.init(name: name, uuid: "\(sender)")))
             }
         }
