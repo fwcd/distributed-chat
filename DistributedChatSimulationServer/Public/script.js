@@ -10,7 +10,7 @@ function setUpGraph() {
         { from: 3, to: 1 },
     ]);
 
-    let network = undefined;
+    let graph = undefined;
     const container = document.getElementById("graph");
     const data = { nodes, edges };
     const options = {
@@ -22,15 +22,28 @@ function setUpGraph() {
                 if (data.from !== data.to) {
                     callback(data);
                 }
-                network.addEdgeMode();
+                graph.addEdgeMode();
             }
         }
     };
 
-    network = new vis.Network(container, data, options);
-    network.enableEditMode();
+    graph = new vis.Network(container, data, options);
+    graph.enableEditMode();
+
+    return graph;
+}
+
+function updateDynamically(graph) {
+    // Connects to the /messaging WebSocket endpoint to
+    // dynamically update the graph with nodes.
+    const ws = new WebSocket(`ws://${location.host}/messaging`);
+    ws.addEventListener("message", ev => {
+        const data = JSON.parse(ev.data);
+        console.log(`Got ${JSON.stringify(data)}.`);
+    });
 }
 
 window.addEventListener("load", () => {
-    setUpGraph();
+    const graph = setUpGraph();
+    updateDynamically(graph);
 });
