@@ -23,6 +23,11 @@ class MessagingHandler {
         clients[uuid] = ClientState(ws: ws)
 
         log.info("Opened connection to \(uuid)")
+        do {
+            try self.onConnect(to: uuid)
+        } catch {
+            log.error("Error while opening connection to \(uuid): \(error)")
+        }
 
         ws.onText { _, raw in
             do {
@@ -34,13 +39,21 @@ class MessagingHandler {
         }
 
         ws.onClose.whenComplete { _ in
-            log.info("Closed connection to \(uuid)")
             do {
                 try self.onClose(uuid)
             } catch {
                 log.error("Error while closing connection to \(uuid): \(error)")
             }
             self.clients[uuid] = nil
+            log.info("Closed connection to \(uuid)")
+        }
+    }
+
+    private func onConnect(to sender: UUID) throws {
+        for (uuid, client) in clients {
+            if let name = client.name {
+                try clients[sender]?.send(.helloNotification(.init(name: name, uuid: "\(uuid)")))
+            }
         }
     }
 
