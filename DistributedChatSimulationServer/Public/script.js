@@ -10,11 +10,25 @@ function setUpGraph() {
         { from: 3, to: 1 },
     ]);
 
+    let network = undefined;
     const container = document.getElementById("graph");
     const data = { nodes, edges };
-    const options = {};
+    const options = {
+        manipulation: {
+            enabled: true,
+            addNode: false,
+            deleteNode: false,
+            addEdge: (data, callback) => {
+                if (data.from !== data.to) {
+                    callback(data);
+                }
+                network.addEdgeMode();
+            }
+        }
+    };
 
-    new vis.Network(container, data, options);
+    network = new vis.Network(container, data, options);
+    network.enableEditMode();
 }
 
 window.addEventListener("load", () => {
