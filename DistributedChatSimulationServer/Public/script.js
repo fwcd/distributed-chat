@@ -44,6 +44,12 @@ function setUpGraph() {
                     }));
                 }
             }
+        },
+        physics: {
+            solver: "forceAtlas2Based",
+            forceAtlas2Based: {
+                damping: 0.4
+            }
         }
     };
 
@@ -65,7 +71,9 @@ function updateDynamically(nodes, edges) {
 
         switch (message.type) {
         case "helloNotification":
-            nodes.add({ id: message.data.uuid, label: message.data.name });
+            const angle = 2 * Math.PI * Math.random();
+            const radius = 0.2;
+            nodes.add({ id: message.data.uuid, label: message.data.name, x: Math.cos(angle) * radius, y: Math.sin(angle) * radius });
             break;
         case "goodbyeNotification":
             nodes.remove(message.data.uuid);
