@@ -7,7 +7,8 @@ func routes(_ app: Application) throws {
         ])
     }
 
-    // app.get("hello") { req -> String in
-    //     return "Hello, world!"
-    // }
+    let handler = MessagingHandler()
+    app.webSocket("messaging") { req, ws in
+        handler.connect(ws)
+    }
 }
