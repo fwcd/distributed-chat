@@ -41,7 +41,7 @@ class MessagingHandler {
             clients[sender]!.name = hello.name
             log.info("Hello, \(hello.name)!")
         case .broadcast(let broadcast):
-            let notification = SimulationProtocol.Message.notification(.init(content: broadcast.content))
+            let notification = SimulationProtocol.Message.broadcastNotification(.init(content: broadcast.content))
             for (uuid, client) in clients where uuid != sender {
                 client.ws.send(String(data: try encoder.encode(notification), encoding: .utf8)!)
             }
