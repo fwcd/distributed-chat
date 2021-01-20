@@ -108,8 +108,18 @@ class MessagingHandler {
             }
 
         case .broadcast(let broadcast):
-            for (uuid, client) in clients where client.isObserver || senderClient.links.contains(uuid) {
-                try client.send(.broadcastNotification(.init(content: broadcast.content, link: .init(fromUUID: "\(sender)", toUUID: "\(uuid)"))))
+            let observers = clients.values.filter(\.isObserver)
+            for uuid in senderClient.links {
+                if let client = clients[uuid] {
+                    let notification = SimulationProtocol.Message.broadcastNotification(.init(
+                        content: broadcast.content,
+                        link: .init(fromUUID: "\(sender)", toUUID: "\(uuid)")
+                    ))
+                    try client.send(notification)
+                    for observer in observers {
+                        try observer.send(notification)
+                    }
+                }
             }
             log.info("Broadcasted '\(broadcast.content)' from \(name(of: sender))")
 

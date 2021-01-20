@@ -33,9 +33,14 @@ function updateDynamically(nodes, edges) {
                 edges.remove(edge.id);
             }
             break;
-        case "broadcast":
-            // TODO
-            break;
+        case "broadcastNotification":
+            const timeoutMs = 1000;
+            const link = message.data.link;
+            const [id] = edges.add({ from: link.from, to: link.to });
+            console.log(id);
+            window.setTimeout(() => {
+                edges.remove(id);
+            }, timeoutMs);
         default:
             break;
         }
