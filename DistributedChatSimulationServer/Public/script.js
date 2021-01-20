@@ -1,14 +1,6 @@
 function setUpGraph() {
-    const nodes = new vis.DataSet([
-        { id: 1, label: "Node 1" },
-        { id: 2, label: "Node 2" },
-        { id: 3, label: "Node 3" },
-    ]);
-    const edges = new vis.DataSet([
-        { from: 1, to: 2 },
-        { from: 2, to: 3 },
-        { from: 3, to: 1 },
-    ]);
+    const nodes = new vis.DataSet([]);
+    const edges = new vis.DataSet([]);
 
     let graph = undefined;
     const container = document.getElementById("graph");
@@ -30,20 +22,31 @@ function setUpGraph() {
     graph = new vis.Network(container, data, options);
     graph.enableEditMode();
 
-    return graph;
+    return [nodes, graph];
 }
 
-function updateDynamically(graph) {
+function updateDynamically(nodes, graph) {
     // Connects to the /messaging WebSocket endpoint to
     // dynamically update the graph with nodes.
     const ws = new WebSocket(`ws://${location.host}/messaging`);
     ws.addEventListener("message", ev => {
-        const data = JSON.parse(ev.data);
-        console.log(`Got ${JSON.stringify(data)}.`);
+        const message = JSON.parse(ev.data);
+        console.log(`Got ${JSON.stringify(message)}.`);
+
+        switch (message.type) {
+        case "helloNotification":
+            nodes.add({ id: message.data.uuid, label: message.data.name });
+            break;
+        case "goodbyeNotification":
+            nodes.remove(message.data.uuid);
+            break;
+        default:
+            break;
+        }
     });
 }
 
 window.addEventListener("load", () => {
-    const graph = setUpGraph();
-    updateDynamically(graph);
+    const [nodes, graph] = setUpGraph();
+    updateDynamically(nodes, graph);
 });
