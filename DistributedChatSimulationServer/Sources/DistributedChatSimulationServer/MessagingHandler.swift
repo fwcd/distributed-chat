@@ -9,9 +9,14 @@ fileprivate let decoder = JSONDecoder()
 class MessagingHandler {
     private var clients: [UUID: ClientState] = [:]
 
-    private struct ClientState {
-        let ws: WebSocket
+    private class ClientState {
+        private let ws: WebSocket
         var name: String? = nil
+        var links: Set<UUID> = []
+
+        init(ws: WebSocket) {
+            self.ws = ws
+        }
 
         func send(_ message: SimulationProtocol.Message) throws {
             ws.send(String(data: try encoder.encode(message), encoding: .utf8)!)
@@ -65,11 +70,37 @@ class MessagingHandler {
                 try client.send(.helloNotification(.init(name: hello.name, uuid: "\(sender)")))
             }
             log.info("Hello, \(hello.name)!")
+
+        case .addLink(let link):
+            if let fromUUID = UUID(uuidString: link.fromUUID),
+               let toUUID = UUID(uuidString: link.toUUID),
+               let fromClient = clients[fromUUID],
+               let toClient = clients[toUUID] {
+                fromClient.links.insert(toUUID)
+                toClient.links.insert(fromUUID)
+                log.info("Added link from \(name(of: fromUUID)) to \(name(of: toUUID))")
+            } else {
+                log.error("Could not create link, invalid UUID(s)")
+            }
+        
+        case .removeLink(let link):
+            if let fromUUID = UUID(uuidString: link.fromUUID),
+               let toUUID = UUID(uuidString: link.toUUID),
+               let fromClient = clients[fromUUID],
+               let toClient = clients[toUUID] {
+                fromClient.links.remove(toUUID)
+                toClient.links.remove(fromUUID)
+                log.info("Removed link from \(name(of: fromUUID)) to \(name(of: toUUID))")
+            } else {
+                log.error("Could not remove link, invalid UUID(s)")
+            }
+
         case .broadcast(let broadcast):
             for (uuid, client) in clients where uuid != sender {
                 try client.send(.broadcastNotification(.init(content: broadcast.content)))
             }
             log.info("Broadcasted '\(broadcast.content)' from \(name(of: sender))")
+
         default:
             log.info("Unexpected message \(message) from \(name(of: sender))")
         }
