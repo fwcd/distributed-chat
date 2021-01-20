@@ -34,19 +34,23 @@ class MessagingHandler {
         }
     }
 
-    private func onReceive(from senderUuid: UUID, message: MessagingProtocol.Message) throws {
+    private func onReceive(from sender: UUID, message: MessagingProtocol.Message) throws {
         switch message {
         case .hello(let hello):
-            clients[senderUuid]!.name = hello.name
+            clients[sender]!.name = hello.name
             log.info("Hello, \(hello.name)!")
         case .broadcast(let broadcast):
             let notification = MessagingProtocol.Message.notification(.init(content: broadcast.content))
-            for (uuid, client) in clients where uuid != senderUuid {
+            for (uuid, client) in clients where uuid != sender {
                 client.ws.send(String(data: try encoder.encode(notification), encoding: .utf8)!)
             }
-            log.info("Broadcasted '\(broadcast.content)' from \(clients[senderUuid]!.name ?? "\(senderUuid)")")
+            log.info("Broadcasted '\(broadcast.content)' from \(name(of: sender))")
         default:
-            log.info("Unexpected message: \(message)")
+            log.info("Unexpected message \(message) from \(name(of: sender))")
         }
+    }
+
+    private func name(of uuid: UUID) -> String {
+        clients[uuid]?.name ?? "\(uuid)"
     }
 }
