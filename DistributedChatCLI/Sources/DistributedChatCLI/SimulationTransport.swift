@@ -18,9 +18,17 @@ public class SimulationTransport: ChatTransport {
     }
 
     /// Asynchronously connects to the given URL.
-    public static func connect(url: URL, _ handler: @escaping (SimulationTransport) -> Void) {
+    public static func connect(url: URL, name: String, _ handler: @escaping (SimulationTransport) -> Void) {
         let _ = WebSocket.connect(to: url, on: group) { ws in
-            handler(SimulationTransport(ws: ws))
+            do {
+                // Identify ourselves with our username to the simulation server
+                let protoMessage = SimulationProtocol.Message.hello(.init(name: name))
+                ws.send(String(data: try encoder.encode(protoMessage), encoding: .utf8)!)
+
+                handler(SimulationTransport(ws: ws))
+            } catch {
+                log.error("Error while encoding hello message: \(error)")
+            }
         }
     }
 

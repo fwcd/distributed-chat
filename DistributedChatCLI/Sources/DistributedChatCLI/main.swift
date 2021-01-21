@@ -8,8 +8,11 @@ struct DistributedChatCLI: ParsableCommand {
     @Argument(help: "The messaging WebSocket URL of the simulation server to connect to")
     var simulationMessagingURL: URL = URL(string: "ws://localhost:8080/messaging")!
 
+    @Option(help: "The username to use")
+    var name: String
+
     func run() {
-        SimulationTransport.connect(url: simulationMessagingURL) {
+        SimulationTransport.connect(url: simulationMessagingURL, name: name) {
             print("Connected to \(simulationMessagingURL)...")
             try! runREPL(transport: $0)
         }
@@ -21,6 +24,8 @@ struct DistributedChatCLI: ParsableCommand {
     private func runREPL(transport: ChatTransport) throws {
         let controller = ChatController(transport: transport)
         let ln = LineNoise()
+
+        controller.update(name: name)
 
         while let input = try? ln.getLine(prompt: "") {
             ln.addHistory(input)
