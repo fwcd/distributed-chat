@@ -1,9 +1,14 @@
 import DistributedChat
+import DistributedChatSimulationProtocol
 import Foundation
+import Logging
 import NIO
 import WebSocketKit
 
 fileprivate let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+fileprivate let encoder = JSONEncoder()
+fileprivate let decoder = JSONDecoder()
+fileprivate let log = Logger(label: "SimulationTransport")
 
 public class SimulationTransport: ChatTransport {
     private let ws: WebSocket
@@ -19,13 +24,25 @@ public class SimulationTransport: ChatTransport {
         }
     }
 
-    public func broadcast(_ raw: String) {
-        ws.send(raw)
+    public func broadcast(_ content: String) {
+        do {
+            let protoMessage = SimulationProtocol.Message.broadcast(.init(content: content))
+            ws.send(String(data: try encoder.encode(protoMessage), encoding: .utf8)!)
+        } catch {
+            log.error("Could not encode simulation protocol message: \(error)")
+        }
     }
 
     public func onReceive(_ handler: @escaping (String) -> Void) {
         ws.onText { _, raw in
-            handler(raw)
+            do {
+                let protoMessage = try decoder.decode(SimulationProtocol.Message.self, from: raw.data(using: .utf8)!)
+                if case let .broadcast(bc) = protoMessage {
+                    handler(bc.content)
+                }
+            } catch {
+                log.error("Could not decode simulation protocol message: \(error)")
+            }
         }
     }
 
