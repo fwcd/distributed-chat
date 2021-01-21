@@ -1,6 +1,6 @@
 import Foundation
 
 public struct ChatUser: Codable {
-    public let name: String
-    public let uuid: UUID
+    public var uuid: UUID = UUID()
+    public var name: String? = nil
 }

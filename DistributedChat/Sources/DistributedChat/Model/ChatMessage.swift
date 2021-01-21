@@ -1,7 +1,7 @@
 import Foundation
 
 public struct ChatMessage: Codable {
-    public let author: ChatUser
-    public let timestamp: Date
-    public let content: String
+    public var timestamp: Date = Date()
+    public var author: ChatUser
+    public var content: ChatMessageContent
 }

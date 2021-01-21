@@ -27,6 +27,7 @@ class ChatTransportWrapper<T> where T: Codable {
         }
     }
 
+    /// Sends a protocol message to all reachable nodes.
     func broadcast(_ protoMessage: T) {
         do {
             let json = String(data: try encoder.encode(protoMessage), encoding: .utf8)!
@@ -36,6 +37,8 @@ class ChatTransportWrapper<T> where T: Codable {
         }
     }
 
+    /// Adds a handler that is fired whenever a protocol message is
+    /// received from a node in reach.
     func onReceive(_ handler: @escaping (T) -> Void) {
         receiveListeners.append(handler)
     }
