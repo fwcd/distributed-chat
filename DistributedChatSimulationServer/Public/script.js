@@ -63,7 +63,7 @@ function setUpGraph() {
             addNode: false,
             deleteNode: false,
             addEdge: (edge, callback) => {
-                const exists = lookupEdge(edge.from, edge.to, edges);
+                const exists = lookupEdges(edge.from, edge.to, edges).length > 0;
                 if (edge.from !== edge.to && !exists) {
                     // We add the edge first once the server has confirmed it
                     // callback(data);
