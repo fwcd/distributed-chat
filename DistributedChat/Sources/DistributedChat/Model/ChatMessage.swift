@@ -1,7 +1,7 @@
 import Foundation
 
-public struct Message: Codable {
-    public let author: User
+public struct ChatMessage: Codable {
+    public let author: ChatUser
     public let timestamp: Date
     public let content: String
 }
