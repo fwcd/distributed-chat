@@ -1,0 +1,29 @@
+image: "swift:5.3-focal"
+
+stages:
+  - build
+
+distributed-chat:build:
+  stage: build
+  script:
+    - (cd DistributedChat && swift build)
+
+simulation-protocol:build:
+  stage: build
+  script:
+    - (cd DistributedChatSimulationProtocol && swift build)
+
+cli:build:
+  stage: build
+  script:
+    - (cd DistributedChatCLI && swift build)
+  needs:
+    - distributed-chat:build
+    - simulation-protocol:build
+
+simulation-server:build:
+  stage: build
+  script:
+    - (cd DistributedChatSimulationServer && swift build)
+  needs:
+    - simulation-protocol:build
