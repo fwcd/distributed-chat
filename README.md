@@ -10,6 +10,8 @@ A cross-platform distributed chat application that uses mesh networks to transmi
 
 ![Logo](logo.svg)
 
+## Components
+
 The project consists of the following components:
 
 * `DistributedChat`: The abstract application, platform-independent, transport-independent (uses interface for broadcasting/receiving messages)
@@ -35,3 +37,35 @@ The dependency graph between these packages looks like this:
  \__________________/   \______________________________________________________/
        iOS only                     cross-platform, for testing
 ```
+
+## Build & Run
+
+### Cross-platform
+
+To build the `DistributedChat`, `DistributedChatCLI` or `DistributedSimulationServer` packages, make sure to have the following installed:
+
+* Swift 5.3+
+
+Then navigate into the package subdirectory and run
+
+```
+swift build
+```
+
+or
+
+```
+swift run
+```
+
+if the package is executable.
+
+### macOS
+
+To build the `DistributedChatApp`, make sure to have the following installed:
+
+* Xcode 12+
+* Swift 5.3 (should be included with Xcode)
+* optionally an iOS 14 device
+
+The open the `DistributedChatApp` subdirectory in Xcode and build/run the project.
