@@ -1,9 +1,10 @@
 import ArgumentParser
+import Foundation
 import LineNoise
 
 struct DistributedChatCLI: ParsableCommand {
     @Argument(help: "The messaging WebSocket URL of the simulation server to connect to")
-    var messagingURL: String = "ws://localhost:8080/messaging"
+    var simulationMessagingURL: URL = URL(string: "ws://localhost:8080/messaging")!
 
     mutating func run() throws {
         let ln = LineNoise()
