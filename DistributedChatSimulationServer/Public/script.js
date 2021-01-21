@@ -35,7 +35,14 @@ function updateDynamically(nodes, edges) {
         case "broadcastNotification":
             const timeoutMs = 1000;
             const link = message.data.link;
-            const [id] = edges.add({ from: link.fromUUID, to: link.toUUID, label: message.data.content, arrows: "to", color: "violet" });
+            const [id] = edges.add({
+                from: link.fromUUID,
+                to: link.toUUID,
+                label: message.data.content,
+                arrows: "to",
+                color: "violet",
+                widthConstraint: 400
+            });
             console.log(id);
             window.setTimeout(() => {
                 edges.remove(id);
