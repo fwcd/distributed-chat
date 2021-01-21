@@ -3,6 +3,7 @@
 [![Distributed Chat Build](https://github.com/fwcd/distributed-chat/workflows/Distributed%20Chat/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3A"Distributed+Chat")
 [![App Build](https://github.com/fwcd/distributed-chat/workflows/App/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3AApp)
 [![CLI Build](https://github.com/fwcd/distributed-chat/workflows/CLI/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3ACLI)
+[![Simulation Protocol Build](https://github.com/fwcd/distributed-chat/workflows/Simulation%20Protocol/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3A"Simulation+Protocol")
 [![Simulation Server Build](https://github.com/fwcd/distributed-chat/workflows/Simulation%20Server/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3A"Simulation+Server")
 
 A cross-platform distributed chat application that uses mesh networks to transmit messages.
