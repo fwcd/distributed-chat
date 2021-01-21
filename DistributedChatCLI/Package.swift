@@ -15,6 +15,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         .package(path: "../DistributedChat"),
         .package(path: "../DistributedChatSimulationProtocol"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.2"),
         .package(name: "LineNoise", url: "https://github.com/andybest/linenoise-swift.git", .revision("78e9bc9b685ffd551af0f3ac4d6e2beb22afd33b")),
     ],
     targets: [
@@ -25,6 +26,7 @@ let package = Package(
             dependencies: [
                 .product(name: "DistributedChat", package: "DistributedChat"),
                 .product(name: "DistributedChatSimulationProtocol", package: "DistributedChatSimulationProtocol"),
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "LineNoise", package: "LineNoise"),
             ]
         )

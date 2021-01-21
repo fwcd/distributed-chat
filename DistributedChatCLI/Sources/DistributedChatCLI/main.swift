@@ -1,13 +1,23 @@
+import ArgumentParser
 import LineNoise
 
-let ln = LineNoise()
+struct DistributedChatCLI: ParsableCommand {
+    @Argument(help: "The messaging WebSocket URL of the simulation server to connect to")
+    var messagingURL: String = "ws://localhost:8080/messaging"
 
-while let input = try? ln.getLine(prompt: "> ") {
-    ln.addHistory(input)
-    print()
+    mutating func run() throws {
+        let ln = LineNoise()
 
-    // TODO: Actually handle input
-    print(input)
+        while let input = try? ln.getLine(prompt: "> ") {
+            ln.addHistory(input)
+            print()
+
+            // TODO: Actually handle input
+            print(input)
+        }
+
+        print()
+    }
 }
 
-print()
+DistributedChatCLI.main()
