@@ -30,27 +30,27 @@ class MessagingHandler {
 
         log.info("Opened connection to \(uuid)")
         do {
-            try self.onConnect(to: uuid)
+            try onConnect(to: uuid)
         } catch {
             log.error("Error while opening connection to \(uuid): \(error)")
         }
 
-        ws.onText { _, raw in
+        ws.onText { [unowned self] _, raw in
             do {
                 let message = try decoder.decode(SimulationProtocol.Message.self, from: raw.data(using: .utf8)!)
-                try self.onReceive(from: uuid, message: message)
+                try onReceive(from: uuid, message: message)
             } catch {
                 log.error("Error while handling '\(raw)' from \(uuid): \(error)")
             }
         }
 
-        ws.onClose.whenComplete { _ in
+        ws.onClose.whenComplete { [unowned self] _ in
             do {
-                try self.onClose(uuid)
+                try onClose(uuid)
             } catch {
                 log.error("Error while closing connection to \(uuid): \(error)")
             }
-            self.clients[uuid] = nil
+            clients[uuid] = nil
             log.info("Closed connection to \(uuid)")
         }
     }
