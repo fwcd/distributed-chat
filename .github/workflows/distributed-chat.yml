@@ -1,0 +1,21 @@
+name: Distributed Chat
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+  strategy:
+    matrix:
+      swift: ['5.3']
+  
+  steps:
+  - uses: actions/checkout@v2
+  - uses: fwal/setup-swift@v1
+    with:
+      swift-version: ${{ matrix.swift }}
+  - name: Build
+    run: swift build
+  - name: Test
+    run: swift test
+
