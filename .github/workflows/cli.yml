@@ -1,4 +1,4 @@
-name: Distributed Chat
+name: Simulation Server
 
 on: [push]
 
@@ -16,8 +16,5 @@ jobs:
       swift-version: ${{ matrix.swift }}
   - name: Build
     run: swift build
-    working-directory: DistributedChat
-  - name: Test
-    run: swift test
-    working-directory: DistributedChat
+    working-directory: DistributedChatSimulationServer
 
