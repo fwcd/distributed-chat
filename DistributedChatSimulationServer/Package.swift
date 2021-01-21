@@ -11,13 +11,14 @@ let package = Package(
     products: [
         .executable(
             name: "DistributedChatSimulationServer",
-            targets: ["DistributedChatSimulationServer"]
+            targets: ["DistributedChatSimulationServerMain"]
         )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(path: "../DistributedChat"),
-        .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0")
+        .package(path: "../DistributedChatSimulationProtocol"),
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
+        .package(url: "https://github.com/vapor/leaf.git", from: "4.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -25,12 +26,23 @@ let package = Package(
         .target(
             name: "DistributedChatSimulationServer",
             dependencies: [
-                .product(name: "Vapor", package: "vapor")
+                .product(name: "Vapor", package: "vapor"),
+                .product(name: "Leaf", package: "leaf"),
+                .product(name: "DistributedChatSimulationProtocol", package: "DistributedChatSimulationProtocol")
+            ]
+        ),
+        .target(
+            name: "DistributedChatSimulationServerMain",
+            dependencies: [
+                .target(name: "DistributedChatSimulationServer")
             ]
         ),
         .testTarget(
             name: "DistributedChatSimulationServerTests",
-            dependencies: ["DistributedChatSimulationServer"]
+            dependencies: [
+                .target(name: "DistributedChatSimulationServer"),
+                .product(name: "XCTVapor", package: "vapor"),
+            ]
         )
     ]
 )
