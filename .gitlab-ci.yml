@@ -1,20 +1,34 @@
 image: "swift:5.3-focal"
 
 stages:
-  - build
+  - build-libs
+  - test-libs
+  - build-exes
+  - test-exes
+
+cache:
+  paths:
+    - "*/.build"
 
 distributed-chat:build:
-  stage: build
+  stage: build-libs
   script:
     - (cd DistributedChat && swift build)
 
+distributed-chat:test:
+  stage: test-libs
+  script:
+    - (cd DistributedChat && swift test)
+  needs:
+    - distributed-chat:build
+
 simulation-protocol:build:
-  stage: build
+  stage: build-libs
   script:
     - (cd DistributedChatSimulationProtocol && swift build)
 
 cli:build:
-  stage: build
+  stage: build-exes
   script:
     - (cd DistributedChatCLI && swift build)
   needs:
@@ -22,8 +36,15 @@ cli:build:
     - simulation-protocol:build
 
 simulation-server:build:
-  stage: build
+  stage: build-exes
   script:
     - (cd DistributedChatSimulationServer && swift build)
   needs:
     - simulation-protocol:build
+
+simulation-server:test:
+  stage: test-exes
+  script:
+    - (cd DistributedChatSimulationServer && swift test)
+  needs:
+    - simulation-server:build
