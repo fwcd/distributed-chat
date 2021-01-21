@@ -12,9 +12,13 @@ struct DistributedChatCLI: ParsableCommand {
     var name: String
 
     func run() {
-        SimulationTransport.connect(url: simulationMessagingURL, name: name) {
-            print("Connected to \(simulationMessagingURL)...")
-            try! runREPL(transport: $0)
+        print("Connecting to \(simulationMessagingURL)...")
+
+        SimulationTransport.connect(url: simulationMessagingURL, name: name) { transport in
+            DispatchQueue.main.async {
+                print("Connected to \(simulationMessagingURL)")
+                try! runREPL(transport: transport)
+            }
         }
 
         // Block the main thread
@@ -26,6 +30,9 @@ struct DistributedChatCLI: ParsableCommand {
         let ln = LineNoise()
 
         controller.update(name: name)
+        controller.onAddChatMessage { msg in
+            print(">> \(msg.author.name ?? "<anonymous user>"): \(msg.content)")
+        }
 
         while let input = try? ln.getLine(prompt: "") {
             ln.addHistory(input)
@@ -35,6 +42,7 @@ struct DistributedChatCLI: ParsableCommand {
         }
 
         print()
+        Foundation.exit(EXIT_SUCCESS)
     }
 }
 
