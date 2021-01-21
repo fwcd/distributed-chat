@@ -31,7 +31,7 @@ struct DistributedChatCLI: ParsableCommand {
 
         controller.update(name: name)
         controller.onAddChatMessage { msg in
-            print(">> \(msg.author.name ?? "<anonymous user>"): \(msg.content)")
+            print(">> \(msg.author.name ?? "<anonymous user>"): \(msg.content)\r")
         }
 
         while let input = try? ln.getLine(prompt: "") {

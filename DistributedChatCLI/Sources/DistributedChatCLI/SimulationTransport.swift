@@ -45,7 +45,7 @@ public class SimulationTransport: ChatTransport {
         ws.onText { _, raw in
             do {
                 let protoMessage = try decoder.decode(SimulationProtocol.Message.self, from: raw.data(using: .utf8)!)
-                if case let .broadcast(bc) = protoMessage {
+                if case let .broadcastNotification(bc) = protoMessage {
                     handler(bc.content)
                 }
             } catch {
