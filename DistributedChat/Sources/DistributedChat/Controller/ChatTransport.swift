@@ -5,7 +5,7 @@
 /// or the simulation protocol when used with the CLI.
 public protocol ChatTransport {
     /// Sends a string to all reachable nodes.
-    func broadcast(_ msg: String)
+    func broadcast(_ raw: String)
 
     /// Adds a handler that is fired whenever a string is
     /// received from a node in reach.
