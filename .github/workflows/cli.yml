@@ -17,7 +17,3 @@ jobs:
     - name: Build
       run: swift build
       working-directory: DistributedChatCLI
-    - name: Test
-      run: swift test
-      working-directory: DistributedChatCLI
-

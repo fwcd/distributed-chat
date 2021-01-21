@@ -25,12 +25,6 @@ let package = Package(
                 .product(name: "DistributedChat", package: "DistributedChat"),
                 .product(name: "DistributedChatSimulationProtocol", package: "DistributedChatSimulationProtocol"),
             ]
-        ),
-        .testTarget(
-            name: "DistributedChatCLITests",
-            dependencies: [
-                .target(name: "DistributedChatCLI")
-            ]
         )
     ]
 )
