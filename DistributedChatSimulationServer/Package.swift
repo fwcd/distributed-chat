@@ -11,7 +11,7 @@ let package = Package(
     products: [
         .executable(
             name: "DistributedChatSimulationServer",
-            targets: ["DistributedChatSimulationServer"]
+            targets: ["DistributedChatSimulationServerMain"]
         )
     ],
     dependencies: [
@@ -29,6 +29,12 @@ let package = Package(
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "Leaf", package: "leaf"),
                 .product(name: "DistributedChatSimulationProtocol", package: "DistributedChatSimulationProtocol")
+            ]
+        ),
+        .target(
+            name: "DistributedChatSimulationServerMain",
+            dependencies: [
+                .target(name: "DistributedChatSimulationServer")
             ]
         ),
         .testTarget(

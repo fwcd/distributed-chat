@@ -1,3 +1,4 @@
+import DistributedChatSimulationServer
 import Vapor
 
 var env = try Environment.detect()
