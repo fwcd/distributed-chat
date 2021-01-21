@@ -1,36 +1,21 @@
+import Foundation
+
 public enum ChatProtocol {
-    public enum Message: Codable {
-        case addMessage(ChatMessage)
+    public struct Message: Codable {
+        public var visitedUsers: Set<UUID>
+        public var addedChatMessages: [ChatMessage]
 
-        public enum CodingKeys: String, CodingKey {
-            case type
-            case data
-        }
+        // TODO: Logical clock for eventual consistency
+        // (e.g. Lamport timestamp or vector clock)
 
-        public enum MessageError: Error {
-            case unknownType(String)
-        }
+        // TODO: Removed messages, status updates, etc.?
 
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            let type = try container.decode(String.self, forKey: .type)
-
-            switch type {
-            case "addMessage":
-                self = .addMessage(try container.decode(ChatMessage.self, forKey: .data))
-            default:
-                throw MessageError.unknownType(type)
-            }
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-
-            switch self {
-            case .addMessage(let message):
-                try container.encode("addMessage", forKey: .type)
-                try container.encode(message, forKey: .data)
-            }
+        public init(
+            visitedUsers: Set<UUID> = [],
+            addedChatMessages: [ChatMessage] = []
+        ) {
+            self.visitedUsers = visitedUsers
+            self.addedChatMessages = addedChatMessages
         }
     }
 }
