@@ -1,4 +1,5 @@
 import ArgumentParser
+import Dispatch
 import DistributedChat
 import Foundation
 import LineNoise
@@ -12,6 +13,9 @@ struct DistributedChatCLI: ParsableCommand {
             print("Connected to \(simulationMessagingURL)...")
             try! runREPL(transport: $0)
         }
+
+        // Block the main thread
+        dispatchMain()
     }
 
     private func runREPL(transport: ChatTransport) throws {
