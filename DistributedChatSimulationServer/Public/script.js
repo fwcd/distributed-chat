@@ -1,5 +1,5 @@
-function lookupEdge(from, to, edges) {
-    return edges.get().find((({ from: f, to: t }) => (f === from && t === to) || (t === from && f == to)));
+function lookupEdges(from, to, edges) {
+    return edges.get().filter((({ from: f, to: t }) => (f === from && t === to) || (t === from && f == to)));
 }
 
 function updateDynamically(nodes, edges) {
@@ -28,8 +28,7 @@ function updateDynamically(nodes, edges) {
             edges.add({ from: message.data.fromUUID, to: message.data.toUUID });
             break;
         case "removeLinkNotification":
-            const edge = lookupEdge(message.data.fromUUID, message.data.toUUID, edges);
-            if (edge) {
+            for (const edge of lookupEdges(message.data.fromUUID, message.data.toUUID, edges)) {
                 edges.remove(edge.id);
             }
             break;
