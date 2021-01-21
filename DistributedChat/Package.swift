@@ -24,7 +24,9 @@ let package = Package(
         ),
         .testTarget(
             name: "DistributedChatTests",
-            dependencies: ["DistributedChat"]
+            dependencies: [
+                .target(name: "DistributedChat")
+            ]
         )
     ]
 )

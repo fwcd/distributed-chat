@@ -21,12 +21,13 @@ The project consists of the following components:
 The dependency graph between these packages looks like this:
 
 ```
-                           +-----------------+
-                           | DistributedChat |
-                           +-----------------+
-                                    ^
-           +------------------------+-----------------------------+
-           |                        |                             |
+             +-----------------+  +-----------------------------------+
+             | DistributedChat |  | DistributedChatSimulationProtocol |
+             +-----------------+  +-----------------------------------+
+                      ^                      ^
+                      |                      |
+           +----------+-------------+   +---------+
+           |                        |   |         |
 +--------------------+ +--------------------+ +---------------------------------+
 | DistributedChatApp | | DistributedChatCLI | | DistributedChatSimulationServer |
 +--------------------+ +--------------------+ +---------------------------------+
