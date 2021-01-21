@@ -29,16 +29,11 @@ class MessagingHandler {
         clients[uuid] = ClientState(ws: ws)
 
         log.info("Opened connection to \(uuid)")
-        do {
-            try onConnect(to: uuid)
-        } catch {
-            log.error("Error while opening connection to \(uuid): \(error)")
-        }
 
         ws.onText { [weak self] _, raw in
             do {
                 let message = try decoder.decode(SimulationProtocol.Message.self, from: raw.data(using: .utf8)!)
-                try self?.onReceive(from: uuid, message: message)
+                try self?.handleReceive(from: uuid, message: message)
             } catch {
                 log.error("Error while handling '\(raw)' from \(uuid): \(error)")
             }
@@ -46,7 +41,7 @@ class MessagingHandler {
 
         ws.onClose.whenComplete { [weak self] _ in
             do {
-                try self?.onClose(uuid)
+                try self?.handleClose(uuid)
             } catch {
                 log.error("Error while closing connection to \(uuid): \(error)")
             }
@@ -55,13 +50,7 @@ class MessagingHandler {
         }
     }
 
-    private func onConnect(to sender: UUID) throws {
-        // Uncomment to let everyone (not just observers)
-        // receive the entire state upon connecting.
-        // try sendClientsAndLinks(to: sender)
-    }
-
-    private func onReceive(from sender: UUID, message: SimulationProtocol.Message) throws {
+    private func handleReceive(from sender: UUID, message: SimulationProtocol.Message) throws {
         let senderClient = clients[sender]!
 
         switch message {
@@ -128,7 +117,7 @@ class MessagingHandler {
         }
     }
 
-    private func onClose(_ sender: UUID) throws {
+    private func handleClose(_ sender: UUID) throws {
         if let name = clients[sender]?.name {
             for (_, client) in clients where client.isObserver {
                 try client.send(.goodbyeNotification(.init(name: name, uuid: "\(sender)")))
