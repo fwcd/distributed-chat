@@ -9,7 +9,7 @@ import SwiftUI
 import DistributedChat
 
 struct ContentView: View {
-    private let controller = ChatController(transport: CoreBluetoothTransport())
+    let controller: ChatController
     
     @State private var channels = Channels(messages: [])
     
@@ -28,6 +28,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(controller: ChatController(transport: MockTransport()))
     }
 }

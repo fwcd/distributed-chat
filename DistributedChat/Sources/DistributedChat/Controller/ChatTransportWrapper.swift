@@ -14,7 +14,7 @@ class ChatTransportWrapper<T> where T: Codable {
 
     init(transport: ChatTransport)  {
         self.transport = transport
-
+        
         transport.onReceive { [unowned self] json in
             do {
                 let protoMessage = try decoder.decode(T.self, from: json.data(using: .utf8)!)
