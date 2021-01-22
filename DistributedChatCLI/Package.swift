@@ -17,6 +17,7 @@ let package = Package(
         .package(path: "../DistributedChatSimulationProtocol"),
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.2"),
         .package(url: "https://github.com/vapor/websocket-kit.git", from: "2.1.2"),
+        .package(url: "https://github.com/PureSwift/BluetoothLinux.git", .revision("e9dd7332b5ac92c09d3d9ff9244ac535afc5f493")),
         .package(name: "LineNoise", url: "https://github.com/andybest/linenoise-swift.git", .revision("78e9bc9b685ffd551af0f3ac4d6e2beb22afd33b")),
     ],
     targets: [

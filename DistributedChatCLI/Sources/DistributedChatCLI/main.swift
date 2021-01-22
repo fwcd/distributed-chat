@@ -5,15 +5,31 @@ import Foundation
 import Logging
 
 struct DistributedChatCLI: ParsableCommand {
-    @Argument(help: "The messaging WebSocket URL of the simulation server to connect to")
+    @Argument(help: "The messaging WebSocket URL of the simulation server to connect to.")
     var simulationMessagingURL: URL = URL(string: "ws://localhost:8080/messaging")!
 
-    @Option(help: "The username to use")
+    @Flag(help: "Use Bluetooth LE-based transport instead of the simulation server. This enables communication with 'real' iOS nodes. Currently only supported on Linux.")
+    var bluetooth: Bool = false
+
+    @Option(help: "The username to use.")
     var name: String
 
     func run() {
         LoggingSystem.bootstrap { CLILogHandler(label: $0) }
 
+        if bluetooth {
+            runWithBluetoothLE()
+        } else {
+            runWithSimulationServer()
+        }
+    }
+
+    private func runWithBluetoothLE() {
+        print("Initializing Bluetooth Linux stack...")
+        // TODO
+    }
+
+    private func runWithSimulationServer() {
         print("Connecting to \(simulationMessagingURL)...")
 
         SimulationTransport.connect(url: simulationMessagingURL, name: name) { transport in

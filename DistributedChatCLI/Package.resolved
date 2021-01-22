@@ -2,6 +2,24 @@
   "object": {
     "pins": [
       {
+        "package": "Bluetooth",
+        "repositoryURL": "https://github.com/PureSwift/Bluetooth.git",
+        "state": {
+          "branch": "master",
+          "revision": "308277c808ced9ab169f52cb911b593c96b6fd27",
+          "version": null
+        }
+      },
+      {
+        "package": "BluetoothLinux",
+        "repositoryURL": "https://github.com/PureSwift/BluetoothLinux.git",
+        "state": {
+          "branch": null,
+          "revision": "e9dd7332b5ac92c09d3d9ff9244ac535afc5f493",
+          "version": null
+        }
+      },
+      {
         "package": "LineNoise",
         "repositoryURL": "https://github.com/andybest/linenoise-swift.git",
         "state": {
