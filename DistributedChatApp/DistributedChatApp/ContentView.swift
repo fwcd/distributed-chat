@@ -10,7 +10,7 @@ import DistributedChat
 
 struct ContentView: View {
     var body: some View {
-        Text(DistributedChat().text)
+        Text("Hello!")
             .padding()
     }
 }
