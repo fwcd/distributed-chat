@@ -16,12 +16,12 @@ struct ChannelsView: View {
         NavigationView {
             List(channels) { channel in
                 NavigationLink(destination: ChannelView(channel: channel, controller: controller)) {
-                    VStack {
+                    VStack(alignment: .leading) {
                         Text("#\(channel.displayName)")
                             .font(.headline)
                         if let message = channel.messages.last {
                             Text(message.content)
-                                .font(.caption)
+                                .font(.subheadline)
                         }
                     }
                 }
