@@ -5,6 +5,7 @@ import Logging
 
 import Bluetooth
 import BluetoothHCI
+import BluetoothGATT
 import BluetoothLinux
 import GATT
 
@@ -27,15 +28,16 @@ public struct BluetoothLinuxTransport: ChatTransport {
         l2CapServer = try L2CAPSocket.lowEnergyServer()
         log.info("Opened L2CAP server with PSM \(l2CapServer.protocolServiceMultiplexer)")
 
+        let gattCentral = GATTCentral<BluetoothLinux.HostController, BluetoothLinux.L2CAPSocket>(hostController: hostController)
         do {
-            try hostController.lowEnergyScan(shouldContinue: { true }, foundDevice: handle(report:))
+            try gattCentral.scan(foundDevice: handle(data:))
         } catch {
             throw BluetoothLinuxError.bleScanFailed("Try relaunching the application using sudo!")
         }
     }
 
-    private func handle(report: HCILEAdvertisingReport.Report) {
-        log.info("Got low energy advertising event: \(report.event) (Address: \(report.address), RSSI: \(report.rssi.map { "\($0)" } ?? "?"))")
+    private func handle(data: ScanData<Peripheral, GATTCentral<HostController, L2CAPSocket>.Advertisement>) {
+        log.info("Got GATT advertising event: \(data.peripheral.identifier) with \(data.advertisementData) (RSSI: \(data.rssi), connectable: \(data.isConnectable))")
     }
 
     public func broadcast(_ raw: String) {
