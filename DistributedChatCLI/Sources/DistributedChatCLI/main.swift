@@ -3,6 +3,9 @@ import Dispatch
 import DistributedChat
 import Foundation
 import Logging
+import LineNoise
+
+fileprivate let log = Logger(label: "main")
 
 struct DistributedChatCLI: ParsableCommand {
     @Argument(help: "The messaging WebSocket URL of the simulation server to connect to.")
@@ -26,20 +29,20 @@ struct DistributedChatCLI: ParsableCommand {
 
     private func runWithBluetoothLE() throws {
         #if os(Linux)
-        print("Initializing Bluetooth Linux transport...")
+        log.info("Initializing Bluetooth Linux transport...")
         try runREPL(transport: BluetoothLinuxTransport())
         #else
-        print("The Bluetooth stack is currently Linux-only! (TODO: Share the CoreBluetooth-based backend from the iOS app with a potential Mac version of the CLI)")
+        log.error("The Bluetooth stack is currently Linux-only! (TODO: Share the CoreBluetooth-based backend from the iOS app with a potential Mac version of the CLI)")
         #endif
     }
 
     private func runWithSimulationServer() {
-        print("Connecting to \(simulationMessagingURL)...")
+        log.info("Connecting to \(simulationMessagingURL)...")
 
         SimulationTransport.connect(url: simulationMessagingURL, name: name) { transport in
             DispatchQueue.main.async {
-                print("Connected to \(simulationMessagingURL)")
-                runREPL(transport: transport)
+                log.info("Connected to \(simulationMessagingURL)")
+                try! runREPL(transport: transport)
             }
         }
 
