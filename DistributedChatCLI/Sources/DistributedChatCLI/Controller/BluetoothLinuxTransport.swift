@@ -25,7 +25,7 @@ public struct BluetoothLinuxTransport: ChatTransport {
     }
 
     private func handle(report: HCILEAdvertisingReport.Report) {
-        log.info("Got \(report.event)")
+        log.info("Got low energy advertising event: \(report.event) (Address: \(report.address), RSSI: \(report.rssi.map { "\($0)" } ?? "?"))")
     }
 
     public func broadcast(_ raw: String) {
