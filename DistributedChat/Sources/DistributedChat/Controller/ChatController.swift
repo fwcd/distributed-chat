@@ -26,8 +26,8 @@ public class ChatController {
         }
     }
 
-    public func send(content: ChatMessageContent) {
-        let chatMessage = ChatMessage(author: me, content: content)
+    public func send(content: String, on channelName: String? = nil) {
+        let chatMessage = ChatMessage(author: me, content: content, channelName: channelName)
         transportWrapper.broadcast(ChatProtocol.Message(addedChatMessages: [chatMessage]))
     }
 

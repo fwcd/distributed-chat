@@ -8,8 +8,9 @@
 import DistributedChat
 
 struct Channel: Identifiable {
-    let name: String
+    let name: String?
     var messages: [ChatMessage]
     
-    var id: String { name }
+    var displayName: String { name ?? "global" }
+    var id: String { displayName }
 }

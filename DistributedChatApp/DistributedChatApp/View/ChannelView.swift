@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ChannelView: View {
     let channel: Channel
+    let controller: ChatController
     
     @State var draft: String = ""
     
@@ -19,14 +20,14 @@ struct ChannelView: View {
                 VStack(alignment: .leading) {
                     ForEach(channel.messages) { message in
                         // TODO: Chat bubbles and stuff
-                        Text("\(message.author.name ?? "<anonymous user>"): \(message.content.text)")
+                        Text("\(message.author.name ?? "<anonymous user>"): \(message.content)")
                     }
                 }
             }
             HStack {
-                TextField("Message #\(channel.name)...", text: $draft)
+                TextField("Message #\(channel.displayName)...", text: $draft)
                 Button(action: {
-                    // TODO: Do something
+                    controller.send(content: draft, on: channel.name)
                 }) {
                     Text("Send")
                         .fontWeight(.bold)
@@ -34,7 +35,7 @@ struct ChannelView: View {
             }
         }
         .padding(15)
-        .navigationBarTitle("#\(channel.name)", displayMode: .inline)
+        .navigationBarTitle("#\(channel.displayName)", displayMode: .inline)
     }
 }
 
@@ -43,9 +44,9 @@ struct ChatView_Previews: PreviewProvider {
     static let bob = ChatUser(name: "Bob")
     static var previews: some View {
         ChannelView(channel: Channel(name: "Test", messages: [
-            ChatMessage(author: alice, content: .init(text: "Hello!")),
-            ChatMessage(author: bob, content: .init(text: "Hi!")),
-            ChatMessage(author: bob, content: .init(text: "This is fancy!")),
-        ]))
+            ChatMessage(author: alice, content: "Hello!"),
+            ChatMessage(author: bob, content: "Hi!"),
+            ChatMessage(author: bob, content: "This is fancy!"),
+        ]), controller: ChatController(transport: MockTransport()))
     }
 }

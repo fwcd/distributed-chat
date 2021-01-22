@@ -4,14 +4,14 @@ public struct ChatMessage: Identifiable, Codable {
     public let id: UUID
     public var timestamp: Date
     public var author: ChatUser
-    public var content: ChatMessageContent
+    public var content: String
     public var channelName: String?
     
     public init(
         id: UUID = UUID(),
         timestamp: Date = Date(),
         author: ChatUser,
-        content: ChatMessageContent,
+        content: String,
         channelName: String? = nil
     ) {
         self.id = id

@@ -5,8 +5,8 @@
 //  Created by Fredrik on 1/17/21.
 //
 
-import SwiftUI
 import DistributedChat
+import SwiftUI
 
 struct ContentView: View {
     private let controller: ChatController
@@ -14,7 +14,7 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            ChannelsView(channels: messages.channels)
+            ChannelsView(channels: messages.channels, controller: controller)
                 .tabItem {
                     VStack {
                         Image(systemName: "message.fill")
