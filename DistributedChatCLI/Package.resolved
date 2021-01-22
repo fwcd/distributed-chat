@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "GATT",
+        "repositoryURL": "https://github.com/PureSwift/GATT.git",
+        "state": {
+          "branch": null,
+          "revision": "c3bbda8000e3b82486ca9a353725d1bfbc7701e8",
+          "version": null
+        }
+      },
+      {
         "package": "LineNoise",
         "repositoryURL": "https://github.com/andybest/linenoise-swift.git",
         "state": {

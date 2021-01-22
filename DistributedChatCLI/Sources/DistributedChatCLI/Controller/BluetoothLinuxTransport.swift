@@ -2,9 +2,11 @@
 import DistributedChat
 import Foundation
 import Logging
+
 import Bluetooth
 import BluetoothHCI
 import BluetoothLinux
+import GATT
 
 fileprivate let log = Logger(label: "BluetoothLinuxTransport")
 
