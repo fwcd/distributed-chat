@@ -9,13 +9,12 @@ import SwiftUI
 import DistributedChat
 
 struct ContentView: View {
-    let controller: ChatController
-    
-    @State private var channels = Channels(messages: [])
+    private let controller: ChatController
+    @ObservedObject private var messages: Messages
     
     var body: some View {
         TabView {
-            ChannelsView(channels: channels)
+            ChannelsView(channels: messages.channels)
                 .tabItem {
                     VStack {
                         Image(systemName: "message.fill")
@@ -23,6 +22,16 @@ struct ContentView: View {
                     }
                 }
         }
+    }
+    
+    init(controller: ChatController) {
+        let messages = Messages()
+        controller.onAddChatMessage { [unowned messages] message in
+            messages.messages.append(message)
+        }
+        
+        self.controller = controller
+        self.messages = messages
     }
 }
 

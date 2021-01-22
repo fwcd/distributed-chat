@@ -18,7 +18,7 @@
 		C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D2125BB8885000DC0F1 /* ChannelsView.swift */; };
 		C7982D2A25BB8981000DC0F1 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D2925BB8981000DC0F1 /* ChannelView.swift */; };
 		C7982D3325BB89E8000DC0F1 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D3225BB89E8000DC0F1 /* Channel.swift */; };
-		C7982D4125BB8A57000DC0F1 /* Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D4025BB8A57000DC0F1 /* Channels.swift */; };
+		C7982D4125BB8A57000DC0F1 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D4025BB8A57000DC0F1 /* Messages.swift */; };
 		C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */; };
 		C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335125B3C00700989E95 /* DistributedChatApp.swift */; };
 		C7BC335425B3C00700989E95 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335325B3C00700989E95 /* ContentView.swift */; };
@@ -75,7 +75,7 @@
 		C7982D2125BB8885000DC0F1 /* ChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsView.swift; sourceTree = "<group>"; };
 		C7982D2925BB8981000DC0F1 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
 		C7982D3225BB89E8000DC0F1 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
-		C7982D4025BB8A57000DC0F1 /* Channels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channels.swift; sourceTree = "<group>"; };
+		C7982D4025BB8A57000DC0F1 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreBluetoothTransport.swift; sourceTree = "<group>"; };
 		C7BC334E25B3C00700989E95 /* DistributedChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7BC335125B3C00700989E95 /* DistributedChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatApp.swift; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				C7982D3225BB89E8000DC0F1 /* Channel.swift */,
-				C7982D4025BB8A57000DC0F1 /* Channels.swift */,
+				C7982D4025BB8A57000DC0F1 /* Messages.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -534,7 +534,7 @@
 			files = (
 				C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */,
 				C7982D3325BB89E8000DC0F1 /* Channel.swift in Sources */,
-				C7982D4125BB8A57000DC0F1 /* Channels.swift in Sources */,
+				C7982D4125BB8A57000DC0F1 /* Messages.swift in Sources */,
 				C7BC335425B3C00700989E95 /* ContentView.swift in Sources */,
 				C7982D2A25BB8981000DC0F1 /* ChannelView.swift in Sources */,
 				C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */,

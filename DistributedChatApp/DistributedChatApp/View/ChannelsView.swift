@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ChannelsView: View {
-    let channels: Channels
+    let channels: [Channel]
     
     var body: some View {
         NavigationView {
-            List(channels.channels) { channel in
+            List(channels) { channel in
                 NavigationLink(destination: ChannelView(channel: channel)) {
                     Text("#\(channel.name)")
                         .font(.headline)
@@ -29,6 +29,6 @@ struct ChannelsView: View {
 
 struct ChatsView_Previews: PreviewProvider {
     static var previews: some View {
-        ChannelsView(channels: Channels(messages: []))
+        ChannelsView(channels: [])
     }
 }
