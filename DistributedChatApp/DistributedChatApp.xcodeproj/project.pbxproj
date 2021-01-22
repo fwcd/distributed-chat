@@ -15,10 +15,10 @@
 		C7982D0925BB8587000DC0F1 /* CoreBluetoothTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */; };
 		C7982D1025BB858B000DC0F1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335325B3C00700989E95 /* ContentView.swift */; };
 		C7982D1825BB85BC000DC0F1 /* DistributedChat in Frameworks */ = {isa = PBXBuildFile; productRef = C7982D1725BB85BC000DC0F1 /* DistributedChat */; };
-		C7982D2225BB8885000DC0F1 /* ChatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D2125BB8885000DC0F1 /* ChatsView.swift */; };
-		C7982D2A25BB8981000DC0F1 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D2925BB8981000DC0F1 /* ChatView.swift */; };
-		C7982D3325BB89E8000DC0F1 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D3225BB89E8000DC0F1 /* Chat.swift */; };
-		C7982D4125BB8A57000DC0F1 /* Chats.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D4025BB8A57000DC0F1 /* Chats.swift */; };
+		C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D2125BB8885000DC0F1 /* ChannelsView.swift */; };
+		C7982D2A25BB8981000DC0F1 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D2925BB8981000DC0F1 /* ChannelView.swift */; };
+		C7982D3325BB89E8000DC0F1 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D3225BB89E8000DC0F1 /* Channel.swift */; };
+		C7982D4125BB8A57000DC0F1 /* Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D4025BB8A57000DC0F1 /* Channels.swift */; };
 		C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */; };
 		C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335125B3C00700989E95 /* DistributedChatApp.swift */; };
 		C7BC335425B3C00700989E95 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335325B3C00700989E95 /* ContentView.swift */; };
@@ -72,10 +72,10 @@
 		C7982CE025BB8522000DC0F1 /* DistributedChatMacAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DistributedChatMacAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7982CE425BB8522000DC0F1 /* DistributedChatMacAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatMacAppUITests.swift; sourceTree = "<group>"; };
 		C7982CE625BB8522000DC0F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C7982D2125BB8885000DC0F1 /* ChatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsView.swift; sourceTree = "<group>"; };
-		C7982D2925BB8981000DC0F1 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
-		C7982D3225BB89E8000DC0F1 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
-		C7982D4025BB8A57000DC0F1 /* Chats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chats.swift; sourceTree = "<group>"; };
+		C7982D2125BB8885000DC0F1 /* ChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsView.swift; sourceTree = "<group>"; };
+		C7982D2925BB8981000DC0F1 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
+		C7982D3225BB89E8000DC0F1 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
+		C7982D4025BB8A57000DC0F1 /* Channels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channels.swift; sourceTree = "<group>"; };
 		C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreBluetoothTransport.swift; sourceTree = "<group>"; };
 		C7BC334E25B3C00700989E95 /* DistributedChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7BC335125B3C00700989E95 /* DistributedChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatApp.swift; sourceTree = "<group>"; };
@@ -180,8 +180,8 @@
 		C7982D3125BB89CD000DC0F1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C7982D3225BB89E8000DC0F1 /* Chat.swift */,
-				C7982D4025BB8A57000DC0F1 /* Chats.swift */,
+				C7982D3225BB89E8000DC0F1 /* Channel.swift */,
+				C7982D4025BB8A57000DC0F1 /* Channels.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -198,8 +198,8 @@
 			isa = PBXGroup;
 			children = (
 				C7BC335325B3C00700989E95 /* ContentView.swift */,
-				C7982D2125BB8885000DC0F1 /* ChatsView.swift */,
-				C7982D2925BB8981000DC0F1 /* ChatView.swift */,
+				C7982D2125BB8885000DC0F1 /* ChannelsView.swift */,
+				C7982D2925BB8981000DC0F1 /* ChannelView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -532,11 +532,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7982D2225BB8885000DC0F1 /* ChatsView.swift in Sources */,
-				C7982D3325BB89E8000DC0F1 /* Chat.swift in Sources */,
-				C7982D4125BB8A57000DC0F1 /* Chats.swift in Sources */,
+				C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */,
+				C7982D3325BB89E8000DC0F1 /* Channel.swift in Sources */,
+				C7982D4125BB8A57000DC0F1 /* Channels.swift in Sources */,
 				C7BC335425B3C00700989E95 /* ContentView.swift in Sources */,
-				C7982D2A25BB8981000DC0F1 /* ChatView.swift in Sources */,
+				C7982D2A25BB8981000DC0F1 /* ChannelView.swift in Sources */,
 				C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */,
 				C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */,
 			);

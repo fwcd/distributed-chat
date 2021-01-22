@@ -1,5 +1,5 @@
 //
-//  ChatView.swift
+//  ChannelView.swift
 //  DistributedChatApp
 //
 //  Created by Fredrik on 1/22/21.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct ChatView: View {
-    let chat: Chat
+struct ChannelView: View {
+    let channel: Channel
     
     var body: some View {
         Text("TODO")
@@ -17,6 +17,6 @@ struct ChatView: View {
 
 struct ChatView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatView(chat: Chat(name: "Test", messages: []))
+        ChannelView(channel: Channel(name: "Test", messages: []))
     }
 }

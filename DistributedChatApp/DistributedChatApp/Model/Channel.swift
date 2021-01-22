@@ -1,5 +1,5 @@
 //
-//  Chat.swift
+//  Channel.swift
 //  DistributedChatApp
 //
 //  Created by Fredrik on 1/22/21.
@@ -7,7 +7,7 @@
 
 import DistributedChat
 
-struct Chat: Identifiable {
+struct Channel: Identifiable {
     let name: String
     var messages: [ChatMessage]
     

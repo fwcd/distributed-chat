@@ -1,5 +1,5 @@
 //
-//  ChatsView.swift
+//  ChannelsView.swift
 //  DistributedChatApp
 //
 //  Created by Fredrik on 1/22/21.
@@ -7,28 +7,28 @@
 
 import SwiftUI
 
-struct ChatsView: View {
-    let chats: Chats
+struct ChannelsView: View {
+    let channels: Channels
     
     var body: some View {
         NavigationView {
-            List(chats.chats) { chat in
-                NavigationLink(destination: ChatView(chat: chat)) {
-                    Text(chat.name)
+            List(channels.channels) { channel in
+                NavigationLink(destination: ChannelView(channel: channel)) {
+                    Text("#\(channel.name)")
                         .font(.headline)
-                    if let message = chat.messages.last {
+                    if let message = channel.messages.last {
                         Text(message.content.text)
                             .font(.caption)
                     }
                 }
             }
-                .navigationTitle("Chats")
+                .navigationTitle("Channels")
         }
     }
 }
 
 struct ChatsView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatsView(chats: Chats(chats: []))
+        ChannelsView(channels: Channels(messages: []))
     }
 }
