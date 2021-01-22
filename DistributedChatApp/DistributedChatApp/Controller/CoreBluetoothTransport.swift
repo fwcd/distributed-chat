@@ -12,8 +12,10 @@ import Logging
 
 fileprivate let log = Logger(label: "CoreBluetoothTransport")
 
-fileprivate let serviceUUID = CBUUID(string: "59553ceb-2ffa-4018-8a6c-453a5292044d") // custom UUID specifically for the 'Distributed Chat' service
-fileprivate let characteristicUUID = CBUUID(string: "440a594c-3cc2-494a-a08a-be8dd23549ff") // custom UUID specific for the characteristic holding the L2CAP channel's PSM (see below)
+/// Custom UUID specifically for the 'Distributed Chat' service
+fileprivate let serviceUUID = CBUUID(string: "59553ceb-2ffa-4018-8a6c-453a5292044d")
+/// Custom UUID specific for the characteristic holding the L2CAP channel's PSM (see below)
+fileprivate let characteristicUUID = CBUUID(string: "440a594c-3cc2-494a-a08a-be8dd23549ff")
 
 class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelegate, CBCentralManagerDelegate {
     private var peripheralManager: CBPeripheralManager!
@@ -21,6 +23,11 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     
     private var characteristic: CBMutableCharacteristic?
     private var psm: CBL2CAPPSM?
+    
+    /// Tracks remote peripherals discovered by the central. Note that out-of-range
+    /// peripherals are not automatically removed from the set, this happens first after an
+    /// unsuccessful attempt to send a message to it.
+    private var nearbyPeripherals: Set<CBPeripheral> = []
     
     override init() {
         super.init()
@@ -44,6 +51,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     func onReceive(_ handler: @escaping (String) -> Void) {
         // TODO
     }
+    
+    // MARK: Peripheral implementation
     
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
         switch peripheral.state {
@@ -98,13 +107,26 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         }
     }
     
+    // MARK: Central implementation
+    
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
         case .poweredOn:
-            log.info("Central is powered on!")
+            log.info("Central is powered on, scanning for peripherals!")
+            central.scanForPeripherals(withServices: [serviceUUID], options: nil)
         default:
             // TODO: Handle other states
             break
         }
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi: NSNumber) {
+        guard rssi.intValue >= -50 else {
+            log.notice("Discovered peripheral \(peripheral.name ?? "?"), but RSSI is too weak (\(rssi))")
+            return
+        }
+        
+        log.info("Discovered peripheral \(peripheral.name ?? "?") successfully (RSSI: \(rssi)")
+        nearbyPeripherals.insert(peripheral)
     }
 }
