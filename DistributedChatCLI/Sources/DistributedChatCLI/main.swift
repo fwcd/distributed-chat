@@ -4,6 +4,11 @@ import DistributedChat
 import Foundation
 import LineNoise
 
+#if os(Linux)
+import Bluetooth
+import BluetoothLinux
+#endif
+
 struct DistributedChatCLI: ParsableCommand {
     @Argument(help: "The messaging WebSocket URL of the simulation server to connect to.")
     var simulationMessagingURL: URL = URL(string: "ws://localhost:8080/messaging")!
@@ -23,8 +28,14 @@ struct DistributedChatCLI: ParsableCommand {
     }
 
     private func runWithBluetoothLE() {
+        #if os(Linux)
         print("Initializing Bluetooth Linux stack...")
-        // TODO
+        
+        guard let hostController = BluetoothLinux.HostController.default else { fatalError("No Bluetooth adapters found!") }
+        print("Found host controller \(hostController)")
+        #else
+        print("The Bluetooth stack is currently Linux-only! (TODO: Share the CoreBluetooth-based backend from the iOS app with a potential Mac version of the CLI)")
+        #endif
     }
 
     private func runWithSimulationServer() {
