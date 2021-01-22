@@ -14,9 +14,9 @@ struct Channels {
     
     var channels: [Channel] {
         [Channel(name: globalChannelName, messages: messages.filter { $0.channelName == nil })]
-            + Dictionary(grouping: messages, by: \.channelName)
-                .filter { $0.value != nil }
+            + [String?: [ChatMessage]](grouping: messages, by: \.channelName)
+                .compactMap { (k, v) in k.map { (key: $0, value: v) } }
                 .sorted { $0.key < $1.key }
-                .map { Channel(name: $0.key, messages: $0.value) }
+                .map { Channel(name: $0.key, messages: $0.value.sorted { $0.timestamp < $1.timestamp }) }
     }
 }
