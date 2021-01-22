@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C7982CCB25BB8521000DC0F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7982CCA25BB8521000DC0F1 /* Assets.xcassets */; };
+		C7982CCE25BB8521000DC0F1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7982CCD25BB8521000DC0F1 /* Preview Assets.xcassets */; };
+		C7982CDA25BB8522000DC0F1 /* DistributedChatMacAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982CD925BB8522000DC0F1 /* DistributedChatMacAppTests.swift */; };
+		C7982CE525BB8522000DC0F1 /* DistributedChatMacAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982CE425BB8522000DC0F1 /* DistributedChatMacAppUITests.swift */; };
+		C7982D0225BB8581000DC0F1 /* DistributedChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335125B3C00700989E95 /* DistributedChatApp.swift */; };
+		C7982D0925BB8587000DC0F1 /* CoreBluetoothTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */; };
+		C7982D1025BB858B000DC0F1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335325B3C00700989E95 /* ContentView.swift */; };
+		C7982D1825BB85BC000DC0F1 /* DistributedChat in Frameworks */ = {isa = PBXBuildFile; productRef = C7982D1725BB85BC000DC0F1 /* DistributedChat */; };
 		C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */; };
 		C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335125B3C00700989E95 /* DistributedChatApp.swift */; };
 		C7BC335425B3C00700989E95 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335325B3C00700989E95 /* ContentView.swift */; };
@@ -18,6 +26,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C7982CD625BB8522000DC0F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C7BC334625B3C00700989E95 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C7982CC325BB851F000DC0F1;
+			remoteInfo = DistributedChatMacApp;
+		};
+		C7982CE125BB8522000DC0F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C7BC334625B3C00700989E95 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C7982CC325BB851F000DC0F1;
+			remoteInfo = DistributedChatMacApp;
+		};
 		C7BC336025B3C00900989E95 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C7BC334625B3C00700989E95 /* Project object */;
@@ -35,6 +57,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C7982CC425BB851F000DC0F1 /* DistributedChatMacApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatMacApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7982CCA25BB8521000DC0F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C7982CCD25BB8521000DC0F1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C7982CCF25BB8521000DC0F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C7982CD025BB8521000DC0F1 /* DistributedChatMacApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DistributedChatMacApp.entitlements; sourceTree = "<group>"; };
+		C7982CD525BB8522000DC0F1 /* DistributedChatMacAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DistributedChatMacAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7982CD925BB8522000DC0F1 /* DistributedChatMacAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatMacAppTests.swift; sourceTree = "<group>"; };
+		C7982CDB25BB8522000DC0F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C7982CE025BB8522000DC0F1 /* DistributedChatMacAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DistributedChatMacAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7982CE425BB8522000DC0F1 /* DistributedChatMacAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatMacAppUITests.swift; sourceTree = "<group>"; };
+		C7982CE625BB8522000DC0F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreBluetoothTransport.swift; sourceTree = "<group>"; };
 		C7BC334E25B3C00700989E95 /* DistributedChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7BC335125B3C00700989E95 /* DistributedChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatApp.swift; sourceTree = "<group>"; };
@@ -52,6 +85,28 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C7982CC125BB851F000DC0F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7982D1825BB85BC000DC0F1 /* DistributedChat in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7982CD225BB8522000DC0F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7982CDD25BB8522000DC0F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C7BC334B25B3C00700989E95 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -77,6 +132,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C7982CC525BB851F000DC0F1 /* DistributedChatMacApp */ = {
+			isa = PBXGroup;
+			children = (
+				C7982CCA25BB8521000DC0F1 /* Assets.xcassets */,
+				C7982CCF25BB8521000DC0F1 /* Info.plist */,
+				C7982CD025BB8521000DC0F1 /* DistributedChatMacApp.entitlements */,
+				C7982CCC25BB8521000DC0F1 /* Preview Content */,
+			);
+			path = DistributedChatMacApp;
+			sourceTree = "<group>";
+		};
+		C7982CCC25BB8521000DC0F1 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				C7982CCD25BB8521000DC0F1 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C7982CD825BB8522000DC0F1 /* DistributedChatMacAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				C7982CD925BB8522000DC0F1 /* DistributedChatMacAppTests.swift */,
+				C7982CDB25BB8522000DC0F1 /* Info.plist */,
+			);
+			path = DistributedChatMacAppTests;
+			sourceTree = "<group>";
+		};
+		C7982CE325BB8522000DC0F1 /* DistributedChatMacAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C7982CE425BB8522000DC0F1 /* DistributedChatMacAppUITests.swift */,
+				C7982CE625BB8522000DC0F1 /* Info.plist */,
+			);
+			path = DistributedChatMacAppUITests;
+			sourceTree = "<group>";
+		};
 		C7AFC9B725BB52E400AF9526 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +192,9 @@
 				C7BC335025B3C00700989E95 /* DistributedChatApp */,
 				C7BC336225B3C00900989E95 /* DistributedChatAppTests */,
 				C7BC336D25B3C00900989E95 /* DistributedChatAppUITests */,
+				C7982CC525BB851F000DC0F1 /* DistributedChatMacApp */,
+				C7982CD825BB8522000DC0F1 /* DistributedChatMacAppTests */,
+				C7982CE325BB8522000DC0F1 /* DistributedChatMacAppUITests */,
 				C7BC334F25B3C00700989E95 /* Products */,
 				C7BC338825B3C2EE00989E95 /* Frameworks */,
 			);
@@ -111,6 +206,9 @@
 				C7BC334E25B3C00700989E95 /* DistributedChatApp.app */,
 				C7BC335F25B3C00900989E95 /* DistributedChatAppTests.xctest */,
 				C7BC336A25B3C00900989E95 /* DistributedChatAppUITests.xctest */,
+				C7982CC425BB851F000DC0F1 /* DistributedChatMacApp.app */,
+				C7982CD525BB8522000DC0F1 /* DistributedChatMacAppTests.xctest */,
+				C7982CE025BB8522000DC0F1 /* DistributedChatMacAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -164,6 +262,63 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C7982CC325BB851F000DC0F1 /* DistributedChatMacApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C7982CED25BB8522000DC0F1 /* Build configuration list for PBXNativeTarget "DistributedChatMacApp" */;
+			buildPhases = (
+				C7982CC025BB851F000DC0F1 /* Sources */,
+				C7982CC125BB851F000DC0F1 /* Frameworks */,
+				C7982CC225BB851F000DC0F1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C7982D1A25BB85C2000DC0F1 /* PBXTargetDependency */,
+			);
+			name = DistributedChatMacApp;
+			packageProductDependencies = (
+				C7982D1725BB85BC000DC0F1 /* DistributedChat */,
+			);
+			productName = DistributedChatMacApp;
+			productReference = C7982CC425BB851F000DC0F1 /* DistributedChatMacApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C7982CD425BB8522000DC0F1 /* DistributedChatMacAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C7982CEE25BB8522000DC0F1 /* Build configuration list for PBXNativeTarget "DistributedChatMacAppTests" */;
+			buildPhases = (
+				C7982CD125BB8522000DC0F1 /* Sources */,
+				C7982CD225BB8522000DC0F1 /* Frameworks */,
+				C7982CD325BB8522000DC0F1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C7982CD725BB8522000DC0F1 /* PBXTargetDependency */,
+			);
+			name = DistributedChatMacAppTests;
+			productName = DistributedChatMacAppTests;
+			productReference = C7982CD525BB8522000DC0F1 /* DistributedChatMacAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C7982CDF25BB8522000DC0F1 /* DistributedChatMacAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C7982CEF25BB8522000DC0F1 /* Build configuration list for PBXNativeTarget "DistributedChatMacAppUITests" */;
+			buildPhases = (
+				C7982CDC25BB8522000DC0F1 /* Sources */,
+				C7982CDD25BB8522000DC0F1 /* Frameworks */,
+				C7982CDE25BB8522000DC0F1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C7982CE225BB8522000DC0F1 /* PBXTargetDependency */,
+			);
+			name = DistributedChatMacAppUITests;
+			productName = DistributedChatMacAppUITests;
+			productReference = C7982CE025BB8522000DC0F1 /* DistributedChatMacAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		C7BC334D25B3C00700989E95 /* DistributedChatApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C7BC337325B3C00900989E95 /* Build configuration list for PBXNativeTarget "DistributedChatApp" */;
@@ -230,6 +385,17 @@
 				LastSwiftUpdateCheck = 1230;
 				LastUpgradeCheck = 1230;
 				TargetAttributes = {
+					C7982CC325BB851F000DC0F1 = {
+						CreatedOnToolsVersion = 12.3;
+					};
+					C7982CD425BB8522000DC0F1 = {
+						CreatedOnToolsVersion = 12.3;
+						TestTargetID = C7982CC325BB851F000DC0F1;
+					};
+					C7982CDF25BB8522000DC0F1 = {
+						CreatedOnToolsVersion = 12.3;
+						TestTargetID = C7982CC325BB851F000DC0F1;
+					};
 					C7BC334D25B3C00700989E95 = {
 						CreatedOnToolsVersion = 12.3;
 					};
@@ -259,11 +425,37 @@
 				C7BC334D25B3C00700989E95 /* DistributedChatApp */,
 				C7BC335E25B3C00900989E95 /* DistributedChatAppTests */,
 				C7BC336925B3C00900989E95 /* DistributedChatAppUITests */,
+				C7982CC325BB851F000DC0F1 /* DistributedChatMacApp */,
+				C7982CD425BB8522000DC0F1 /* DistributedChatMacAppTests */,
+				C7982CDF25BB8522000DC0F1 /* DistributedChatMacAppUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C7982CC225BB851F000DC0F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7982CCE25BB8521000DC0F1 /* Preview Assets.xcassets in Resources */,
+				C7982CCB25BB8521000DC0F1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7982CD325BB8522000DC0F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7982CDE25BB8522000DC0F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C7BC334C25B3C00700989E95 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -290,6 +482,32 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C7982CC025BB851F000DC0F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7982D0225BB8581000DC0F1 /* DistributedChatApp.swift in Sources */,
+				C7982D0925BB8587000DC0F1 /* CoreBluetoothTransport.swift in Sources */,
+				C7982D1025BB858B000DC0F1 /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7982CD125BB8522000DC0F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7982CDA25BB8522000DC0F1 /* DistributedChatMacAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7982CDC25BB8522000DC0F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7982CE525BB8522000DC0F1 /* DistributedChatMacAppUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C7BC334A25B3C00700989E95 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -319,6 +537,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C7982CD725BB8522000DC0F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C7982CC325BB851F000DC0F1 /* DistributedChatMacApp */;
+			targetProxy = C7982CD625BB8522000DC0F1 /* PBXContainerItemProxy */;
+		};
+		C7982CE225BB8522000DC0F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C7982CC325BB851F000DC0F1 /* DistributedChatMacApp */;
+			targetProxy = C7982CE125BB8522000DC0F1 /* PBXContainerItemProxy */;
+		};
+		C7982D1A25BB85C2000DC0F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C7982D1925BB85C2000DC0F1 /* DistributedChat */;
+		};
 		C7BC336125B3C00900989E95 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C7BC334D25B3C00700989E95 /* DistributedChatApp */;
@@ -336,6 +568,146 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		C7982CE725BB8522000DC0F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DistributedChatMacApp/DistributedChatMacApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"DistributedChatMacApp/Preview Content\"";
+				DEVELOPMENT_TEAM = SS8V8UGLY8;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = DistributedChatMacApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C7982CE825BB8522000DC0F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DistributedChatMacApp/DistributedChatMacApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"DistributedChatMacApp/Preview Content\"";
+				DEVELOPMENT_TEAM = SS8V8UGLY8;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = DistributedChatMacApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		C7982CE925BB8522000DC0F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = SS8V8UGLY8;
+				INFOPLIST_FILE = DistributedChatMacAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DistributedChatMacApp.app/Contents/MacOS/DistributedChatMacApp";
+			};
+			name = Debug;
+		};
+		C7982CEA25BB8522000DC0F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = SS8V8UGLY8;
+				INFOPLIST_FILE = DistributedChatMacAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DistributedChatMacApp.app/Contents/MacOS/DistributedChatMacApp";
+			};
+			name = Release;
+		};
+		C7982CEB25BB8522000DC0F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = SS8V8UGLY8;
+				INFOPLIST_FILE = DistributedChatMacAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = DistributedChatMacApp;
+			};
+			name = Debug;
+		};
+		C7982CEC25BB8522000DC0F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = SS8V8UGLY8;
+				INFOPLIST_FILE = DistributedChatMacAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = DistributedChatMacApp;
+			};
+			name = Release;
+		};
 		C7BC337125B3C00900989E95 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -583,6 +955,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C7982CED25BB8522000DC0F1 /* Build configuration list for PBXNativeTarget "DistributedChatMacApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7982CE725BB8522000DC0F1 /* Debug */,
+				C7982CE825BB8522000DC0F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C7982CEE25BB8522000DC0F1 /* Build configuration list for PBXNativeTarget "DistributedChatMacAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7982CE925BB8522000DC0F1 /* Debug */,
+				C7982CEA25BB8522000DC0F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C7982CEF25BB8522000DC0F1 /* Build configuration list for PBXNativeTarget "DistributedChatMacAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7982CEB25BB8522000DC0F1 /* Debug */,
+				C7982CEC25BB8522000DC0F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C7BC334925B3C00700989E95 /* Build configuration list for PBXProject "DistributedChatApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -622,6 +1021,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C7982D1725BB85BC000DC0F1 /* DistributedChat */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DistributedChat;
+		};
+		C7982D1925BB85C2000DC0F1 /* DistributedChat */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DistributedChat;
+		};
 		C7BC338325B3C28700989E95 /* DistributedChat */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DistributedChat;
