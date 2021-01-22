@@ -11,8 +11,20 @@ import SwiftUI
 struct ChannelView: View {
     let channel: Channel
     
+    @State var draft: String = ""
+    
     var body: some View {
-        Text("TODO")
+        VStack {
+            HStack {
+                TextField("Message #\(channel.name)...", text: $draft)
+                Button(action: {
+                    // TODO: Do something
+                }) {
+                    Text("Send")
+                        .fontWeight(.bold)
+                }
+            }
+        }
     }
 }
 
