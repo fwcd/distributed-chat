@@ -14,7 +14,7 @@ fileprivate let log = Logger(label: "CoreBluetoothTransport")
 
 /// Custom UUID specifically for the 'Distributed Chat' service
 fileprivate let serviceUUID = CBUUID(string: "59553ceb-2ffa-4018-8a6c-453a5292044d")
-/// Custom UUID specific for the characteristic holding the L2CAP channel's PSM (see below)
+/// Custom UUID specific to the characteristic holding the L2CAP channel's PSM (see below)
 fileprivate let characteristicUUID = CBUUID(string: "440a594c-3cc2-494a-a08a-be8dd23549ff")
 
 class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelegate, CBCentralManagerDelegate {
