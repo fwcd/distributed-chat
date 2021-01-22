@@ -14,7 +14,15 @@ struct ChannelView: View {
     @State var draft: String = ""
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
+            ScrollView {
+                VStack(alignment: .leading) {
+                    ForEach(channel.messages) { message in
+                        // TODO: Chat bubbles and stuff
+                        Text("\(message.author.name ?? "<anonymous user>"): \(message.content.text)")
+                    }
+                }
+            }
             HStack {
                 TextField("Message #\(channel.name)...", text: $draft)
                 Button(action: {
@@ -25,6 +33,7 @@ struct ChannelView: View {
                 }
             }
         }
+        .padding(15)
     }
 }
 

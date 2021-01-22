@@ -1,11 +1,11 @@
 import Foundation
 
-public struct ChatUser: Codable {
-    public var uuid: UUID
+public struct ChatUser: Identifiable, Codable {
+    public let id: UUID
     public var name: String?
     
-    public init(uuid: UUID = UUID(), name: String? = nil) {
-        self.uuid = uuid
+    public init(id: UUID = UUID(), name: String? = nil) {
+        self.id = id
         self.name = name
     }
 }
