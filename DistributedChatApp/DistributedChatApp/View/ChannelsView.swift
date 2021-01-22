@@ -22,7 +22,7 @@ struct ChannelsView: View {
                     }
                 }
             }
-                .navigationTitle("Channels")
+                .navigationBarTitle("Channels")
         }
     }
 }

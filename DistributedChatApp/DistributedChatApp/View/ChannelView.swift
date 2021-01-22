@@ -34,6 +34,7 @@ struct ChannelView: View {
             }
         }
         .padding(15)
+        .navigationBarTitle("#\(channel.name)", displayMode: .inline)
     }
 }
 
