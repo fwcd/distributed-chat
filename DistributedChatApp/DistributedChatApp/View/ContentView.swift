@@ -9,9 +9,10 @@ import SwiftUI
 import DistributedChat
 
 struct ContentView: View {
+    private let controller = ChatController(transport: CoreBluetoothTransport())
+    
     var body: some View {
         Text("Hello!")
-            .padding()
     }
 }
 

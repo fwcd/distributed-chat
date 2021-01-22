@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */; };
 		C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335125B3C00700989E95 /* DistributedChatApp.swift */; };
 		C7BC335425B3C00700989E95 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335325B3C00700989E95 /* ContentView.swift */; };
 		C7BC335625B3C00900989E95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7BC335525B3C00900989E95 /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreBluetoothTransport.swift; sourceTree = "<group>"; };
 		C7BC334E25B3C00700989E95 /* DistributedChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7BC335125B3C00700989E95 /* DistributedChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatApp.swift; sourceTree = "<group>"; };
 		C7BC335325B3C00700989E95 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -75,6 +77,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C7AFC9B725BB52E400AF9526 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		C7AFC9B825BB52F200AF9526 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C7BC335325B3C00700989E95 /* ContentView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		C7BC334525B3C00700989E95 = {
 			isa = PBXGroup;
 			children = (
@@ -100,8 +118,9 @@
 		C7BC335025B3C00700989E95 /* DistributedChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				C7AFC9B825BB52F200AF9526 /* View */,
+				C7AFC9B725BB52E400AF9526 /* Controller */,
 				C7BC335125B3C00700989E95 /* DistributedChatApp.swift */,
-				C7BC335325B3C00700989E95 /* ContentView.swift */,
 				C7BC335525B3C00900989E95 /* Assets.xcassets */,
 				C7BC335A25B3C00900989E95 /* Info.plist */,
 				C7BC335725B3C00900989E95 /* Preview Content */,
@@ -276,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7BC335425B3C00700989E95 /* ContentView.swift in Sources */,
+				C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */,
 				C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
