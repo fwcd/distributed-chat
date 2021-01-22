@@ -11,8 +11,18 @@ import DistributedChat
 struct ContentView: View {
     private let controller = ChatController(transport: CoreBluetoothTransport())
     
+    @State private var chats = Chats(chats: [Chat(name: "#global", messages: [])])
+    
     var body: some View {
-        Text("Hello!")
+        TabView {
+            ChatsView(chats: chats)
+                .tabItem {
+                    VStack {
+                        Image(systemName: "message.fill")
+                        Text("Chats")
+                    }
+                }
+        }
     }
 }
 
