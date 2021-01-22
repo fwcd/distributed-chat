@@ -50,6 +50,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         case .poweredOn:
             log.info("Peripheral is powered on!")
             peripheral.publishL2CAPChannel(withEncryption: true)
+        case .poweredOff:
+            log.info("Peripheral is powered off!")
         default:
             // TODO: Handle other states
             break
@@ -74,6 +76,15 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         service.characteristics = [characteristic]
         peripheralManager.add(service)
         self.characteristic = characteristic
+        
+        log.info("Starting advertising")
+        peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey: serviceUUID])
+        // TODO: unpublishL2CAPChannel e.g. through a UI switch for disabling connectivity
+    }
+    
+    func peripheralManager(_ peripheral: CBPeripheralManager, didUnpublishL2CAPChannel PSM: CBL2CAPPSM, error: Error?) {
+        log.info("Stopping advertisting")
+        peripheralManager.stopAdvertising()
     }
     
     func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) {
