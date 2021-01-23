@@ -13,64 +13,12 @@ struct ChannelView: View {
     let controller: ChatController
     
     @EnvironmentObject private var messages: Messages
-    @EnvironmentObject private var settings: Settings
-    @State private var focusedMessageId: UUID?
     @State private var replyingToMessageId: UUID?
     @State private var draft: String = ""
     
     var body: some View {
         VStack(alignment: .leading) {
-            ScrollView(.vertical) {
-                ScrollViewReader { scrollView in
-                    VStack(alignment: .leading) {
-                        ForEach(messages[channelName]) { message in
-                            let menuItems = Group {
-                                Button(action: {
-                                    messages.deleteMessage(id: message.id)
-                                }) {
-                                    Text("Delete Locally")
-                                    Image(systemName: "trash")
-                                }
-                                
-                                Button(action: {
-                                    replyingToMessageId = message.id
-                                }) {
-                                    Text("Reply")
-                                    Image(systemName: "arrowshape.turn.up.left.fill")
-                                }
-                            }
-                            
-                            switch settings.messageHistoryStyle {
-                            case .compact:
-                                CompactMessageView(message: message)
-                                    .contextMenu { menuItems }
-                            case .bubbles:
-                                let isMe = controller.me.id == message.author.id
-                                HStack {
-                                    if isMe { Spacer() }
-                                    BubbleMessageView(message: message, isMe: isMe) { repliedToId in
-                                        scrollView.scrollTo(repliedToId)
-                                    }
-                                    .contextMenu { menuItems }
-                                    if !isMe { Spacer() }
-                                }
-                            }
-                        }
-                    }
-                    .frame( // Ensure that the VStack actually fills the parent's width
-                        minWidth: 0,
-                        maxWidth: .infinity,
-                        minHeight: 0,
-                        maxHeight: .infinity,
-                        alignment: .topLeading
-                    )
-                    .onChange(of: focusedMessageId) {
-                        if let id = $0 {
-                            scrollView.scrollTo(id)
-                        }
-                    }
-                }
-            }
+            MessageHistoryView(channelName: channelName, controller: controller, replyingToMessageId: $replyingToMessageId)
             if let id = replyingToMessageId, let message = messages[id] {
                 HStack {
                     Text("Replying to")
@@ -101,9 +49,6 @@ struct ChannelView: View {
         }
         .onDisappear {
             messages.autoReadChannelNames.remove(channelName)
-        }
-        .onReceive(messages.objectWillChange) {
-            focusedMessageId = messages[channelName].last?.id
         }
     }
     

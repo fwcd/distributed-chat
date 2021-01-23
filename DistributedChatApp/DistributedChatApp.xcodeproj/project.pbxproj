@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C7734CA925BCDB1D0057DF96 /* Nearby.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CA825BCDB1D0057DF96 /* Nearby.swift */; };
 		C7734CB225BCDEEA0057DF96 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CB125BCDEEA0057DF96 /* StringUtils.swift */; };
+		C7734CBA25BCE6CE0057DF96 /* MessageHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CB925BCE6CE0057DF96 /* MessageHistoryView.swift */; };
 		C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */; };
 		C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */; };
 		C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */; };
@@ -75,6 +76,7 @@
 /* Begin PBXFileReference section */
 		C7734CA825BCDB1D0057DF96 /* Nearby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nearby.swift; sourceTree = "<group>"; };
 		C7734CB125BCDEEA0057DF96 /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
+		C7734CB925BCE6CE0057DF96 /* MessageHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHistoryView.swift; sourceTree = "<group>"; };
 		C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
 		C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFocusTextField.swift; sourceTree = "<group>"; };
 		C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVIew.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				C7BC335325B3C00700989E95 /* ContentView.swift */,
 				C7982D2125BB8885000DC0F1 /* ChannelsView.swift */,
 				C7982D2925BB8981000DC0F1 /* ChannelView.swift */,
+				C7734CB925BCE6CE0057DF96 /* MessageHistoryView.swift */,
 				C77D49E425BC85F70073A964 /* PlainMessageView.swift */,
 				C77D49B225BC777E0073A964 /* CompactMessageView.swift */,
 				C77D49C025BC780A0073A964 /* BubbleMessageView.swift */,
@@ -593,6 +596,7 @@
 				C77D49B325BC777E0073A964 /* CompactMessageView.swift in Sources */,
 				C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */,
 				C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */,
+				C7734CBA25BCE6CE0057DF96 /* MessageHistoryView.swift in Sources */,
 				C7734CA925BCDB1D0057DF96 /* Nearby.swift in Sources */,
 				C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */,
 			);
