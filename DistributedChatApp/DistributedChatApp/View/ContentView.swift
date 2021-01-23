@@ -14,7 +14,7 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            ChannelsView(channels: messages.channels, controller: controller)
+            ChannelsView(channelNames: messages.channelNames, controller: controller)
                 .tabItem {
                     VStack {
                         Image(systemName: "message.fill")
@@ -22,6 +22,7 @@ struct ContentView: View {
                     }
                 }
         }
+        .environmentObject(messages)
     }
     
     init(controller: ChatController) {

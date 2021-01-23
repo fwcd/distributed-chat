@@ -9,25 +9,26 @@ import DistributedChat
 import SwiftUI
 
 struct ChannelView: View {
-    let channel: Channel
+    let channelName: String?
     let controller: ChatController
     
+    @EnvironmentObject var messages: Messages
     @State var draft: String = ""
     
     var body: some View {
         VStack(alignment: .leading) {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(channel.messages) { message in
+                    ForEach(messages[channelName]) { message in
                         // TODO: Chat bubbles and stuff
                         Text("\(message.author.name ?? "<anonymous user>"): \(message.content)")
                     }
                 }
             }
             HStack {
-                TextField("Message #\(channel.displayName)...", text: $draft)
+                TextField("Message #\(channelName ?? globalChannelName)...", text: $draft)
                 Button(action: {
-                    controller.send(content: draft, on: channel.name)
+                    controller.send(content: draft, on: channelName)
                 }) {
                     Text("Send")
                         .fontWeight(.bold)
@@ -35,18 +36,20 @@ struct ChannelView: View {
             }
         }
         .padding(15)
-        .navigationBarTitle("#\(channel.displayName)", displayMode: .inline)
+        .navigationBarTitle("#\(channelName ?? globalChannelName)", displayMode: .inline)
     }
 }
 
 struct ChatView_Previews: PreviewProvider {
     static let alice = ChatUser(name: "Alice")
     static let bob = ChatUser(name: "Bob")
+    @StateObject static var messages = Messages(messages: [
+        ChatMessage(author: alice, content: "Hello!"),
+        ChatMessage(author: bob, content: "Hi!"),
+        ChatMessage(author: bob, content: "This is fancy!"),
+    ])
     static var previews: some View {
-        ChannelView(channel: Channel(name: "Test", messages: [
-            ChatMessage(author: alice, content: "Hello!"),
-            ChatMessage(author: bob, content: "Hi!"),
-            ChatMessage(author: bob, content: "This is fancy!"),
-        ]), controller: ChatController(transport: MockTransport()))
+        ChannelView(channelName: nil, controller: ChatController(transport: MockTransport()))
+            .environmentObject(messages)
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */; };
 		C7982CCB25BB8521000DC0F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7982CCA25BB8521000DC0F1 /* Assets.xcassets */; };
 		C7982CCE25BB8521000DC0F1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7982CCD25BB8521000DC0F1 /* Preview Assets.xcassets */; };
 		C7982CDA25BB8522000DC0F1 /* DistributedChatMacAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982CD925BB8522000DC0F1 /* DistributedChatMacAppTests.swift */; };
@@ -17,7 +18,6 @@
 		C7982D1825BB85BC000DC0F1 /* DistributedChat in Frameworks */ = {isa = PBXBuildFile; productRef = C7982D1725BB85BC000DC0F1 /* DistributedChat */; };
 		C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D2125BB8885000DC0F1 /* ChannelsView.swift */; };
 		C7982D2A25BB8981000DC0F1 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D2925BB8981000DC0F1 /* ChannelView.swift */; };
-		C7982D3325BB89E8000DC0F1 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D3225BB89E8000DC0F1 /* Channel.swift */; };
 		C7982D4125BB8A57000DC0F1 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D4025BB8A57000DC0F1 /* Messages.swift */; };
 		C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */; };
 		C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335125B3C00700989E95 /* DistributedChatApp.swift */; };
@@ -61,6 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
 		C7982CC425BB851F000DC0F1 /* DistributedChatMacApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatMacApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7982CCA25BB8521000DC0F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C7982CCD25BB8521000DC0F1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -74,7 +75,6 @@
 		C7982CE625BB8522000DC0F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7982D2125BB8885000DC0F1 /* ChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsView.swift; sourceTree = "<group>"; };
 		C7982D2925BB8981000DC0F1 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
-		C7982D3225BB89E8000DC0F1 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		C7982D4025BB8A57000DC0F1 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreBluetoothTransport.swift; sourceTree = "<group>"; };
 		C7BC334E25B3C00700989E95 /* DistributedChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,7 +180,6 @@
 		C7982D3125BB89CD000DC0F1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C7982D3225BB89E8000DC0F1 /* Channel.swift */,
 				C7982D4025BB8A57000DC0F1 /* Messages.swift */,
 			);
 			path = Model;
@@ -199,6 +198,7 @@
 			children = (
 				C7BC335325B3C00700989E95 /* ContentView.swift */,
 				C7982D2125BB8885000DC0F1 /* ChannelsView.swift */,
+				C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */,
 				C7982D2925BB8981000DC0F1 /* ChannelView.swift */,
 			);
 			path = View;
@@ -533,8 +533,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */,
-				C7982D3325BB89E8000DC0F1 /* Channel.swift in Sources */,
 				C7982D4125BB8A57000DC0F1 /* Messages.swift in Sources */,
+				C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */,
 				C7BC335425B3C00700989E95 /* ContentView.swift in Sources */,
 				C7982D2A25BB8981000DC0F1 /* ChannelView.swift in Sources */,
 				C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */,

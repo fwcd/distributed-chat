@@ -9,17 +9,19 @@ import DistributedChat
 import SwiftUI
 
 struct ChannelsView: View {
-    let channels: [Channel]
+    let channelNames: [String?]
     let controller: ChatController
+    
+    @EnvironmentObject var messages: Messages
     
     var body: some View {
         NavigationView {
-            List(channels) { channel in
-                NavigationLink(destination: ChannelView(channel: channel, controller: controller)) {
+            List(channelNames, id: \.self) { channelName in
+                NavigationLink(destination: ChannelView(channelName: channelName, controller: controller)) {
                     VStack(alignment: .leading) {
-                        Text("#\(channel.displayName)")
+                        Text("#\(channelName ?? globalChannelName)")
                             .font(.headline)
-                        if let message = channel.messages.last {
+                        if let message = messages[channelName].last {
                             Text(message.content)
                                 .font(.subheadline)
                         }
@@ -32,7 +34,9 @@ struct ChannelsView: View {
 }
 
 struct ChatsView_Previews: PreviewProvider {
+    @StateObject static var messages = Messages()
     static var previews: some View {
-        ChannelsView(channels: [], controller: ChatController(transport: MockTransport()))
+        ChannelsView(channelNames: [], controller: ChatController(transport: MockTransport()))
+            .environmentObject(messages)
     }
 }
