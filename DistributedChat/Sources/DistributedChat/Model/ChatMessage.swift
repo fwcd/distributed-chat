@@ -21,5 +21,6 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         self.author = author
         self.content = content
         self.channelName = channelName
+        self.repliedToMessageId = repliedToMessageId
     }
 }
