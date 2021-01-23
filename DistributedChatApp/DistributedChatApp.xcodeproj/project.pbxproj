@@ -17,6 +17,7 @@
 		C77D49C125BC780A0073A964 /* BubbleMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77D49C025BC780A0073A964 /* BubbleMessageView.swift */; };
 		C77D49CF25BC78C70073A964 /* EnumPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77D49CE25BC78C70073A964 /* EnumPicker.swift */; };
 		C77D49D725BC7B600073A964 /* NearbyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77D49D625BC7B600073A964 /* NearbyView.swift */; };
+		C77D49E525BC85F70073A964 /* PlainMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77D49E425BC85F70073A964 /* PlainMessageView.swift */; };
 		C7982CCB25BB8521000DC0F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7982CCA25BB8521000DC0F1 /* Assets.xcassets */; };
 		C7982CCE25BB8521000DC0F1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7982CCD25BB8521000DC0F1 /* Preview Assets.xcassets */; };
 		C7982CDA25BB8522000DC0F1 /* DistributedChatMacAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982CD925BB8522000DC0F1 /* DistributedChatMacAppTests.swift */; };
@@ -80,6 +81,7 @@
 		C77D49C025BC780A0073A964 /* BubbleMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleMessageView.swift; sourceTree = "<group>"; };
 		C77D49CE25BC78C70073A964 /* EnumPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumPicker.swift; sourceTree = "<group>"; };
 		C77D49D625BC7B600073A964 /* NearbyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyView.swift; sourceTree = "<group>"; };
+		C77D49E425BC85F70073A964 /* PlainMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainMessageView.swift; sourceTree = "<group>"; };
 		C7982CC425BB851F000DC0F1 /* DistributedChatMacApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatMacApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7982CCA25BB8521000DC0F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C7982CCD25BB8521000DC0F1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				C7BC335325B3C00700989E95 /* ContentView.swift */,
 				C7982D2125BB8885000DC0F1 /* ChannelsView.swift */,
 				C7982D2925BB8981000DC0F1 /* ChannelView.swift */,
+				C77D49E425BC85F70073A964 /* PlainMessageView.swift */,
 				C77D49B225BC777E0073A964 /* CompactMessageView.swift */,
 				C77D49C025BC780A0073A964 /* BubbleMessageView.swift */,
 				C77D49D625BC7B600073A964 /* NearbyView.swift */,
@@ -559,6 +562,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C77D49E525BC85F70073A964 /* PlainMessageView.swift in Sources */,
 				C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */,
 				C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */,
 				C7982D4125BB8A57000DC0F1 /* Messages.swift in Sources */,

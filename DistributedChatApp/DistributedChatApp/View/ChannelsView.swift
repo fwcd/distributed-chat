@@ -29,7 +29,7 @@ struct ChannelsView: View {
                                 .font(.headline)
                             if let message = messages[channelName].last,
                                settings.showChannelPreviews {
-                                Text("\(message.author.displayName): \(message.content)")
+                                PlainMessageView(message: message)
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }

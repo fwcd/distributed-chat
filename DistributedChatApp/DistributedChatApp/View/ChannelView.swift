@@ -15,6 +15,7 @@ struct ChannelView: View {
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var settings: Settings
     @State private var focusedMessageId: UUID?
+    @State private var replyingToMessageId: UUID?
     @State private var draft: String = ""
     
     var body: some View {
@@ -32,7 +33,7 @@ struct ChannelView: View {
                                 }
                                 
                                 Button(action: {
-                                    // TODO
+                                    replyingToMessageId = message.id
                                 }) {
                                     Text("Reply")
                                     Image(systemName: "arrowshape.turn.up.left.fill")
@@ -65,6 +66,18 @@ struct ChannelView: View {
                         if let id = $0 {
                             scrollView.scrollTo(id)
                         }
+                    }
+                }
+            }
+            if let id = replyingToMessageId, let message = messages[id] {
+                HStack {
+                    Text("Replying to")
+                    PlainMessageView(message: message)
+                    Spacer()
+                    Button(action: {
+                        replyingToMessageId = nil
+                    }) {
+                        Image(systemName: "xmark.circle")
                     }
                 }
             }

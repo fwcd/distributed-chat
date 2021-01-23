@@ -26,6 +26,10 @@ class Messages: ObservableObject {
         messages.filter { $0.channelName == channelName }
     }
     
+    subscript(id: UUID) -> ChatMessage? {
+        messages.first { $0.id == id }
+    }
+    
     func clear(channelName: String?) {
         messages.removeAll { $0.channelName == channelName }
     }
