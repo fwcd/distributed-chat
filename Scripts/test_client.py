@@ -1,5 +1,6 @@
-# This is a small script that acts as a GATT central/client
-# for discovering real nodes (i.e. devices running the iOS app).
+# This is a small script that acts as test client for
+# sending chat messages to real iOS nodes running the
+# DistributedChat service.
 # 
 # Once our DistributedChat service has been discovered, it
 # prompts for a string to write to our 'message inbox'
@@ -9,9 +10,10 @@
 
 # NOTE: This script MUST run as root!
 
+import json
+import time
 from bluepy.btle import Scanner, Peripheral
-import socket
-
+from uuid import uuid4
 from gatt_constants import SERVICE_UUID, CHARACTERISTIC_UUID
 
 scanner = Scanner()
@@ -28,7 +30,23 @@ while True:
                 peripheral = Peripheral(dev.addr, dev.addrType, dev.iface)
                 characteristics = peripheral.getCharacteristics(uuid=CHARACTERISTIC_UUID)
                 if characteristics:
-                    s = input(f'  >> Enter a string to write to characteristic: ').encode('utf8')
+                    content = input(f'  >> Enter a chat message to send: ')
+                    # See ChatProtocol.Message in DistributedChat package for a
+                    # description of the JSON message structure.
+                    s = json.dumps({
+                        'visitedUsers': [],
+                        'addedChatMessages': [
+                            {
+                                'id': str(uuid4()),
+                                'timestamp': time.time(),
+                                'author': {
+                                    'id': str(uuid4()),
+                                    'name': 'Test Client'
+                                },
+                                'content': content
+                            }
+                        ]
+                    }).encode('utf8')
                     c = characteristics[0]
                     c.write(s, withResponse=True)
                     print('  >> Wrote successfully!')
