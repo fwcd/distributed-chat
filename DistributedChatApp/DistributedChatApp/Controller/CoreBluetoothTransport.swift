@@ -88,7 +88,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         let service = CBMutableService(type: serviceUUID, primary: true)
         let characteristic = CBMutableCharacteristic(type: characteristicUUID,
-                                                     properties: [.writeWithoutResponse],
+                                                     properties: [.write],
                                                      value: nil,
                                                      permissions: [.writeable])
         
@@ -120,6 +120,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                 for listener in listeners {
                     listener(str)
                 }
+                
+                peripheralManager.respond(to: request, withResult: .success)
             }
         }
     }
