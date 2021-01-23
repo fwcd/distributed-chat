@@ -24,7 +24,7 @@ struct ProfileView: View {
                     .multilineTextAlignment(.center)
             }
             .padding(20)
-            .navigationBarTitle("Profile")
+            .navigationTitle("Profile")
         }
     }
 }

@@ -53,7 +53,7 @@ struct ChannelsView: View {
                 }
             }
             .listStyle(PlainListStyle())
-            .navigationBarTitle("Channels")
+            .navigationTitle("Channels")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {

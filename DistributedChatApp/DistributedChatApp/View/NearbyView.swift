@@ -11,7 +11,7 @@ struct NearbyView: View {
     var body: some View {
         NavigationView {
             Text("TODO")
-                .navigationBarTitle("Nearby")
+                .navigationTitle("Nearby")
         }
     }
 }

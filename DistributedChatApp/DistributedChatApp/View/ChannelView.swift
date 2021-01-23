@@ -93,7 +93,8 @@ struct ChannelView: View {
             }
         }
         .padding(15)
-        .navigationBarTitle("#\(channelName ?? globalChannelName)", displayMode: .inline)
+        .navigationTitle("#\(channelName ?? globalChannelName)")
+        .navigationBarTitleDisplayMode(.inline)
         .onReceive(messages.objectWillChange) {
             focusedMessageId = messages[channelName].last?.id
         }
