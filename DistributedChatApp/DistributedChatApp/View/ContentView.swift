@@ -24,6 +24,13 @@ struct ContentView: View {
                         Text("Channels")
                     }
                 }
+            NearbyView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "antenna.radiowaves.left.and.right")
+                        Text("Nearby")
+                    }
+                }
             ProfileView(name: $profileName)
                 .tabItem {
                     VStack {
