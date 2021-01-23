@@ -98,8 +98,9 @@ struct ChannelView: View {
     
     private func sendDraft() {
         if !draft.isEmpty {
-            controller.send(content: draft, on: channelName)
+            controller.send(content: draft, on: channelName, replyingTo: replyingToMessageId)
             draft = ""
+            replyingToMessageId = nil
         }
     }
 }

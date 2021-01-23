@@ -6,13 +6,15 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
     public var author: ChatUser
     public var content: String
     public var channelName: String?
+    public var repliedToMessageId: UUID?
     
     public init(
         id: UUID = UUID(),
         timestamp: Date = Date(),
         author: ChatUser,
         content: String,
-        channelName: String? = nil
+        channelName: String? = nil,
+        repliedToMessageId: UUID? = nil
     ) {
         self.id = id
         self.timestamp = timestamp
