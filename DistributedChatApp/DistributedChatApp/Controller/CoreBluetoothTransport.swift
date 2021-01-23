@@ -58,7 +58,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         switch peripheral.state {
         case .poweredOn:
             log.info("Peripheral is powered on!")
-            peripheral.publishL2CAPChannel(withEncryption: true)
+            peripheral.publishL2CAPChannel(withEncryption: false)
         case .poweredOff:
             log.info("Peripheral is powered off!")
         default:
@@ -79,7 +79,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         self.psm = psm
         let service = CBMutableService(type: serviceUUID, primary: true)
         let characteristic = CBMutableCharacteristic(type: characteristicUUID,
-                                                     properties: [.writeWithoutResponse],
+                                                     properties: [.read],
                                                      value: nil,
                                                      permissions: [.readable])
         
