@@ -51,6 +51,21 @@ struct ChannelsView: View {
                         }
                     }
                     .contextMenu {
+                        if messages.unreadChannelNames.contains(channelName) {
+                            Button(action: {
+                                messages.unreadChannelNames.remove(channelName)
+                            }) {
+                                Text("Mark as Read")
+                                Image(systemName: "circlebadge")
+                            }
+                        } else {
+                            Button(action: {
+                                messages.unreadChannelNames.insert(channelName)
+                            }) {
+                                Text("Mark as Unead")
+                                Image(systemName: "circlebadge.fill")
+                            }
+                        }
                         Button(action: {
                             deletingChannelNames = [channelName]
                             deletionConfirmationShown = true
