@@ -10,7 +10,8 @@ import DistributedChat
 import Foundation
 
 class Messages: ObservableObject {
-    @Published var messages: [ChatMessage] = []
+    @Published var unreadChannelNames: Set<String?> = []
+    @Published private(set) var messages: [ChatMessage] = []
     
     var channelNames: [String?] {
         [nil] + Set(messages.compactMap(\.channelName)).sorted()
@@ -28,6 +29,11 @@ class Messages: ObservableObject {
     
     subscript(id: UUID) -> ChatMessage? {
         messages.first { $0.id == id }
+    }
+    
+    func append(message: ChatMessage) {
+        messages.append(message)
+        unreadChannelNames.insert(message.channelName)
     }
     
     func clear(channelName: String?) {

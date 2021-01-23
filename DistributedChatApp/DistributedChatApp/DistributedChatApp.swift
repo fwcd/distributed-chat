@@ -23,7 +23,7 @@ private class AppState {
         let messages = Messages()
         
         controller.onAddChatMessage { [unowned messages] message in
-            messages.messages.append(message)
+            messages.append(message: message)
         }
         
         self.settings = settings

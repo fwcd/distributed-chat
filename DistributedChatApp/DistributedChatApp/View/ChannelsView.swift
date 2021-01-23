@@ -24,17 +24,28 @@ struct ChannelsView: View {
         NavigationView {
             List {
                 let nearbyCount = nearby.nearbyNodes.count
-                Text("\(nearbyCount) \("user".pluralized(with: nearbyCount)) currently nearby")
+                HStack {
+                    Image(systemName: "antenna.radiowaves.left.and.right")
+                    Text("\(nearbyCount) \("user".pluralized(with: nearbyCount)) currently nearby")
+                }
                 ForEach(channelNames + ((channelNameDraft.isEmpty || channelNames.contains(channelNameDraft)) ? [] : [channelNameDraft]), id: \.self) { channelName in
                     NavigationLink(destination: ChannelView(channelName: channelName, controller: controller)) {
-                        VStack(alignment: .leading) {
-                            Text("#\(channelName ?? globalChannelName)")
-                                .font(.headline)
-                            if let message = messages[channelName].last,
-                               settings.showChannelPreviews {
-                                PlainMessageView(message: message)
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
+                        HStack {
+                            if messages.unreadChannelNames.contains(channelName) {
+                                Circle()
+                                    .frame(width: 8, height: 8)
+                            } else {
+                                Image(systemName: "number")
+                            }
+                            VStack(alignment: .leading) {
+                                Text(channelName ?? globalChannelName)
+                                    .font(.headline)
+                                if let message = messages[channelName].last,
+                                   settings.showChannelPreviews {
+                                    PlainMessageView(message: message)
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                }
                             }
                         }
                     }
