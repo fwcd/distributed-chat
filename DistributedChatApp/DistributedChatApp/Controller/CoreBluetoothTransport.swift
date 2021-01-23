@@ -87,7 +87,10 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         self.characteristic = characteristic
         
         log.info("Starting advertising")
-        peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey: serviceUUID])
+        peripheralManager.startAdvertising([
+            CBAdvertisementDataServiceUUIDsKey: serviceUUID,
+            CBAdvertisementDataLocalNameKey: "Distributed Chat"
+        ])
         // TODO: unpublishL2CAPChannel e.g. through a UI switch for disabling connectivity
     }
     

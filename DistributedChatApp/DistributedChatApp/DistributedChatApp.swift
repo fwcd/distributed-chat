@@ -12,8 +12,8 @@ import SwiftUI
 struct DistributedChatApp: App {
     var body: some Scene {
         WindowGroup {
-            // ContentView(controller: ChatController(transport: CoreBluetoothTransport()))
-            ContentView(controller: ChatController(transport: MockTransport()))
+            ContentView(controller: ChatController(transport: CoreBluetoothTransport()))
+            // ContentView(controller: ChatController(transport: MockTransport()))
         }
     }
     
