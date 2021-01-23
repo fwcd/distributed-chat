@@ -22,6 +22,8 @@ while True:
             if adtype == 7 and value == SERVICE_UUID:
                 print(' >> Found the DistributedChat service, reading characteristic...')
                 peripheral = Peripheral(dev.addr, dev.addrType, dev.iface)
-                chars = peripheral.getCharacteristics(uuid=CHARACTERISTIC_UUID)
-                print(chars)
+                characteristics = peripheral.getCharacteristics(uuid=CHARACTERISTIC_UUID)
+                if characteristics:
+                    psm = characteristics[0].read()
+                    print(f'  >> Read PSM {psm} from our DistributedChat-specific GATT characteristic!')
                 peripheral.disconnect()
