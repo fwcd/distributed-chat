@@ -6,6 +6,7 @@
 //
 
 import CoreBluetooth
+import Combine
 import DistributedChat
 import Foundation
 import Logging
@@ -23,13 +24,18 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     
     private var characteristic: CBMutableCharacteristic?
     private var psm: CBL2CAPPSM?
+    private var startedL2CAPPublish: Bool = false
+    
+    private let settings: Settings
+    private var settingsSubscription: AnyCancellable?
     
     /// Tracks remote peripherals discovered by the central. Note that out-of-range
     /// peripherals are not automatically removed from the set, this happens first after an
     /// unsuccessful attempt to send a message to it.
     private var nearbyPeripherals: Set<CBPeripheral> = []
     
-    override init() {
+    required init(settings: Settings) {
+        self.settings = settings
         super.init()
         
         // The app acts both as a peripheral (for receiving messages and
@@ -42,6 +48,14 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         centralManager = CBCentralManager(delegate: self, queue: nil)
+        
+        settingsSubscription = settings.$bluetoothAdvertisingEnabled.sink { [unowned self] in
+            if $0 {
+                startAdvertising()
+            } else {
+                stopAdvertising()
+            }
+        }
     }
     
     func broadcast(_ raw: String) {
@@ -58,7 +72,11 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         switch peripheral.state {
         case .poweredOn:
             log.info("Peripheral is powered on!")
-            peripheral.publishL2CAPChannel(withEncryption: false)
+            
+            if !startedL2CAPPublish {
+                startedL2CAPPublish = true
+                peripheral.publishL2CAPChannel(withEncryption: false)
+            }
         case .poweredOff:
             log.info("Peripheral is powered off!")
         default:
@@ -87,19 +105,23 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         peripheralManager.add(service)
         self.characteristic = characteristic
         
+        startAdvertising()
+        // TODO: unpublishL2CAPChannel e.g. through a UI switch for disabling connectivity
+    }
+    
+    private func startAdvertising() {
         log.info("Starting to advertise")
         peripheralManager.startAdvertising([
             CBAdvertisementDataServiceUUIDsKey: [serviceUUID],
             CBAdvertisementDataLocalNameKey: "DistributedChat"
         ])
-        // TODO: unpublishL2CAPChannel e.g. through a UI switch for disabling connectivity
-    }
-    
-    func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager, error: Error?) {
-        log.info("Did start advertising")
     }
     
     func peripheralManager(_ peripheral: CBPeripheralManager, didUnpublishL2CAPChannel PSM: CBL2CAPPSM, error: Error?) {
+        stopAdvertising()
+    }
+    
+    private func stopAdvertising() {
         log.info("Stopping advertisting")
         peripheralManager.stopAdvertising()
     }

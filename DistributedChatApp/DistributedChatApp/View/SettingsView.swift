@@ -19,6 +19,11 @@ struct SettingsView: View {
                         Text("Show Channel Previews")
                     }
                 }
+                Section(header: Text("Bluetooth")) {
+                    Toggle(isOn: $settings.bluetoothAdvertisingEnabled) {
+                        Text("Bluetooth LE Advertising")
+                    }
+                }
             }
             .navigationTitle("Settings")
         }

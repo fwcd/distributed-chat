@@ -8,12 +8,16 @@
 import DistributedChat
 import SwiftUI
 
+private let settings = Settings()
+private let transport = CoreBluetoothTransport(settings: settings)
+private let controller = ChatController(transport: transport)
+
 @main
 struct DistributedChatApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(controller: ChatController(transport: CoreBluetoothTransport()))
-            // ContentView(controller: ChatController(transport: MockTransport()))
+            ContentView(controller: controller)
+                .environmentObject(settings)
         }
     }
     
