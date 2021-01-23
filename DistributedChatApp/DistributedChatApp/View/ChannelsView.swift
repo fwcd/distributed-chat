@@ -56,7 +56,10 @@ struct ChannelsView: View {
             .navigationBarTitle("Channels")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { channelNameDraftSheetShown = true }) {
+                    Button(action: {
+                        channelNameDraft = ""
+                        channelNameDraftSheetShown = true
+                    }) {
                         Image(systemName: "square.and.pencil")
                             .resizable()
                     }
