@@ -11,6 +11,7 @@ import Foundation
 
 class Messages: ObservableObject {
     @Published var unreadChannelNames: Set<String?> = []
+    @Published var autoReadChannelNames: Set<String?> = []
     @Published private(set) var messages: [ChatMessage] = []
     
     var channelNames: [String?] {
@@ -33,7 +34,9 @@ class Messages: ObservableObject {
     
     func append(message: ChatMessage) {
         messages.append(message)
-        unreadChannelNames.insert(message.channelName)
+        if !autoReadChannelNames.contains(message.channelName) {
+            unreadChannelNames.insert(message.channelName)
+        }
     }
     
     func clear(channelName: String?) {
