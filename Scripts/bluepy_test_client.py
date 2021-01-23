@@ -24,6 +24,7 @@ while True:
                 peripheral = Peripheral(dev.addr, dev.addrType, dev.iface)
                 characteristics = peripheral.getCharacteristics(uuid=CHARACTERISTIC_UUID)
                 if characteristics:
-                    psm = characteristics[0].read()
+                    # The PSM is stored in big-endian form
+                    psm = int.from_bytes(characteristics[0].read(), 'big')
                     print(f'  >> Read PSM {psm} from our DistributedChat-specific GATT characteristic!')
                 peripheral.disconnect()
