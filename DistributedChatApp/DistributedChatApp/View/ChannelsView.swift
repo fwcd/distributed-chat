@@ -33,10 +33,21 @@ struct ChannelsView: View {
                             }
                         }
                     }
+                    .contextMenu {
+                        Button(action: {
+                            deletingChannelNames = [channelName]
+                            deletionConfirmationShown = true
+                        }) {
+                            HStack {
+                                Text("Delete Locally")
+                                Image(systemName: "trash")
+                            }
+                        }
+                    }
                 }
                 .onDelete { indexSet in
                     deletingChannelNames = indexSet.map {
-                        $0 < channelNames.count ? channelNames[$0] : nil
+                        $0 < channelNames.count ? channelNames[$0] : channelNameDraft
                     }
                     deletionConfirmationShown = true
                 }
@@ -45,10 +56,7 @@ struct ChannelsView: View {
             .navigationBarTitle("Channels")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        channelNameDraft = ""
-                        channelNameDraftSheetShown = true
-                    }) {
+                    Button(action: { channelNameDraftSheetShown = true }) {
                         Image(systemName: "square.and.pencil")
                             .resizable()
                     }
