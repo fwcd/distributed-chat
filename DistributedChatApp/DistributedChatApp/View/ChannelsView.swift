@@ -15,6 +15,8 @@ struct ChannelsView: View {
     @EnvironmentObject private var messages: Messages
     @State private var channelNameDraft: String = ""
     @State private var channelNameDraftSheetShown: Bool = false
+    @State private var deletingChannelNames: [String?] = []
+    @State private var deletionConfirmationShown: Bool = false
     
     var body: some View {
         NavigationView {
@@ -33,12 +35,10 @@ struct ChannelsView: View {
                     }
                 }
                 .onDelete { indexSet in
-                    indexSet.forEach {
-                        if $0 < channelNames.count {
-                            messages.clear(channelName: channelNames[$0])
-                        }
-                        channelNameDraft = ""
+                    deletingChannelNames = indexSet.map {
+                        $0 < channelNames.count ? channelNames[$0] : nil
                     }
+                    deletionConfirmationShown = true
                 }
             }
             .listStyle(PlainListStyle())
@@ -55,7 +55,7 @@ struct ChannelsView: View {
                 }
             }
         }
-        .sheet(isPresented: $channelNameDraftSheetShown, content: {
+        .sheet(isPresented: $channelNameDraftSheetShown) {
             VStack {
                 AutoFocusTextField(placeholder: "New Channel", text: $channelNameDraft, onCommit: {
                     if !channelNameDraft.isEmpty {
@@ -71,7 +71,22 @@ struct ChannelsView: View {
                 .font(.title2)
             }
             .padding(20)
-        })
+        }
+        .alert(isPresented: $deletionConfirmationShown) {
+            Alert(
+                title: Text("Are you sure you want to delete all messages in \(deletingChannelNames.map { $0 ?? globalChannelName }.joined(separator: ", "))?"),
+                primaryButton: .destructive(Text("Delete")) {
+                    for channelName in deletingChannelNames {
+                        messages.clear(channelName: channelName)
+                    }
+                    channelNameDraft = ""
+                    deletingChannelNames = []
+                },
+                secondaryButton: .cancel {
+                    deletingChannelNames = []
+                }
+            )
+        }
     }
 }
 
