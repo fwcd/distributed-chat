@@ -40,10 +40,8 @@ struct ChannelsView: View {
                             deletingChannelNames = [channelName]
                             deletionConfirmationShown = true
                         }) {
-                            HStack {
-                                Text("Delete Locally")
-                                Image(systemName: "trash")
-                            }
+                            Text("Delete Locally")
+                            Image(systemName: "trash")
                         }
                     }
                 }

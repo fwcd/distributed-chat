@@ -23,14 +23,29 @@ struct ChannelView: View {
                 ScrollViewReader { scrollView in
                     VStack(alignment: .leading) {
                         ForEach(messages[channelName]) { message in
+                            let menuItems = Group {
+                                Button(action: {
+                                    // TODO
+                                }) {
+                                    Text("Delete Locally")
+                                    Image(systemName: "trash")
+                                }
+                                // TODO: Reply button, etc.
+                            }
                             switch settings.messageHistoryStyle {
                             case .compact:
                                 CompactMessageView(message: message)
+                                    .contextMenu {
+                                        menuItems
+                                    }
                             case .bubbles:
                                 let isMe = controller.me.id == message.author.id
                                 HStack {
                                     if isMe { Spacer() }
                                     BubbleMessageView(message: message, isMe: isMe)
+                                        .contextMenu {
+                                            menuItems
+                                        }
                                     if !isMe { Spacer() }
                                 }
                             }
