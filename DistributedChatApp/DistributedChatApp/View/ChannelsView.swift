@@ -14,6 +14,7 @@ struct ChannelsView: View {
     
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var settings: Settings
+    @EnvironmentObject private var nearby: Nearby
     @State private var channelNameDraft: String = ""
     @State private var channelNameDraftSheetShown: Bool = false
     @State private var deletingChannelNames: [String?] = []
@@ -22,6 +23,8 @@ struct ChannelsView: View {
     var body: some View {
         NavigationView {
             List {
+                let nearbyCount = nearby.nearbyNodes.count
+                Text("\(nearbyCount) \("user".pluralized(with: nearbyCount)) currently nearby")
                 ForEach(channelNames + ((channelNameDraft.isEmpty || channelNames.contains(channelNameDraft)) ? [] : [channelNameDraft]), id: \.self) { channelName in
                     NavigationLink(destination: ChannelView(channelName: channelName, controller: controller)) {
                         VStack(alignment: .leading) {
@@ -107,9 +110,11 @@ struct ChannelsView: View {
 struct ChatsView_Previews: PreviewProvider {
     @StateObject static var messages = Messages()
     @StateObject static var settings = Settings()
+    @StateObject static var nearby = Nearby()
     static var previews: some View {
         ChannelsView(channelNames: [], controller: ChatController(transport: MockTransport()))
             .environmentObject(messages)
             .environmentObject(settings)
+            .environmentObject(nearby)
     }
 }

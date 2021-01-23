@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C7734CA925BCDB1D0057DF96 /* Nearby.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CA825BCDB1D0057DF96 /* Nearby.swift */; };
+		C7734CB225BCDEEA0057DF96 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CB125BCDEEA0057DF96 /* StringUtils.swift */; };
 		C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */; };
 		C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */; };
 		C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */; };
@@ -73,6 +74,7 @@
 
 /* Begin PBXFileReference section */
 		C7734CA825BCDB1D0057DF96 /* Nearby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nearby.swift; sourceTree = "<group>"; };
+		C7734CB125BCDEEA0057DF96 /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
 		C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFocusTextField.swift; sourceTree = "<group>"; };
 		C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVIew.swift; sourceTree = "<group>"; };
@@ -162,6 +164,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C7734CB025BCDEDF0057DF96 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C7734CB125BCDEEA0057DF96 /* StringUtils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		C7982CC525BB851F000DC0F1 /* DistributedChatMacApp */ = {
 			isa = PBXGroup;
 			children = (
@@ -268,6 +278,7 @@
 		C7BC335025B3C00700989E95 /* DistributedChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				C7734CB025BCDEDF0057DF96 /* Utils */,
 				C7982D3125BB89CD000DC0F1 /* Model */,
 				C7AFC9B825BB52F200AF9526 /* View */,
 				C7AFC9B725BB52E400AF9526 /* Controller */,
@@ -573,6 +584,7 @@
 				C7BC335425B3C00700989E95 /* ContentView.swift in Sources */,
 				C77D498725BC73F70073A964 /* SettingsView.swift in Sources */,
 				C77D49C125BC780A0073A964 /* BubbleMessageView.swift in Sources */,
+				C7734CB225BCDEEA0057DF96 /* StringUtils.swift in Sources */,
 				C77D49D725BC7B600073A964 /* NearbyView.swift in Sources */,
 				C77D49CF25BC78C70073A964 /* EnumPicker.swift in Sources */,
 				C77D499D25BC76010073A964 /* Settings.swift in Sources */,
