@@ -18,7 +18,7 @@ fileprivate let serviceUUID = CBUUID(string: "59553ceb-2ffa-4018-8a6c-453a529204
 /// Custom UUID for the (write-only) message inbox characteristic
 fileprivate let characteristicUUID = CBUUID(string: "440a594c-3cc2-494a-a08a-be8dd23549ff")
 
-class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelegate, CBCentralManagerDelegate {
+class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelegate, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var peripheralManager: CBPeripheralManager!
     private var centralManager: CBCentralManager!
     
@@ -28,10 +28,10 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private let settings: Settings
     private var settingsSubscription: AnyCancellable?
     
-    /// Tracks remote peripherals discovered by the central. Note that out-of-range
-    /// peripherals are not automatically removed from the set, this happens first after an
-    /// unsuccessful attempt to send a message to it.
-    private var nearbyPeripherals: Set<CBPeripheral> = []
+    /// Tracks remote peripherals discovered by the central that feature our service's
+    /// GATT characteristic. Note that out-of-range peripherals are not automatically
+    /// removed, this happens first after unsuccessful attempt to send a message to it.
+    private var nearbyPeripherals: [CBPeripheral: CBCharacteristic] = [:]
     
     required init(settings: Settings) {
         self.settings = settings
@@ -141,12 +141,27 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi: NSNumber) {
-        guard rssi.intValue >= -50 else {
-            log.notice("Discovered peripheral \(peripheral.name ?? "?"), but RSSI is too weak (\(rssi))")
-            return
-        }
+        log.info("Discovered remote peripheral \(peripheral.name ?? "?") with advertised name \(advertisementData[CBAdvertisementDataLocalNameKey] ?? "?") (RSSI: \(rssi)")
         
-        log.info("Discovered peripheral \(peripheral.name ?? "?") successfully (RSSI: \(rssi)")
-        nearbyPeripherals.insert(peripheral)
+        peripheral.delegate = self
+        peripheral.discoverServices([serviceUUID])
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        log.debug("Discovered services on remote peripheral")
+        
+        if let service = peripheral.services?.first(where: { $0.uuid == serviceUUID }) {
+            log.info("Found our DistributedChat service on the remote peripheral, looking for characteristic...")
+            peripheral.discoverCharacteristics([characteristicUUID], for: service)
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        log.debug("Discovered characteristics on remote peripheral")
+        
+        if let characteristic = service.characteristics?.first(where: { $0.uuid == characteristicUUID }) {
+            log.info("Found our DistributedChat characteristic on the remote peripheral, nice!")
+            nearbyPeripherals[peripheral] = characteristic
+        }
     }
 }
