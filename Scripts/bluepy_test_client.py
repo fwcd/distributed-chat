@@ -8,6 +8,8 @@
 
 from bluepy.btle import Scanner
 
+from gatt_constants import SERVICE_UUID, CHARACTERISTIC_UUID
+
 scanner = Scanner()
 
 while True:
@@ -16,4 +18,6 @@ while True:
     for dev in devices:
         print(f'Device {dev} (RSSI: {dev.rssi})')
         for (adtype, desc, value) in dev.getScanData():
-            print(f'Adtype: {adtype}, desc: {desc}, value: {value}')
+            # print(f'Adtype: {adtype}, desc: {desc}, value: {value}')
+            if adtype == 7 and value == SERVICE_UUID:
+                print(' >> Found the DistributedChat service!')
