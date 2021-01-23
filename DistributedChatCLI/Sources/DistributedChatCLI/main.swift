@@ -38,7 +38,7 @@ struct DistributedChatCLI: ParsableCommand {
             ln.addHistory(input)
             print()
 
-            controller.send(content: ChatMessageContent(text: input))
+            controller.send(content: input)
         }
 
         print()
