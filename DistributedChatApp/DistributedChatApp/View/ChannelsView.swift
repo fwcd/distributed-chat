@@ -33,7 +33,8 @@ struct ChannelsView: View {
                         HStack {
                             if messages.unreadChannelNames.contains(channelName) {
                                 Circle()
-                                    .frame(width: 8, height: 8)
+                                    .frame(width: 10, height: 10)
+                                    .foregroundColor(.blue)
                             } else {
                                 Image(systemName: "number")
                             }

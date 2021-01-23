@@ -95,6 +95,10 @@ struct ChannelView: View {
         .padding(15)
         .navigationTitle("#\(channelName ?? globalChannelName)")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            // TODO: Mark incoming messages as read while the user is inside the channel
+            messages.unreadChannelNames.remove(channelName)
+        }
         .onReceive(messages.objectWillChange) {
             focusedMessageId = messages[channelName].last?.id
         }
