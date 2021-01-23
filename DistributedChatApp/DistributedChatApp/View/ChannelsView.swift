@@ -72,19 +72,22 @@ struct ChannelsView: View {
             }
             .padding(20)
         }
-        .alert(isPresented: $deletionConfirmationShown) {
-            Alert(
-                title: Text("Are you sure you want to delete all messages in \(deletingChannelNames.map { $0 ?? globalChannelName }.joined(separator: ", "))?"),
-                primaryButton: .destructive(Text("Delete")) {
-                    for channelName in deletingChannelNames {
-                        messages.clear(channelName: channelName)
+        .actionSheet(isPresented: $deletionConfirmationShown) {
+            ActionSheet(
+                title: Text("Are you sure you want to delete ALL messages in \(deletingChannelNames.map { $0 ?? globalChannelName }.joined(separator: ", "))?"),
+                message: Text("Messages will only be deleted locally."),
+                buttons: [
+                    .destructive(Text("Delete")) {
+                        for channelName in deletingChannelNames {
+                            messages.clear(channelName: channelName)
+                        }
+                        channelNameDraft = ""
+                        deletingChannelNames = []
+                    },
+                    .cancel {
+                        deletingChannelNames = []
                     }
-                    channelNameDraft = ""
-                    deletingChannelNames = []
-                },
-                secondaryButton: .cancel {
-                    deletingChannelNames = []
-                }
+                ]
             )
         }
     }
