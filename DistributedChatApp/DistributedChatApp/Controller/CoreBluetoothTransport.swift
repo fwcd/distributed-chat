@@ -90,9 +90,10 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         log.info("Published L2CAP channel with PSM \(psm)")
         
         // Now that CoreBluetooth has assigned us a PSM for the L2CAP channel,
-        // publish it through the GATT characteristic.
+        // publish it through the GATT characteristic. For this, we use a
+        // big-endian representation.
         
-        var psm = psm
+        var psm = psm.bigEndian
         let service = CBMutableService(type: serviceUUID, primary: true)
         let characteristic = CBMutableCharacteristic(type: characteristicUUID,
                                                      properties: [.read],
