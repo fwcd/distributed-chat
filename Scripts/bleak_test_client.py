@@ -22,6 +22,8 @@ async def run():
             if SERVICE_UUID in services:
                 print('  >> Found our DistributedChat service, connecting...')
                 async with BleakClient(d.address) as client:
+                    # TODO: This currently attempts pairing, which is neither desired
+                    #       nor required as it presents a pairing modal on the node.
                     psm = await client.read_gatt_char(CHARACTERISTIC_UUID)
                     print(f'  >> Advertised PSM is {psm}')
 
