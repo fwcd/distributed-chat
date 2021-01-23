@@ -28,7 +28,11 @@ struct ChannelView: View {
                                 CompactMessageView(message: message)
                             case .bubbles:
                                 let isMe = controller.me.id == message.author.id
-                                BubbleMessageView(message: message, isMe: isMe)
+                                HStack {
+                                    if isMe { Spacer() }
+                                    BubbleMessageView(message: message, isMe: isMe)
+                                    if !isMe { Spacer() }
+                                }
                             }
                         }
                     }
@@ -70,15 +74,18 @@ struct ChannelView: View {
 }
 
 struct ChatView_Previews: PreviewProvider {
-    static let alice = ChatUser(name: "Alice")
+    static let controller = ChatController(transport: MockTransport())
+    static let alice = controller.me
     static let bob = ChatUser(name: "Bob")
     @StateObject static var messages = Messages(messages: [
         ChatMessage(author: alice, content: "Hello!"),
         ChatMessage(author: bob, content: "Hi!"),
         ChatMessage(author: bob, content: "This is fancy!"),
     ])
+    @StateObject static var settings = Settings()
     static var previews: some View {
-        ChannelView(channelName: nil, controller: ChatController(transport: MockTransport()))
+        ChannelView(channelName: nil, controller: controller)
             .environmentObject(messages)
+            .environmentObject(settings)
     }
 }

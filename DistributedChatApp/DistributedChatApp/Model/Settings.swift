@@ -8,6 +8,6 @@
 import Combine
 
 class Settings: ObservableObject {
-    @Published var messageHistoryStyle: MessageHistoryStyle = .compact
+    @Published var messageHistoryStyle: MessageHistoryStyle = .bubbles
     @Published var showChannelPreviews: Bool = true
 }
