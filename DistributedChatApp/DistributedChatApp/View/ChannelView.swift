@@ -12,9 +12,9 @@ struct ChannelView: View {
     let channelName: String?
     let controller: ChatController
     
-    @EnvironmentObject var messages: Messages
-    @State var focusedMessageId: UUID?
-    @State var draft: String = ""
+    @EnvironmentObject private var messages: Messages
+    @State private var focusedMessageId: UUID?
+    @State private var draft: String = ""
     
     var body: some View {
         VStack(alignment: .leading) {

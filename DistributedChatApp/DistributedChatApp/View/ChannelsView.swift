@@ -12,11 +12,13 @@ struct ChannelsView: View {
     let channelNames: [String?]
     let controller: ChatController
     
-    @EnvironmentObject var messages: Messages
+    @EnvironmentObject private var messages: Messages
+    @State private var channelNameDraft: String = ""
+    @State private var channelNameDraftSheetShown: Bool = false
     
     var body: some View {
         NavigationView {
-            List(channelNames, id: \.self) { channelName in
+            List(channelNames + ((channelNameDraft.isEmpty || channelNames.contains(channelNameDraft)) ? [] : [channelNameDraft]), id: \.self) { channelName in
                 NavigationLink(destination: ChannelView(channelName: channelName, controller: controller)) {
                     VStack(alignment: .leading) {
                         Text("#\(channelName ?? globalChannelName)")
@@ -28,8 +30,37 @@ struct ChannelsView: View {
                     }
                 }
             }
-                .navigationBarTitle("Channels")
+            .listStyle(PlainListStyle())
+            .navigationBarTitle("Channels")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        channelNameDraft = ""
+                        channelNameDraftSheetShown = true
+                    }) {
+                        Image(systemName: "square.and.pencil")
+                            .resizable()
+                    }
+                }
+            }
         }
+        .sheet(isPresented: $channelNameDraftSheetShown, content: {
+            VStack {
+                TextField("New Channel", text: $channelNameDraft, onCommit: {
+                    if !channelNameDraft.isEmpty {
+                        channelNameDraftSheetShown = false
+                        
+                        // Enforce lower-kebab-case
+                        channelNameDraft = channelNameDraft
+                            .lowercased()
+                            .trimmingCharacters(in: .whitespacesAndNewlines)
+                            .replacingOccurrences(of: " ", with: "-")
+                    }
+                })
+                .font(.title2)
+            }
+            .padding(20)
+        })
     }
 }
 
