@@ -85,6 +85,7 @@ struct ChannelView: View {
             }
             HStack {
                 TextField("Message #\(channelName ?? globalChannelName)...", text: $draft, onCommit: sendDraft)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
                 Button(action: sendDraft) {
                     Text("Send")
                         .fontWeight(.bold)
