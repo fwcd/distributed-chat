@@ -6,6 +6,11 @@
 # prompts for a string to write to our 'message inbox'
 # characteristic.
 #
+# Note that the script only acts as a GATT central and
+# NOT a peripheral, i.e. it does not expose such a service
+# with a 'message inbox' itself (thereby making it only
+# possible to send chat messages, not receive).
+#
 # To use, run 'pip3 install bluepy'
 
 # NOTE: This script MUST run as root!
