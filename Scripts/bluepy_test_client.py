@@ -3,10 +3,10 @@
 # 
 # Those should be advertising a GATT service with a PSM on which
 # they expose an L2CAP channel.
-#
-# Note that this script MUST run as root.
 
-from bluepy.btle import Scanner
+# NOTE: This script MUST run as root!
+
+from bluepy.btle import Scanner, Peripheral
 
 from gatt_constants import SERVICE_UUID, CHARACTERISTIC_UUID
 
@@ -18,6 +18,10 @@ while True:
     for dev in devices:
         print(f'Device {dev} (RSSI: {dev.rssi})')
         for (adtype, desc, value) in dev.getScanData():
-            # print(f'Adtype: {adtype}, desc: {desc}, value: {value}')
+            print(f'Adtype: {adtype}, desc: {desc}, value: {value}')
             if adtype == 7 and value == SERVICE_UUID:
-                print(' >> Found the DistributedChat service!')
+                print(' >> Found the DistributedChat service, reading characteristic...')
+                peripheral = Peripheral(dev.addr, dev.addrType, dev.iface)
+                chars = peripheral.getCharacteristics(uuid=CHARACTERISTIC_UUID)
+                print(chars)
+                peripheral.disconnect()

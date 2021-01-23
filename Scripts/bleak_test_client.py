@@ -4,6 +4,9 @@
 # Those should be advertising a GATT service with a PSM on which
 # they expose an L2CAP channel.
 
+# NOTE: Please use the bluepy_test_client.py script for now,
+#       see TODO note below!
+
 import asyncio
 from bleak import BleakScanner, BleakClient
 
