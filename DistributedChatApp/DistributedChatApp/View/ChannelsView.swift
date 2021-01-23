@@ -13,6 +13,7 @@ struct ChannelsView: View {
     let controller: ChatController
     
     @EnvironmentObject private var messages: Messages
+    @EnvironmentObject private var settings: Settings
     @State private var channelNameDraft: String = ""
     @State private var channelNameDraftSheetShown: Bool = false
     @State private var deletingChannelNames: [String?] = []
@@ -26,7 +27,8 @@ struct ChannelsView: View {
                         VStack(alignment: .leading) {
                             Text("#\(channelName ?? globalChannelName)")
                                 .font(.headline)
-                            if let message = messages[channelName].last {
+                            if let message = messages[channelName].last,
+                               settings.showChannelPreviews {
                                 Text("\(message.author.displayName): \(message.content)")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)

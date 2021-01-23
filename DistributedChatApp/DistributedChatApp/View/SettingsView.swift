@@ -12,8 +12,15 @@ struct SettingsView: View {
     
     var body: some View {
         NavigationView {
-            Text("TODO")
-                .navigationBarTitle("Settings")
+            Form {
+                Section(header: Text("Presentation")) {
+                    EnumPicker(selection: $settings.messageHistoryStyle, label: Text("Message History Style"))
+                    Toggle(isOn: $settings.showChannelPreviews) {
+                        Text("Show Channel Previews")
+                    }
+                }
+            }
+            .navigationBarTitle("Settings")
         }
     }
 }
