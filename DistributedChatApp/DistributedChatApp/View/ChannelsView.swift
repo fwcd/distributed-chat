@@ -24,8 +24,9 @@ struct ChannelsView: View {
                         Text("#\(channelName ?? globalChannelName)")
                             .font(.headline)
                         if let message = messages[channelName].last {
-                            Text(message.content)
+                            Text("\(message.author.displayName): \(message.content)")
                                 .font(.subheadline)
+                                .foregroundColor(.secondary)
                         }
                     }
                 }

@@ -200,8 +200,8 @@
 			children = (
 				C7BC335325B3C00700989E95 /* ContentView.swift */,
 				C7982D2125BB8885000DC0F1 /* ChannelsView.swift */,
-				C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */,
 				C7982D2925BB8981000DC0F1 /* ChannelView.swift */,
+				C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */,
 				C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */,
 			);
 			path = View;
