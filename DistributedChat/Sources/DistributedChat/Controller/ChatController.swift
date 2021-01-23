@@ -17,7 +17,11 @@ public class ChatController {
     }
 
     private func handleReceive(_ protoMessage: ChatProtocol.Message) {
-        // TODO: Rebroadcast message
+        // TODO: Rebroadcast message and make sure that
+        //       incoming messages did NOT origin from us
+        //       (i.e. went in a loop), as otherwise the
+        //       listeners would be fired twice with this
+        //       message.
 
         for message in protoMessage.addedChatMessages {
             for listener in addChatMessageListeners {
@@ -28,7 +32,12 @@ public class ChatController {
 
     public func send(content: String, on channelName: String? = nil) {
         let chatMessage = ChatMessage(author: me, content: content, channelName: channelName)
+        
         transportWrapper.broadcast(ChatProtocol.Message(addedChatMessages: [chatMessage]))
+        
+        for listener in addChatMessageListeners {
+            listener(chatMessage)
+        }
     }
 
     public func update(name: String) {
