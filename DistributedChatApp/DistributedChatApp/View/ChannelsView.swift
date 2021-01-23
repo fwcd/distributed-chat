@@ -46,7 +46,7 @@ struct ChannelsView: View {
         }
         .sheet(isPresented: $channelNameDraftSheetShown, content: {
             VStack {
-                TextField("New Channel", text: $channelNameDraft, onCommit: {
+                AutoFocusTextField(placeholder: "New Channel", text: $channelNameDraft, onCommit: {
                     if !channelNameDraft.isEmpty {
                         channelNameDraftSheetShown = false
                         
