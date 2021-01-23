@@ -18,6 +18,9 @@ fileprivate let serviceUUID = CBUUID(string: "59553ceb-2ffa-4018-8a6c-453a529204
 /// Custom UUID for the (write-only) message inbox characteristic
 fileprivate let characteristicUUID = CBUUID(string: "440a594c-3cc2-494a-a08a-be8dd23549ff")
 
+/// A transport implementation that uses Bluetooth Low Energy and a
+/// custom GATT service with a write-only characteristic to transfer
+/// messages.
 class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelegate, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var peripheralManager: CBPeripheralManager!
     private var centralManager: CBCentralManager!
@@ -28,9 +31,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private let settings: Settings
     private var settingsSubscription: AnyCancellable?
     
-    /// Tracks remote peripherals discovered by the central that feature our service's
-    /// GATT characteristic. Note that out-of-range peripherals are not automatically
-    /// removed, this happens first after unsuccessful attempt to send a message to it.
+    /// Tracks remote peripherals discovered by the central that feature our service's GATT characteristic.
     private var nearbyPeripherals: [CBPeripheral: CBCharacteristic] = [:]
     
     required init(settings: Settings) {
@@ -54,7 +55,13 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     }
     
     func broadcast(_ raw: String) {
-        // TODO
+        log.info("Broadcasting \(raw) to \(nearbyPeripherals.count) nearby peripherals.")
+        
+        for (peripheral, characteristic) in nearbyPeripherals {
+            if let data = raw.data(using: .utf8) {
+                peripheral.writeValue(data, for: characteristic, type: .withResponse)
+            }
+        }
     }
     
     func onReceive(_ handler: @escaping (String) -> Void) {
@@ -144,11 +151,16 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         log.info("Discovered remote peripheral \(peripheral.name ?? "?") with advertised name \(advertisementData[CBAdvertisementDataLocalNameKey] ?? "?") (RSSI: \(rssi)")
         
         peripheral.delegate = self
-        peripheral.discoverServices([serviceUUID])
+        
+        if !nearbyPeripherals.keys.contains(peripheral) {
+            peripheral.discoverServices([serviceUUID])
+        } else {
+            log.info("Remote peripheral \(peripheral.name ?? "?") has already been discovered!")
+        }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        log.debug("Discovered services on remote peripheral")
+        log.debug("Discovered services on remote peripheral \(peripheral.name ?? "?")")
         
         if let service = peripheral.services?.first(where: { $0.uuid == serviceUUID }) {
             log.info("Found our DistributedChat service on the remote peripheral, looking for characteristic...")
@@ -157,11 +169,23 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        log.debug("Discovered characteristics on remote peripheral")
+        log.debug("Discovered characteristics on remote peripheral \(peripheral.name ?? "?")")
         
         if let characteristic = service.characteristics?.first(where: { $0.uuid == characteristicUUID }) {
-            log.info("Found our DistributedChat characteristic on the remote peripheral, nice!")
+            log.info("Found our DistributedChat characteristic on the remote peripheral \(peripheral.name ?? "?"), nice!")
             nearbyPeripherals[peripheral] = characteristic
         }
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        log.info("Disconnected from remote peripheral \(peripheral.name ?? "?")")
+        
+        nearbyPeripherals[peripheral] = nil
+    }
+    
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        log.info("Failed to connect to remote peripheral \(peripheral.name ?? "?")")
+        
+        nearbyPeripherals[peripheral] = nil
     }
 }
