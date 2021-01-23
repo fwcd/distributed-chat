@@ -25,27 +25,30 @@ struct ChannelView: View {
                         ForEach(messages[channelName]) { message in
                             let menuItems = Group {
                                 Button(action: {
-                                    // TODO
+                                    messages.deleteMessage(id: message.id)
                                 }) {
                                     Text("Delete Locally")
                                     Image(systemName: "trash")
                                 }
-                                // TODO: Reply button, etc.
+                                
+                                Button(action: {
+                                    // TODO
+                                }) {
+                                    Text("Reply")
+                                    Image(systemName: "arrowshape.turn.up.left.fill")
+                                }
                             }
+                            
                             switch settings.messageHistoryStyle {
                             case .compact:
                                 CompactMessageView(message: message)
-                                    .contextMenu {
-                                        menuItems
-                                    }
+                                    .contextMenu { menuItems }
                             case .bubbles:
                                 let isMe = controller.me.id == message.author.id
                                 HStack {
                                     if isMe { Spacer() }
                                     BubbleMessageView(message: message, isMe: isMe)
-                                        .contextMenu {
-                                            menuItems
-                                        }
+                                        .contextMenu { menuItems }
                                     if !isMe { Spacer() }
                                 }
                             }
