@@ -3,8 +3,12 @@
 # 
 # Those should be advertising a GATT service with a PSM on which
 # they expose an L2CAP channel.
+#
+# To use, run 'pip3 install bluepy'
 
-# NOTE: This script MUST run as root!
+# NOTE: This script MUST run as root! Also, it can currently
+#       only discover the PSM of a node, not open the L2CAP
+#       channel to it.
 
 from bluepy.btle import Scanner, Peripheral
 
