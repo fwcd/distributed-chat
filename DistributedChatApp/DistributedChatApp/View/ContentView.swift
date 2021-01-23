@@ -9,10 +9,10 @@ import DistributedChat
 import SwiftUI
 
 struct ContentView: View {
-    private let controller: ChatController
+    let controller: ChatController
     
+    @EnvironmentObject private var messages: Messages
     @State private var profileName: String = ""
-    @StateObject private var messages: Messages
     
     var body: some View {
         TabView {
@@ -50,22 +50,14 @@ struct ContentView: View {
             controller.update(name: $0)
         }
     }
-    
-    init(controller: ChatController) {
-        self.controller = controller
-        
-        let messages = Messages()
-        controller.onAddChatMessage { [unowned messages] message in
-            messages.messages.append(message)
-        }
-        _messages = StateObject(wrappedValue: messages)
-    }
 }
 
 struct ContentView_Previews: PreviewProvider {
     @StateObject static var settings = Settings()
+    @StateObject static var messages = Messages()
     static var previews: some View {
         ContentView(controller: ChatController(transport: MockTransport()))
             .environmentObject(settings)
+            .environmentObject(messages)
     }
 }

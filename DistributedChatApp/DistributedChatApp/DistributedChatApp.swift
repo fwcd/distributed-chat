@@ -8,16 +8,38 @@
 import DistributedChat
 import SwiftUI
 
-private let settings = Settings()
-private let transport = CoreBluetoothTransport(settings: settings)
-private let controller = ChatController(transport: transport)
+private class AppState {
+    let settings: Settings
+    let transport: ChatTransport
+    let controller: ChatController
+    let messages: Messages
+    
+    init() {
+        let settings = Settings()
+        let transport = CoreBluetoothTransport(settings: settings)
+        let controller = ChatController(transport: transport)
+        let messages = Messages()
+        
+        controller.onAddChatMessage { [unowned messages] message in
+            messages.messages.append(message)
+        }
+        
+        self.settings = settings
+        self.transport = transport
+        self.controller = controller
+        self.messages = messages
+    }
+}
+
+private let state = AppState()
 
 @main
 struct DistributedChatApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(controller: controller)
-                .environmentObject(settings)
+            ContentView(controller: state.controller)
+                .environmentObject(state.settings)
+                .environmentObject(state.messages)
         }
     }
     
