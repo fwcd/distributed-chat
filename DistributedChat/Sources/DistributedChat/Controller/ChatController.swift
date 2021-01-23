@@ -30,8 +30,14 @@ public class ChatController {
         }
     }
 
-    public func send(content: String, on channelName: String? = nil, replyingTo repliedToMessageId: UUID? = nil) {
-        let chatMessage = ChatMessage(author: me, content: content, channelName: channelName, repliedToMessageId: repliedToMessageId)
+    public func send(content: String, on channelName: String? = nil, attaching attachmentUrls: [URL]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
+        let chatMessage = ChatMessage(
+            author: me,
+            content: content,
+            channelName: channelName,
+            attachmentUrls: attachmentUrls,
+            repliedToMessageId: repliedToMessageId
+        )
         
         transportWrapper.broadcast(ChatProtocol.Message(addedChatMessages: [chatMessage]))
         

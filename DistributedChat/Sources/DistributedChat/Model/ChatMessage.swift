@@ -6,6 +6,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
     public var author: ChatUser
     public var content: String
     public var channelName: String?
+    public var attachmentUrls: [URL]? // URLs, use data-URLs for embedding data
     public var repliedToMessageId: UUID?
     
     public init(
@@ -14,6 +15,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         author: ChatUser,
         content: String,
         channelName: String? = nil,
+        attachmentUrls: [URL]? = nil,
         repliedToMessageId: UUID? = nil
     ) {
         self.id = id
