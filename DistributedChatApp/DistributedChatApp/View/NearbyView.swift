@@ -8,16 +8,22 @@
 import SwiftUI
 
 struct NearbyView: View {
+    @EnvironmentObject private var nearby: Nearby
+    
     var body: some View {
         NavigationView {
-            Text("TODO")
-                .navigationTitle("Nearby")
+            List(nearby.nearbyNodes, id: \.self) { node in
+                Text(node)
+            }
+            .navigationTitle("Nearby")
         }
     }
 }
 
 struct NearbyView_Previews: PreviewProvider {
+    @StateObject static var nearby = Nearby()
     static var previews: some View {
         NearbyView()
+            .environmentObject(nearby)
     }
 }

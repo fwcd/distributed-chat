@@ -28,14 +28,21 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private var initialized: Bool = false
     private var listeners = [(String) -> Void]()
     
+    private let nearby: Nearby
     private let settings: Settings
     private var settingsSubscription: AnyCancellable?
     
     /// Tracks remote peripherals discovered by the central that feature our service's GATT characteristic.
-    private var nearbyPeripherals: [CBPeripheral: CBCharacteristic] = [:]
+    private var nearbyPeripherals: [CBPeripheral: CBCharacteristic] = [:] {
+        didSet {
+            nearby.nearbyNodes = nearbyPeripherals.keys.map { $0.name ?? "Unknown" }.sorted()
+        }
+    }
     
-    required init(settings: Settings) {
+    required init(settings: Settings, nearby: Nearby) {
         self.settings = settings
+        self.nearby = nearby
+        
         super.init()
         
         // The app acts both as a peripheral (for receiving messages via an

@@ -10,13 +10,15 @@ import SwiftUI
 
 private class AppState {
     let settings: Settings
+    let nearby: Nearby
     let transport: ChatTransport
     let controller: ChatController
     let messages: Messages
     
     init() {
         let settings = Settings()
-        let transport = CoreBluetoothTransport(settings: settings)
+        let nearby = Nearby()
+        let transport = CoreBluetoothTransport(settings: settings, nearby: nearby)
         let controller = ChatController(transport: transport)
         let messages = Messages()
         
@@ -25,6 +27,7 @@ private class AppState {
         }
         
         self.settings = settings
+        self.nearby = nearby
         self.transport = transport
         self.controller = controller
         self.messages = messages
@@ -40,6 +43,7 @@ struct DistributedChatApp: App {
             ContentView(controller: state.controller)
                 .environmentObject(state.settings)
                 .environmentObject(state.messages)
+                .environmentObject(state.nearby)
         }
     }
     
