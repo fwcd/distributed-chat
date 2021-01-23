@@ -27,7 +27,8 @@ struct ChannelView: View {
                             case .compact:
                                 CompactMessageView(message: message)
                             case .bubbles:
-                                BubbleMessageView(message: message)
+                                let isMe = controller.me.id == message.author.id
+                                BubbleMessageView(message: message, isMe: isMe)
                             }
                         }
                     }
