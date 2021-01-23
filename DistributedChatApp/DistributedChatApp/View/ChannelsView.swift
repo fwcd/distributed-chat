@@ -18,16 +18,26 @@ struct ChannelsView: View {
     
     var body: some View {
         NavigationView {
-            List(channelNames + ((channelNameDraft.isEmpty || channelNames.contains(channelNameDraft)) ? [] : [channelNameDraft]), id: \.self) { channelName in
-                NavigationLink(destination: ChannelView(channelName: channelName, controller: controller)) {
-                    VStack(alignment: .leading) {
-                        Text("#\(channelName ?? globalChannelName)")
-                            .font(.headline)
-                        if let message = messages[channelName].last {
-                            Text("\(message.author.displayName): \(message.content)")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
+            List {
+                ForEach(channelNames + ((channelNameDraft.isEmpty || channelNames.contains(channelNameDraft)) ? [] : [channelNameDraft]), id: \.self) { channelName in
+                    NavigationLink(destination: ChannelView(channelName: channelName, controller: controller)) {
+                        VStack(alignment: .leading) {
+                            Text("#\(channelName ?? globalChannelName)")
+                                .font(.headline)
+                            if let message = messages[channelName].last {
+                                Text("\(message.author.displayName): \(message.content)")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
                         }
+                    }
+                }
+                .onDelete { indexSet in
+                    indexSet.forEach {
+                        if $0 < channelNames.count {
+                            messages.clear(channelName: channelNames[$0])
+                        }
+                        channelNameDraft = ""
                     }
                 }
             }

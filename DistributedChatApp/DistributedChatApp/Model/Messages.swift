@@ -24,4 +24,8 @@ class Messages: ObservableObject {
     subscript(channelName: String?) -> [ChatMessage] {
         messages.filter { $0.channelName == channelName }
     }
+    
+    func clear(channelName: String?) {
+        messages.removeAll { $0.channelName == channelName }
+    }
 }
