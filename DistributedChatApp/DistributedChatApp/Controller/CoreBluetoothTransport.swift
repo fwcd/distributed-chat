@@ -22,8 +22,6 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private var peripheralManager: CBPeripheralManager!
     private var centralManager: CBCentralManager!
     
-    private var characteristic: CBMutableCharacteristic?
-    private var psm: CBL2CAPPSM?
     private var startedL2CAPPublish: Bool = false
     
     private let settings: Settings
@@ -76,6 +74,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             if !startedL2CAPPublish {
                 startedL2CAPPublish = true
                 peripheral.publishL2CAPChannel(withEncryption: false)
+            } else if settings.bluetoothAdvertisingEnabled {
+                startAdvertising()
             }
         case .poweredOff:
             log.info("Peripheral is powered off!")
@@ -90,20 +90,17 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         log.info("Published L2CAP channel with PSM \(psm)")
         
         // Now that CoreBluetooth has assigned us a PSM for the L2CAP channel,
-        // publish it through the GATT characteristic. Note that we do not
-        // set the value directly, instead we wait for a read. This is due
-        // to iOS' caching policies.
+        // publish it through the GATT characteristic.
         
-        self.psm = psm
+        var psm = psm
         let service = CBMutableService(type: serviceUUID, primary: true)
         let characteristic = CBMutableCharacteristic(type: characteristicUUID,
                                                      properties: [.read],
-                                                     value: nil,
+                                                     value: Data(bytes: &psm, count: MemoryLayout.size(ofValue: psm)),
                                                      permissions: [.readable])
         
         service.characteristics = [characteristic]
         peripheralManager.add(service)
-        self.characteristic = characteristic
         
         startAdvertising()
         // TODO: unpublishL2CAPChannel e.g. through a UI switch for disabling connectivity
@@ -128,13 +125,6 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     
     func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) {
         log.info("Got a GATT read request")
-        
-        if var psm = psm, let characteristic = characteristic {
-            log.info("...and we do have a PSM to offer!")
-            
-            let data = Data(bytes: &psm, count: MemoryLayout.size(ofValue: psm))
-            peripheralManager.updateValue(data, for: characteristic, onSubscribedCentrals: nil)
-        }
     }
     
     // MARK: Central implementation
