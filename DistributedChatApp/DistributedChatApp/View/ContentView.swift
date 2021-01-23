@@ -10,7 +10,9 @@ import SwiftUI
 
 struct ContentView: View {
     private let controller: ChatController
-    @ObservedObject private var messages: Messages
+    
+    @StateObject private var profile = Profile()
+    @StateObject private var messages: Messages
     
     var body: some View {
         TabView {
@@ -19,6 +21,13 @@ struct ContentView: View {
                     VStack {
                         Image(systemName: "message.fill")
                         Text("Channels")
+                    }
+                }
+            ProfileView(name: $profile.name)
+                .tabItem {
+                    VStack {
+                        Image(systemName: "person.circle.fill")
+                        Text("Profile")
                     }
                 }
         }
@@ -31,8 +40,8 @@ struct ContentView: View {
             messages.messages.append(message)
         }
         
+        _messages = StateObject(wrappedValue: messages)
         self.controller = controller
-        self.messages = messages
     }
 }
 

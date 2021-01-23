@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */; };
 		C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */; };
+		C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */; };
+		C77C1E0A25BBC9B0005D0B7C /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1E0925BBC9B0005D0B7C /* Profile.swift */; };
 		C7982CCB25BB8521000DC0F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7982CCA25BB8521000DC0F1 /* Assets.xcassets */; };
 		C7982CCE25BB8521000DC0F1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7982CCD25BB8521000DC0F1 /* Preview Assets.xcassets */; };
 		C7982CDA25BB8522000DC0F1 /* DistributedChatMacAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982CD925BB8522000DC0F1 /* DistributedChatMacAppTests.swift */; };
@@ -64,6 +66,8 @@
 /* Begin PBXFileReference section */
 		C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
 		C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFocusTextField.swift; sourceTree = "<group>"; };
+		C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVIew.swift; sourceTree = "<group>"; };
+		C77C1E0925BBC9B0005D0B7C /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		C7982CC425BB851F000DC0F1 /* DistributedChatMacApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatMacApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7982CCA25BB8521000DC0F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C7982CCD25BB8521000DC0F1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -183,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				C7982D4025BB8A57000DC0F1 /* Messages.swift */,
+				C77C1E0925BBC9B0005D0B7C /* Profile.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -201,6 +206,7 @@
 				C7BC335325B3C00700989E95 /* ContentView.swift */,
 				C7982D2125BB8885000DC0F1 /* ChannelsView.swift */,
 				C7982D2925BB8981000DC0F1 /* ChannelView.swift */,
+				C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */,
 				C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */,
 				C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */,
 			);
@@ -536,6 +542,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */,
+				C77C1E0A25BBC9B0005D0B7C /* Profile.swift in Sources */,
+				C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */,
 				C7982D4125BB8A57000DC0F1 /* Messages.swift in Sources */,
 				C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */,
 				C7BC335425B3C00700989E95 /* ContentView.swift in Sources */,
