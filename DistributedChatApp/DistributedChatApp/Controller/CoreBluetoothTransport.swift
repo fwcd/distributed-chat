@@ -63,6 +63,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             log.info("Peripheral is powered off!")
         default:
             // TODO: Handle other states
+            log.info("Peripheral switched into state \(peripheral.state)")
             break
         }
     }
@@ -86,12 +87,16 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         peripheralManager.add(service)
         self.characteristic = characteristic
         
-        log.info("Starting advertising")
+        log.info("Starting to advertise")
         peripheralManager.startAdvertising([
-            CBAdvertisementDataServiceUUIDsKey: serviceUUID,
-            CBAdvertisementDataLocalNameKey: "Distributed Chat"
+            CBAdvertisementDataServiceUUIDsKey: [serviceUUID],
+            CBAdvertisementDataLocalNameKey: "DistributedChat"
         ])
         // TODO: unpublishL2CAPChannel e.g. through a UI switch for disabling connectivity
+    }
+    
+    func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager, error: Error?) {
+        log.info("Did start advertising")
     }
     
     func peripheralManager(_ peripheral: CBPeripheralManager, didUnpublishL2CAPChannel PSM: CBL2CAPPSM, error: Error?) {
@@ -119,6 +124,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             central.scanForPeripherals(withServices: [serviceUUID], options: nil)
         default:
             // TODO: Handle other states
+            log.info("Central switched into state \(central.state)")
             break
         }
     }
