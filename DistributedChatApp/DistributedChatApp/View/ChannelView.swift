@@ -13,6 +13,7 @@ struct ChannelView: View {
     let controller: ChatController
     
     @EnvironmentObject var messages: Messages
+    @State var focusedMessageId: UUID?
     @State var draft: String = ""
     
     var body: some View {
@@ -32,13 +33,9 @@ struct ChannelView: View {
                         maxHeight: .infinity,
                         alignment: .topLeading
                     )
-                    .onReceive(messages.objectWillChange) {
-                        print("Changing")
-                        if let last = messages[channelName].last {
-                            print("Scrolling to \(last.id)")
-                            withAnimation {
-                                scrollView.scrollTo(last)
-                            }
+                    .onChange(of: focusedMessageId) {
+                        if let id = $0 {
+                            scrollView.scrollTo(id)
                         }
                     }
                 }
@@ -56,6 +53,9 @@ struct ChannelView: View {
         }
         .padding(15)
         .navigationBarTitle("#\(channelName ?? globalChannelName)", displayMode: .inline)
+        .onReceive(messages.objectWillChange) {
+            focusedMessageId = messages[channelName].last?.id
+        }
     }
 }
 
