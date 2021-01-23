@@ -30,6 +30,13 @@ struct ContentView: View {
                         Text("Profile")
                     }
                 }
+            SettingsView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "gear")
+                        Text("Settings")
+                    }
+                }
         }
         .environmentObject(messages)
         .onChange(of: profileName) {
