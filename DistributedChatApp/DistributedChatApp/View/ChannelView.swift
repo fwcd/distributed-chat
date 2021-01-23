@@ -14,31 +14,11 @@ struct ChannelView: View {
     
     @EnvironmentObject private var messages: Messages
     @State private var replyingToMessageId: UUID?
-    @State private var draft: String = ""
     
     var body: some View {
         VStack(alignment: .leading) {
             MessageHistoryView(channelName: channelName, controller: controller, replyingToMessageId: $replyingToMessageId)
-            if let id = replyingToMessageId, let message = messages[id] {
-                HStack {
-                    Text("Replying to")
-                    PlainMessageView(message: message)
-                    Spacer()
-                    Button(action: {
-                        replyingToMessageId = nil
-                    }) {
-                        Image(systemName: "xmark.circle")
-                    }
-                }
-            }
-            HStack {
-                TextField("Message #\(channelName ?? globalChannelName)...", text: $draft, onCommit: sendDraft)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                Button(action: sendDraft) {
-                    Text("Send")
-                        .fontWeight(.bold)
-                }
-            }
+            MessageComposeView(channelName: channelName, controller: controller, replyingToMessageId: $replyingToMessageId)
         }
         .padding(15)
         .navigationTitle("#\(channelName ?? globalChannelName)")
@@ -49,14 +29,6 @@ struct ChannelView: View {
         }
         .onDisappear {
             messages.autoReadChannelNames.remove(channelName)
-        }
-    }
-    
-    private func sendDraft() {
-        if !draft.isEmpty {
-            controller.send(content: draft, on: channelName, replyingTo: replyingToMessageId)
-            draft = ""
-            replyingToMessageId = nil
         }
     }
 }

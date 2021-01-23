@@ -10,6 +10,7 @@
 		C7734CA925BCDB1D0057DF96 /* Nearby.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CA825BCDB1D0057DF96 /* Nearby.swift */; };
 		C7734CB225BCDEEA0057DF96 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CB125BCDEEA0057DF96 /* StringUtils.swift */; };
 		C7734CBA25BCE6CE0057DF96 /* MessageHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CB925BCE6CE0057DF96 /* MessageHistoryView.swift */; };
+		C7734CC225BCE8910057DF96 /* MessageComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CC125BCE8910057DF96 /* MessageComposeView.swift */; };
 		C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */; };
 		C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */; };
 		C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */; };
@@ -77,6 +78,7 @@
 		C7734CA825BCDB1D0057DF96 /* Nearby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nearby.swift; sourceTree = "<group>"; };
 		C7734CB125BCDEEA0057DF96 /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		C7734CB925BCE6CE0057DF96 /* MessageHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHistoryView.swift; sourceTree = "<group>"; };
+		C7734CC125BCE8910057DF96 /* MessageComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageComposeView.swift; sourceTree = "<group>"; };
 		C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
 		C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFocusTextField.swift; sourceTree = "<group>"; };
 		C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVIew.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				C7982D2125BB8885000DC0F1 /* ChannelsView.swift */,
 				C7982D2925BB8981000DC0F1 /* ChannelView.swift */,
 				C7734CB925BCE6CE0057DF96 /* MessageHistoryView.swift */,
+				C7734CC125BCE8910057DF96 /* MessageComposeView.swift */,
 				C77D49E425BC85F70073A964 /* PlainMessageView.swift */,
 				C77D49B225BC777E0073A964 /* CompactMessageView.swift */,
 				C77D49C025BC780A0073A964 /* BubbleMessageView.swift */,
@@ -590,6 +593,7 @@
 				C7734CB225BCDEEA0057DF96 /* StringUtils.swift in Sources */,
 				C77D49D725BC7B600073A964 /* NearbyView.swift in Sources */,
 				C77D49CF25BC78C70073A964 /* EnumPicker.swift in Sources */,
+				C7734CC225BCE8910057DF96 /* MessageComposeView.swift in Sources */,
 				C77D499D25BC76010073A964 /* Settings.swift in Sources */,
 				C7982D2A25BB8981000DC0F1 /* ChannelView.swift in Sources */,
 				C77D499525BC75B40073A964 /* MessageHistoryStyle.swift in Sources */,
