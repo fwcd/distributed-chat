@@ -16,4 +16,8 @@ struct DistributedChatApp: App {
             ContentView(controller: ChatController(transport: MockTransport()))
         }
     }
+    
+    init() {
+        UIScrollView.appearance().keyboardDismissMode = .interactive
+    }
 }
