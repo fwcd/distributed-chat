@@ -30,7 +30,7 @@ while True:
                 if characteristics:
                     s = input(f'  >> Enter a string to write to characteristic: ').encode('utf8')
                     c = characteristics[0]
-                    c.write(s, withResponse=False)
+                    c.write(s, withResponse=True)
                     print('  >> Wrote successfully!')
                 else:
                     print('  >> Could not find our characteristic. :(')
