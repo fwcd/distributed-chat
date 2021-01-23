@@ -41,11 +41,8 @@ struct ChannelView: View {
                 }
             }
             HStack {
-                TextField("Message #\(channelName ?? globalChannelName)...", text: $draft)
-                Button(action: {
-                    controller.send(content: draft, on: channelName)
-                    draft = ""
-                }) {
+                TextField("Message #\(channelName ?? globalChannelName)...", text: $draft, onCommit: sendDraft)
+                Button(action: sendDraft) {
                     Text("Send")
                         .fontWeight(.bold)
                 }
@@ -55,6 +52,13 @@ struct ChannelView: View {
         .navigationBarTitle("#\(channelName ?? globalChannelName)", displayMode: .inline)
         .onReceive(messages.objectWillChange) {
             focusedMessageId = messages[channelName].last?.id
+        }
+    }
+    
+    private func sendDraft() {
+        if !draft.isEmpty {
+            controller.send(content: draft, on: channelName)
+            draft = ""
         }
     }
 }
