@@ -13,6 +13,7 @@ struct ContentView: View {
     
     @State private var profileName: String = ""
     @StateObject private var messages: Messages
+    @StateObject private var settings: Settings = Settings()
     
     var body: some View {
         TabView {
@@ -39,6 +40,7 @@ struct ContentView: View {
                 }
         }
         .environmentObject(messages)
+        .environmentObject(settings)
         .onChange(of: profileName) {
             controller.update(name: $0)
         }

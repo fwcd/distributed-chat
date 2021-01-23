@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @EnvironmentObject private var settings: Settings
+    
     var body: some View {
         NavigationView {
             Text("TODO")
@@ -17,7 +19,9 @@ struct SettingsView: View {
 }
 
 struct SettingsView_Previews: PreviewProvider {
+    @StateObject static var settings = Settings()
     static var previews: some View {
         SettingsView()
+            .environmentObject(settings)
     }
 }

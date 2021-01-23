@@ -106,8 +106,10 @@ struct ChannelsView: View {
 
 struct ChatsView_Previews: PreviewProvider {
     @StateObject static var messages = Messages()
+    @StateObject static var settings = Settings()
     static var previews: some View {
         ChannelsView(channelNames: [], controller: ChatController(transport: MockTransport()))
             .environmentObject(messages)
+            .environmentObject(settings)
     }
 }

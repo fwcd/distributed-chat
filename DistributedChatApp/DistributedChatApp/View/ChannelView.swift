@@ -13,6 +13,7 @@ struct ChannelView: View {
     let controller: ChatController
     
     @EnvironmentObject private var messages: Messages
+    @EnvironmentObject private var settings: Settings
     @State private var focusedMessageId: UUID?
     @State private var draft: String = ""
     
@@ -22,8 +23,12 @@ struct ChannelView: View {
                 ScrollViewReader { scrollView in
                     VStack(alignment: .leading) {
                         ForEach(messages[channelName]) { message in
-                            // TODO: Chat bubbles and stuff
-                            Text("\(message.author.displayName): \(message.content)")
+                            switch settings.messageHistoryStyle {
+                            case .compact:
+                                CompactMessageView(message: message)
+                            case .bubbles:
+                                BubbleMessageView(message: message)
+                            }
                         }
                     }
                     .frame( // Ensure that the VStack actually fills the parent's width
