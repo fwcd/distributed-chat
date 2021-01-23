@@ -23,7 +23,7 @@ struct ChannelView: View {
                     VStack(alignment: .leading) {
                         ForEach(messages[channelName]) { message in
                             // TODO: Chat bubbles and stuff
-                            Text("\(message.author.name ?? "<anonymous user>"): \(message.content) (\(message.id)")
+                            Text("\(message.author.name ?? "<anonymous user>"): \(message.content)")
                         }
                     }
                     .frame( // Ensure that the VStack actually fills the parent's width
