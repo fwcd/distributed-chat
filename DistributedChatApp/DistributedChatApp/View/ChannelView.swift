@@ -48,8 +48,10 @@ struct ChannelView: View {
                                 let isMe = controller.me.id == message.author.id
                                 HStack {
                                     if isMe { Spacer() }
-                                    BubbleMessageView(message: message, isMe: isMe)
-                                        .contextMenu { menuItems }
+                                    BubbleMessageView(message: message, isMe: isMe) { repliedToId in
+                                        scrollView.scrollTo(repliedToId)
+                                    }
+                                    .contextMenu { menuItems }
                                     if !isMe { Spacer() }
                                 }
                             }

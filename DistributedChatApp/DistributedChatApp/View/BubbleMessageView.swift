@@ -11,17 +11,22 @@ import SwiftUI
 struct BubbleMessageView: View {
     let message: ChatMessage
     let isMe: Bool
+    var onPressRepliedMessage: ((UUID) -> Void)? = nil
     
     @EnvironmentObject private var messages: Messages
     
     var body: some View {
         VStack(alignment: isMe ? .trailing : .leading) {
             if let id = message.repliedToMessageId, let referenced = messages[id] {
-                HStack {
-                    Image(systemName: "arrowshape.turn.up.backward")
-                    PlainMessageView(message: referenced)
+                Button(action: {
+                    onPressRepliedMessage?(id)
+                }) {
+                    HStack {
+                        Image(systemName: "arrowshape.turn.up.backward")
+                        PlainMessageView(message: referenced)
+                    }
+                    .foregroundColor(.secondary)
                 }
-                .foregroundColor(.secondary)
             }
             ZStack {
                 VStack(alignment: .leading) {
