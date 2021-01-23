@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ChatUser: Identifiable, Codable {
+public struct ChatUser: Identifiable, Hashable, Codable {
     public let id: UUID
     public var name: String?
     

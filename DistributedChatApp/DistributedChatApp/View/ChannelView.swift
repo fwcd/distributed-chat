@@ -18,19 +18,30 @@ struct ChannelView: View {
     var body: some View {
         VStack(alignment: .leading) {
             ScrollView(.vertical) {
-                VStack(alignment: .leading) {
-                    ForEach(messages[channelName]) { message in
-                        // TODO: Chat bubbles and stuff
-                        Text("\(message.author.name ?? "<anonymous user>"): \(message.content)")
+                ScrollViewReader { scrollView in
+                    VStack(alignment: .leading) {
+                        ForEach(messages[channelName]) { message in
+                            // TODO: Chat bubbles and stuff
+                            Text("\(message.author.name ?? "<anonymous user>"): \(message.content) (\(message.id)")
+                        }
+                    }
+                    .frame( // Ensure that the VStack actually fills the parent's width
+                        minWidth: 0,
+                        maxWidth: .infinity,
+                        minHeight: 0,
+                        maxHeight: .infinity,
+                        alignment: .topLeading
+                    )
+                    .onReceive(messages.objectWillChange) {
+                        print("Changing")
+                        if let last = messages[channelName].last {
+                            print("Scrolling to \(last.id)")
+                            withAnimation {
+                                scrollView.scrollTo(last)
+                            }
+                        }
                     }
                 }
-                .frame( // Ensure that the VStack actually fills the parent's width
-                    minWidth: 0,
-                    maxWidth: .infinity,
-                    minHeight: 0,
-                    maxHeight: .infinity,
-                    alignment: .topLeading
-                )
             }
             HStack {
                 TextField("Message #\(channelName ?? globalChannelName)...", text: $draft)
