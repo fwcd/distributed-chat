@@ -6,7 +6,10 @@
 //
 
 import DistributedChat
+import Logging
 import SwiftUI
+
+fileprivate let log = Logger(label: "MessageComposeView")
 
 struct MessageComposeView: View {
     let channelName: String?
@@ -22,9 +25,14 @@ struct MessageComposeView: View {
         draftAttachmentUrls?.compactMap { url in
             let mimeType = url.mimeType
             let fileName = url.lastPathComponent
-            guard let data = try? Data(contentsOf: url),
-                  let url = URL(string: "data:\(mimeType);base64,\(data.base64EncodedString())") else { return nil }
-            return ChatAttachment(name: fileName, url: url)
+            do {
+                let data = try Data(contentsOf: url)
+                guard let url = URL(string: "data:\(mimeType);base64,\(data.base64EncodedString())") else { return nil }
+                return ChatAttachment(name: fileName, url: url)
+            } catch {
+                log.warning("Could not attach \(fileName): \(error)")
+                return nil
+            }
         }
     }
     
@@ -69,8 +77,10 @@ struct MessageComposeView: View {
     }
     
     private func sendDraft() {
-        if !draft.isEmpty {
-            controller.send(content: draft, on: channelName, attaching: draftAttachments, replyingTo: replyingToMessageId)
+        if !draft.isEmpty || !(draftAttachmentUrls ?? []).isEmpty {
+            let attachments = draftAttachments
+            print(attachments)
+            controller.send(content: draft, on: channelName, attaching: attachments, replyingTo: replyingToMessageId)
             draft = ""
             draftAttachmentUrls = nil
             replyingToMessageId = nil
