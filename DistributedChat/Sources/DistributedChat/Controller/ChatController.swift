@@ -46,10 +46,16 @@ public class ChatController {
         }
     }
 
-    public func update(name: String) {
-        me.name = name
+    public func update(me: ChatUser) {
+        self.me = me
 
         // TODO: Broadcast name change to others?
+    }
+    
+    public func update(name: String) {
+        var newMe = me
+        newMe.name = name
+        update(me: me)
     }
 
     public func onAddChatMessage(_ handler: @escaping (ChatMessage) -> Void) {
