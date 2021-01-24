@@ -53,11 +53,13 @@ class Messages: ObservableObject {
     private func storeLocally(attachment: ChatAttachment) -> ChatAttachment {
         var attachment = attachment
         let baseURL = persistenceFileURL(path: "Attachments/\(attachment.name)")
+        let fileName = baseURL.lastPathComponent
+        let fileExtension = fileName.contains(".") ? ".\(fileName.split(separator: ".").last!)" : ""
         var url = baseURL
         var i = 1
         
-        while (try? !url.checkResourceIsReachable()) ?? false {
-            url = baseURL.appendingPathExtension("-\(i)")
+        while (try? url.checkResourceIsReachable()) ?? false {
+            url = baseURL.deletingPathExtension().appendingPathExtension("-\(i)\(fileExtension)")
             i += 1
         }
         
