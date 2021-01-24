@@ -12,7 +12,6 @@ struct ContentView: View {
     let controller: ChatController
     
     @EnvironmentObject private var messages: Messages
-    @State private var profileName: String = ""
     
     var body: some View {
         TabView {
@@ -30,7 +29,7 @@ struct ContentView: View {
                         Text("Nearby")
                     }
                 }
-            ProfileView(name: $profileName)
+            ProfileView()
                 .tabItem {
                     VStack {
                         Image(systemName: "person.circle.fill")
@@ -46,9 +45,6 @@ struct ContentView: View {
                 }
         }
         .environmentObject(messages)
-        .onChange(of: profileName) {
-            controller.update(name: $0)
-        }
     }
 }
 
@@ -56,10 +52,12 @@ struct ContentView_Previews: PreviewProvider {
     @StateObject static var settings = Settings()
     @StateObject static var messages = Messages()
     @StateObject static var nearby = Nearby()
+    @StateObject static var profile = Profile()
     static var previews: some View {
         ContentView(controller: ChatController(transport: MockTransport()))
             .environmentObject(settings)
             .environmentObject(messages)
             .environmentObject(nearby)
+            .environmentObject(profile)
     }
 }
