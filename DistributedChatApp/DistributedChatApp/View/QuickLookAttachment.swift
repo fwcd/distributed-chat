@@ -14,19 +14,27 @@ fileprivate let log = Logger(label: "QuickLookAttachment")
 
 class QuickLookAttachment: NSObject, QLPreviewItem {
     private let attachment: ChatAttachment
-    private let tempURL: URL
+    private let tempURL: URL?
     
-    var previewItemURL: URL? { tempURL }
+    var previewItemURL: URL? { tempURL ?? attachment.url }
     var previewItemTitle: String? { attachment.name }
     
-    init(attachment: ChatAttachment) throws {
+    init(attachment: ChatAttachment, useTempFile: Bool = false) throws {
         self.attachment = attachment
-        tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(attachment.name)
-        try Data(contentsOf: attachment.url).write(to: tempURL) // might overwrite an old file with that attachment name
+        
+        if useTempFile {
+            let url = FileManager.default.temporaryDirectory.appendingPathComponent(attachment.name)
+            try Data(contentsOf: attachment.url).write(to: url) // might overwrite an old file with that attachment name
+            tempURL = url
+        } else {
+            tempURL = nil
+        }
     }
     
     deinit {
-        log.info("Cleaning up temporary file from attachment...")
-        try? FileManager.default.removeItem(at: tempURL)
+        if let url = tempURL {
+            log.info("Cleaning up temporary file from attachment...")
+            try? FileManager.default.removeItem(at: url)
+        }
     }
 }
