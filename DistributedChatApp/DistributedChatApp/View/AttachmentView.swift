@@ -30,7 +30,6 @@ struct AttachmentView: View {
                     }
                 }
                 .padding(15)
-                
                 if let item = try? QuickLookAttachment(attachment: attachment) {
                     QuickLookView(item: item)
                 }

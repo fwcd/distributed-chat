@@ -21,8 +21,8 @@ class QuickLookAttachment: NSObject, QLPreviewItem {
         let docDir = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         let tmpDir = docDir.appendingPathComponent("tmp")
         try FileManager.default.createDirectory(at: tmpDir, withIntermediateDirectories: true)
-        tempURL = tmpDir.appendingPathComponent("\(UUID())-\(attachment.name)")
-        try Data(contentsOf: attachment.url).write(to: tempURL)
+        tempURL = tmpDir.appendingPathComponent(attachment.name)
+        try Data(contentsOf: attachment.url).write(to: tempURL) // might overwrite an old file with that attachment name
     }
     
     deinit {
