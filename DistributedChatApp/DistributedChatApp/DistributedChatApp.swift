@@ -11,7 +11,10 @@ import Logging
 import LoggingOSLog
 import SwiftUI
 import UserNotifications
+
+#if os(iOS)
 import UIKit
+#endif
 
 private class AppState {
     let settings: Settings
@@ -55,19 +58,51 @@ private class AppState {
 private let state = AppState()
 private let log = Logger(label: "DistributedChatApp.DistributedChatApp")
 
+#if os(iOS)
 private class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        if let id = UUID(uuidString: url.path), let message = state.messages[id] {
-            state.navigation.activeChannelName = message.channelName
-            return true
+        // distributedchat:///channel           --> channel #global
+        // distributedchat:///channel/test      --> channel #test
+        // distributedchat:///message/<uuid>    --> specific message (TODO: Actually scroll to message)
+        
+        log.info("Handling URL \(url)...")
+        let components = url.pathComponents
+        if components.count >= 2 {
+            switch components[..<2] {
+            case ["/", "channel"]:
+                if components.count == 3 {
+                    let channelName = components[2]
+                    if state.messages.channelNames.contains(channelName) {
+                        log.info("Opening URL \(url) as #\(channelName)...")
+                        state.navigation.activeChannelName = channelName
+                        return true
+                    }
+                } else {
+                    log.info("Opening URL \(url) as #global...")
+                    state.navigation.activeChannelName = Optional<String?>.some(nil)
+                    return true
+                }
+            case ["/", "message"]:
+                if components.count == 3, let id = UUID(uuidString: components[2]), let message = state.messages[id] {
+                    log.info("Opening URL \(url) as message with ID \(id)...")
+                    state.navigation.activeChannelName = message.channelName
+                    return true
+                }
+            default:
+                break
+            }
         }
         return false
     }
 }
+#endif
 
 @main
 struct DistributedChatApp: App {
+    #if os(iOS)
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    #endif
+    
     @State private var notificationsInitialized: Bool = false
     
     var body: some Scene {
