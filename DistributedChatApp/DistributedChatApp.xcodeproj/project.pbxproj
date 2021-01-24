@@ -18,6 +18,7 @@
 		C7734D1225BD00330057DF96 /* QuickLookAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734D1125BD00330057DF96 /* QuickLookAttachment.swift */; };
 		C7734D2E25BDE1D90057DF96 /* PersistenceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734D2D25BDE1D90057DF96 /* PersistenceUtils.swift */; };
 		C7734D3C25BDE9B50057DF96 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734D3B25BDE9B50057DF96 /* Profile.swift */; };
+		C7734D4B25BDF52C0057DF96 /* LoggingOSLog in Frameworks */ = {isa = PBXBuildFile; productRef = C7734D4A25BDF52C0057DF96 /* LoggingOSLog */; };
 		C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */; };
 		C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */; };
 		C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */; };
@@ -162,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7BC338A25B3C2EE00989E95 /* DistributedChat in Frameworks */,
+				C7734D4B25BDF52C0057DF96 /* LoggingOSLog in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +428,7 @@
 			name = DistributedChatApp;
 			packageProductDependencies = (
 				C7BC338925B3C2EE00989E95 /* DistributedChat */,
+				C7734D4A25BDF52C0057DF96 /* LoggingOSLog */,
 			);
 			productName = DistributedChatApp;
 			productReference = C7BC334E25B3C00700989E95 /* DistributedChatApp.app */;
@@ -509,6 +512,9 @@
 				Base,
 			);
 			mainGroup = C7BC334525B3C00700989E95;
+			packageReferences = (
+				C7734D4925BDF52B0057DF96 /* XCRemoteSwiftPackageReference "swift-log-oslog" */,
+			);
 			productRefGroup = C7BC334F25B3C00700989E95 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1136,7 +1142,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		C7734D4925BDF52B0057DF96 /* XCRemoteSwiftPackageReference "swift-log-oslog" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/chrisaljoudi/swift-log-oslog.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		C7734D4A25BDF52C0057DF96 /* LoggingOSLog */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7734D4925BDF52B0057DF96 /* XCRemoteSwiftPackageReference "swift-log-oslog" */;
+			productName = LoggingOSLog;
+		};
 		C7982D1725BB85BC000DC0F1 /* DistributedChat */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DistributedChat;
