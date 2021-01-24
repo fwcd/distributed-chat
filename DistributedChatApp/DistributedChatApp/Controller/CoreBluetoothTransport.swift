@@ -33,10 +33,14 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private var settingsSubscription: AnyCancellable?
     
     /// Tracks remote peripherals discovered by the central that feature our service's GATT characteristic.
-    private var nearbyPeripherals: [CBPeripheral: CBCharacteristic] = [:] {
+    private var nearbyPeripherals: [CBPeripheral: DiscoveredPeripheral] = [:] {
         didSet {
             nearby.nearbyNodes = nearbyPeripherals.keys.map { $0.name ?? "Unknown" }.sorted()
         }
+    }
+    
+    private class DiscoveredPeripheral {
+        var characteristic: CBCharacteristic?
     }
     
     required init(settings: Settings, nearby: Nearby) {
@@ -56,8 +60,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     func broadcast(_ raw: String) {
         log.info("Broadcasting \(raw) to \(nearbyPeripherals.count) nearby peripherals.")
         
-        for (peripheral, characteristic) in nearbyPeripherals {
-            if let data = raw.data(using: .utf8) {
+        for (peripheral, state) in nearbyPeripherals {
+            if let data = raw.data(using: .utf8), let characteristic = state.characteristic {
                 peripheral.writeValue(data, for: characteristic, type: .withResponse)
             }
         }
@@ -159,10 +163,16 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         peripheral.delegate = self
         
         if !nearbyPeripherals.keys.contains(peripheral) {
-            peripheral.discoverServices([serviceUUID])
+            nearbyPeripherals[peripheral] = DiscoveredPeripheral()
+            centralManager.connect(peripheral)
         } else {
             log.info("Remote peripheral \(peripheral.name ?? "?") has already been discovered!")
         }
+    }
+    
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        log.info("Did connect to remote peripheral")
+        peripheral.discoverServices([serviceUUID])
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
@@ -179,7 +189,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         if let characteristic = service.characteristics?.first(where: { $0.uuid == characteristicUUID }) {
             log.info("Found our DistributedChat characteristic on the remote peripheral \(peripheral.name ?? "?"), nice!")
-            nearbyPeripherals[peripheral] = characteristic
+            nearbyPeripherals[peripheral]?.characteristic = characteristic
         }
     }
     
