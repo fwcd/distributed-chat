@@ -21,7 +21,9 @@ struct AttachmentView: View {
             }
         }
         .sheet(isPresented: $quickLookShown) {
-            QuickLookView(item: QuickLookAttachment(attachment: attachment))
+            if let item = try? QuickLookAttachment(attachment: attachment) {
+                QuickLookView(item: item)
+            }
         }
     }
 }

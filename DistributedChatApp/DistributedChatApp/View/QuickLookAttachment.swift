@@ -11,11 +11,21 @@ import QuickLook
 
 class QuickLookAttachment: NSObject, QLPreviewItem {
     private let attachment: ChatAttachment
+    private let tempURL: URL
     
     var previewItemURL: URL? { attachment.url }
     var previewItemTitle: String? { attachment.name }
     
-    init(attachment: ChatAttachment) {
+    init(attachment: ChatAttachment) throws {
         self.attachment = attachment
+        let docDir = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let tmpDir = docDir.appendingPathComponent("tmp")
+        try FileManager.default.createDirectory(at: tmpDir, withIntermediateDirectories: true)
+        tempURL = tmpDir.appendingPathComponent("\(UUID())-\(attachment.name)")
+        try Data(contentsOf: attachment.url).write(to: tempURL)
+    }
+    
+    deinit {
+        try? FileManager.default.removeItem(at: tempURL)
     }
 }
