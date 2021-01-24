@@ -29,12 +29,26 @@ struct MessageHistoryView: View {
                                 Text("Delete Locally")
                                 Image(systemName: "trash")
                             }
-                            
                             Button(action: {
                                 replyingToMessageId = message.id
                             }) {
                                 Text("Reply")
                                 Image(systemName: "arrowshape.turn.up.left.fill")
+                            }
+                            if messages.unread.contains(message.id) {
+                                Button(action: {
+                                    messages.unread.remove(message.id)
+                                }) {
+                                    Text("Mark as Read")
+                                    Image(systemName: "circlebadge")
+                                }
+                            } else {
+                                Button(action: {
+                                    messages.unread.insert(message.id)
+                                }) {
+                                    Text("Mark as Unread")
+                                    Image(systemName: "circlebadge.fill")
+                                }
                             }
                         }
                         

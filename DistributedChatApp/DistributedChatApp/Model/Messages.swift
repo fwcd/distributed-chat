@@ -82,7 +82,7 @@ class Messages: ObservableObject {
     }
     
     func markAsRead(channelName: String?) {
-        unread = unread.filter { messages[$0]?.channelName == channelName }
+        unread = unread.filter { messages[$0]?.channelName != channelName }
     }
     
     func deleteMessage(id: UUID) {
