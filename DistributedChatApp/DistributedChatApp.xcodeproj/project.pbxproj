@@ -16,7 +16,7 @@
 		C7734CE625BCFD180057DF96 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CE525BCFD180057DF96 /* AttachmentView.swift */; };
 		C7734CEE25BCFE5D0057DF96 /* QuickLookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CED25BCFE5D0057DF96 /* QuickLookView.swift */; };
 		C7734D1225BD00330057DF96 /* QuickLookAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734D1125BD00330057DF96 /* QuickLookAttachment.swift */; };
-		C7734D2E25BDE1D90057DF96 /* AutoPersisting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734D2D25BDE1D90057DF96 /* AutoPersisting.swift */; };
+		C7734D2E25BDE1D90057DF96 /* Published+Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734D2D25BDE1D90057DF96 /* Published+Persistence.swift */; };
 		C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */; };
 		C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */; };
 		C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */; };
@@ -90,7 +90,7 @@
 		C7734CE525BCFD180057DF96 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		C7734CED25BCFE5D0057DF96 /* QuickLookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookView.swift; sourceTree = "<group>"; };
 		C7734D1125BD00330057DF96 /* QuickLookAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookAttachment.swift; sourceTree = "<group>"; };
-		C7734D2D25BDE1D90057DF96 /* AutoPersisting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoPersisting.swift; sourceTree = "<group>"; };
+		C7734D2D25BDE1D90057DF96 /* Published+Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Published+Persistence.swift"; sourceTree = "<group>"; };
 		C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
 		C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFocusTextField.swift; sourceTree = "<group>"; };
 		C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVIew.swift; sourceTree = "<group>"; };
@@ -185,7 +185,7 @@
 			children = (
 				C7734CB125BCDEEA0057DF96 /* StringUtils.swift */,
 				C7734CD725BCF4760057DF96 /* URLUtils.swift */,
-				C7734D2D25BDE1D90057DF96 /* AutoPersisting.swift */,
+				C7734D2D25BDE1D90057DF96 /* Published+Persistence.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -621,7 +621,7 @@
 				C77D499525BC75B40073A964 /* MessageHistoryStyle.swift in Sources */,
 				C77D49B325BC777E0073A964 /* CompactMessageView.swift in Sources */,
 				C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */,
-				C7734D2E25BDE1D90057DF96 /* AutoPersisting.swift in Sources */,
+				C7734D2E25BDE1D90057DF96 /* Published+Persistence.swift in Sources */,
 				C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */,
 				C7734CEE25BCFE5D0057DF96 /* QuickLookView.swift in Sources */,
 				C7734CBA25BCE6CE0057DF96 /* MessageHistoryView.swift in Sources */,

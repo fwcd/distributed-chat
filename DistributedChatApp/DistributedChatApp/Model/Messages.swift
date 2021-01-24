@@ -10,9 +10,9 @@ import DistributedChat
 import Foundation
 
 class Messages: ObservableObject {
-    @Published var unreadChannelNames: Set<String?> = []
     @Published var autoReadChannelNames: Set<String?> = []
-    @Published private(set) var messages: [ChatMessage] = []
+    @Published(persistingTo: "Messages/unread.json") var unreadChannelNames: Set<String?> = []
+    @Published(persistingTo: "Messages/messages.json") private(set) var messages: [ChatMessage] = []
     
     var channelNames: [String?] {
         [nil] + Set(messages.compactMap(\.channelName)).sorted()
