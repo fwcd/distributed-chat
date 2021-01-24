@@ -21,16 +21,20 @@ struct AttachmentView: View {
             }
         }
         .sheet(isPresented: $quickLookShown) {
-            VStack(alignment: .trailing) {
-                Button(action: { quickLookShown = false }) {
-                    Text("Close")
-                        .foregroundColor(.primary)
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: { quickLookShown = false }) {
+                        Text("Close")
+                            .foregroundColor(.primary)
+                    }
                 }
+                .padding(15)
+                
                 if let item = try? QuickLookAttachment(attachment: attachment) {
                     QuickLookView(item: item)
                 }
             }
-            .padding(15)
         }
     }
 }
