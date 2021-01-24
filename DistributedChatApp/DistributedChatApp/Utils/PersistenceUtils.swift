@@ -11,7 +11,7 @@ import Logging
 
 fileprivate let encoder = JSONEncoder()
 fileprivate let decoder = JSONDecoder()
-fileprivate let log = Logger(label: "PersistenceUtils")
+fileprivate let log = Logger(label: "DistributedChatApp.PersistenceUtils")
 
 private var subscriptions = [String: AnyCancellable]()
 

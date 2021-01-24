@@ -10,7 +10,7 @@ import Foundation
 import Logging
 import QuickLook
 
-fileprivate let log = Logger(label: "QuickLookAttachment")
+fileprivate let log = Logger(label: "DistributedChatApp.QuickLookAttachment")
 
 class QuickLookAttachment: NSObject, QLPreviewItem {
     private let attachment: ChatAttachment

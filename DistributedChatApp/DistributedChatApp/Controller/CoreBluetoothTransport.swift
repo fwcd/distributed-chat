@@ -11,7 +11,7 @@ import DistributedChat
 import Foundation
 import Logging
 
-fileprivate let log = Logger(label: "CoreBluetoothTransport")
+fileprivate let log = Logger(label: "DistributedChatApp.CoreBluetoothTransport")
 
 /// Custom UUID specifically for the 'Distributed Chat' service
 fileprivate let serviceUUID = CBUUID(string: "59553ceb-2ffa-4018-8a6c-453a5292044d")

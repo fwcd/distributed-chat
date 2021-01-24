@@ -7,6 +7,8 @@
 
 import Combine
 import DistributedChat
+import Logging
+import LoggingOSLog
 import SwiftUI
 
 private class AppState {
@@ -20,6 +22,8 @@ private class AppState {
     private var subscriptions: [AnyCancellable] = []
     
     init() {
+        LoggingSystem.bootstrap(LoggingOSLog.init)
+        
         let settings = Settings()
         let nearby = Nearby()
         let profile = Profile()

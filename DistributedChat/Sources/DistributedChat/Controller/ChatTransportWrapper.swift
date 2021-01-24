@@ -3,7 +3,7 @@ import Logging
 
 fileprivate let encoder = JSONEncoder()
 fileprivate let decoder = JSONDecoder()
-fileprivate let log = Logger(label: "ChatTransportWrapper")
+fileprivate let log = Logger(label: "DistributedChat.ChatTransportWrapper")
 
 /// An abstraction of the transport layer that
 /// operates on (JSON-)codable types rather than

@@ -1,7 +1,7 @@
 import Foundation
 import Logging
 
-fileprivate let log = Logger(label: "ChatController")
+fileprivate let log = Logger(label: "DistributedChat.ChatController")
 
 /// The central structure of the distributed chat.
 /// Carries out actions, e.g. on the user's behalf.

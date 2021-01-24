@@ -9,7 +9,7 @@ import DistributedChat
 import Logging
 import SwiftUI
 
-fileprivate let log = Logger(label: "MessageComposeView")
+fileprivate let log = Logger(label: "DistributedChatApp.MessageComposeView")
 
 struct MessageComposeView: View {
     let channelName: String?

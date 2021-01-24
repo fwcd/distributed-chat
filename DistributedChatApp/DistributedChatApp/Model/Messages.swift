@@ -10,7 +10,7 @@ import DistributedChat
 import Foundation
 import Logging
 
-fileprivate let log = Logger(label: "Messages")
+fileprivate let log = Logger(label: "DistributedChatApp.Messages")
 
 class Messages: ObservableObject {
     @Published var autoReadChannelNames: Set<String?> = []
