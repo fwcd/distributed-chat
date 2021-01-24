@@ -74,7 +74,6 @@ struct MessageComposeView: View {
     private func sendDraft() {
         if !draft.isEmpty || !(draftAttachmentUrls ?? []).isEmpty {
             let attachments = draftAttachments
-            print(attachments)
             controller.send(content: draft, on: channelName, attaching: attachments, replyingTo: replyingToMessageId)
             draft = ""
             draftAttachmentUrls = nil

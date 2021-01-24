@@ -34,6 +34,9 @@ struct BubbleMessageView: View {
                         .font(.caption)
                         .foregroundColor(isMe ? .gray : .white)
                     Text(message.content)
+                    ForEach(message.attachments ?? []) { attachment in
+                        AttachmentView(attachment: attachment)
+                    }
                 }
                 .foregroundColor(isMe ? .black : .white)
                 .padding(10)
