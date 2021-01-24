@@ -19,7 +19,8 @@ struct MessageComposeView: View {
     @EnvironmentObject private var messages: Messages
     @State private var draft: String = ""
     @State private var draftAttachmentUrls: [URL]? = nil
-    @State private var attachmentPickerShown: Bool = false
+    @State private var attachmentActionSheetShown: Bool = false
+    @State private var attachmentFilePickerShown: Bool = false
     
     private var draftAttachments: [ChatAttachment]? {
         draftAttachmentUrls?.compactMap { url in
@@ -52,7 +53,7 @@ struct MessageComposeView: View {
                 }
             }
             HStack {
-                Button(action: { attachmentPickerShown = true }) {
+                Button(action: { attachmentActionSheetShown = true }) {
                     Image(systemName: "plus")
                         .resizable()
                         .frame(width: 24, height: 24)
@@ -65,11 +66,25 @@ struct MessageComposeView: View {
                 }
             }
         }
-        .fileImporter(isPresented: $attachmentPickerShown, allowedContentTypes: [.data], allowsMultipleSelection: false) {
+        .actionSheet(isPresented: $attachmentActionSheetShown) {
+            ActionSheet(
+                title: Text("Add Attachment"),
+                buttons: [
+                    .default(Text("File")) { attachmentFilePickerShown = true },
+                    .cancel {
+                        // TODO: Workaround for attachmentFilePickerShown
+                        // staying true if the user only slides the sheet
+                        // down.
+                        attachmentFilePickerShown = false
+                    }
+                ]
+            )
+        }
+        .fileImporter(isPresented: $attachmentFilePickerShown, allowedContentTypes: [.data], allowsMultipleSelection: false) {
             if case let .success(urls) = $0 {
                 draftAttachmentUrls = urls
             }
-            attachmentPickerShown = false
+            attachmentFilePickerShown = false
         }
     }
     
