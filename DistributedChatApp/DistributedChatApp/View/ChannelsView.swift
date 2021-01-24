@@ -62,7 +62,7 @@ struct ChannelsView: View {
                             Button(action: {
                                 messages.unreadChannelNames.insert(channelName)
                             }) {
-                                Text("Mark as Unead")
+                                Text("Mark as Unread")
                                 Image(systemName: "circlebadge.fill")
                             }
                         }
