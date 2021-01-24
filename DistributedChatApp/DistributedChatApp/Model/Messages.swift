@@ -8,6 +8,9 @@
 import Combine
 import DistributedChat
 import Foundation
+import Logging
+
+fileprivate let log = Logger(label: "Messages")
 
 class Messages: ObservableObject {
     @Published var autoReadChannelNames: Set<String?> = []
@@ -33,10 +36,39 @@ class Messages: ObservableObject {
     }
     
     func append(message: ChatMessage) {
+        var message = message
+        
+        if let indices = message.attachments?.indices {
+            for i in indices {
+                message.attachments![i] = storeLocally(attachment: message.attachments![i])
+            }
+        }
+        
         messages.append(message)
         if !autoReadChannelNames.contains(message.channelName) {
             unreadChannelNames.insert(message.channelName)
         }
+    }
+    
+    private func storeLocally(attachment: ChatAttachment) -> ChatAttachment {
+        var attachment = attachment
+        let baseURL = persistenceFileURL(path: "Attachments/\(attachment.name)")
+        var url = baseURL
+        var i = 1
+        
+        while (try? !url.checkResourceIsReachable()) ?? false {
+            url = baseURL.appendingPathExtension("-\(i)")
+            i += 1
+        }
+        
+        do {
+            try Data(contentsOf: attachment.url).write(to: url)
+            attachment.url = url
+        } catch {
+            log.error("Could not store attachment: \(error)")
+        }
+        
+        return attachment
     }
     
     func clear(channelName: String?) {
