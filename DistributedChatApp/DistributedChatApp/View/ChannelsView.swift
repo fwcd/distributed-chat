@@ -53,17 +53,10 @@ struct ChannelsView: View {
                     .contextMenu {
                         if messages.unreadChannelNames.contains(channelName) {
                             Button(action: {
-                                messages.unreadChannelNames.remove(channelName)
+                                messages.markAsRead(channelName: channelName)
                             }) {
                                 Text("Mark as Read")
                                 Image(systemName: "circlebadge")
-                            }
-                        } else {
-                            Button(action: {
-                                messages.unreadChannelNames.insert(channelName)
-                            }) {
-                                Text("Mark as Unread")
-                                Image(systemName: "circlebadge.fill")
                             }
                         }
                         Button(action: {

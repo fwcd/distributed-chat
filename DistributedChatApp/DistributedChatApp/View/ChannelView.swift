@@ -25,7 +25,7 @@ struct ChannelView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             messages.autoReadChannelNames.insert(channelName)
-            messages.unreadChannelNames.remove(channelName)
+            messages.markAsRead(channelName: channelName)
         }
         .onDisappear {
             messages.autoReadChannelNames.remove(channelName)

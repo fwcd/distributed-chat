@@ -9,6 +9,7 @@ import Combine
 import DistributedChat
 import Logging
 import LoggingOSLog
+import UserNotifications
 import SwiftUI
 
 private class AppState {
@@ -48,9 +49,12 @@ private class AppState {
 }
 
 private let state = AppState()
+private let log = Logger(label: "DistributedChatApp.DistributedChatApp")
 
 @main
 struct DistributedChatApp: App {
+    @State private var notificationsInitialized: Bool = false
+    
     var body: some Scene {
         WindowGroup {
             ContentView(controller: state.controller)
@@ -58,6 +62,23 @@ struct DistributedChatApp: App {
                 .environmentObject(state.messages)
                 .environmentObject(state.nearby)
                 .environmentObject(state.profile)
+                .onAppear {
+                    if !notificationsInitialized {
+                        notificationsInitialized = true
+//                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+//                            if let error = error {
+//                                log.error("Error while requesting notifications permission: \(error)")
+//                            }
+//                            if granted {
+//                                state.controller.onAddChatMessage {
+//                                    let notification = UNMutableNotificationContent()
+//                                    notification.badge
+//                                }
+//                                log.info("Registered notification handler!")
+//                            }
+//                        }
+                    }
+                }
         }
     }
     

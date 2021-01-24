@@ -14,25 +14,29 @@ fileprivate let log = Logger(label: "DistributedChatApp.Messages")
 
 class Messages: ObservableObject {
     @Published var autoReadChannelNames: Set<String?> = []
-    @Published(persistingTo: "Messages/unread.json") var unreadChannelNames: Set<String?> = []
-    @Published(persistingTo: "Messages/messages.json") private(set) var messages: [ChatMessage] = []
+    @Published(persistingTo: "Messages/unread.json") var unread: Set<UUID> = []
+    @Published(persistingTo: "Messages/messages.json") private(set) var messages: [UUID: ChatMessage] = [:]
+    
+    var unreadChannelNames: Set<String?> { Set(unread.compactMap { messages[$0] }.map(\.channelName)) }
     
     var channelNames: [String?] {
-        [nil] + Set(messages.compactMap(\.channelName)).sorted()
+        [nil] + Set(messages.values.sorted { $0.timestamp > $1.timestamp }.compactMap(\.channelName))
     }
     
     init() {}
     
     init(messages: [ChatMessage]) {
-        self.messages = messages
+        self.messages = Dictionary(messages.map { ($0.id, $0) }, uniquingKeysWith: { k, _ in k })
     }
     
     subscript(channelName: String?) -> [ChatMessage] {
-        messages.filter { $0.channelName == channelName }
+        messages.values
+            .filter { $0.channelName == channelName }
+            .sorted { $0.timestamp < $1.timestamp }
     }
     
     subscript(id: UUID) -> ChatMessage? {
-        messages.first { $0.id == id }
+        messages[id]
     }
     
     func append(message: ChatMessage) {
@@ -44,9 +48,9 @@ class Messages: ObservableObject {
             }
         }
         
-        messages.append(message)
+        messages[message.id] = message
         if !autoReadChannelNames.contains(message.channelName) {
-            unreadChannelNames.insert(message.channelName)
+            unread.insert(message.id)
         }
     }
     
@@ -74,10 +78,14 @@ class Messages: ObservableObject {
     }
     
     func clear(channelName: String?) {
-        messages.removeAll { $0.channelName == channelName }
+        messages = messages.filter { $0.value.channelName != channelName }
+    }
+    
+    func markAsRead(channelName: String?) {
+        unread = unread.filter { messages[$0]?.channelName == channelName }
     }
     
     func deleteMessage(id: UUID) {
-        messages.removeAll { $0.id == id }
+        messages[id] = nil
     }
 }
