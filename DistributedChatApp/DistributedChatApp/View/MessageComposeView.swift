@@ -70,6 +70,7 @@ struct MessageComposeView: View {
             ActionSheet(
                 title: Text("Add Attachment"),
                 buttons: [
+                    // TODO: Image picker, contacts picker etc.
                     .default(Text("File")) { attachmentFilePickerShown = true },
                     .cancel {
                         // TODO: Workaround for attachmentFilePickerShown
