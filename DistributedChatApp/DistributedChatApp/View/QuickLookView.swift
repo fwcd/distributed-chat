@@ -19,6 +19,7 @@ struct QuickLookView<I>: UIViewControllerRepresentable where I: QLPreviewItem {
     func makeUIViewController(context: Context) -> some UIViewController {
         let vc = QLPreviewController()
         vc.delegate = context.coordinator
+        vc.dataSource = context.coordinator
         return vc
     }
     
