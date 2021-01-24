@@ -12,10 +12,6 @@ import LoggingOSLog
 import SwiftUI
 import UserNotifications
 
-#if os(iOS)
-import UIKit
-#endif
-
 private class AppState {
     let settings: Settings
     let nearby: Nearby
@@ -55,46 +51,7 @@ private class AppState {
     }
 }
 
-private let state = AppState()
-private let log = Logger(label: "DistributedChatApp.DistributedChatApp")
-
-#if os(iOS)
-private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        // distributedchat:///channel           --> channel #global
-        // distributedchat:///channel/test      --> channel #test
-        // distributedchat:///message/<uuid>    --> specific message (TODO: Actually scroll to message)
-        
-        log.info("Handling URL \(url)...")
-        let components = url.pathComponents
-        if components.count >= 2 {
-            switch components[..<2] {
-            case ["/", "channel"]:
-                if components.count == 3 {
-                    let channelName = components[2]
-                    if state.messages.channelNames.contains(channelName) {
-                        log.info("Opening URL \(url) as #\(channelName)...")
-                        state.navigation.activeChannelName = channelName
-                        return true
-                    }
-                } else {
-                    log.info("Opening URL \(url) as #global...")
-                    state.navigation.activeChannelName = Optional<String?>.some(nil)
-                    return true
-                }
-            case ["/", "message"]:
-                if components.count == 3, let id = UUID(uuidString: components[2]), let message = state.messages[id] {
-                    log.info("Opening URL \(url) as message with ID \(id)...")
-                    state.navigation.activeChannelName = message.channelName
-                    return true
-                }
-            default:
-                break
-            }
-        }
-        return false
-    }
-    
+private class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         log.info("Opening from notification...")
         if let target = response.notification.request.content.targetContentIdentifier, let url = URL(string: target) {
@@ -104,14 +61,13 @@ private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCe
         completionHandler()
     }
 }
-#endif
+
+private let state = AppState()
+private let notificationDelegate = NotificationDelegate()
+private let log = Logger(label: "DistributedChatApp.DistributedChatApp")
 
 @main
 struct DistributedChatApp: App {
-    #if os(iOS)
-    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    #endif
-    
     @State private var notificationsInitialized: Bool = false
     
     var body: some Scene {
@@ -126,7 +82,7 @@ struct DistributedChatApp: App {
                     if !notificationsInitialized {
                         notificationsInitialized = true
                         let center = UNUserNotificationCenter.current()
-                        center.delegate = appDelegate
+                        center.delegate = notificationDelegate
                         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
                             if let error = error {
                                 log.error("Error while requesting notifications permission: \(error)")
@@ -151,6 +107,37 @@ struct DistributedChatApp: App {
                                 })
                                 log.info("Registered notification handler!")
                             }
+                        }
+                    }
+                }
+                .onOpenURL { url in
+                    // distributedchat:///channel           --> channel #global
+                    // distributedchat:///channel/test      --> channel #test
+                    // distributedchat:///message/<uuid>    --> specific message (TODO: Actually scroll to message)
+                    
+                    log.info("Opening URL \(url)...")
+                    
+                    let components = url.pathComponents
+                    if components.count >= 2 {
+                        switch components[..<2] {
+                        case ["/", "channel"]:
+                            if components.count == 3 {
+                                let channelName = components[2]
+                                if state.messages.channelNames.contains(channelName) {
+                                    log.debug("Parsed URL as #\(channelName)...")
+                                    state.navigation.activeChannelName = channelName
+                                }
+                            } else {
+                                log.debug("Parsed URL as #global...")
+                                state.navigation.activeChannelName = Optional<String?>.some(nil)
+                            }
+                        case ["/", "message"]:
+                            if components.count == 3, let id = UUID(uuidString: components[2]), let message = state.messages[id] {
+                                log.debug("Parsed URL as message with ID \(id)...")
+                                state.navigation.activeChannelName = message.channelName
+                            }
+                        default:
+                            break
                         }
                     }
                 }
