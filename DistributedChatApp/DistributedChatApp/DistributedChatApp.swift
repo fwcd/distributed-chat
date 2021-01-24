@@ -9,13 +9,15 @@ import Combine
 import DistributedChat
 import Logging
 import LoggingOSLog
-import UserNotifications
 import SwiftUI
+import UserNotifications
+import UIKit
 
 private class AppState {
     let settings: Settings
     let nearby: Nearby
     let profile: Profile
+    let navigation: Navigation
     let transport: ChatTransport
     let controller: ChatController
     let messages: Messages
@@ -28,6 +30,7 @@ private class AppState {
         let settings = Settings()
         let nearby = Nearby()
         let profile = Profile()
+        let navigation = Navigation()
         let transport = CoreBluetoothTransport(settings: settings, nearby: nearby)
         let controller = ChatController(transport: transport)
         let messages = Messages()
@@ -42,6 +45,7 @@ private class AppState {
         self.settings = settings
         self.nearby = nearby
         self.profile = profile
+        self.navigation = navigation
         self.transport = transport
         self.controller = controller
         self.messages = messages
@@ -51,8 +55,19 @@ private class AppState {
 private let state = AppState()
 private let log = Logger(label: "DistributedChatApp.DistributedChatApp")
 
+private class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        if let id = UUID(uuidString: url.path), let message = state.messages[id] {
+            state.navigation.activeChannelName = message.channelName
+            return true
+        }
+        return false
+    }
+}
+
 @main
 struct DistributedChatApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var notificationsInitialized: Bool = false
     
     var body: some Scene {
@@ -60,6 +75,7 @@ struct DistributedChatApp: App {
             ContentView(controller: state.controller)
                 .environmentObject(state.settings)
                 .environmentObject(state.messages)
+                .environmentObject(state.navigation)
                 .environmentObject(state.nearby)
                 .environmentObject(state.profile)
                 .onAppear {

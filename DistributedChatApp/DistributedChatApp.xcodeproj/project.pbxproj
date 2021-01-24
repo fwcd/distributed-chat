@@ -20,6 +20,7 @@
 		C7734D3C25BDE9B50057DF96 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734D3B25BDE9B50057DF96 /* Profile.swift */; };
 		C7734D4B25BDF52C0057DF96 /* LoggingOSLog in Frameworks */ = {isa = PBXBuildFile; productRef = C7734D4A25BDF52C0057DF96 /* LoggingOSLog */; };
 		C7734D9125BE27BD0057DF96 /* CollectionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734D9025BE27BD0057DF96 /* CollectionUtils.swift */; };
+		C7734DA625BE37310057DF96 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734DA525BE37310057DF96 /* Navigation.swift */; };
 		C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */; };
 		C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */; };
 		C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */; };
@@ -96,6 +97,7 @@
 		C7734D2D25BDE1D90057DF96 /* PersistenceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceUtils.swift; sourceTree = "<group>"; };
 		C7734D3B25BDE9B50057DF96 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		C7734D9025BE27BD0057DF96 /* CollectionUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionUtils.swift; sourceTree = "<group>"; };
+		C7734DA525BE37310057DF96 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		C77C1DDF25BBB127005D0B7C /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
 		C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFocusTextField.swift; sourceTree = "<group>"; };
 		C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVIew.swift; sourceTree = "<group>"; };
@@ -195,6 +197,14 @@
 				C7734D9025BE27BD0057DF96 /* CollectionUtils.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		C7734DA425BE36E20057DF96 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C7734DA525BE37310057DF96 /* Navigation.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		C7982CC525BB851F000DC0F1 /* DistributedChatMacApp */ = {
@@ -312,6 +322,7 @@
 			children = (
 				C7734CB025BCDEDF0057DF96 /* Utils */,
 				C7982D3125BB89CD000DC0F1 /* Model */,
+				C7734DA425BE36E20057DF96 /* ViewModel */,
 				C7AFC9B825BB52F200AF9526 /* View */,
 				C7AFC9B725BB52E400AF9526 /* Controller */,
 				C7BC335125B3C00700989E95 /* DistributedChatApp.swift */,
@@ -614,6 +625,7 @@
 			files = (
 				C77D49E525BC85F70073A964 /* PlainMessageView.swift in Sources */,
 				C7734CCA25BCF09B0057DF96 /* ClosableStatusBar.swift in Sources */,
+				C7734DA625BE37310057DF96 /* Navigation.swift in Sources */,
 				C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */,
 				C7734D1225BD00330057DF96 /* QuickLookAttachment.swift in Sources */,
 				C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */,
