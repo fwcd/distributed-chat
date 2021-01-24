@@ -16,6 +16,9 @@ struct CompactMessageView: View {
             Text("\(message.author.displayName):")
                 .fontWeight(.bold)
             Text(message.content)
+            ForEach(message.attachments ?? []) { attachment in
+                AttachmentView(attachment: attachment)
+            }
         }
     }
 }
