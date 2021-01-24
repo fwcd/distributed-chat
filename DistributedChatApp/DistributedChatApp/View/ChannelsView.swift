@@ -13,6 +13,7 @@ struct ChannelsView: View {
     let controller: ChatController
     
     @EnvironmentObject private var messages: Messages
+    @EnvironmentObject private var navigation: Navigation
     @EnvironmentObject private var settings: Settings
     @EnvironmentObject private var nearby: Nearby
     @State private var channelNameDraft: String = ""
@@ -29,7 +30,7 @@ struct ChannelsView: View {
                     Text("\(nearbyCount) \("user".pluralized(with: nearbyCount)) currently nearby")
                 }
                 ForEach(channelNames + ((channelNameDraft.isEmpty || channelNames.contains(channelNameDraft)) ? [] : [channelNameDraft]), id: \.self) { channelName in
-                    NavigationLink(destination: ChannelView(channelName: channelName, controller: controller)) {
+                    NavigationLink(destination: ChannelView(channelName: channelName, controller: controller), tag: channelName, selection: $navigation.activeChannelName) {
                         HStack {
                             if messages.unreadChannelNames.contains(channelName) {
                                 Image(systemName: "circlebadge.fill")
@@ -128,11 +129,13 @@ struct ChannelsView: View {
 
 struct ChatsView_Previews: PreviewProvider {
     @StateObject static var messages = Messages()
+    @StateObject static var navigation = Navigation()
     @StateObject static var settings = Settings()
     @StateObject static var nearby = Nearby()
     static var previews: some View {
         ChannelsView(channelNames: [], controller: ChatController(transport: MockTransport()))
             .environmentObject(messages)
+            .environmentObject(navigation)
             .environmentObject(settings)
             .environmentObject(nearby)
     }
