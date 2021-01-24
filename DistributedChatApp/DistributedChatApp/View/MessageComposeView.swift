@@ -18,6 +18,16 @@ struct MessageComposeView: View {
     @State private var draftAttachmentUrls: [URL]? = nil
     @State private var attachmentPickerShown: Bool = false
     
+    private var draftAttachments: [ChatAttachment]? {
+        draftAttachmentUrls?.compactMap { url in
+            let mimeType = url.mimeType
+            let fileName = url.lastPathComponent
+            guard let data = try? Data(contentsOf: url),
+                  let url = URL(string: "data:\(mimeType);base64,\(data.base64EncodedString())") else { return nil }
+            return ChatAttachment(name: fileName, url: url)
+        }
+    }
+    
     var body: some View {
         VStack {
             if let id = replyingToMessageId, let message = messages[id] {
@@ -60,7 +70,7 @@ struct MessageComposeView: View {
     
     private func sendDraft() {
         if !draft.isEmpty {
-            controller.send(content: draft, on: channelName, attaching: draftAttachmentUrls, replyingTo: replyingToMessageId)
+            controller.send(content: draft, on: channelName, attaching: draftAttachments, replyingTo: replyingToMessageId)
             draft = ""
             draftAttachmentUrls = nil
             replyingToMessageId = nil
