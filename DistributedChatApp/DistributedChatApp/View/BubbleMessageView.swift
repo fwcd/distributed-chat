@@ -42,12 +42,12 @@ struct BubbleMessageView: View {
                 .padding(10)
                 .background(isMe
                     ? LinearGradient(gradient: Gradient(colors: [
-                            Color(red: 0.9, green: 0.9, blue: 0.9),
-                            Color(red: 0.9, green: 0.9, blue: 0.9)
-                        ]), startPoint: .top, endPoint: .bottom)
-                    : LinearGradient(gradient: Gradient(colors: [
                             Color(red: 0, green: 0.5, blue: 1),  // Blue
                             Color(red: 0, green: 0.4, blue: 0.7) // Darker blue
+                        ]), startPoint: .top, endPoint: .bottom)
+                    : LinearGradient(gradient: Gradient(colors: [
+                            Color(red: 0.9, green: 0.9, blue: 0.9),
+                            Color(red: 0.9, green: 0.9, blue: 0.9)
                         ]), startPoint: .top, endPoint: .bottom)
                 )
                 .cornerRadius(10)
