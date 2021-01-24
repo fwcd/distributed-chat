@@ -54,6 +54,8 @@ struct MessageComposeView: View {
             HStack {
                 Button(action: { attachmentPickerShown = true }) {
                     Image(systemName: "plus")
+                        .resizable()
+                        .frame(width: 24, height: 24)
                 }
                 TextField("Message #\(channelName ?? globalChannelName)...", text: $draft, onCommit: sendDraft)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
