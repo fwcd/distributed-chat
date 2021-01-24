@@ -24,6 +24,8 @@
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>The app needs Bluetooth to establish a mesh network over which chat messages are transmitted.</string>
+	<key>UIFileSharingEnabled</key>
+	<string>YES</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
