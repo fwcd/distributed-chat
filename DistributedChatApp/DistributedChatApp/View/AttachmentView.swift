@@ -11,10 +11,17 @@ import SwiftUI
 struct AttachmentView: View {
     let attachment: ChatAttachment
     
+    @State private var quickLookShown: Bool = false
+    
     var body: some View {
-        HStack {
-            Image(systemName: "doc.fill")
-            Text(attachment.name)
+        Button(action: { quickLookShown = true }) {
+            HStack {
+                Image(systemName: "doc.fill")
+                Text(attachment.name)
+            }
+        }
+        .sheet(isPresented: $quickLookShown) {
+            QuickLookView(item: QuickLookAttachment(attachment: attachment))
         }
     }
 }
