@@ -59,7 +59,7 @@ private let state = AppState()
 private let log = Logger(label: "DistributedChatApp.DistributedChatApp")
 
 #if os(iOS)
-private class AppDelegate: NSObject, UIApplicationDelegate {
+private class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         // distributedchat:///channel           --> channel #global
         // distributedchat:///channel/test      --> channel #test
@@ -94,6 +94,15 @@ private class AppDelegate: NSObject, UIApplicationDelegate {
         }
         return false
     }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        log.info("Opening from notification...")
+        if let target = response.notification.request.content.targetContentIdentifier, let url = URL(string: target) {
+            log.info("Found URL \(url), opening it...")
+            UIApplication.shared.open(url)
+        }
+        completionHandler()
+    }
 }
 #endif
 
@@ -117,6 +126,7 @@ struct DistributedChatApp: App {
                     if !notificationsInitialized {
                         notificationsInitialized = true
                         let center = UNUserNotificationCenter.current()
+                        center.delegate = appDelegate
                         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
                             if let error = error {
                                 log.error("Error while requesting notifications permission: \(error)")
@@ -126,6 +136,7 @@ struct DistributedChatApp: App {
                                     let content = UNMutableNotificationContent()
                                     content.title = "\(message.author.displayName) in #\(message.channelName ?? globalChannelName)"
                                     content.body = message.content
+                                    content.targetContentIdentifier = "distributedchat:///message/\(message.id)"
                                     let request = UNNotificationRequest(identifier: "DistributedChat message", content: content, trigger: nil)
                                     center.add(request) { error in
                                         if let error = error {
