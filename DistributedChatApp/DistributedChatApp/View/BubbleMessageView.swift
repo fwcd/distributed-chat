@@ -32,13 +32,13 @@ struct BubbleMessageView: View {
                 VStack(alignment: .leading) {
                     Text(message.author.displayName)
                         .font(.caption)
-                        .foregroundColor(isMe ? .gray : .white)
+                        .foregroundColor(isMe ? .white : .gray)
                     Text(message.content)
                     ForEach(message.attachments ?? []) { attachment in
                         AttachmentView(attachment: attachment)
                     }
                 }
-                .foregroundColor(isMe ? .black : .white)
+                .foregroundColor(isMe ? .white : .black)
                 .padding(10)
                 .background(isMe
                     ? LinearGradient(gradient: Gradient(colors: [
