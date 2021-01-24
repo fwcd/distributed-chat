@@ -21,14 +21,12 @@ struct MessageComposeView: View {
     var body: some View {
         VStack {
             if let id = replyingToMessageId, let message = messages[id] {
-                HStack {
-                    Text("Replying to")
-                    PlainMessageView(message: message)
-                    Spacer()
-                    Button(action: {
-                        replyingToMessageId = nil
-                    }) {
-                        Image(systemName: "xmark.circle")
+                ClosableStatusBar(onClose: {
+                    replyingToMessageId = nil
+                }) {
+                    HStack {
+                        Text("Replying to")
+                        PlainMessageView(message: message)
                     }
                 }
             }
