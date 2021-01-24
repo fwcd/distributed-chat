@@ -25,14 +25,9 @@ struct MessageComposeView: View {
         draftAttachmentUrls?.compactMap { url in
             let mimeType = url.mimeType
             let fileName = url.lastPathComponent
-            do {
-                let data = try Data(contentsOf: url)
-                guard let url = URL(string: "data:\(mimeType);base64,\(data.base64EncodedString())") else { return nil }
-                return ChatAttachment(name: fileName, url: url)
-            } catch {
-                log.warning("Could not attach \(fileName): \(error)")
-                return nil
-            }
+            guard let data = readData(url: url),
+                  let url = URL(string: "data:\(mimeType);base64,\(data.base64EncodedString())") else { return nil }
+            return ChatAttachment(name: fileName, url: url)
         }
     }
     
@@ -85,6 +80,26 @@ struct MessageComposeView: View {
             draftAttachmentUrls = nil
             replyingToMessageId = nil
         }
+    }
+    
+    private func readData(url: URL) -> Data? {
+        guard url.startAccessingSecurityScopedResource() else { return nil }
+        defer { url.stopAccessingSecurityScopedResource() }
+        
+        var error: NSError? = nil
+        var data: Data? = nil
+        NSFileCoordinator().coordinate(readingItemAt: url, error: &error) { url2 in
+            do {
+                data = try Data(contentsOf: url)
+            } catch {
+                log.error("Error while reading (potentially protected) data at \(url): \(error)")
+            }
+        }
+        if let error = error {
+            log.error("Error while coordinating (potentially protected) data at \(url): \(error)")
+        }
+        
+        return data
     }
 }
 
