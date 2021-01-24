@@ -20,7 +20,7 @@ private class AppState {
     let controller: ChatController
     let messages: Messages
     
-    private var subscriptions: [AnyCancellable] = []
+    var subscriptions: [AnyCancellable] = []
     
     init() {
         LoggingSystem.bootstrap(LoggingOSLog.init)
@@ -65,18 +65,31 @@ struct DistributedChatApp: App {
                 .onAppear {
                     if !notificationsInitialized {
                         notificationsInitialized = true
-//                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-//                            if let error = error {
-//                                log.error("Error while requesting notifications permission: \(error)")
-//                            }
-//                            if granted {
-//                                state.controller.onAddChatMessage {
-//                                    let notification = UNMutableNotificationContent()
-//                                    notification.badge
-//                                }
-//                                log.info("Registered notification handler!")
-//                            }
-//                        }
+                        let center = UNUserNotificationCenter.current()
+                        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                            if let error = error {
+                                log.error("Error while requesting notifications permission: \(error)")
+                            }
+                            if granted {
+                                state.controller.onAddChatMessage { message in
+                                    let content = UNMutableNotificationContent()
+                                    content.title = message.author.displayName
+                                    content.body = message.content
+                                    let request = UNNotificationRequest(identifier: "DistributedChat message", content: content, trigger: nil)
+                                    center.add(request) { error in
+                                        if let error = error {
+                                            log.error("Error while delivering notification: \(error)")
+                                        }
+                                    }
+                                }
+                                state.subscriptions.append(state.messages.$unread.sink { unread in
+                                    DispatchQueue.main.async {
+                                        UIApplication.shared.applicationIconBadgeNumber = unread.count
+                                    }
+                                })
+                                log.info("Registered notification handler!")
+                            }
+                        }
                     }
                 }
         }
