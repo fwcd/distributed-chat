@@ -51,14 +51,6 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         centralManager = CBCentralManager(delegate: self, queue: nil)
-        
-        settingsSubscription = settings.$bluetoothAdvertisingEnabled.sink { [unowned self] in
-            if $0 {
-                startAdvertising()
-            } else {
-                stopAdvertising()
-            }
-        }
     }
     
     func broadcast(_ raw: String) {
@@ -85,15 +77,24 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             if !initialized {
                 initialized = true
                 publishService()
-            } else if settings.bluetoothAdvertisingEnabled {
+            }
+            
+            if settings.bluetoothAdvertisingEnabled {
                 startAdvertising()
+            }
+            
+            settingsSubscription = settings.$bluetoothAdvertisingEnabled.sink { [unowned self] in
+                if $0 {
+                    startAdvertising()
+                } else {
+                    stopAdvertising()
+                }
             }
         case .poweredOff:
             log.info("Peripheral is powered off!")
         default:
             // TODO: Handle other states
             log.info("Peripheral switched into state \(peripheral.state)")
-            break
         }
     }
     
@@ -108,8 +109,6 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         service.characteristics = [characteristic]
         peripheralManager.add(service)
-        
-        startAdvertising()
     }
     
     private func startAdvertising() {
