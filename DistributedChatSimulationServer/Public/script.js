@@ -96,7 +96,8 @@ function setUpGraph() {
                         }
                     }));
                 }
-            }
+            },
+            editEdge: false
         },
         physics: {
             solver: "forceAtlas2Based",
