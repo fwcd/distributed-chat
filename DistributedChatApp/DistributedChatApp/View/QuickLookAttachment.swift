@@ -13,7 +13,7 @@ class QuickLookAttachment: NSObject, QLPreviewItem {
     private let attachment: ChatAttachment
     private let tempURL: URL
     
-    var previewItemURL: URL? { attachment.url }
+    var previewItemURL: URL? { tempURL }
     var previewItemTitle: String? { attachment.name }
     
     init(attachment: ChatAttachment) throws {
