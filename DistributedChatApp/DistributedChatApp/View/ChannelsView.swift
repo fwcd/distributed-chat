@@ -32,8 +32,7 @@ struct ChannelsView: View {
                     NavigationLink(destination: ChannelView(channelName: channelName, controller: controller)) {
                         HStack {
                             if messages.unreadChannelNames.contains(channelName) {
-                                Circle()
-                                    .frame(width: 10, height: 10)
+                                Image(systemName: "circlebadge.fill")
                                     .foregroundColor(.blue)
                             } else {
                                 Image(systemName: "number")

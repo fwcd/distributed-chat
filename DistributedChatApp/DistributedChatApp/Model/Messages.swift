@@ -20,7 +20,10 @@ class Messages: ObservableObject {
     var unreadChannelNames: Set<String?> { Set(unread.compactMap { messages[$0] }.map(\.channelName)) }
     
     var channelNames: [String?] {
-        [nil] + Set(messages.values.sorted { $0.timestamp > $1.timestamp }.compactMap(\.channelName))
+        [nil] + messages.values
+            .sorted { $0.timestamp > $1.timestamp }
+            .compactMap(\.channelName)
+            .distinct
     }
     
     init() {}
