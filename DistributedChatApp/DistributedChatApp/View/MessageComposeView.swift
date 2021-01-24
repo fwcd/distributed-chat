@@ -30,6 +30,14 @@ struct MessageComposeView: View {
                     }
                 }
             }
+            let attachmentCount = draftAttachmentUrls?.count ?? 0
+            if attachmentCount > 0 {
+                ClosableStatusBar(onClose: {
+                    draftAttachmentUrls = nil
+                }) {
+                    Text("Attaching \(attachmentCount) \("file".pluralized(with: attachmentCount))")
+                }
+            }
             HStack {
                 Button(action: { attachmentPickerShown = true }) {
                     Image(systemName: "plus")
