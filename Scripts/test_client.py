@@ -35,26 +35,27 @@ while True:
                 peripheral = Peripheral(dev.addr, dev.addrType, dev.iface)
                 characteristics = peripheral.getCharacteristics(uuid=CHARACTERISTIC_UUID)
                 if characteristics:
-                    content = input(f'  >> Enter a chat message to send: ')
-                    # See ChatProtocol.Message in DistributedChat package for a
-                    # description of the JSON message structure.
-                    s = json.dumps({
-                        'visitedUsers': [],
-                        'addedChatMessages': [
-                            {
-                                'id': str(uuid4()),
-                                'timestamp': time.time(),
-                                'author': {
+                    while True:
+                        content = input(f'  >> Enter a chat message to send: ')
+                        # See ChatProtocol.Message in DistributedChat package for a
+                        # description of the JSON message structure.
+                        s = json.dumps({
+                            'visitedUsers': [],
+                            'addedChatMessages': [
+                                {
                                     'id': str(uuid4()),
-                                    'name': 'Test Client'
-                                },
-                                'content': content
-                            }
-                        ]
-                    }).encode('utf8')
-                    c = characteristics[0]
-                    c.write(s, withResponse=True)
-                    print('  >> Wrote successfully!')
-                else:
-                    print('  >> Could not find our characteristic. :(')
+                                    'timestamp': time.time(),
+                                    'author': {
+                                        'id': str(uuid4()),
+                                        'name': 'Test Client'
+                                    },
+                                    'content': content
+                                }
+                            ]
+                        }).encode('utf8')
+                        c = characteristics[0]
+                        c.write(s, withResponse=True)
+                        print('  >> Wrote successfully!')
+                    else:
+                        print('  >> Could not find our characteristic. :(')
                 peripheral.disconnect()
