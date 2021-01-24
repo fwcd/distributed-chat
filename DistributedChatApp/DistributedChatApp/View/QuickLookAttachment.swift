@@ -21,15 +21,12 @@ class QuickLookAttachment: NSObject, QLPreviewItem {
     
     init(attachment: ChatAttachment) throws {
         self.attachment = attachment
-        let docDir = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-        let attachmentsDir = docDir.appendingPathComponent("tmp")
-        try FileManager.default.createDirectory(at: attachmentsDir, withIntermediateDirectories: true)
-        tempURL = attachmentsDir.appendingPathComponent("\(UUID())-\(attachment.name)")
+        tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(attachment.name)
         try Data(contentsOf: attachment.url).write(to: tempURL) // might overwrite an old file with that attachment name
     }
     
     deinit {
-        log.debug("Cleaning up temporary file from attachment...")
+        log.info("Cleaning up temporary file from attachment...")
         try? FileManager.default.removeItem(at: tempURL)
     }
 }
