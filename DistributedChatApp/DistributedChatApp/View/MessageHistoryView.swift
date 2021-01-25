@@ -52,6 +52,12 @@ struct MessageHistoryView: View {
                                 }
                             }
                             Button(action: {
+                                UIPasteboard.general.string = message.content
+                            }) {
+                                Text("Copy")
+                                Image(systemName: "doc.on.doc")
+                            }
+                            Button(action: {
                                 UIPasteboard.general.string = message.id.uuidString
                             }) {
                                 Text("Copy Message ID")
