@@ -51,6 +51,13 @@ struct ChannelsView: View {
                         }
                     }
                     .contextMenu {
+                        Button(action: {
+                            deletingChannelNames = [channelName]
+                            deletionConfirmationShown = true
+                        }) {
+                            Text("Delete Locally")
+                            Image(systemName: "trash")
+                        }
                         if messages.unreadChannelNames.contains(channelName) {
                             Button(action: {
                                 messages.markAsRead(channelName: channelName)
@@ -59,12 +66,19 @@ struct ChannelsView: View {
                                 Image(systemName: "circlebadge")
                             }
                         }
+                        if let channelName = channelName {
+                            Button(action: {
+                                UIPasteboard.general.string = channelName
+                            }) {
+                                Text("Copy Channel Name")
+                                Image(systemName: "doc.on.doc")
+                            }
+                        }
                         Button(action: {
-                            deletingChannelNames = [channelName]
-                            deletionConfirmationShown = true
+                            UIPasteboard.general.url = URL(string: "distributedchat:///channel\(channelName.map { "/\($0)" } ?? "")")
                         }) {
-                            Text("Delete Locally")
-                            Image(systemName: "trash")
+                            Text("Copy Channel URL")
+                            Image(systemName: "doc.on.doc.fill")
                         }
                     }
                 }

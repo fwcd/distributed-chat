@@ -7,6 +7,7 @@
 
 import DistributedChat
 import SwiftUI
+import UIKit
 
 struct MessageHistoryView: View {
     let channelName: String?
@@ -49,6 +50,18 @@ struct MessageHistoryView: View {
                                     Text("Mark as Unread")
                                     Image(systemName: "circlebadge.fill")
                                 }
+                            }
+                            Button(action: {
+                                UIPasteboard.general.string = message.id.uuidString
+                            }) {
+                                Text("Copy Message ID")
+                                Image(systemName: "doc.on.doc")
+                            }
+                            Button(action: {
+                                UIPasteboard.general.url = URL(string: "distributedchat:///message/\(message.id)")
+                            }) {
+                                Text("Copy Message URL")
+                                Image(systemName: "doc.on.doc.fill")
                             }
                         }
                         
