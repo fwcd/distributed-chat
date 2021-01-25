@@ -103,14 +103,6 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             if settings.bluetoothAdvertisingEnabled {
                 startAdvertising()
             }
-            
-            subscriptions.append(settings.$bluetoothAdvertisingEnabled.sink { [unowned self] in
-                if $0 {
-                    startAdvertising()
-                } else {
-                    stopAdvertising()
-                }
-            })
         case .poweredOff:
             log.info("Peripheral is powered off!")
         default:
@@ -143,6 +135,23 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             userNameCharacteristic.value = me.name.data(using: .utf8)
             userIDCharacteristic.value = me.id.uuidString.data(using: .utf8)
         })
+        
+        subscriptions.append(settings.$bluetoothAdvertisingEnabled.sink { [unowned self] in
+            if $0 {
+                startAdvertising()
+            } else {
+                stopAdvertising()
+            }
+        })
+        
+        // Every five seconds, re-read the signal strengths of discovered (nearby) peripherals
+        subscriptions.append(Timer.publish(every: 5, on: .main, in: .default)
+            .autoconnect()
+            .sink { [unowned self] _ in
+                for peripheral in nearbyPeripherals.keys {
+                    peripheral.readRSSI()
+                }
+            })
         
         service.characteristics = [inboxCharacteristic, userNameCharacteristic, userIDCharacteristic]
         peripheralManager.add(service)
