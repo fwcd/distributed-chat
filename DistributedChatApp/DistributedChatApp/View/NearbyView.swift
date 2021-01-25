@@ -13,27 +13,31 @@ struct NearbyView: View {
     
     var body: some View {
         NavigationView {
-            List(nearby.nearbyUsers) { user in
-                HStack {
-                    Text(user.user.displayName)
-                    Spacer()
-                    if let rssi = user.rssi {
-                        Image(systemName: "antenna.radiowaves.left.and.right")
-                        Text("\(rssi) dB")
-                    }
-                }
-                .contextMenu {
-                    Button(action: {
-                        UIPasteboard.general.string = user.id.uuidString
-                    }) {
-                        Text("Copy User ID")
-                        Image(systemName: "doc.on.doc")
-                    }
-                    Button(action: {
-                        UIPasteboard.general.string = user.user.name
-                    }) {
-                        Text("Copy User Name")
-                        Image(systemName: "doc.on.doc")
+            Form {
+                Section(header: Text("Nearby Users")) {
+                    List(nearby.nearbyUsers) { user in
+                        HStack {
+                            Text(user.user.displayName)
+                            Spacer()
+                            if let rssi = user.rssi {
+                                Image(systemName: "antenna.radiowaves.left.and.right")
+                                Text("\(rssi) dB")
+                            }
+                        }
+                        .contextMenu {
+                            Button(action: {
+                                UIPasteboard.general.string = user.id.uuidString
+                            }) {
+                                Text("Copy User ID")
+                                Image(systemName: "doc.on.doc")
+                            }
+                            Button(action: {
+                                UIPasteboard.general.string = user.user.name
+                            }) {
+                                Text("Copy User Name")
+                                Image(systemName: "doc.on.doc")
+                            }
+                        }
                     }
                 }
             }

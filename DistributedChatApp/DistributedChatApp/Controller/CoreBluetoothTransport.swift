@@ -48,7 +48,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                       let userIDString = String(data: userIDData, encoding: .utf8),
                       let userID = UUID(uuidString: userIDString) else { return nil }
                 return NearbyUser(user: ChatUser(id: userID, name: userName), rssi: dp.rssi)
-            }
+            }.sorted { $0.user.displayName < $1.user.displayName }
         }
     }
     
