@@ -12,8 +12,8 @@ struct NearbyView: View {
     
     var body: some View {
         NavigationView {
-            List(nearby.nearbyNodes, id: \.self) { node in
-                Text(node)
+            List(nearby.nearbyUsers) { user in
+                Text(user.user.displayName)
             }
             .navigationTitle("Nearby")
         }

@@ -30,7 +30,7 @@ private class AppState {
         let nearby = Nearby()
         let profile = Profile()
         let navigation = Navigation()
-        let transport = CoreBluetoothTransport(settings: settings, nearby: nearby)
+        let transport = CoreBluetoothTransport(settings: settings, nearby: nearby, profile: profile)
         let controller = ChatController(transport: transport)
         let messages = Messages()
         

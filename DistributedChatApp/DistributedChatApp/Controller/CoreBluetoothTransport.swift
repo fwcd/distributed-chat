@@ -16,7 +16,11 @@ fileprivate let log = Logger(label: "DistributedChatApp.CoreBluetoothTransport")
 /// Custom UUID specifically for the 'Distributed Chat' service
 fileprivate let serviceUUID = CBUUID(string: "59553ceb-2ffa-4018-8a6c-453a5292044d")
 /// Custom UUID for the (write-only) message inbox characteristic
-fileprivate let characteristicUUID = CBUUID(string: "440a594c-3cc2-494a-a08a-be8dd23549ff")
+fileprivate let inboxCharacteristicUUID = CBUUID(string: "440a594c-3cc2-494a-a08a-be8dd23549ff")
+/// Custom UUID for the user name characteristic (used to display 'nearby' users)
+fileprivate let userNameCharacteristicUUID = CBUUID(string: "b2234f40-2c0b-401b-8145-c612b9a7bae1")
+/// Custom UUID for the user ID characteristic (user to display 'nearby' users)
+fileprivate let userIDCharacteristicUUID = CBUUID(string: "13a4d26e-0a75-4fde-9340-4974e3da3100")
 
 /// A transport implementation that uses Bluetooth Low Energy and a
 /// custom GATT service with a write-only characteristic to transfer
@@ -30,22 +34,35 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     
     private let nearby: Nearby
     private let settings: Settings
-    private var settingsSubscription: AnyCancellable?
+    private let profile: Profile
+    
+    private var subscriptions = [AnyCancellable]()
     
     /// Tracks remote peripherals discovered by the central that feature our service's GATT characteristic.
     private var nearbyPeripherals: [CBPeripheral: DiscoveredPeripheral] = [:] {
         didSet {
-            nearby.nearbyNodes = nearbyPeripherals.keys.map { $0.name ?? "Unknown" }.sorted()
+            nearby.nearbyUsers = nearbyPeripherals.values.compactMap { dp in
+                guard let userNameData = dp.userNameCharacteristic?.value,
+                      let userIDData = dp.userIDCharacteristic?.value,
+                      let userName = String(data: userNameData, encoding: .utf8),
+                      let userIDString = String(data: userIDData, encoding: .utf8),
+                      let userID = UUID(uuidString: userIDString) else { return nil }
+                return NearbyUser(user: ChatUser(id: userID, name: userName), rssi: dp.rssi)
+            }
         }
     }
     
     private class DiscoveredPeripheral {
-        var characteristic: CBCharacteristic?
+        var rssi: Int?
+        var inboxCharacteristic: CBCharacteristic?
+        var userNameCharacteristic: CBCharacteristic?
+        var userIDCharacteristic: CBCharacteristic?
     }
     
-    required init(settings: Settings, nearby: Nearby) {
+    required init(settings: Settings, nearby: Nearby, profile: Profile) {
         self.settings = settings
         self.nearby = nearby
+        self.profile = profile
         
         super.init()
         
@@ -61,7 +78,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         log.info("Broadcasting \(raw) to \(nearbyPeripherals.count) nearby peripherals.")
         
         for (peripheral, state) in nearbyPeripherals {
-            if let data = raw.data(using: .utf8), let characteristic = state.characteristic {
+            if let data = raw.data(using: .utf8), let characteristic = state.inboxCharacteristic {
                 peripheral.writeValue(data, for: characteristic, type: .withResponse)
             }
         }
@@ -87,13 +104,13 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                 startAdvertising()
             }
             
-            settingsSubscription = settings.$bluetoothAdvertisingEnabled.sink { [unowned self] in
+            subscriptions.append(settings.$bluetoothAdvertisingEnabled.sink { [unowned self] in
                 if $0 {
                     startAdvertising()
                 } else {
                     stopAdvertising()
                 }
-            }
+            })
         case .poweredOff:
             log.info("Peripheral is powered off!")
         default:
@@ -106,12 +123,28 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         log.info("Publishing DistributedChat GATT service...")
         
         let service = CBMutableService(type: serviceUUID, primary: true)
-        let characteristic = CBMutableCharacteristic(type: characteristicUUID,
-                                                     properties: [.write],
-                                                     value: nil,
-                                                     permissions: [.writeable])
+        let inboxCharacteristic = CBMutableCharacteristic(type: inboxCharacteristicUUID,
+                                                          properties: [.write],
+                                                          value: nil,
+                                                          permissions: [.writeable])
+        let userNameCharacteristic = CBMutableCharacteristic(type: userNameCharacteristicUUID,
+                                                             properties: [.read],
+                                                             value: nil,
+                                                             permissions: [.readable])
+        let userIDCharacteristic = CBMutableCharacteristic(type: userIDCharacteristicUUID,
+                                                           properties: [.read],
+                                                           value: nil,
+                                                           permissions: [.readable])
         
-        service.characteristics = [characteristic]
+        userNameCharacteristic.value = profile.me.name.data(using: .utf8)
+        userIDCharacteristic.value = profile.me.id.uuidString.data(using: .utf8)
+        
+        subscriptions.append(profile.$me.sink { me in
+            userNameCharacteristic.value = me.name.data(using: .utf8)
+            userIDCharacteristic.value = me.id.uuidString.data(using: .utf8)
+        })
+        
+        service.characteristics = [inboxCharacteristic, userNameCharacteristic, userIDCharacteristic]
         peripheralManager.add(service)
     }
     
@@ -164,10 +197,16 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         if !nearbyPeripherals.keys.contains(peripheral) {
             nearbyPeripherals[peripheral] = DiscoveredPeripheral()
+            
+            peripheral.readRSSI()
             centralManager.connect(peripheral)
         } else {
             log.info("Remote peripheral \(peripheral.name ?? "?") has already been discovered!")
         }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didReadRSSI rssi: NSNumber, error: Error?) {
+        nearbyPeripherals[peripheral]?.rssi = rssi.intValue
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
@@ -180,16 +219,16 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         if let service = peripheral.services?.first(where: { $0.uuid == serviceUUID }) {
             log.info("Found our DistributedChat service on the remote peripheral, looking for characteristic...")
-            peripheral.discoverCharacteristics([characteristicUUID], for: service)
+            peripheral.discoverCharacteristics([inboxCharacteristicUUID], for: service)
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         log.debug("Discovered characteristics on remote peripheral \(peripheral.name ?? "?")")
         
-        if let characteristic = service.characteristics?.first(where: { $0.uuid == characteristicUUID }) {
+        if let characteristic = service.characteristics?.first(where: { $0.uuid == inboxCharacteristicUUID }) {
             log.info("Found our DistributedChat characteristic on the remote peripheral \(peripheral.name ?? "?"), nice!")
-            nearbyPeripherals[peripheral]?.characteristic = characteristic
+            nearbyPeripherals[peripheral]?.inboxCharacteristic = characteristic
         }
     }
     

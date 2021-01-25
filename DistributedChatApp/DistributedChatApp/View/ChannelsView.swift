@@ -24,7 +24,7 @@ struct ChannelsView: View {
     var body: some View {
         NavigationView {
             List {
-                let nearbyCount = nearby.nearbyNodes.count
+                let nearbyCount = nearby.nearbyUsers.count
                 HStack {
                     Image(systemName: "antenna.radiowaves.left.and.right")
                     Text("\(nearbyCount) \("user".pluralized(with: nearbyCount)) currently nearby")
