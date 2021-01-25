@@ -10,7 +10,11 @@ import Combine
 
 class Nearby: ObservableObject {
     /// Nodes that are in immediate reach, i.e. in Bluetooth LE range.
-    @Published var nearbyUsers: [NearbyUser] = []
+    @Published var nearbyUsers: [NearbyUser]
     
     // TODO: Reachable users
+    
+    init(nearbyUsers: [NearbyUser] = []) {
+        self.nearbyUsers = nearbyUsers
+    }
 }
