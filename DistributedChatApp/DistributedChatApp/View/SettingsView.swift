@@ -26,7 +26,30 @@ struct SettingsView: View {
                     Toggle(isOn: $settings.bluetooth.scanningEnabled) {
                         Text("Scan for nearby devices")
                     }
+                    Toggle(isOn: $settings.bluetooth.monitorSignalStrength) {
+                        Text("Monitor signal strengths")
+                    }
+                    if settings.bluetooth.monitorSignalStrength {
+                        HStack {
+                            Text("Monitoring interval in seconds")
+                            Spacer()
+                            TextField("sec", text: Binding(
+                                get: { String(format: "%.02f", settings.bluetooth.monitorSignalStrengthInterval) },
+                                set: {
+                                    if let value = NumberFormatter().number(from: $0) {
+                                        settings.bluetooth.monitorSignalStrengthInterval = value.doubleValue
+                                    }
+                                }
+                            ))
+                                .multilineTextAlignment(.trailing)
+                                .fixedSize()
+                                .keyboardType(.numberPad)
+                        }
+                    }
                 }
+            }
+            .onReceive(settings.$bluetooth) { _ in
+                print("Updated")
             }
             .navigationTitle("Settings")
         }

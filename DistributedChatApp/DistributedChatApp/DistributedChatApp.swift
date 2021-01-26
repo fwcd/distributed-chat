@@ -38,7 +38,6 @@ private class AppState {
             messages.append(message: message)
         }
         
-        controller.update(me: profile.me)
         subscriptions.append(profile.$me.sink(receiveValue: controller.update(me:)))
         
         self.settings = settings

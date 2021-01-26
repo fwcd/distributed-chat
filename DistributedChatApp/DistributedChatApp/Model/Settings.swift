@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 
 class Settings: ObservableObject {
     @Published(persistingTo: "Settings/presentation.json") var presentation = Presentation()
@@ -19,5 +20,7 @@ class Settings: ObservableObject {
     struct Bluetooth: Codable {
         var advertisingEnabled: Bool = true
         var scanningEnabled: Bool = true
+        var monitorSignalStrength: Bool = true
+        var monitorSignalStrengthInterval: TimeInterval = 5.0 // seconds
     }
 }

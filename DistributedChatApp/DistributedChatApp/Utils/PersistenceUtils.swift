@@ -45,7 +45,6 @@ extension Published where Value: Codable {
         } catch {
             log.debug("Could not read file: \(error)")
             self.init(initialValue: wrappedValue)
-            save(wrappedValue)
         }
         
         subscriptions[path] = projectedValue.sink(receiveValue: save)

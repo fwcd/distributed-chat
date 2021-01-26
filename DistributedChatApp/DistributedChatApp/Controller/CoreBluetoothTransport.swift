@@ -38,6 +38,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private let profile: Profile
     
     private var subscriptions = [AnyCancellable]()
+    private var timerSubscription: AnyCancellable? = nil
     
     /// Tracks remote peripherals discovered by the central that feature our service's GATT characteristic.
     private var nearbyPeripherals: [CBPeripheral: DiscoveredPeripheral] = [:] {
@@ -108,10 +109,6 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                 initializedPeripheral = true
                 publishService()
             }
-            
-            if settings.bluetooth.advertisingEnabled {
-                startAdvertising()
-            }
         case .poweredOff:
             log.info("Peripheral is powered off!")
         default:
@@ -137,13 +134,13 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                                                            value: nil,
                                                            permissions: [.readable])
         
-        userNameCharacteristic.value = profile.me.name.data(using: .utf8)
-        userIDCharacteristic.value = profile.me.id.uuidString.data(using: .utf8)
-        
         subscriptions.append(profile.$me.sink { me in
             userNameCharacteristic.value = me.name.data(using: .utf8)
             userIDCharacteristic.value = me.id.uuidString.data(using: .utf8)
         })
+        
+        service.characteristics = [inboxCharacteristic, userNameCharacteristic, userIDCharacteristic]
+        peripheralManager.add(service)
         
         subscriptions.append(settings.$bluetooth.sink { [unowned self] in
             if $0.advertisingEnabled {
@@ -151,19 +148,21 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             } else {
                 stopAdvertising()
             }
+            
+            if $0.monitorSignalStrength {
+                // Every five seconds, re-read the signal strengths of discovered (nearby) peripherals
+                timerSubscription = Timer.publish(every: $0.monitorSignalStrengthInterval, on: .main, in: .default)
+                    .autoconnect()
+                    .sink { [unowned self] _ in
+                        log.info("Reading RSSIs")
+                        for peripheral in nearbyPeripherals.keys {
+                            peripheral.readRSSI()
+                        }
+                    }
+            } else {
+                timerSubscription = nil
+            }
         })
-        
-        // Every five seconds, re-read the signal strengths of discovered (nearby) peripherals
-        subscriptions.append(Timer.publish(every: 5, on: .main, in: .default)
-            .autoconnect()
-            .sink { [unowned self] _ in
-                for peripheral in nearbyPeripherals.keys {
-                    peripheral.readRSSI()
-                }
-            })
-        
-        service.characteristics = [inboxCharacteristic, userNameCharacteristic, userIDCharacteristic]
-        peripheralManager.add(service)
     }
     
     private func startAdvertising() {
