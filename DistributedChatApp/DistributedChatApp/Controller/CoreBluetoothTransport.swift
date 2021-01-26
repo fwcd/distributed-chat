@@ -231,15 +231,14 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi: NSNumber) {
-        log.info("Discovered remote peripheral \(peripheral.name ?? "?") with advertised name \(advertisementData[CBAdvertisementDataLocalNameKey] ?? "?") (RSSI: \(rssi)")
-        
         peripheral.delegate = self
         
         if !nearbyPeripherals.keys.contains(peripheral) {
+            log.info("Discovered remote peripheral \(peripheral.name ?? "?") with advertised name \(advertisementData[CBAdvertisementDataLocalNameKey] ?? "?") (RSSI: \(rssi)")
             nearbyPeripherals[peripheral] = DiscoveredPeripheral()
             centralManager.connect(peripheral)
         } else {
-            log.info("Remote peripheral \(peripheral.name ?? "?") has already been discovered!")
+            log.debug("Remote peripheral \(peripheral.name ?? "?") has already been discovered!")
         }
     }
     
