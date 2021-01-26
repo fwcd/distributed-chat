@@ -3,6 +3,7 @@
 
 const noble = require('@abandonware/noble'); // Central/GATT client
 const readline = require('readline');
+const { v4: uuid4 } = require('uuid');
 const {
   serviceUUID,
   inboxCharacteristicUUID,
