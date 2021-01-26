@@ -14,6 +14,8 @@ const inboxCharacteristicUUID = '440a594c3cc2494aa08abe8dd23549ff';
 const userNameCharacteristicUUID = 'b2234f402c0b401b8145c612b9a7bae1';
 const userIDCharacteristicUUID = '13a4d26e0a754fde93404974e3da3100';
 
+const chunkLength = 19; // for writing to BLE characteristics
+
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
 noble.on('discover', peripheral => {
@@ -48,6 +50,14 @@ noble.on('discover', peripheral => {
           const inboxChar = chars.find(c => c.uuid === inboxCharacteristicUUID);
           const userNameChar = chars.find(c => c.uuid === userNameCharacteristicUUID);
           const userIDChar = chars.find(c => c.uuid === userIDCharacteristicUUID);
+
+          inboxChar.on('write', err => {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            console.log('Wrote to inbox!');
+          });
           
           userNameChar.read((err, data) => {
             if (err) {
@@ -73,7 +83,7 @@ noble.on('discover', peripheral => {
                     console.log(`Writing '${content}' to characteristic...`)
                     // TODO: Noble does not seem to support long characteristics,
                     //       see https://github.com/noble/noble/issues/13
-                    inboxChar.write(Buffer.from(JSON.stringify({
+                    const json = JSON.stringify({
                       visitedUsers: [],
                       addedChatMessages: [
                         {
@@ -86,13 +96,9 @@ noble.on('discover', peripheral => {
                           content: content
                         }
                       ]
-                    }), 'utf-8'), false, err => {
-                      if (err) {
-                        console.log(err);
-                        return;
-                      }
-                      chatREPL();
                     });
+                    inboxChar.write(Buffer.from(json.substring(0, 23), 'utf-8'), false);
+                    chatREPL();
                   });
                 }
 
@@ -111,7 +117,12 @@ noble.on('discover', peripheral => {
 noble.on('stateChange', state => {
   if (state === 'poweredOn') {
     console.log('Scanning for devices...');
-    noble.startScanning([serviceUUID], false, err => console.log(err));
+    noble.startScanning([serviceUUID], false, err => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+    });
   } else {
     console.log('Stopping scan...');
     noble.stopScanning();
