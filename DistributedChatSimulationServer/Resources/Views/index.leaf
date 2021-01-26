@@ -11,6 +11,16 @@
     <body>
         <div class="wrapper">
             <h1>#(title)</h1>
+            <div class="options">
+                <div class="option">
+                    <input type="checkbox" id="live-edges-enabled" name="live-edges-enabled" checked>
+                    <label for="live-edges-enabled">Show message edges in real-time</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="live-labels-enabled" name="live-labels-enabled" checked>
+                    <label for="live-labels-enabled">Show message contents in real-time</label>
+                </div>
+            </div>
             <div id="graph"></div>
         </div>
     </body>

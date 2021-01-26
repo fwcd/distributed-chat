@@ -2,6 +2,14 @@ function lookupEdges(from, to, edges) {
     return edges.get().filter((({ from: f, to: t }) => (f === from && t === to) || (t === from && f == to)));
 }
 
+function liveEdgesEnabled() {
+    return document.getElementById("live-edges-enabled").checked;
+}
+
+function liveLabelsEnabled() {
+    return document.getElementById("live-labels-enabled").checked;
+}
+
 function updateDynamically(nodes, edges) {
     // Connects to the /messaging WebSocket endpoint to
     // dynamically update the graph with nodes.
@@ -33,20 +41,22 @@ function updateDynamically(nodes, edges) {
             }
             break;
         case "broadcastNotification":
-            const timeoutMs = 1000;
-            const link = message.data.link;
-            const [id] = edges.add({
-                from: link.fromUUID,
-                to: link.toUUID,
-                label: message.data.content,
-                arrows: "to",
-                color: "violet",
-                widthConstraint: 400
-            });
-            console.log(id);
-            window.setTimeout(() => {
-                edges.remove(id);
-            }, timeoutMs);
+            if (liveEdgesEnabled()) {
+                const timeoutMs = 1000;
+                const link = message.data.link;
+                const [id] = edges.add({
+                    from: link.fromUUID,
+                    to: link.toUUID,
+                    label: liveLabelsEnabled() ? message.data.content : undefined,
+                    arrows: "to",
+                    color: "violet",
+                    widthConstraint: 400
+                });
+                console.log(id);
+                window.setTimeout(() => {
+                    edges.remove(id);
+                }, timeoutMs);
+            }
         default:
             break;
         }

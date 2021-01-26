@@ -13,6 +13,11 @@ h1 {
     box-shadow: 0 0 20px rgb(175, 175, 175);
 }
 
+.option {
+    display: inline-block;
+    margin: 0 10px;
+}
+
 @media (min-width: 1000px) {
     .wrapper {
         width: 1000px;
