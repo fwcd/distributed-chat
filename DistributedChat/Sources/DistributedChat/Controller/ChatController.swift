@@ -55,7 +55,7 @@ public class ChatController {
     public func update(name: String) {
         var newMe = me
         newMe.name = name
-        update(me: me)
+        update(me: newMe)
     }
 
     public func onAddChatMessage(_ handler: @escaping (ChatMessage) -> Void) {
