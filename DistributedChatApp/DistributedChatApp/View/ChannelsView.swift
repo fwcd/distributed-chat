@@ -42,7 +42,7 @@ struct ChannelsView: View {
                                 Text(channelName ?? globalChannelName)
                                     .font(.headline)
                                 if let message = messages[channelName].last,
-                                   settings.showChannelPreviews {
+                                   settings.presentation.showChannelPreviews {
                                     PlainMessageView(message: message)
                                         .font(.subheadline)
                                         .foregroundColor(.secondary)

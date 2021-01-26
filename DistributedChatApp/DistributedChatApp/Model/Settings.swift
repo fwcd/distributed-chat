@@ -8,8 +8,16 @@
 import Combine
 
 class Settings: ObservableObject {
-    @Published var messageHistoryStyle: MessageHistoryStyle = .bubbles
-    @Published var showChannelPreviews: Bool = true
-    @Published var bluetoothAdvertisingEnabled: Bool = true
-    @Published var bluetoothScanningEnabled: Bool = true
+    @Published(persistingTo: "Settings/presentation.json") var presentation = Presentation()
+    @Published(persistingTo: "Settings/bluetooth.json") var bluetooth = Bluetooth()
+    
+    struct Presentation: Codable {
+        var messageHistoryStyle: MessageHistoryStyle = .bubbles
+        var showChannelPreviews: Bool = true
+    }
+    
+    struct Bluetooth: Codable {
+        var advertisingEnabled: Bool = true
+        var scanningEnabled: Bool = true
+    }
 }

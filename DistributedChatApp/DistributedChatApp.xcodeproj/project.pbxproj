@@ -52,6 +52,7 @@
 		C7BC336425B3C00900989E95 /* DistributedChatAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC336325B3C00900989E95 /* DistributedChatAppTests.swift */; };
 		C7BC336F25B3C00900989E95 /* DistributedChatAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC336E25B3C00900989E95 /* DistributedChatAppUITests.swift */; };
 		C7BC338A25B3C2EE00989E95 /* DistributedChat in Frameworks */ = {isa = PBXBuildFile; productRef = C7BC338925B3C2EE00989E95 /* DistributedChat */; };
+		C7F4AFA025C0967C0067ADF4 /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F4AF9F25C0967C0067ADF4 /* PersistenceError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,6 +140,7 @@
 		C7BC336E25B3C00900989E95 /* DistributedChatAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatAppUITests.swift; sourceTree = "<group>"; };
 		C7BC337025B3C00900989E95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7BC337F25B3C1D100989E95 /* DistributedChat */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DistributedChat; path = ../DistributedChat; sourceTree = "<group>"; };
+		C7F4AF9F25C0967C0067ADF4 /* PersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +198,7 @@
 				C7734CB125BCDEEA0057DF96 /* StringUtils.swift */,
 				C7734CD725BCF4760057DF96 /* URLUtils.swift */,
 				C7734D2D25BDE1D90057DF96 /* PersistenceUtils.swift */,
+				C7F4AF9F25C0967C0067ADF4 /* PersistenceError.swift */,
 				C7734D9025BE27BD0057DF96 /* CollectionUtils.swift */,
 			);
 			path = Utils;
@@ -626,6 +629,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7F4AFA025C0967C0067ADF4 /* PersistenceError.swift in Sources */,
 				C77D49E525BC85F70073A964 /* PlainMessageView.swift in Sources */,
 				C7734CCA25BCF09B0057DF96 /* ClosableStatusBar.swift in Sources */,
 				C7734DA625BE37310057DF96 /* Navigation.swift in Sources */,

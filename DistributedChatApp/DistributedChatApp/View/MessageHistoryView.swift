@@ -71,7 +71,7 @@ struct MessageHistoryView: View {
                             }
                         }
                         
-                        switch settings.messageHistoryStyle {
+                        switch settings.presentation.messageHistoryStyle {
                         case .compact:
                             CompactMessageView(message: message)
                                 .contextMenu { menuItems }

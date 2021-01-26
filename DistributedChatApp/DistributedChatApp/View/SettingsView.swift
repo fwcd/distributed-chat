@@ -14,16 +14,16 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 Section(header: Text("Presentation")) {
-                    EnumPicker(selection: $settings.messageHistoryStyle, label: Text("Message History Style"))
-                    Toggle(isOn: $settings.showChannelPreviews) {
+                    EnumPicker(selection: $settings.presentation.messageHistoryStyle, label: Text("Message History Style"))
+                    Toggle(isOn: $settings.presentation.showChannelPreviews) {
                         Text("Show Channel Previews")
                     }
                 }
                 Section(header: Text("Bluetooth")) {
-                    Toggle(isOn: $settings.bluetoothAdvertisingEnabled) {
+                    Toggle(isOn: $settings.bluetooth.advertisingEnabled) {
                         Text("Advertise to nearby devices")
                     }
-                    Toggle(isOn: $settings.bluetoothScanningEnabled) {
+                    Toggle(isOn: $settings.bluetooth.scanningEnabled) {
                         Text("Scan for nearby devices")
                     }
                 }

@@ -109,7 +109,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                 publishService()
             }
             
-            if settings.bluetoothAdvertisingEnabled {
+            if settings.bluetooth.advertisingEnabled {
                 startAdvertising()
             }
         case .poweredOff:
@@ -145,8 +145,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             userIDCharacteristic.value = me.id.uuidString.data(using: .utf8)
         })
         
-        subscriptions.append(settings.$bluetoothAdvertisingEnabled.sink { [unowned self] in
-            if $0 {
+        subscriptions.append(settings.$bluetooth.sink { [unowned self] in
+            if $0.advertisingEnabled {
                 startAdvertising()
             } else {
                 stopAdvertising()
@@ -203,10 +203,13 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             
             if !initializedCentral {
                 initializedCentral = true
-                startScanning()
                 
-                subscriptions.append(settings.$bluetoothScanningEnabled.sink { [unowned self] in
-                    if $0 {
+                if settings.bluetooth.scanningEnabled {
+                    startScanning()
+                }
+                
+                subscriptions.append(settings.$bluetooth.sink { [unowned self] in
+                    if $0.scanningEnabled {
                         startScanning()
                     } else {
                         stopScanning()
