@@ -41,6 +41,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     /// Tracks remote peripherals discovered by the central that feature our service's GATT characteristic.
     private var nearbyPeripherals: [CBPeripheral: DiscoveredPeripheral] = [:] {
         didSet {
+            log.info("Updating nearby users...")
             nearby.nearbyUsers = nearbyPeripherals.values.compactMap { dp in
                 guard let userNameData = dp.userNameCharacteristic?.value,
                       let userIDData = dp.userIDCharacteristic?.value,
@@ -52,7 +53,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         }
     }
     
-    private class DiscoveredPeripheral {
+    private struct DiscoveredPeripheral {
         var rssi: Int?
         var inboxCharacteristic: CBCharacteristic?
         var userNameCharacteristic: CBCharacteristic?
