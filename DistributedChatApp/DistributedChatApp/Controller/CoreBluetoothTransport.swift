@@ -157,7 +157,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                 timer = Timer.publish(every: TimeInterval($0.monitorSignalStrengthInterval), on: .main, in: .default)
                     .autoconnect()
                     .sink { [unowned self] _ in
-                        log.info("Reading RSSIs")
+                        log.debug("Reading RSSIs")
                         for peripheral in nearbyPeripherals.keys {
                             peripheral.readRSSI()
                         }
