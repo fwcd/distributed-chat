@@ -207,7 +207,6 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         if !nearbyPeripherals.keys.contains(peripheral) {
             nearbyPeripherals[peripheral] = DiscoveredPeripheral()
             
-            peripheral.readRSSI()
             centralManager.connect(peripheral)
         } else {
             log.info("Remote peripheral \(peripheral.name ?? "?") has already been discovered!")
@@ -219,7 +218,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        log.info("Did connect to remote peripheral")
+        log.info("Did connect to remote peripheral, discovering services...")
         peripheral.discoverServices([serviceUUID])
     }
     
@@ -238,6 +237,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         if let characteristic = service.characteristics?.first(where: { $0.uuid == inboxCharacteristicUUID }) {
             log.info("Found our DistributedChat characteristic on the remote peripheral \(peripheral.name ?? "?"), nice!")
             nearbyPeripherals[peripheral]?.inboxCharacteristic = characteristic
+            peripheral.readRSSI()
         }
     }
     
