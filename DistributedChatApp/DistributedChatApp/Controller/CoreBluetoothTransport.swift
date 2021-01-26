@@ -41,7 +41,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     /// Tracks remote peripherals discovered by the central that feature our service's GATT characteristic.
     private var nearbyPeripherals: [CBPeripheral: DiscoveredPeripheral] = [:] {
         didSet {
-            log.info("Updating nearby users...")
+            log.debug("Updating nearby users...")
             nearby.nearbyUsers = nearbyPeripherals.map { (peripheral: CBPeripheral, discovered) in
                 NearbyUser(
                     peripheralIdentifier: peripheral.identifier,
@@ -199,7 +199,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         switch central.state {
         case .poweredOn:
             log.info("Central is powered on, scanning for peripherals!")
-            central.scanForPeripherals(withServices: [serviceUUID], options: nil)
+            central.scanForPeripherals(withServices: [serviceUUID], options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
         default:
             // TODO: Handle other states
             log.info("Central switched into state \(central.state)")
@@ -214,7 +214,6 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         if !nearbyPeripherals.keys.contains(peripheral) {
             nearbyPeripherals[peripheral] = DiscoveredPeripheral()
-            
             centralManager.connect(peripheral)
         } else {
             log.info("Remote peripheral \(peripheral.name ?? "?") has already been discovered!")
