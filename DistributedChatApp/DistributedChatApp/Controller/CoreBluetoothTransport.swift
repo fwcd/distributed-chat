@@ -38,7 +38,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private let profile: Profile
     
     private var subscriptions = [AnyCancellable]()
-    private var timerSubscription: AnyCancellable? = nil
+    private var timer: AnyCancellable? = nil
     
     /// Tracks remote peripherals discovered by the central that feature our service's GATT characteristic.
     private var nearbyPeripherals: [CBPeripheral: DiscoveredPeripheral] = [:] {
@@ -149,9 +149,12 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                 stopAdvertising()
             }
             
+            timer?.cancel()
+            timer = nil
+            
             if $0.monitorSignalStrength {
                 // Every five seconds, re-read the signal strengths of discovered (nearby) peripherals
-                timerSubscription = Timer.publish(every: $0.monitorSignalStrengthInterval, on: .main, in: .default)
+                timer = Timer.publish(every: $0.monitorSignalStrengthInterval, on: .main, in: .default)
                     .autoconnect()
                     .sink { [unowned self] _ in
                         log.info("Reading RSSIs")
@@ -159,8 +162,6 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                             peripheral.readRSSI()
                         }
                     }
-            } else {
-                timerSubscription = nil
             }
         })
     }
