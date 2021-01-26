@@ -4,8 +4,8 @@
 // To use, run 'apt-get install bluetooth bluez libbluetooth-dev libudev-dev'.
 // (if you are using Debian/Ubuntu), then 'npm install -g noble bleno'.
 
-const noble = require('noble'); // Central/GATT client
-const bleno = require('bleno'); // Peripheral/GATT server
+const noble = require('@abandonware/noble'); // Central/GATT client
+const bleno = require('@abandonware/bleno'); // Peripheral/GATT server
 const readline = require('readline');
 const { v4: uuid4 } = require('uuid');
 
@@ -56,7 +56,7 @@ noble.on('discover', peripheral => {
               console.log(err);
               return;
             }
-            console.log('Wrote to inbox!');
+            // console.log('Wrote to inbox!');
           });
           
           userNameChar.read((err, data) => {
