@@ -11,8 +11,7 @@
 # with a 'message inbox' itself (thereby making it only
 # possible to send chat messages, not receive).
 #
-# To use, run 'pip3 install bluepy'
-
+# To use, run 'pip3 install bluepy', then 'python3 test_client.py'.
 # NOTE: This script MUST run as root!
 
 import json
@@ -23,6 +22,7 @@ from gatt_constants import SERVICE_UUID, CHARACTERISTIC_UUID
 
 scanner = Scanner()
 
+def main():
 while True:
     print('Scanning for devices...')
     devices = scanner.scan(10.0)
@@ -35,6 +35,8 @@ while True:
                 peripheral = Peripheral(dev.addr, dev.addrType, dev.iface)
                 characteristics = peripheral.getCharacteristics(uuid=CHARACTERISTIC_UUID)
                 if characteristics:
+                    my_name = 'Test Client'
+                    my_id = str(uuid4())
                     while True:
                         content = input(f'  >> Enter a chat message to send: ')
                         # See ChatProtocol.Message in DistributedChat package for a
@@ -46,8 +48,8 @@ while True:
                                     'id': str(uuid4()),
                                     'timestamp': time.time(),
                                     'author': {
-                                        'id': str(uuid4()),
-                                        'name': 'Test Client'
+                                        'id': my_id,
+                                        'name': my_name
                                     },
                                     'content': content
                                 }
