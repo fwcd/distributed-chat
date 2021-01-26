@@ -14,7 +14,9 @@ to install the system dependencies, finally
 
 ```
 npm install
-sudo npm start
 ```
 
-to install the npm dependencies and launch it.
+to install the npm dependencies. Now you can either...
+
+* Launch the GATT server/peripheral using `sudo npm run server`
+* Launch the GATT client/central using `sudo npm run client`
