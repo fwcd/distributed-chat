@@ -17,7 +17,7 @@ struct NearbyView: View {
                 Section(header: Text("Nearby Users")) {
                     List(nearby.nearbyUsers) { user in
                         HStack {
-                            Text(user.user.displayName)
+                            Text(user.displayName)
                             Spacer()
                             if let rssi = user.rssi {
                                 Image(systemName: "antenna.radiowaves.left.and.right")
@@ -25,17 +25,41 @@ struct NearbyView: View {
                             }
                         }
                         .contextMenu {
-                            Button(action: {
-                                UIPasteboard.general.string = user.id.uuidString
-                            }) {
-                                Text("Copy User ID")
-                                Image(systemName: "doc.on.doc")
+                            if let chatUser = user.chatUser {
+                                Button(action: {
+                                    UIPasteboard.general.string = chatUser.id.uuidString
+                                }) {
+                                    Text("Copy User ID")
+                                    Image(systemName: "doc.on.doc")
+                                }
+                                Button(action: {
+                                    UIPasteboard.general.string = chatUser.name
+                                }) {
+                                    Text("Copy User Name")
+                                    Image(systemName: "doc.on.doc")
+                                }
                             }
                             Button(action: {
-                                UIPasteboard.general.string = user.user.name
+                                UIPasteboard.general.string = user.peripheralIdentifier.uuidString
                             }) {
-                                Text("Copy User Name")
+                                Text("Copy Peripheral ID")
                                 Image(systemName: "doc.on.doc")
+                            }
+                            if let peripheralName = user.peripheralName {
+                                Button(action: {
+                                    UIPasteboard.general.string = peripheralName
+                                }) {
+                                    Text("Copy Peripheral Name")
+                                    Image(systemName: "doc.on.doc")
+                                }
+                            }
+                            if let rssi = user.rssi {
+                                Button(action: {
+                                    UIPasteboard.general.string = String(rssi)
+                                }) {
+                                    Text("Copy RSSI")
+                                    Image(systemName: "doc.on.doc")
+                                }
                             }
                         }
                     }
@@ -48,8 +72,8 @@ struct NearbyView: View {
 
 struct NearbyView_Previews: PreviewProvider {
     @StateObject static var nearby = Nearby(nearbyUsers: [
-        NearbyUser(user: ChatUser(name: "Alice"), rssi: -49),
-        NearbyUser(user: ChatUser(name: "Bob"), rssi: -55)
+        NearbyUser(peripheralIdentifier: UUID(uuidString: "6b61a69b-f4b4-4321-92db-9d61653ddaf6")!, chatUser: ChatUser(name: "Alice"), rssi: -49),
+        NearbyUser(peripheralIdentifier: UUID(uuidString: "b7b7d248-9640-490d-8187-44fc9ebfa1ff")!, chatUser: ChatUser(name: "Bob"), rssi: -55)
     ])
     static var previews: some View {
         NearbyView()

@@ -9,8 +9,11 @@ import DistributedChat
 import Foundation
 
 struct NearbyUser: Identifiable, Hashable {
-    let user: ChatUser
-    let rssi: Int? // in dB
+    var peripheralIdentifier: UUID
+    var peripheralName: String? = nil
+    var chatUser: ChatUser? = nil
+    var rssi: Int? = nil // in dB
     
-    var id: UUID { user.id }
+    var id: UUID { peripheralIdentifier }
+    var displayName: String { chatUser?.displayName ?? peripheralName ?? peripheralIdentifier.uuidString }
 }

@@ -42,14 +42,21 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private var nearbyPeripherals: [CBPeripheral: DiscoveredPeripheral] = [:] {
         didSet {
             log.info("Updating nearby users...")
-            nearby.nearbyUsers = nearbyPeripherals.values.compactMap { dp in
-                guard let userNameData = dp.userNameCharacteristic?.value,
-                      let userIDData = dp.userIDCharacteristic?.value,
-                      let userName = String(data: userNameData, encoding: .utf8),
-                      let userIDString = String(data: userIDData, encoding: .utf8),
-                      let userID = UUID(uuidString: userIDString) else { return nil }
-                return NearbyUser(user: ChatUser(id: userID, name: userName), rssi: dp.rssi)
-            }.sorted { $0.user.displayName < $1.user.displayName }
+            nearby.nearbyUsers = nearbyPeripherals.map { (peripheral: CBPeripheral, discovered) in
+                NearbyUser(
+                    peripheralIdentifier: peripheral.identifier,
+                    peripheralName: peripheral.name,
+                    chatUser: {
+                        guard let userNameData = discovered.userNameCharacteristic?.value,
+                              let userIDData = discovered.userIDCharacteristic?.value,
+                              let userName = String(data: userNameData, encoding: .utf8),
+                              let userIDString = String(data: userIDData, encoding: .utf8),
+                              let userID = UUID(uuidString: userIDString) else { return nil }
+                        return ChatUser(id: userID, name: userName)
+                    }(),
+                    rssi: discovered.rssi
+                )
+            }.sorted { $0.id.uuidString < $1.id.uuidString } // An arbitrary, but stable ordering
         }
     }
     
