@@ -15,116 +15,57 @@ const userNameCharacteristicUUID = 'b2234f402c0b401b8145c612b9a7bae1';
 const userIDCharacteristicUUID = '13a4d26e0a754fde93404974e3da3100';
 
 const chunkLength = 19; // for writing to BLE characteristics
-
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
-noble.on('discover', peripheral => {
-  console.log(`Found peripheral ${peripheral}`);
-  noble.stopScanning();
-  peripheral.connect(err => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-
-    peripheral.discoverServices([serviceUUID], (err, services) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-
-      if (services) {
-        console.log(`Discovered DistributedChat service!`);
-        const service = services[0];
-
-        service.discoverCharacteristics([
-          inboxCharacteristicUUID,
-          userNameCharacteristicUUID,
-          userIDCharacteristicUUID
-        ], (err, chars) => {
-          if (err) {
-            console.log(err);
-            return;
-          }
-
-          const inboxChar = chars.find(c => c.uuid === inboxCharacteristicUUID);
-          const userNameChar = chars.find(c => c.uuid === userNameCharacteristicUUID);
-          const userIDChar = chars.find(c => c.uuid === userIDCharacteristicUUID);
-
-          inboxChar.on('write', err => {
-            if (err) {
-              console.log(err);
-              return;
-            }
-            // console.log('Wrote to inbox!');
-          });
-          
-          userNameChar.read((err, data) => {
-            if (err) {
-              console.log(err);
-              return;
-            }
-            const userName = data.toString('utf-8');
-
-            userIDChar.read((err, data) => {
-              if (err) {
-                console.log(err);
-                return;
-              }
-              const userID = data.toString('utf-8');
-
-              console.log(`Remote user has name ${userName} and ID ${userID}`);
-
-              rl.question('Please enter a name: ', myName => {
-                const myID = uuid4();
-
-                function chatREPL() {
-                  rl.question('Please enter a message: ', content => {
-                    console.log(`Writing '${content}' to characteristic...`)
-                    // TODO: Noble does not seem to support long characteristics,
-                    //       see https://github.com/noble/noble/issues/13
-                    const json = JSON.stringify({
-                      visitedUsers: [],
-                      addedChatMessages: [
-                        {
-                          id: uuid4(),
-                          timestamp: Date.now() / 1000.0,
-                          author: {
-                            id: myID,
-                            name: myName
-                          },
-                          content: content
-                        }
-                      ]
-                    });
-                    inboxChar.write(Buffer.from(json.substring(0, 23), 'utf-8'), false);
-                    chatREPL();
-                  });
-                }
-
-                chatREPL();
-              });
-            });
-          });
-        });
-      } else {
-        peripheral.disconnect();
-      }
+function question(query) {
+  return new Promise(resolve => {
+    rl.question(query, answer => {
+      resolve(answer);
     });
   });
+}
+
+noble.on('discover', async peripheral => {
+  console.log(`Found peripheral ${peripheral}`);
+  await noble.stopScanningAsync();
+  await peripheral.connectAsync();
+
+  const { characteristics } = await peripheral.discoverSomeServicesAndCharacteristicsAsync([serviceUUID], [inboxCharacteristicUUID, userNameCharacteristicUUID, userIDCharacteristicUUID]);
+  const inboxChar = characteristics.find(c => c.uuid === inboxCharacteristicUUID);
+  const userNameChar = characteristics.find(c => c.uuid === userNameCharacteristicUUID);
+  const userIDChar = characteristics.find(c => c.uuid === userIDCharacteristicUUID);
+
+  if (inboxChar && userNameChar && userIDChar) {
+    console.log(`Discovered our characteristics!`);
+    const userName = (await userNameChar.readAsync()).toString('utf-8');
+    const userID = (await userIDChar.readAsync()).toString('utf-8');
+    const myName = await question('Please enter a name: ');
+    const myID = uuid4();
+
+    while (true) {
+      const content = await question('Please enter a message: ');
+      const json = JSON.stringify({
+        visitedUsers: [],
+        addedChatMessages: [
+          {
+            id: uuid4(),
+            timestamp: Date.now() / 1000.0,
+            author: {
+              id: myID,
+              name: myName
+            },
+            content: content
+          }
+        ]
+      });
+      await inboxChar.writeAsync(Buffer.from(json, 'utf-8'), false);
+    }
+  }
 });
 
-noble.on('stateChange', state => {
+noble.on('stateChange', async state => {
   if (state === 'poweredOn') {
     console.log('Scanning for devices...');
-    noble.startScanning([serviceUUID], false, err => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-    });
-  } else {
-    console.log('Stopping scan...');
-    noble.stopScanning();
+    await noble.startScanningAsync([serviceUUID], false);
   }
 });
