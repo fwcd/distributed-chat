@@ -9,6 +9,10 @@
 //
 //           sudo systemctl stop bluetooth
 //           sudo hciconfig hci0 up
+//
+//       Once you are done, remember to restart bluetoothd:
+//
+//           sudo systemctl start bluetooth
 
 const bleno = require('@abandonware/bleno'); // Peripheral/GATT server
 const {
