@@ -5,9 +5,10 @@
   "main": "gatt_client.js",
   "scripts": {
     "client": "node ./gatt_client.js",
-    "server": "node ./gatt_server.js"
+    "server": "node ./gatt_server.js",
+    "start": "node ./gatt_client.js"
   },
-  "author": "",
+  "author": "fwcd",
   "license": "MPL-2.0",
   "dependencies": {
     "@abandonware/bleno": "^0.5.1-3",
