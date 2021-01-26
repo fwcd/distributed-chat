@@ -21,7 +21,10 @@ struct SettingsView: View {
                 }
                 Section(header: Text("Bluetooth")) {
                     Toggle(isOn: $settings.bluetoothAdvertisingEnabled) {
-                        Text("Bluetooth LE Advertising")
+                        Text("Advertise to nearby devices")
+                    }
+                    Toggle(isOn: $settings.bluetoothScanningEnabled) {
+                        Text("Scan for nearby devices")
                     }
                 }
             }

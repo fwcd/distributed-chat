@@ -29,7 +29,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private var peripheralManager: CBPeripheralManager!
     private var centralManager: CBCentralManager!
     
-    private var initialized: Bool = false
+    private var initializedPeripheral: Bool = false
+    private var initializedCentral: Bool = false
     private var listeners = [(String) -> Void]()
     
     private let nearby: Nearby
@@ -103,8 +104,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         case .poweredOn:
             log.info("Peripheral is powered on!")
             
-            if !initialized {
-                initialized = true
+            if !initializedPeripheral {
+                initializedPeripheral = true
                 publishService()
             }
             
@@ -198,13 +199,35 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
         case .poweredOn:
-            log.info("Central is powered on, scanning for peripherals!")
-            central.scanForPeripherals(withServices: [serviceUUID], options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+            log.info("Central is powered on!")
+            
+            if !initializedCentral {
+                initializedCentral = true
+                startScanning()
+                
+                subscriptions.append(settings.$bluetoothScanningEnabled.sink { [unowned self] in
+                    if $0 {
+                        startScanning()
+                    } else {
+                        stopScanning()
+                    }
+                })
+            }
         default:
             // TODO: Handle other states
             log.info("Central switched into state \(central.state)")
             break
         }
+    }
+    
+    func startScanning() {
+        log.info("Starting to scan")
+        centralManager.scanForPeripherals(withServices: [serviceUUID], options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+    }
+    
+    func stopScanning() {
+        log.info("Stopping scan")
+        centralManager.stopScan()
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi: NSNumber) {
