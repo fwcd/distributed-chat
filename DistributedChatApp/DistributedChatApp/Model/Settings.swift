@@ -21,6 +21,6 @@ class Settings: ObservableObject {
         var advertisingEnabled: Bool = true
         var scanningEnabled: Bool = true
         var monitorSignalStrength: Bool = true
-        var monitorSignalStrengthInterval: TimeInterval = 5.0 // seconds
+        var monitorSignalStrengthInterval: Int = 5 // seconds
     }
 }

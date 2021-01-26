@@ -154,7 +154,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             
             if $0.monitorSignalStrength {
                 // Every five seconds, re-read the signal strengths of discovered (nearby) peripherals
-                timer = Timer.publish(every: $0.monitorSignalStrengthInterval, on: .main, in: .default)
+                timer = Timer.publish(every: TimeInterval($0.monitorSignalStrengthInterval), on: .main, in: .default)
                     .autoconnect()
                     .sink { [unowned self] _ in
                         log.info("Reading RSSIs")

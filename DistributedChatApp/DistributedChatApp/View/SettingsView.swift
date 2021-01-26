@@ -34,10 +34,10 @@ struct SettingsView: View {
                             Text("Monitoring interval in seconds")
                             Spacer()
                             TextField("sec", text: Binding(
-                                get: { String(format: "%.02f", settings.bluetooth.monitorSignalStrengthInterval) },
+                                get: { String(settings.bluetooth.monitorSignalStrengthInterval) },
                                 set: {
-                                    if let value = NumberFormatter().number(from: $0) {
-                                        settings.bluetooth.monitorSignalStrengthInterval = value.doubleValue
+                                    if let value = Int($0) {
+                                        settings.bluetooth.monitorSignalStrengthInterval = value
                                     }
                                 }
                             ))
