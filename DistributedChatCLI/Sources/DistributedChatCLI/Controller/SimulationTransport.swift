@@ -6,8 +6,8 @@ import NIO
 import WebSocketKit
 
 fileprivate let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-fileprivate let encoder = JSONEncoder()
-fileprivate let decoder = JSONDecoder()
+fileprivate let encoder = makeJSONEncoder()
+fileprivate let decoder = makeJSONDecoder()
 fileprivate let log = Logger(label: "SimulationTransport")
 
 public class SimulationTransport: ChatTransport {

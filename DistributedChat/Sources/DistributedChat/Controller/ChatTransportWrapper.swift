@@ -1,8 +1,8 @@
 import Foundation
 import Logging
 
-fileprivate let encoder = JSONEncoder()
-fileprivate let decoder = JSONDecoder()
+fileprivate let encoder = makeJSONEncoder()
+fileprivate let decoder = makeJSONDecoder()
 fileprivate let log = Logger(label: "DistributedChat.ChatTransportWrapper")
 
 /// An abstraction of the transport layer that

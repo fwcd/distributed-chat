@@ -5,12 +5,13 @@
 //  Created by Fredrik on 1/24/21.
 //
 
+import DistributedChat
 import Foundation
 import Combine
 import Logging
 
-fileprivate let encoder = JSONEncoder()
-fileprivate let decoder = JSONDecoder()
+fileprivate let encoder = makeJSONEncoder()
+fileprivate let decoder = makeJSONDecoder()
 fileprivate let log = Logger(label: "DistributedChatApp.PersistenceUtils")
 
 private var subscriptions = [String: AnyCancellable]()
