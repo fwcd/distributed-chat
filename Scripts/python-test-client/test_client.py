@@ -22,7 +22,6 @@ from gatt_constants import SERVICE_UUID, CHARACTERISTIC_UUID
 
 scanner = Scanner()
 
-def main():
 while True:
     print('Scanning for devices...')
     devices = scanner.scan(10.0)
