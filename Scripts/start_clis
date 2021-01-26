@@ -1,0 +1,23 @@
+#!/bin/bash
+# A small script to start multiple instances of
+# the CLI using the list of names provided as
+# arguments.
+
+CLI_DIR="$(dirname $(dirname "${BASH_SOURCE[0]}"))/DistributedChatCLI"
+command=""
+
+for name in $@; do
+    if [ -z "$command" ]; then
+        subcommand="new-session"
+    else
+        subcommand="split-window -v"
+    fi
+    command+="$subcommand 'cd $CLI_DIR && swift run DistributedChatCLI --name $name' \; "
+done
+
+if [ -n "$command" ]; then
+    command="tmux $command attach"
+    eval $command
+else
+    echo "Usage: $0 [name...]"
+fi
