@@ -95,6 +95,11 @@ struct MessageHistoryView: View {
                     maxHeight: .infinity,
                     alignment: .topLeading
                 )
+                .onAppear {
+                    if let id = messages[channelName].last?.id {
+                        scrollView.scrollTo(id)
+                    }
+                }
                 .onChange(of: focusedMessageId) {
                     if let id = $0 {
                         scrollView.scrollTo(id)
