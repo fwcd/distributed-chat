@@ -1,4 +1,4 @@
-// Acts as a GATT client for
+// Acts as a GATT client/central for
 // exchanging chat messages with real iOS nodes.
 
 const noble = require('@abandonware/noble'); // Central/GATT client
