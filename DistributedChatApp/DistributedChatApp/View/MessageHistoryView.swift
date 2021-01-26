@@ -102,7 +102,7 @@ struct MessageHistoryView: View {
                 }
             }
         }
-        .onReceive(messages.objectWillChange) {
+        .onReceive(messages.$messages) { _ in
             focusedMessageId = messages[channelName].last?.id
         }
     }
