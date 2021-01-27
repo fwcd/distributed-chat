@@ -36,28 +36,34 @@ public class ChatController {
     }
 
     private func handleReceive(_ protoMessage: ChatProtocol.Message) {
-        // TODO: Expire old proto message ids to reduce memory consumption?
-        //       Attach ttls and/or 'actual' expiry datetimes to messages?
-        
-        // TODO: Logical/vector clocks to ensure consistent ordering? This
-        //       is especially important for destructive operations like
-        //       presence updates (which overwrite the old presence).
+        // TODO: Rebroadcast message and make sure that
+        //       incoming messages did NOT origin from us
+        //       (i.e. went in a loop), as otherwise the
+        //       listeners would be fired twice with this
+        //       message.
+        // What happens if one message takes two different
+        // path to the same device?
+        if !protoMessage.visitedUsers.contains(me.id) {
+            var visitedUsers = Set(protoMessage.visitedUsers)
+            visitedUsers.insert(me.id)
+            // Rebroadcast message
+            transportWrapper.broadcast(ChatProtocol.Message(visitedUsers: visitedUsers, addedChatMessages: protoMessage.addedChatMessages, vectorClock: protoMessage.vectorClock))
+                        
+            // Handle message
+            
+            for message in protoMessage.addedChatMessages ?? [] where message.isReceived(by: me.id) {
+                for listener in addChatMessageListeners {
+                    listener(message)
+                }
+            }
+        }
 
-        // Rebroadcast message
-        
-        transportWrapper.broadcast(protoMessage)
-        
-        // Handle messages for me
-        
         for encryptedMessage in protoMessage.addedChatMessages ?? [] where encryptedMessage.isReceived(by: me.id) || emitAllReceivedChatMessages {
             let chatMessage = encryptedMessage.decryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
 
             if !chatMessage.isEncrypted || emitAllReceivedChatMessages {
                 for listener in addChatMessageListeners {
                     listener(chatMessage)
-                }
-            }
-        }
         
         // Handle presence updates
         
@@ -79,7 +85,13 @@ public class ChatController {
         let encryptedMessage = chatMessage.encryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
         let protoMessage = ChatProtocol.Message(addedChatMessages: [encryptedMessage])
 
+<<<<<<< HEAD
         transportWrapper.broadcast(protoMessage)
+=======
+        let protoMessage = ChatProtocol.Message(addedChatMessages: [chatMessage])
+        
+        transportWrapper.broadcast(ChatProtocol.Message(visitedUsers: [me.id], addedChatMessages: [chatMessage]))
+>>>>>>> a578b15 (Forward to messages. TODO: Circular routes)
         
         for listener in addChatMessageListeners {
             listener(chatMessage)
