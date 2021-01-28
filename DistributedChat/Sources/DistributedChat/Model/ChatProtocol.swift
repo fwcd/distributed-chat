@@ -3,7 +3,8 @@ import Foundation
 public enum ChatProtocol {
     public struct Message: Codable {
         public var visitedUsers: Set<UUID>
-        public var addedChatMessages: [ChatMessage]
+        public var addedChatMessages: [ChatMessage]?
+        public var updatedPresences: [ChatPresence]?
 
         // TODO: Logical clock for eventual consistency
         // (e.g. Lamport timestamp or vector clock)
@@ -12,10 +13,12 @@ public enum ChatProtocol {
 
         public init(
             visitedUsers: Set<UUID> = [],
-            addedChatMessages: [ChatMessage] = []
+            addedChatMessages: [ChatMessage]? = nil,
+            updatedPresences: [ChatPresence]? = nil
         ) {
             self.visitedUsers = visitedUsers
             self.addedChatMessages = addedChatMessages
+            self.updatedPresences = updatedPresences
         }
     }
 }
