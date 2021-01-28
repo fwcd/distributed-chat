@@ -38,6 +38,10 @@ private class AppState {
             messages.append(message: message)
         }
         
+        controller.onUpdatePresence { [unowned network] presence in
+            network.register(presence: presence)
+        }
+        
         subscriptions.append(profile.$presence.sink(receiveValue: controller.update(presence:)))
         
         self.settings = settings

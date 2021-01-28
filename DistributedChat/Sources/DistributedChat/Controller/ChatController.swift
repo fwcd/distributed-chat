@@ -8,6 +8,7 @@ fileprivate let log = Logger(label: "DistributedChat.ChatController")
 public class ChatController {
     private let transportWrapper: ChatTransportWrapper<ChatProtocol.Message>
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
+    private var updatePresenceListeners: [(ChatPresence) -> Void] = []
 
     private var presenceTimer: RepeatingTimer?
     public private(set) var presence = ChatPresence()
@@ -35,6 +36,12 @@ public class ChatController {
                 listener(message)
             }
         }
+        
+        for presence in protoMessage.updatedPresences ?? [] {
+            for listener in updatePresenceListeners {
+                listener(presence)
+            }
+        }
     }
 
     public func send(content: String, on channelName: String? = nil, attaching attachments: [ChatAttachment]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
@@ -55,6 +62,10 @@ public class ChatController {
 
     public func update(presence: ChatPresence) {
         self.presence = presence
+        
+        for listener in updatePresenceListeners {
+            listener(presence)
+        }
     }
     
     public func update(name: String) {
@@ -70,5 +81,9 @@ public class ChatController {
 
     public func onAddChatMessage(_ handler: @escaping (ChatMessage) -> Void) {
         addChatMessageListeners.append(handler)
+    }
+    
+    public func onUpdatePresence(_ handler: @escaping (ChatPresence) -> Void) {
+        updatePresenceListeners.append(handler)
     }
 }

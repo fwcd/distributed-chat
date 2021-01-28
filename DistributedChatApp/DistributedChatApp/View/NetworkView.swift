@@ -66,12 +66,12 @@ struct NetworkView: View {
                 }
                 
                 Section(header: Text("Presences")) {
-                    List(network.presences) { presence in
+                    List(network.presences.values.sorted { $0.user.displayName < $1.user.displayName }) { presence in
                         HStack {
                             Image(systemName: "circlebadge.fill")
                                 .foregroundColor(presence.status.color)
                             VStack(alignment: .leading) {
-                                Text(presence.user.name)
+                                Text(presence.user.displayName)
                                     .multilineTextAlignment(.leading)
                                 if !presence.info.isEmpty {
                                     Text(presence.info)
