@@ -69,7 +69,7 @@ struct NetworkView: View {
                     List(network.presences) { presence in
                         HStack {
                             Image(systemName: "circlebadge.fill")
-                                .foregroundColor(color(for: presence.status))
+                                .foregroundColor(presence.status.color)
                             VStack(alignment: .leading) {
                                 Text(presence.user.name)
                                     .multilineTextAlignment(.leading)
@@ -107,17 +107,6 @@ struct NetworkView: View {
                 }
             }
             .navigationTitle("Network")
-        }
-    }
-    
-    private func color(for status: ChatStatus) -> Color {
-        switch status {
-        case .online:
-            return .green
-        case .away:
-            return .yellow
-        case .busy:
-            return .red
         }
     }
 }

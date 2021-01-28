@@ -28,6 +28,5 @@ public struct EnumPicker<L, T>: View
                 Text(T.allCases[$0].description).tag(T.allCases[$0])
             }
         }
-            .pickerStyle(SegmentedPickerStyle())
     }
 }

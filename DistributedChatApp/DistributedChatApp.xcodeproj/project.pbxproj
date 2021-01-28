@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */; };
 		C75441BF25BF3A9A003E2F71 /* NearbyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75441BE25BF3A9A003E2F71 /* NearbyUser.swift */; };
 		C7734CA925BCDB1D0057DF96 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CA825BCDB1D0057DF96 /* Network.swift */; };
 		C7734CB225BCDEEA0057DF96 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CB125BCDEEA0057DF96 /* StringUtils.swift */; };
@@ -86,6 +87,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatStatus+Color.swift"; sourceTree = "<group>"; };
 		C75441BE25BF3A9A003E2F71 /* NearbyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUser.swift; sourceTree = "<group>"; };
 		C7734CA825BCDB1D0057DF96 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		C7734CB125BCDEEA0057DF96 /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 				C77D49CE25BC78C70073A964 /* EnumPicker.swift */,
 				C7734CED25BCFE5D0057DF96 /* QuickLookView.swift */,
 				C7734D1125BD00330057DF96 /* QuickLookAttachment.swift */,
+				C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -653,6 +656,7 @@
 				C7734D2E25BDE1D90057DF96 /* PersistenceUtils.swift in Sources */,
 				C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */,
 				C7734CEE25BCFE5D0057DF96 /* QuickLookView.swift in Sources */,
+				C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */,
 				C7734CBA25BCE6CE0057DF96 /* MessageHistoryView.swift in Sources */,
 				C7734CA925BCDB1D0057DF96 /* Network.swift in Sources */,
 				C7734D9125BE27BD0057DF96 /* CollectionUtils.swift in Sources */,

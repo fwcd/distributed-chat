@@ -1,5 +1,7 @@
-public enum ChatStatus: String, Codable {
-    case online
-    case away
-    case busy
+public enum ChatStatus: String, Codable, Hashable, CaseIterable, CustomStringConvertible {
+    case online = "Online"
+    case away = "Away"
+    case busy = "Busy"
+    
+    public var description: String { rawValue }
 }

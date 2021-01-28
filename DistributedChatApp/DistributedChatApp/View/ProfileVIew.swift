@@ -13,9 +13,17 @@ struct ProfileView: View {
     var body: some View {
         NavigationView {
             VStack(alignment: .center, spacing: 40) {
-                Image(systemName: "person.circle")
-                    .resizable()
-                    .frame(width: 80, height: 80, alignment: .center)
+                EnumPicker(selection: $profile.presence.status, label: ZStack(alignment: .bottomTrailing) {
+                    Image(systemName: "person.circle")
+                        .resizable()
+                        .frame(width: 80, height: 80, alignment: .center)
+                        .foregroundColor(.primary)
+                    Circle()
+                        .frame(width: 20, height: 20, alignment: .center)
+                        .foregroundColor(profile.presence.status.color)
+                })
+                    .pickerStyle(MenuPickerStyle())
+                
                 VStack {
                     TextField("Your nickname", text: $profile.presence.user.name)
                         .font(.title2)

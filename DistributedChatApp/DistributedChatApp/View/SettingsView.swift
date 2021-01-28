@@ -15,6 +15,7 @@ struct SettingsView: View {
             Form {
                 Section(header: Text("Presentation")) {
                     EnumPicker(selection: $settings.presentation.messageHistoryStyle, label: Text("Message History Style"))
+                        .pickerStyle(SegmentedPickerStyle())
                     Toggle(isOn: $settings.presentation.showChannelPreviews) {
                         Text("Show Channel Previews")
                     }
