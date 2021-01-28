@@ -73,8 +73,8 @@ struct NetworkView: View {
                             VStack(alignment: .leading) {
                                 Text(presence.user.name)
                                     .multilineTextAlignment(.leading)
-                                if let info = presence.info {
-                                    Text(info)
+                                if !presence.info.isEmpty {
+                                    Text(presence.info)
                                         .multilineTextAlignment(.leading)
                                         .font(.subheadline)
                                         .foregroundColor(.secondary)
@@ -94,9 +94,9 @@ struct NetworkView: View {
                                 Text("Copy User Name")
                                 Image(systemName: "doc.on.doc")
                             }
-                            if let info = presence.info {
+                            if !presence.info.isEmpty {
                                 Button(action: {
-                                    UIPasteboard.general.string = info
+                                    UIPasteboard.general.string = presence.info
                                 }) {
                                     Text("Copy Status Info")
                                     Image(systemName: "doc.on.doc")
