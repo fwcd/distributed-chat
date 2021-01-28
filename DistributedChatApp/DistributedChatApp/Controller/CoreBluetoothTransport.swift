@@ -49,11 +49,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                     peripheralIdentifier: peripheral.identifier,
                     peripheralName: peripheral.name,
                     chatUser: {
-                        guard let userNameData = discovered.userNameCharacteristic?.value,
-                              let userIDData = discovered.userIDCharacteristic?.value,
-                              let userName = String(data: userNameData, encoding: .utf8),
-                              let userIDString = String(data: userIDData, encoding: .utf8),
-                              let userID = UUID(uuidString: userIDString) else { return nil }
+                        guard let userName = discovered.userName,
+                              let userID = discovered.userID else { return nil }
                         return ChatUser(id: userID, name: userName)
                     }(),
                     rssi: discovered.rssi
@@ -65,9 +62,13 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private struct DiscoveredPeripheral {
         var isDistributedChat: Bool = false
         var rssi: Int? = nil
+        
         var inboxCharacteristic: CBCharacteristic? = nil
         var userNameCharacteristic: CBCharacteristic? = nil
         var userIDCharacteristic: CBCharacteristic? = nil
+        
+        var userID: UUID? = nil
+        var userName: String? = nil
     }
     
     required init(settings: Settings, nearby: Nearby, profile: Profile) {
@@ -265,15 +266,35 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        log.debug("Discovered characteristics on remote peripheral \(peripheral.name ?? "?")")
+        log.info("Discovered characteristics on remote peripheral \(peripheral.name ?? "?")")
         
         if service.uuid == serviceUUID, let characteristics = service.characteristics {
-            log.debug("Found DistributedChat service on remote peripheral \(peripheral.name ?? "?")!")
+            log.info("Found DistributedChat service on remote peripheral \(peripheral.name ?? "?") with \(characteristics.count) characteristics.")
+            
             nearbyPeripherals[peripheral]?.isDistributedChat = true
             nearbyPeripherals[peripheral]?.inboxCharacteristic = characteristics.first { $0.uuid == inboxCharacteristicUUID }
             nearbyPeripherals[peripheral]?.userIDCharacteristic = characteristics.first { $0.uuid == userIDCharacteristicUUID }
             nearbyPeripherals[peripheral]?.userNameCharacteristic = characteristics.first { $0.uuid == userNameCharacteristicUUID }
+            
             peripheral.readRSSI()
+            
+            for characteristic in characteristics where [userIDCharacteristicUUID, userNameCharacteristicUUID].contains(characteristic.uuid) {
+                peripheral.readValue(for: characteristic)
+            }
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        switch characteristic.uuid {
+        case userIDCharacteristicUUID:
+            nearbyPeripherals[peripheral]?.userID = characteristic.value
+                .flatMap { String(data: $0, encoding: .utf8) }
+                .flatMap { UUID(uuidString: $0) }
+        case userNameCharacteristicUUID:
+            nearbyPeripherals[peripheral]?.userName = characteristic.value
+                .flatMap { String(data: $0, encoding: .utf8) }
+        default:
+            break
         }
     }
     
