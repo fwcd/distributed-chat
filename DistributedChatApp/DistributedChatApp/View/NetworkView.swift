@@ -64,16 +64,73 @@ struct NetworkView: View {
                         }
                     }
                 }
+                
+                Section(header: Text("Presences")) {
+                    List(network.presences) { presence in
+                        HStack {
+                            Image(systemName: "circlebadge.fill")
+                                .foregroundColor(color(for: presence.status))
+                            VStack(alignment: .leading) {
+                                Text(presence.user.name)
+                                    .multilineTextAlignment(.leading)
+                                if let info = presence.info {
+                                    Text(info)
+                                        .multilineTextAlignment(.leading)
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                        }
+                        .contextMenu {
+                            Button(action: {
+                                UIPasteboard.general.string = presence.user.id.uuidString
+                            }) {
+                                Text("Copy User ID")
+                                Image(systemName: "doc.on.doc")
+                            }
+                            Button(action: {
+                                UIPasteboard.general.string = presence.user.name
+                            }) {
+                                Text("Copy User Name")
+                                Image(systemName: "doc.on.doc")
+                            }
+                            if let info = presence.info {
+                                Button(action: {
+                                    UIPasteboard.general.string = info
+                                }) {
+                                    Text("Copy Status Info")
+                                    Image(systemName: "doc.on.doc")
+                                }
+                            }
+                        }
+                    }
+                }
             }
             .navigationTitle("Network")
+        }
+    }
+    
+    private func color(for status: ChatStatus) -> Color {
+        switch status {
+        case .online:
+            return .green
+        case .away:
+            return .yellow
+        case .busy:
+            return .red
         }
     }
 }
 
 struct NetworkView_Previews: PreviewProvider {
+    static let alice = ChatUser(name: "Alice")
+    static let bob = ChatUser(name: "Bob")
     @StateObject static var network = Network(nearbyUsers: [
-        NearbyUser(peripheralIdentifier: UUID(uuidString: "6b61a69b-f4b4-4321-92db-9d61653ddaf6")!, chatUser: ChatUser(name: "Alice"), rssi: -49),
-        NearbyUser(peripheralIdentifier: UUID(uuidString: "b7b7d248-9640-490d-8187-44fc9ebfa1ff")!, chatUser: ChatUser(name: "Bob"), rssi: -55)
+        NearbyUser(peripheralIdentifier: UUID(uuidString: "6b61a69b-f4b4-4321-92db-9d61653ddaf6")!, chatUser: alice, rssi: -49),
+        NearbyUser(peripheralIdentifier: UUID(uuidString: "b7b7d248-9640-490d-8187-44fc9ebfa1ff")!, chatUser: bob, rssi: -55),
+    ], presences: [
+        ChatPresence(user: alice, status: .online),
+        ChatPresence(user: bob, status: .away, info: "At the gym"),
     ])
     static var previews: some View {
         NetworkView()
