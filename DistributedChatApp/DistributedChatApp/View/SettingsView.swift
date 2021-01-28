@@ -48,9 +48,6 @@ struct SettingsView: View {
                     }
                 }
             }
-            .onReceive(settings.$bluetooth) { _ in
-                print("Updated")
-            }
             .navigationTitle("Settings")
         }
     }

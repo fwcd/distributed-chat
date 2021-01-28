@@ -9,7 +9,8 @@ public class ChatController {
     private let transportWrapper: ChatTransportWrapper<ChatProtocol.Message>
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
 
-    public private(set) var me = ChatUser()
+    public private(set) var presence = ChatPresence()
+    public var me: ChatUser { presence.user }
 
     public init(transport: ChatTransport) {
         transportWrapper = ChatTransportWrapper(transport: transport)
@@ -46,16 +47,14 @@ public class ChatController {
         }
     }
 
-    public func update(me: ChatUser) {
-        self.me = me
-
-        // TODO: Broadcast name change to others?
+    public func update(presence: ChatPresence) {
+        self.presence = presence
     }
     
     public func update(name: String) {
-        var newMe = me
-        newMe.name = name
-        update(me: newMe)
+        var newPresence = presence
+        newPresence.user.name = name
+        update(presence: newPresence)
     }
 
     public func onAddChatMessage(_ handler: @escaping (ChatMessage) -> Void) {

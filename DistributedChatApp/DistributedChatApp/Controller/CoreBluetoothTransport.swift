@@ -136,9 +136,9 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                                                            value: nil,
                                                            permissions: [.readable])
         
-        subscriptions.append(profile.$me.sink { me in
-            userNameCharacteristic.value = me.name.data(using: .utf8)
-            userIDCharacteristic.value = me.id.uuidString.data(using: .utf8)
+        subscriptions.append(profile.$presence.sink { presence in
+            userNameCharacteristic.value = presence.user.name.data(using: .utf8)
+            userIDCharacteristic.value = presence.user.id.uuidString.data(using: .utf8)
         })
         
         service.characteristics = [inboxCharacteristic, userNameCharacteristic, userIDCharacteristic]

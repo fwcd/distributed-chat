@@ -7,7 +7,7 @@ public struct ChatPresence: Identifiable, Codable, Hashable {
     
     public var id: UUID { user.id }
     
-    public init(user: ChatUser, status: ChatStatus = .online, info: String? = nil) {
+    public init(user: ChatUser = ChatUser(), status: ChatStatus = .online, info: String? = nil) {
         self.user = user
         self.status = status
         self.info = info

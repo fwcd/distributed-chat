@@ -16,7 +16,7 @@ struct ProfileView: View {
                 Image(systemName: "person.circle")
                     .resizable()
                     .frame(width: 80, height: 80, alignment: .center)
-                TextField("Your nickname", text: $profile.me.name)
+                TextField("Your nickname", text: $profile.presence.user.name)
                     .font(.title2)
                     .multilineTextAlignment(.center)
             }
@@ -27,7 +27,6 @@ struct ProfileView: View {
 }
 
 struct ProfileView_Previews: PreviewProvider {
-    @State static var name: String = ""
     @StateObject static var profile = Profile()
     static var previews: some View {
         ProfileView()

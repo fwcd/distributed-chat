@@ -9,5 +9,5 @@ import Combine
 import DistributedChat
 
 class Profile: ObservableObject {
-    @Published(persistingTo: "Profile/me.json") var me: ChatUser = ChatUser()
+    @Published(persistingTo: "Profile/presence.json") var presence: ChatPresence = ChatPresence()
 }

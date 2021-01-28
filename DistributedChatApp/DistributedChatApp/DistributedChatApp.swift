@@ -38,7 +38,7 @@ private class AppState {
             messages.append(message: message)
         }
         
-        subscriptions.append(profile.$me.sink(receiveValue: controller.update(me:)))
+        subscriptions.append(profile.$presence.sink(receiveValue: controller.update(presence:)))
         
         self.settings = settings
         self.network = network
