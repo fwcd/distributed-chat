@@ -16,7 +16,7 @@ for name in $@; do
 done
 
 if [ -n "$command" ]; then
-    command="tmux $command attach"
+    command="tmux $command select-layout even-vertical \; attach"
     eval $command
 else
     echo "Usage: $0 [name...]"
