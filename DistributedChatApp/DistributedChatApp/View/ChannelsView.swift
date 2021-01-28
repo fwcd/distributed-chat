@@ -15,7 +15,7 @@ struct ChannelsView: View {
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var navigation: Navigation
     @EnvironmentObject private var settings: Settings
-    @EnvironmentObject private var nearby: Nearby
+    @EnvironmentObject private var network: Network
     @State private var channelNameDraft: String = ""
     @State private var channelNameDraftSheetShown: Bool = false
     @State private var deletingChannelNames: [String?] = []
@@ -24,7 +24,7 @@ struct ChannelsView: View {
     var body: some View {
         NavigationView {
             List {
-                let nearbyCount = nearby.nearbyUsers.count
+                let nearbyCount = network.nearbyUsers.count
                 HStack {
                     Image(systemName: "antenna.radiowaves.left.and.right")
                     Text("\(nearbyCount) \("user".pluralized(with: nearbyCount)) currently nearby")
@@ -145,12 +145,12 @@ struct ChatsView_Previews: PreviewProvider {
     @StateObject static var messages = Messages()
     @StateObject static var navigation = Navigation()
     @StateObject static var settings = Settings()
-    @StateObject static var nearby = Nearby()
+    @StateObject static var network = Network()
     static var previews: some View {
         ChannelsView(channelNames: [], controller: ChatController(transport: MockTransport()))
             .environmentObject(messages)
             .environmentObject(navigation)
             .environmentObject(settings)
-            .environmentObject(nearby)
+            .environmentObject(network)
     }
 }

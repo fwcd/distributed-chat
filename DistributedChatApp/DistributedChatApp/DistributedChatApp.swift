@@ -14,7 +14,7 @@ import UserNotifications
 
 private class AppState {
     let settings: Settings
-    let nearby: Nearby
+    let network: Network
     let profile: Profile
     let navigation: Navigation
     let transport: ChatTransport
@@ -27,10 +27,10 @@ private class AppState {
         LoggingSystem.bootstrap(LoggingOSLog.init)
         
         let settings = Settings()
-        let nearby = Nearby()
+        let network = Network()
         let profile = Profile()
         let navigation = Navigation()
-        let transport = CoreBluetoothTransport(settings: settings, nearby: nearby, profile: profile)
+        let transport = CoreBluetoothTransport(settings: settings, network: network, profile: profile)
         let controller = ChatController(transport: transport)
         let messages = Messages()
         
@@ -41,7 +41,7 @@ private class AppState {
         subscriptions.append(profile.$me.sink(receiveValue: controller.update(me:)))
         
         self.settings = settings
-        self.nearby = nearby
+        self.network = network
         self.profile = profile
         self.navigation = navigation
         self.transport = transport
@@ -75,7 +75,7 @@ struct DistributedChatApp: App {
                 .environmentObject(state.settings)
                 .environmentObject(state.messages)
                 .environmentObject(state.navigation)
-                .environmentObject(state.nearby)
+                .environmentObject(state.network)
                 .environmentObject(state.profile)
                 .onAppear {
                     if !notificationsInitialized {

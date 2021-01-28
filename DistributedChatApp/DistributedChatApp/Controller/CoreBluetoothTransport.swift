@@ -33,7 +33,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private var initializedCentral: Bool = false
     private var listeners = [(String) -> Void]()
     
-    private let nearby: Nearby
+    private let network: Network
     private let settings: Settings
     private let profile: Profile
     
@@ -44,7 +44,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private var nearbyPeripherals: [CBPeripheral: DiscoveredPeripheral] = [:] {
         didSet {
             log.debug("Updating nearby users...")
-            nearby.nearbyUsers = nearbyPeripherals.filter(\.value.isDistributedChat).map { (peripheral: CBPeripheral, discovered) in
+            network.nearbyUsers = nearbyPeripherals.filter(\.value.isDistributedChat).map { (peripheral: CBPeripheral, discovered) in
                 NearbyUser(
                     peripheralIdentifier: peripheral.identifier,
                     peripheralName: peripheral.name,
@@ -71,9 +71,9 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         var userName: String? = nil
     }
     
-    required init(settings: Settings, nearby: Nearby, profile: Profile) {
+    required init(settings: Settings, network: Network, profile: Profile) {
         self.settings = settings
-        self.nearby = nearby
+        self.network = network
         self.profile = profile
         
         super.init()

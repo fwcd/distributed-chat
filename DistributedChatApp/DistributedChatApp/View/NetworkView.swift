@@ -1,5 +1,5 @@
 //
-//  NearbyView.swift
+//  NetworkView.swift
 //  DistributedChatApp
 //
 //  Created by Fredrik on 1/23/21.
@@ -8,14 +8,14 @@
 import DistributedChat
 import SwiftUI
 
-struct NearbyView: View {
-    @EnvironmentObject private var nearby: Nearby
+struct NetworkView: View {
+    @EnvironmentObject private var network: Network
     
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Nearby Users")) {
-                    List(nearby.nearbyUsers) { user in
+                    List(network.nearbyUsers) { user in
                         HStack {
                             Text(user.displayName)
                             Spacer()
@@ -65,18 +65,18 @@ struct NearbyView: View {
                     }
                 }
             }
-            .navigationTitle("Nearby")
+            .navigationTitle("Network")
         }
     }
 }
 
-struct NearbyView_Previews: PreviewProvider {
-    @StateObject static var nearby = Nearby(nearbyUsers: [
+struct NetworkView_Previews: PreviewProvider {
+    @StateObject static var network = Network(nearbyUsers: [
         NearbyUser(peripheralIdentifier: UUID(uuidString: "6b61a69b-f4b4-4321-92db-9d61653ddaf6")!, chatUser: ChatUser(name: "Alice"), rssi: -49),
         NearbyUser(peripheralIdentifier: UUID(uuidString: "b7b7d248-9640-490d-8187-44fc9ebfa1ff")!, chatUser: ChatUser(name: "Bob"), rssi: -55)
     ])
     static var previews: some View {
-        NearbyView()
-            .environmentObject(nearby)
+        NetworkView()
+            .environmentObject(network)
     }
 }
