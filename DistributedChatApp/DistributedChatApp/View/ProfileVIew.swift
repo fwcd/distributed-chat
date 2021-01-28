@@ -14,7 +14,7 @@ struct ProfileView: View {
         NavigationView {
             VStack(alignment: .center, spacing: 40) {
                 EnumPicker(selection: $profile.presence.status, label: ZStack(alignment: .bottomTrailing) {
-                    Image(systemName: "person.circle")
+                    Image(systemName: "person.circle.fill")
                         .resizable()
                         .frame(width: 80, height: 80, alignment: .center)
                         .foregroundColor(.primary)
