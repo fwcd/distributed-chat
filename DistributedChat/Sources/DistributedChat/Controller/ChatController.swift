@@ -85,13 +85,7 @@ public class ChatController {
         let encryptedMessage = chatMessage.encryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
         let protoMessage = ChatProtocol.Message(addedChatMessages: [encryptedMessage])
 
-<<<<<<< HEAD
         transportWrapper.broadcast(protoMessage)
-=======
-        let protoMessage = ChatProtocol.Message(addedChatMessages: [chatMessage])
-        
-        transportWrapper.broadcast(ChatProtocol.Message(visitedUsers: [me.id], addedChatMessages: [chatMessage]))
->>>>>>> a578b15 (Forward to messages. TODO: Circular routes)
         
         for listener in addChatMessageListeners {
             listener(chatMessage)
@@ -124,7 +118,22 @@ public class ChatController {
         log.debug("Broadcasting presence: \(presence.status) (\(presence.info))")
         transportWrapper.broadcast(ChatProtocol.Message(updatedPresences: [presence]))
     }
-    
+
+    private func updateVectorClock(vectorClock: Dictionary<UUID,Int>) {
+        // TODO: Consider deleting old entries
+        var newMe = me
+        for (id, time) in vectorClock {
+            if newMe.vectorClock.keys.contains(id) {
+                if time > newMe.vectorClock[id]! {
+                    newMe.vectorClock[id] = time
+                }
+            } else {
+                newMe.vectorClock[id] = time
+            }
+        }
+        update(me: newMe)
+    }
+
     public func onAddChatMessage(_ handler: @escaping (ChatMessage) -> Void) {
         addChatMessageListeners.append(handler)
     }
