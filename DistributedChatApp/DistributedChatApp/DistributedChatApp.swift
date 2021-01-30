@@ -114,6 +114,8 @@ struct DistributedChatApp: App {
                     }
                 }
                 .onOpenURL { url in
+                    guard url.isDistributedChatSchemed else { return }
+                    
                     // distributedchat:///channel           --> channel #global
                     // distributedchat:///channel/test      --> channel #test
                     // distributedchat:///message/<uuid>    --> specific message (TODO: Actually scroll to message)

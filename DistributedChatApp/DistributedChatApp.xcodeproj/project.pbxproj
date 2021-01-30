@@ -60,6 +60,7 @@
 		C7ED97A025C5E57A002ACC5A /* FileAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */; };
 		C7ED97A825C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED97A725C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift */; };
 		C7ED97B025C5E705002ACC5A /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED97AF25C5E705002ACC5A /* AudioPlayer.swift */; };
+		C7ED97B825C5F4BA002ACC5A /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED97B725C5F4BA002ACC5A /* PersistenceError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,6 +156,7 @@
 		C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentView.swift; sourceTree = "<group>"; };
 		C7ED97A725C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceNoteAttachmentView.swift; sourceTree = "<group>"; };
 		C7ED97AF25C5E705002ACC5A /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		C7ED97B725C5F4BA002ACC5A /* PersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +215,7 @@
 				C7734CD725BCF4760057DF96 /* URLUtils.swift */,
 				C7734D2D25BDE1D90057DF96 /* PersistenceUtils.swift */,
 				C7734D9025BE27BD0057DF96 /* CollectionUtils.swift */,
+				C7ED97B725C5F4BA002ACC5A /* PersistenceError.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -666,6 +669,7 @@
 				C7734D1225BD00330057DF96 /* QuickLookAttachment.swift in Sources */,
 				C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */,
 				C7982D4125BB8A57000DC0F1 /* Messages.swift in Sources */,
+				C7ED97B825C5F4BA002ACC5A /* PersistenceError.swift in Sources */,
 				C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */,
 				C7BC335425B3C00700989E95 /* ContentView.swift in Sources */,
 				C77D498725BC73F70073A964 /* SettingsView.swift in Sources */,

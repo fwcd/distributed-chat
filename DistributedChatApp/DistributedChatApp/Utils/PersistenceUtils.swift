@@ -41,12 +41,62 @@ extension Published where Value: Codable {
         }
         
         do {
-            self.init(initialValue: try decoder.decode(Value.self, from: Data(contentsOf: url)))
+            self.init(initialValue: try decoder.decode(Value.self, from: Data.smartContents(of: url)))
         } catch {
             log.debug("Could not read file: \(error)")
             self.init(initialValue: wrappedValue)
         }
         
         subscriptions[path] = projectedValue.sink(receiveValue: save)
+    }
+}
+
+extension Data {
+    /// Reads a potentially security-scoped or distributedchat-schemed resource.
+    static func smartContents(of url: URL) throws -> Data {
+        if url.isDistributedChatSchemed {
+            guard let resolved = url.distributedChatAttachmentURL else { throw PersistenceError.invalidDistributedChatURL("Only attachment URLs can be read") }
+            return try Data(contentsOf: resolved)
+        }
+        
+        do {
+            return try Data(contentsOf: url)
+        } catch {
+            log.debug("Could not read \(url) directly, trying security-scoped access...")
+            
+            guard url.startAccessingSecurityScopedResource() else { throw PersistenceError.couldNotReadSecurityScoped }
+            defer { url.stopAccessingSecurityScopedResource() }
+            
+            var error: NSError? = nil
+            var caughtError: Error? = nil
+            var data: Data? = nil
+            
+            NSFileCoordinator().coordinate(readingItemAt: url, error: &error) { url2 in
+                do {
+                    data = try Data(contentsOf: url)
+                } catch {
+                    caughtError = error
+                }
+            }
+            
+            if let error = error {
+                throw error
+            } else if let caughtError = caughtError {
+                throw caughtError
+            }
+            
+            guard let unwrappedData = data else { throw PersistenceError.couldNotReadData }
+            return unwrappedData
+        }
+    }
+    
+    /// Writes a potentially distributedchat-schemed resources.
+    func smartWrite(to url: URL) throws {
+        if url.isDistributedChatSchemed {
+            guard let resolved = url.distributedChatAttachmentURL else { throw PersistenceError.invalidDistributedChatURL("Only attachment URLs can be written") }
+            try write(to: resolved)
+        } else {
+            try write(to: url)
+        }
     }
 }
