@@ -42,6 +42,11 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
     }
     
     private func record() {
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            log.warning("Could not activate audio session: \(error)")
+        }
         recorder.prepareToRecord()
         recorder.record()
         isCompleted = false

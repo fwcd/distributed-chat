@@ -5,6 +5,7 @@
 //  Created by Fredrik on 1/17/21.
 //
 
+import AVFoundation
 import Combine
 import DistributedChat
 import Logging
@@ -111,6 +112,14 @@ struct DistributedChatApp: App {
                                 log.info("Registered notification handler!")
                             }
                         }
+                    }
+                }
+                .onAppear {
+                    do {
+                        let session = AVAudioSession.sharedInstance()
+                        try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
+                    } catch {
+                        log.warning("Could not configure audio session: \(error)")
                     }
                 }
                 .onOpenURL { url in

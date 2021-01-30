@@ -7,7 +7,10 @@
 
 import AVFoundation
 import Combine
+import Logging
 import Foundation
+
+fileprivate let log = Logger(label: "DistributedChatApp.AudioPlayer")
 
 class AudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
     private var player: AVAudioPlayer? = nil {
@@ -34,12 +37,26 @@ class AudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
         willSet {
             if newValue != isPlaying {
                 if newValue {
-                    player?.play()
+                    play()
                 } else {
-                    player?.pause()
+                    pause()
                 }
             }
         }
+    }
+    
+    private func play() {
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            log.warning("Could not activate audio session: \(error)")
+        }
+        player?.prepareToPlay()
+        player?.play()
+    }
+    
+    private func pause() {
+        player?.pause()
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
