@@ -25,7 +25,7 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
             }
         }
     }
-    @Published var isCompleted: Bool = false
+    @Published private(set) var isCompleted: Bool = false
     let url: URL
     
     init(name: String) throws {
@@ -44,13 +44,11 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
     private func record() {
         recorder.prepareToRecord()
         recorder.record()
-        isRecording = true
         isCompleted = false
     }
     
     private func stop() {
         recorder.stop()
-        isRecording = false
     }
     
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully: Bool) {
