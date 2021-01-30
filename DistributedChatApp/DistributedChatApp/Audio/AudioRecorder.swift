@@ -12,7 +12,7 @@ import Logging
 
 fileprivate let log = Logger(label: "DistributedChatApp.AudioRecorder")
 
-/// An Opus-based audio recorder that writes to a custom file in Recordings.
+/// An audio recorder that writes to a custom file in Recordings.
 class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
     private let recorder: AVAudioRecorder
     

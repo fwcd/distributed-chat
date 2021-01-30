@@ -57,6 +57,9 @@
 		C7BC338A25B3C2EE00989E95 /* DistributedChat in Frameworks */ = {isa = PBXBuildFile; productRef = C7BC338925B3C2EE00989E95 /* DistributedChat */; };
 		C7ED978A25C5CD28002ACC5A /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */; };
 		C7ED979225C5D226002ACC5A /* VoiceNoteRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */; };
+		C7ED97A025C5E57A002ACC5A /* FileAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */; };
+		C7ED97A825C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED97A725C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift */; };
+		C7ED97B025C5E705002ACC5A /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED97AF25C5E705002ACC5A /* AudioPlayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -149,6 +152,9 @@
 		C7BC337F25B3C1D100989E95 /* DistributedChat */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DistributedChat; path = ../DistributedChat; sourceTree = "<group>"; };
 		C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceNoteRecordButton.swift; sourceTree = "<group>"; };
+		C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentView.swift; sourceTree = "<group>"; };
+		C7ED97A725C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceNoteAttachmentView.swift; sourceTree = "<group>"; };
+		C7ED97AF25C5E705002ACC5A /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -293,6 +299,8 @@
 				C77D49B225BC777E0073A964 /* CompactMessageView.swift */,
 				C77D49C025BC780A0073A964 /* BubbleMessageView.swift */,
 				C7734CE525BCFD180057DF96 /* AttachmentView.swift */,
+				C7ED97A725C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift */,
+				C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */,
 				C77D49D625BC7B600073A964 /* NetworkView.swift */,
 				C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */,
 				C77D498625BC73F70073A964 /* SettingsView.swift */,
@@ -388,6 +396,7 @@
 			isa = PBXGroup;
 			children = (
 				C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */,
+				C7ED97AF25C5E705002ACC5A /* AudioPlayer.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -660,6 +669,7 @@
 				C77C1DE025BBB127005D0B7C /* ViewConstants.swift in Sources */,
 				C7BC335425B3C00700989E95 /* ContentView.swift in Sources */,
 				C77D498725BC73F70073A964 /* SettingsView.swift in Sources */,
+				C7ED97B025C5E705002ACC5A /* AudioPlayer.swift in Sources */,
 				C77D49C125BC780A0073A964 /* BubbleMessageView.swift in Sources */,
 				C7734CB225BCDEEA0057DF96 /* StringUtils.swift in Sources */,
 				C77D49D725BC7B600073A964 /* NetworkView.swift in Sources */,
@@ -671,6 +681,7 @@
 				C77D499D25BC76010073A964 /* Settings.swift in Sources */,
 				C7734CD825BCF4760057DF96 /* URLUtils.swift in Sources */,
 				C7734D3C25BDE9B50057DF96 /* Profile.swift in Sources */,
+				C7ED97A825C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift in Sources */,
 				C7982D2A25BB8981000DC0F1 /* ChannelView.swift in Sources */,
 				C77D499525BC75B40073A964 /* MessageHistoryStyle.swift in Sources */,
 				C77D49B325BC777E0073A964 /* CompactMessageView.swift in Sources */,
@@ -683,6 +694,7 @@
 				C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */,
 				C7734CBA25BCE6CE0057DF96 /* MessageHistoryView.swift in Sources */,
 				C7734CA925BCDB1D0057DF96 /* Network.swift in Sources */,
+				C7ED97A025C5E57A002ACC5A /* FileAttachmentView.swift in Sources */,
 				C7734D9125BE27BD0057DF96 /* CollectionUtils.swift in Sources */,
 				C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */,
 			);
