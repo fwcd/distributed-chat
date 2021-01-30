@@ -10,6 +10,7 @@ import Logging
 import SwiftUI
 
 fileprivate let log = Logger(label: "DistributedChatApp.MessageComposeView")
+fileprivate let iconSize: CGFloat = 30
 
 struct MessageComposeView: View {
     let channelName: String?
@@ -55,14 +56,18 @@ struct MessageComposeView: View {
             HStack {
                 Button(action: { attachmentActionSheetShown = true }) {
                     Image(systemName: "plus")
-                        .resizable()
-                        .frame(width: 24, height: 24)
+                        .font(.system(size: iconSize))
                 }
                 TextField("Message #\(channelName ?? globalChannelName)...", text: $draft, onCommit: sendDraft)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                Button(action: sendDraft) {
-                    Text("Send")
-                        .fontWeight(.bold)
+                if draft.isEmpty {
+                    VoiceNoteRecordButton()
+                        .font(.system(size: iconSize))
+                } else {
+                    Button(action: sendDraft) {
+                        Text("Send")
+                            .fontWeight(.bold)
+                    }
                 }
             }
         }
