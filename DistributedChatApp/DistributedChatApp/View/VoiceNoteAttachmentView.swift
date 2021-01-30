@@ -30,7 +30,6 @@ struct VoiceNoteAttachmentView: View {
             }
         }
         .onAppear {
-            print("Appeared")
             player.url = attachment.url
         }
     }

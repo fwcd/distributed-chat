@@ -31,12 +31,18 @@ class AudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
     
     @Published var isReady: Bool = false
     @Published var isPlaying: Bool = false {
-        didSet {
-            if isPlaying {
-                player?.play()
-            } else {
-                player?.pause()
+        willSet {
+            if newValue != isPlaying {
+                if newValue {
+                    player?.play()
+                } else {
+                    player?.pause()
+                }
             }
         }
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        isPlaying = false
     }
 }
