@@ -17,7 +17,7 @@ struct VoiceNoteAttachmentView: View {
     
     var body: some View {
         HStack {
-            if player.url != nil {
+            if player.isReady {
                 Button(action: {
                     player.isPlaying = !player.isPlaying
                 }) {

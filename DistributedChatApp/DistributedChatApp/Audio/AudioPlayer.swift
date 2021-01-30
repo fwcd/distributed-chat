@@ -10,19 +10,26 @@ import Combine
 import Foundation
 
 class AudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
-    private var player: AVAudioPlayer? = nil
-    
-    var url: URL? {
-        get { player?.url }
-        set { player = newValue.flatMap {
-            print($0)
-//            let data = try! Data(contentsOf: $0)
-//            print("Got it")
-//            let newPlayer = try! AVAudioPlayer(contentsOf: $0)
-//            newPlayer.delegate = self
-            return nil
-        } }
+    private var player: AVAudioPlayer? = nil {
+        didSet {
+            isReady = player != nil
+        }
     }
+    
+    var url: URL? = nil {
+        willSet {
+            if let url = newValue,
+               let data = try? Data.smartContents(of: url),
+               let player = try? AVAudioPlayer(data: data) {
+                player.delegate = self
+                self.player = player
+            } else {
+                player = nil
+            }
+        }
+    }
+    
+    @Published var isReady: Bool = false
     @Published var isPlaying: Bool = false {
         didSet {
             if isPlaying {
