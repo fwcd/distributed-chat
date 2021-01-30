@@ -11,6 +11,7 @@ import FDWaveformView
 
 struct WaveformView: UIViewRepresentable {
     let url: URL
+    let color: Color
     
     func makeCoordinator() -> Coordinator {
         Coordinator()
@@ -20,6 +21,7 @@ struct WaveformView: UIViewRepresentable {
         let view = FDWaveformView()
         view.delegate = context.coordinator
         view.audioURL = url.smartResolved
+        view.wavesColor = UIColor(color)
         return view
     }
     

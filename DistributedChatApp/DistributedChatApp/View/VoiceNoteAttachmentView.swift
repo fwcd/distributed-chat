@@ -28,7 +28,8 @@ struct VoiceNoteAttachmentView: View {
                     }
                 }
                 if let url = player.url {
-                    WaveformView(url: url)
+                    WaveformView(url: url, color: .white)
+                        .frame(width: 80)
                 }
             }
         }
