@@ -29,12 +29,12 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
     let url: URL
     
     init(name: String) throws {
-        url = persistenceFileURL(path: "Recordings/\(name).opus")
+        url = persistenceFileURL(path: "Recordings/\(name).m4a")
         recorder = try AVAudioRecorder(url: url, settings: [
             AVEncoderAudioQualityKey: AVAudioQuality.low.rawValue,
             AVNumberOfChannelsKey: 1,
-            AVFormatIDKey: kAudioFormatOpus,
-            AVSampleRateKey: 24_000.0 // Hz
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 12_000.0 // Hz
         ])
         
         super.init()
