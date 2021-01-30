@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */; };
 		C75441BF25BF3A9A003E2F71 /* NearbyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75441BE25BF3A9A003E2F71 /* NearbyUser.swift */; };
+		C76F1CA525C4E53A005DE1C6 /* ChannelSnippetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F1CA425C4E53A005DE1C6 /* ChannelSnippetView.swift */; };
 		C7734CA925BCDB1D0057DF96 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CA825BCDB1D0057DF96 /* Network.swift */; };
 		C7734CB225BCDEEA0057DF96 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CB125BCDEEA0057DF96 /* StringUtils.swift */; };
 		C7734CBA25BCE6CE0057DF96 /* MessageHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734CB925BCE6CE0057DF96 /* MessageHistoryView.swift */; };
@@ -89,6 +90,7 @@
 /* Begin PBXFileReference section */
 		C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatStatus+Color.swift"; sourceTree = "<group>"; };
 		C75441BE25BF3A9A003E2F71 /* NearbyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUser.swift; sourceTree = "<group>"; };
+		C76F1CA425C4E53A005DE1C6 /* ChannelSnippetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelSnippetView.swift; sourceTree = "<group>"; };
 		C7734CA825BCDB1D0057DF96 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		C7734CB125BCDEEA0057DF96 /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		C7734CB925BCE6CE0057DF96 /* MessageHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHistoryView.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 			children = (
 				C7BC335325B3C00700989E95 /* ContentView.swift */,
 				C7982D2125BB8885000DC0F1 /* ChannelsView.swift */,
+				C76F1CA425C4E53A005DE1C6 /* ChannelSnippetView.swift */,
 				C7982D2925BB8981000DC0F1 /* ChannelView.swift */,
 				C7734CB925BCE6CE0057DF96 /* MessageHistoryView.swift */,
 				C7734CC125BCE8910057DF96 /* MessageComposeView.swift */,
@@ -644,6 +647,7 @@
 				C77D49D725BC7B600073A964 /* NetworkView.swift in Sources */,
 				C7734CE625BCFD180057DF96 /* AttachmentView.swift in Sources */,
 				C77D49CF25BC78C70073A964 /* EnumPicker.swift in Sources */,
+				C76F1CA525C4E53A005DE1C6 /* ChannelSnippetView.swift in Sources */,
 				C7734CC225BCE8910057DF96 /* MessageComposeView.swift in Sources */,
 				C77D499D25BC76010073A964 /* Settings.swift in Sources */,
 				C7734CD825BCF4760057DF96 /* URLUtils.swift in Sources */,

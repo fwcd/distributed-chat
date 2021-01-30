@@ -31,28 +31,7 @@ struct ChannelsView: View {
                 }
                 ForEach(channelNames + ((channelNameDraft.isEmpty || channelNames.contains(channelNameDraft)) ? [] : [channelNameDraft]), id: \.self) { channelName in
                     NavigationLink(destination: ChannelView(channelName: channelName, controller: controller), tag: channelName, selection: $navigation.activeChannelName) {
-                        HStack {
-                            if messages.unreadChannelNames.contains(channelName) {
-                                Image(systemName: "circlebadge.fill")
-                                    .foregroundColor(.blue)
-                            } else {
-                                Image(systemName: "number")
-                            }
-                            VStack(alignment: .leading) {
-                                Text(channelName ?? globalChannelName)
-                                    .font(.headline)
-                                if let message = messages[channelName].last,
-                                   settings.presentation.showChannelPreviews {
-                                    PlainMessageView(message: message)
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                            if messages.pinnedChannelNames.contains(channelName) {
-                                Spacer()
-                                Image(systemName: "pin.circle.fill")
-                            }
-                        }
+                        ChannelSnippetView(channelName: channelName)
                     }
                     .contextMenu {
                         Button(action: {
@@ -70,6 +49,14 @@ struct ChannelsView: View {
                                 Image(systemName: "circlebadge")
                             }
                         }
+//                        if messages.pinnedChannelNames.contains(channelName) {
+//                            Button(action: {
+//                                messages.pin(channelName: channelName)
+//                            }) {
+//                                Text("Pin")
+//                                Image(systemName: "pin.fill")
+//                            }
+//                        }
                         if let channelName = channelName {
                             Button(action: {
                                 UIPasteboard.general.string = channelName
