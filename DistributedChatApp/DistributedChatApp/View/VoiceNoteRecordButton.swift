@@ -14,7 +14,10 @@ struct VoiceNoteRecordButton: View {
     var body: some View {
         HStack {
             if isRecording {
-                Image(systemName: "stop.fill")
+                HStack {
+                    Image(systemName: "stop.fill")
+                        .scaleEffect(4.0)
+                }
                     .foregroundColor(.red)
             } else if isCompleted {
                 Image(systemName: "checkmark")
