@@ -54,13 +54,8 @@ extension Published where Value: Codable {
 extension Data {
     /// Reads a potentially security-scoped or distributedchat-schemed resource.
     static func smartContents(of url: URL) throws -> Data {
-        if url.isDistributedChatSchemed {
-            guard let resolved = url.distributedChatAttachmentURL else { throw PersistenceError.invalidDistributedChatURL("Only attachment URLs can be read") }
-            return try Data(contentsOf: resolved)
-        }
-        
         do {
-            return try Data(contentsOf: url)
+            return try Data(contentsOf: url.smartResolved)
         } catch {
             log.debug("Could not read \(url) directly, trying security-scoped access...")
             
@@ -92,11 +87,6 @@ extension Data {
     
     /// Writes a potentially distributedchat-schemed resources.
     func smartWrite(to url: URL) throws {
-        if url.isDistributedChatSchemed {
-            guard let resolved = url.distributedChatAttachmentURL else { throw PersistenceError.invalidDistributedChatURL("Only attachment URLs can be written") }
-            try write(to: resolved)
-        } else {
-            try write(to: url)
-        }
+        try write(to: url.smartResolved)
     }
 }
