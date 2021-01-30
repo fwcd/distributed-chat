@@ -19,17 +19,24 @@ struct MessageComposeView: View {
     
     @EnvironmentObject private var messages: Messages
     @State private var draft: String = ""
-    @State private var draftAttachmentUrls: [URL]? = nil
+    @State private var draftFileUrls: [URL] = []
+    @State private var draftVoiceNoteUrl: URL? = nil
     @State private var attachmentActionSheetShown: Bool = false
     @State private var attachmentFilePickerShown: Bool = false
     
-    private var draftAttachments: [ChatAttachment]? {
-        draftAttachmentUrls?.compactMap { url in
+    private var draftAttachmentUrls: [(URL, ChatAttachmentType)] {
+        (draftFileUrls.map { ($0, .file) } + [(draftVoiceNoteUrl, .voiceNote)])
+            .compactMap { (opt, type) in opt.map { ($0, type) } }
+    }
+    
+    private var draftAttachments: [ChatAttachment] {
+        draftAttachmentUrls.compactMap { (url, type) in
             let mimeType = url.mimeType
             let fileName = url.lastPathComponent
+            print(url)
             guard let data = readData(url: url),
                   let url = URL(string: "data:\(mimeType);base64,\(data.base64EncodedString())") else { return nil }
-            return ChatAttachment(name: fileName, url: url)
+            return ChatAttachment(type: type, name: fileName, url: url)
         }
     }
     
@@ -45,12 +52,12 @@ struct MessageComposeView: View {
                     }
                 }
             }
-            let attachmentCount = draftAttachmentUrls?.count ?? 0
+            let attachmentCount = draftAttachmentUrls.count
             if attachmentCount > 0 {
                 ClosableStatusBar(onClose: {
-                    draftAttachmentUrls = nil
+                    clearAttachments()
                 }) {
-                    Text("Attaching \(attachmentCount) \("file".pluralized(with: attachmentCount))")
+                    Text("\(attachmentCount) \("attachment".pluralized(with: attachmentCount))")
                 }
             }
             HStack {
@@ -60,9 +67,11 @@ struct MessageComposeView: View {
                 }
                 TextField("Message #\(channelName ?? globalChannelName)...", text: $draft, onCommit: sendDraft)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                if draft.isEmpty {
-                    VoiceNoteRecordButton()
-                        .font(.system(size: iconSize))
+                if draft.isEmpty && draftAttachmentUrls.isEmpty {
+                    VoiceNoteRecordButton {
+                        draftVoiceNoteUrl = $0
+                    }
+                    .font(.system(size: iconSize))
                 } else {
                     Button(action: sendDraft) {
                         Text("Send")
@@ -88,40 +97,54 @@ struct MessageComposeView: View {
         }
         .fileImporter(isPresented: $attachmentFilePickerShown, allowedContentTypes: [.data], allowsMultipleSelection: false) {
             if case let .success(urls) = $0 {
-                draftAttachmentUrls = urls
+                draftFileUrls = urls
             }
             attachmentFilePickerShown = false
         }
     }
     
     private func sendDraft() {
-        if !draft.isEmpty || !(draftAttachmentUrls ?? []).isEmpty {
-            let attachments = draftAttachments
+        if !draft.isEmpty || !draftAttachmentUrls.isEmpty {
+            let attachments = draftAttachments.nilIfEmpty
             controller.send(content: draft, on: channelName, attaching: attachments, replyingTo: replyingToMessageId)
-            draft = ""
-            draftAttachmentUrls = nil
-            replyingToMessageId = nil
+            clearDraft()
         }
     }
     
+    private func clearDraft() {
+        clearAttachments()
+        draft = ""
+        replyingToMessageId = nil
+    }
+    
+    private func clearAttachments() {
+        draftFileUrls = []
+        draftVoiceNoteUrl = nil
+    }
+    
     private func readData(url: URL) -> Data? {
-        guard url.startAccessingSecurityScopedResource() else { return nil }
-        defer { url.stopAccessingSecurityScopedResource() }
-        
-        var error: NSError? = nil
-        var data: Data? = nil
-        NSFileCoordinator().coordinate(readingItemAt: url, error: &error) { url2 in
-            do {
-                data = try Data(contentsOf: url)
-            } catch {
-                log.error("Error while reading (potentially protected) data at \(url): \(error)")
+        do {
+            return try Data(contentsOf: url)
+        } catch {
+            log.debug("Could not read \(url) directly, trying security-scoped access...")
+            guard url.startAccessingSecurityScopedResource() else { return nil }
+            defer { url.stopAccessingSecurityScopedResource() }
+            
+            var error: NSError? = nil
+            var data: Data? = nil
+            NSFileCoordinator().coordinate(readingItemAt: url, error: &error) { url2 in
+                do {
+                    data = try Data(contentsOf: url)
+                } catch {
+                    log.error("Error while reading (potentially protected) data at \(url): \(error)")
+                }
             }
+            if let error = error {
+                log.error("Error while coordinating (potentially protected) data at \(url): \(error)")
+            }
+            
+            return data
         }
-        if let error = error {
-            log.error("Error while coordinating (potentially protected) data at \(url): \(error)")
-        }
-        
-        return data
     }
 }
 

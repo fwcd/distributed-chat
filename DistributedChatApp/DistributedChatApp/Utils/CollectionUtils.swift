@@ -19,3 +19,9 @@ extension Sequence where Element: Hashable {
         return xs
     }
 }
+
+extension Collection {
+    var nilIfEmpty: Self? {
+        isEmpty ? nil : self
+    }
+}

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct VoiceNoteRecordButton: View {
+    let onFinishRecording: (URL) -> Void
+    
     @StateObject private var recorder = try! AudioRecorder(name: "voiceNote")
     
     @ViewBuilder
@@ -24,6 +26,11 @@ struct VoiceNoteRecordButton: View {
                     .foregroundColor(.blue)
             }
         }
+        .onReceive(recorder.$isCompleted) {
+            if $0 {
+                onFinishRecording(recorder.url)
+            }
+        }
         .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { isRecording in
                 recorder.isRecording = isRecording
             }) {}
@@ -32,6 +39,6 @@ struct VoiceNoteRecordButton: View {
 
 struct VoiceNoteRecordButton_Previews: PreviewProvider {
     static var previews: some View {
-        VoiceNoteRecordButton()
+        VoiceNoteRecordButton { _ in }
     }
 }
