@@ -7,19 +7,29 @@
 
 import AVFoundation
 import Foundation
+import Combine
 import Logging
 
 fileprivate let log = Logger(label: "DistributedChatApp.AudioRecorder")
 
 /// An Opus-based audio recorder that writes to a custom file in Recordings.
-class AudioRecorder: NSObject, AVAudioRecorderDelegate {
+class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
     private let recorder: AVAudioRecorder
-    private let onFinishRecording: () -> Void
+    
+    @Published var isRecording: Bool = false {
+        didSet {
+            if isRecording {
+                record()
+            } else {
+                stop()
+            }
+        }
+    }
+    @Published var isCompleted: Bool = false
     let url: URL
     
-    init(name: String, onFinishRecording: @escaping () -> Void) throws {
-        self.onFinishRecording = onFinishRecording
-        url = persistenceFileURL(path: "Recordings/\(name)-\(UUID()).opus")
+    init(name: String) throws {
+        url = persistenceFileURL(path: "Recordings/\(name).opus")
         recorder = try AVAudioRecorder(url: url, settings: [
             AVEncoderAudioQualityKey: AVAudioQuality.low.rawValue,
             AVNumberOfChannelsKey: 1,
@@ -31,18 +41,21 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
         recorder.delegate = self
     }
     
-    func record() {
+    private func record() {
         recorder.prepareToRecord()
         recorder.record()
+        isRecording = true
+        isCompleted = false
     }
     
-    func stop() {
+    private func stop() {
         recorder.stop()
+        isRecording = false
     }
     
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully: Bool) {
         if successfully {
-            onFinishRecording()
+            isCompleted = true
         } else {
             log.warning("Did not successfully finish recording.")
         }

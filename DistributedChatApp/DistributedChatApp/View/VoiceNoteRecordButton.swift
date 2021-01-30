@@ -8,29 +8,25 @@
 import SwiftUI
 
 struct VoiceNoteRecordButton: View {
-    @State private var isRecording: Bool = false
-    @State private var isCompleted: Bool = false
+    @StateObject private var recorder = try! AudioRecorder(name: "voiceNote")
     
+    @ViewBuilder
     var body: some View {
         HStack {
-            if isRecording {
+            if recorder.isRecording {
                 HStack {
                     Image(systemName: "stop.fill")
                         .scaleEffect(4.0)
                 }
                     .foregroundColor(.red)
-            } else if isCompleted {
-                Image(systemName: "checkmark")
             } else {
                 Image(systemName: "mic.fill")
                     .foregroundColor(.blue)
             }
         }
-        .onLongPressGesture(minimumDuration: 1, pressing: { isRecording in
-            self.isRecording = isRecording
-        }) {
-            isCompleted = true
-        }
+        .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { isRecording in
+                recorder.isRecording = isRecording
+            }) {}
     }
 }
 
