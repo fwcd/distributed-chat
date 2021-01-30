@@ -27,6 +27,7 @@ struct VoiceNoteAttachmentView: View {
                         Image(systemName: "play.fill")
                     }
                 }
+                .font(.system(size: 24))
                 if let url = player.url {
                     WaveformView(url: url, color: .white)
                         .frame(width: 80)
