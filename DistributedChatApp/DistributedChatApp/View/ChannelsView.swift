@@ -16,10 +16,14 @@ struct ChannelsView: View {
     @EnvironmentObject private var navigation: Navigation
     @EnvironmentObject private var settings: Settings
     @EnvironmentObject private var network: Network
-    @State private var channelNameDraft: String = ""
+    @State private var newChannelNames: [String] = []
     @State private var channelNameDraftSheetShown: Bool = false
     @State private var deletingChannelNames: [String?] = []
     @State private var deletionConfirmationShown: Bool = false
+    
+    private var allChannelNames: [String?] {
+        channelNames + newChannelNames.filter { !channelNames.contains($0) }
+    }
     
     var body: some View {
         NavigationView {
@@ -29,7 +33,7 @@ struct ChannelsView: View {
                     Image(systemName: "antenna.radiowaves.left.and.right")
                     Text("\(nearbyCount) \("user".pluralized(with: nearbyCount)) currently nearby")
                 }
-                ForEach(channelNames + ((channelNameDraft.isEmpty || channelNames.contains(channelNameDraft)) ? [] : [channelNameDraft]), id: \.self) { channelName in
+                ForEach(allChannelNames, id: \.self) { channelName in
                     NavigationLink(destination: ChannelView(channelName: channelName, controller: controller), tag: channelName, selection: $navigation.activeChannelName) {
                         ChannelSnippetView(channelName: channelName)
                     }
@@ -49,14 +53,21 @@ struct ChannelsView: View {
                                 Image(systemName: "circlebadge")
                             }
                         }
-//                        if messages.pinnedChannelNames.contains(channelName) {
-//                            Button(action: {
-//                                messages.pin(channelName: channelName)
-//                            }) {
-//                                Text("Pin")
-//                                Image(systemName: "pin.fill")
-//                            }
-//                        }
+                        if !messages.pinnedChannelNames.contains(channelName) {
+                            Button(action: {
+                                messages.pin(channelName: channelName)
+                            }) {
+                                Text("Pin")
+                                Image(systemName: "pin.fill")
+                            }
+                        } else if channelName != nil {
+                            Button(action: {
+                                messages.unpin(channelName: channelName)
+                            }) {
+                                Text("Unpin")
+                                Image(systemName: "pin.slash.fill")
+                            }
+                        }
                         if let channelName = channelName {
                             Button(action: {
                                 UIPasteboard.general.string = channelName
@@ -74,9 +85,7 @@ struct ChannelsView: View {
                     }
                 }
                 .onDelete { indexSet in
-                    deletingChannelNames = indexSet.map {
-                        $0 < channelNames.count ? channelNames[$0] : channelNameDraft
-                    }
+                    deletingChannelNames = indexSet.map { allChannelNames[$0] }
                     deletionConfirmationShown = true
                 }
             }
@@ -85,7 +94,6 @@ struct ChannelsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        channelNameDraft = ""
                         channelNameDraftSheetShown = true
                     }) {
                         Image(systemName: "square.and.pencil")
@@ -95,21 +103,10 @@ struct ChannelsView: View {
             }
         }
         .sheet(isPresented: $channelNameDraftSheetShown) {
-            VStack {
-                AutoFocusTextField(placeholder: "New Channel", text: $channelNameDraft, onCommit: {
-                    if !channelNameDraft.isEmpty {
-                        channelNameDraftSheetShown = false
-                        
-                        // Enforce lower-kebab-case
-                        channelNameDraft = channelNameDraft
-                            .lowercased()
-                            .trimmingCharacters(in: .whitespacesAndNewlines)
-                            .replacingOccurrences(of: " ", with: "-")
-                    }
-                })
-                .font(.title2)
+            NewChannelView {
+                channelNameDraftSheetShown = false
+                newChannelNames = [$0]
             }
-            .padding(20)
         }
         .actionSheet(isPresented: $deletionConfirmationShown) {
             ActionSheet(
@@ -120,7 +117,7 @@ struct ChannelsView: View {
                         for channelName in deletingChannelNames {
                             messages.clear(channelName: channelName)
                         }
-                        channelNameDraft = ""
+                        newChannelNames.removeAll(where: deletingChannelNames.contains)
                         deletingChannelNames = []
                     },
                     .cancel {
