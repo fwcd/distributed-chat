@@ -15,13 +15,13 @@ fileprivate let log = Logger(label: "DistributedChatApp.Messages")
 class Messages: ObservableObject {
     @Published var autoReadChannelNames: Set<String?> = []
     @Published(persistingTo: "Messages/unread.json") var unread: Set<UUID> = []
-    @Published(persistingTo: "Messages/pinnedChannelNames.json") var pinnedChannelNames: Set<String?> = [nil]
+    @Published(persistingTo: "Messages/pinnedChannelNames.json") var pinnedChannelNames: [String?] = [nil]
     @Published(persistingTo: "Messages/messages.json") private(set) var messages: [UUID: ChatMessage] = [:]
     
     var unreadChannelNames: Set<String?> { Set(unread.compactMap { messages[$0] }.map(\.channelName)) }
     
     var channelNames: [String?] {
-        pinnedChannelNames.sorted { ($0 ?? "") < ($1 ?? "") } + messages.values
+        pinnedChannelNames + messages.values
             .sorted { $0.timestamp > $1.timestamp }
             .compactMap(\.channelName)
             .filter { !pinnedChannelNames.contains($0) }

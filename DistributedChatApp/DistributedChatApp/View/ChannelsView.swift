@@ -48,6 +48,10 @@ struct ChannelsView: View {
                                         .foregroundColor(.secondary)
                                 }
                             }
+                            if messages.pinnedChannelNames.contains(channelName) {
+                                Spacer()
+                                Image(systemName: "pin.circle.fill")
+                            }
                         }
                     }
                     .contextMenu {
