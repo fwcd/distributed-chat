@@ -68,7 +68,7 @@ class Messages: ObservableObject {
         var i = 1
         
         while (try? url.checkResourceIsReachable()) ?? false {
-            url = baseURL.deletingPathExtension().appendingPathExtension("-\(i)\(fileExtension)")
+            url = baseURL.deletingPathExtension().appendingPathExtension("\(i)\(fileExtension)")
             i += 1
         }
         
