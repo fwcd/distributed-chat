@@ -22,6 +22,10 @@ struct WaveformView: UIViewRepresentable {
         view.delegate = context.coordinator
         view.audioURL = url.smartResolved
         view.wavesColor = UIColor(color)
+        view.progressColor = UIColor(color)
+        view.doesAllowScroll = false
+        view.doesAllowStretch = false
+        view.doesAllowScrubbing = false
         return view
     }
     
