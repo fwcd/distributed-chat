@@ -17,7 +17,7 @@
                     <label for="live-edges-enabled">Show message edges in real-time</label>
                 </div>
                 <div class="option">
-                    <input type="checkbox" id="live-labels-enabled" name="live-labels-enabled" checked>
+                    <input type="checkbox" id="live-labels-enabled" name="live-labels-enabled">
                     <label for="live-labels-enabled">Show message contents in real-time</label>
                 </div>
             </div>

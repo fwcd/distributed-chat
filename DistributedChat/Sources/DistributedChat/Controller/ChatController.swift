@@ -75,7 +75,7 @@ public class ChatController {
     }
     
     private func broadcastPresence() {
-        log.info("Broadcasting presence: \(presence.status) (\(presence.info)")
+        log.debug("Broadcasting presence: \(presence.status) (\(presence.info))")
         transportWrapper.broadcast(ChatProtocol.Message(updatedPresences: [presence]))
     }
 
