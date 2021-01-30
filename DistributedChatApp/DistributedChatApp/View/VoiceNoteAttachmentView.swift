@@ -27,6 +27,9 @@ struct VoiceNoteAttachmentView: View {
                         Image(systemName: "play.fill")
                     }
                 }
+                if let url = player.url {
+                    WaveformView(url: url)
+                }
             }
         }
         .onAppear {

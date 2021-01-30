@@ -61,6 +61,8 @@
 		C7ED97A825C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED97A725C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift */; };
 		C7ED97B025C5E705002ACC5A /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED97AF25C5E705002ACC5A /* AudioPlayer.swift */; };
 		C7ED97B825C5F4BA002ACC5A /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED97B725C5F4BA002ACC5A /* PersistenceError.swift */; };
+		C7ED97C125C60055002ACC5A /* FDWaveformView in Frameworks */ = {isa = PBXBuildFile; productRef = C7ED97C025C60055002ACC5A /* FDWaveformView */; };
+		C7ED97C925C60091002ACC5A /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED97C825C60091002ACC5A /* WaveformView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -157,6 +159,7 @@
 		C7ED97A725C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceNoteAttachmentView.swift; sourceTree = "<group>"; };
 		C7ED97AF25C5E705002ACC5A /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		C7ED97B725C5F4BA002ACC5A /* PersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
+		C7ED97C825C60091002ACC5A /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7BC338A25B3C2EE00989E95 /* DistributedChat in Frameworks */,
+				C7ED97C125C60055002ACC5A /* FDWaveformView in Frameworks */,
 				C7734D4B25BDF52C0057DF96 /* LoggingOSLog in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +307,7 @@
 				C77D49C025BC780A0073A964 /* BubbleMessageView.swift */,
 				C7734CE525BCFD180057DF96 /* AttachmentView.swift */,
 				C7ED97A725C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift */,
+				C7ED97C825C60091002ACC5A /* WaveformView.swift */,
 				C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */,
 				C77D49D625BC7B600073A964 /* NetworkView.swift */,
 				C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */,
@@ -481,6 +486,7 @@
 			packageProductDependencies = (
 				C7BC338925B3C2EE00989E95 /* DistributedChat */,
 				C7734D4A25BDF52C0057DF96 /* LoggingOSLog */,
+				C7ED97C025C60055002ACC5A /* FDWaveformView */,
 			);
 			productName = DistributedChatApp;
 			productReference = C7BC334E25B3C00700989E95 /* DistributedChatApp.app */;
@@ -566,6 +572,7 @@
 			mainGroup = C7BC334525B3C00700989E95;
 			packageReferences = (
 				C7734D4925BDF52B0057DF96 /* XCRemoteSwiftPackageReference "swift-log-oslog" */,
+				C7ED97BF25C60055002ACC5A /* XCRemoteSwiftPackageReference "FDWaveformView" */,
 			);
 			productRefGroup = C7BC334F25B3C00700989E95 /* Products */;
 			projectDirPath = "";
@@ -674,6 +681,7 @@
 				C7BC335425B3C00700989E95 /* ContentView.swift in Sources */,
 				C77D498725BC73F70073A964 /* SettingsView.swift in Sources */,
 				C7ED97B025C5E705002ACC5A /* AudioPlayer.swift in Sources */,
+				C7ED97C925C60091002ACC5A /* WaveformView.swift in Sources */,
 				C77D49C125BC780A0073A964 /* BubbleMessageView.swift in Sources */,
 				C7734CB225BCDEEA0057DF96 /* StringUtils.swift in Sources */,
 				C77D49D725BC7B600073A964 /* NetworkView.swift in Sources */,
@@ -1217,6 +1225,14 @@
 				minimumVersion = 0.2.2;
 			};
 		};
+		C7ED97BF25C60055002ACC5A /* XCRemoteSwiftPackageReference "FDWaveformView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fulldecent/FDWaveformView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1240,6 +1256,11 @@
 		C7BC338925B3C2EE00989E95 /* DistributedChat */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DistributedChat;
+		};
+		C7ED97C025C60055002ACC5A /* FDWaveformView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7ED97BF25C60055002ACC5A /* XCRemoteSwiftPackageReference "FDWaveformView" */;
+			productName = FDWaveformView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
