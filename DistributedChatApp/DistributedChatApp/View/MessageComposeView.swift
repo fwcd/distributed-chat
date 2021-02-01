@@ -19,14 +19,20 @@ struct MessageComposeView: View {
     @EnvironmentObject private var messages: Messages
     @State private var draft: String = ""
     @State private var draftFileUrls: [URL] = []
+    @State private var draftImageUrls: [URL] = []
     @State private var draftVoiceNoteUrl: URL? = nil
     @State private var attachmentActionSheetShown: Bool = false
     @State private var attachmentFilePickerShown: Bool = false
     @State private var attachmentImagePickerShown: Bool = false
     
     private var draftAttachmentUrls: [(URL, ChatAttachmentType)] {
-        (draftFileUrls.map { ($0, .file) } + [(draftVoiceNoteUrl, .voiceNote)])
-            .compactMap { (opt, type) in opt.map { ($0, type) } }
+        [
+            draftFileUrls.map { ($0, .file) },
+            draftImageUrls.map { ($0, .image) },
+            [(draftVoiceNoteUrl, .voiceNote)]
+        ]
+        .joined()
+        .compactMap { (opt, type) in opt.map { ($0, type) } }
     }
     
     private var draftAttachments: [ChatAttachment] {
@@ -96,7 +102,10 @@ struct MessageComposeView: View {
             )
         }
         .sheet(isPresented: $attachmentImagePickerShown) {
-            ImagePicker()
+            ImagePicker(sourceType: .photoLibrary) {
+                draftImageUrls = [$0]
+                attachmentImagePickerShown = false
+            }
         }
         .fileImporter(isPresented: $attachmentFilePickerShown, allowedContentTypes: [.data], allowsMultipleSelection: false) {
             if case let .success(urls) = $0 {
@@ -121,6 +130,7 @@ struct MessageComposeView: View {
     }
     
     private func clearAttachments() {
+        draftImageUrls = []
         draftFileUrls = []
         draftVoiceNoteUrl = nil
     }
