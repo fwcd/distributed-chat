@@ -113,7 +113,7 @@ struct MessageComposeView: View {
         }
         .sheet(isPresented: $attachmentImagePickerShown) {
             ImagePicker(sourceType: attachmentImagePickerStyle) {
-                draftImageUrls = [$0]
+                draftImageUrls = [$0].compactMap { $0 }
                 attachmentImagePickerShown = false
             }
         }
