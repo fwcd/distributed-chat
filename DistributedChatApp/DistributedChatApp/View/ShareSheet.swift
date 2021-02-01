@@ -16,6 +16,20 @@ struct ShareSheet: UIViewControllerRepresentable {
     var onComplete: (() -> Void)? = nil
     
     func makeUIViewController(context: Context) -> UIActivityViewController {
+        makeUIViewControllerImpl()
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
+        // Do nothing
+    }
+    
+    /// Presents the share sheet directly through UIKit.
+    func present() {
+        let vc = makeUIViewControllerImpl()
+        UIApplication.shared.windows.first?.rootViewController?.present(vc, animated: true, completion: nil)
+    }
+    
+    private func makeUIViewControllerImpl() -> UIActivityViewController {
         let vc = UIActivityViewController(activityItems: items, applicationActivities: nil)
         vc.completionWithItemsHandler = { _, _, _, error in
             if let error = error {
@@ -25,9 +39,5 @@ struct ShareSheet: UIViewControllerRepresentable {
             onComplete?()
         }
         return vc
-    }
-    
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-        // Do nothing
     }
 }

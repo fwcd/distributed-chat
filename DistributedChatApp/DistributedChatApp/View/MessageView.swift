@@ -16,8 +16,6 @@ struct MessageView: View {
     
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var settings: Settings
-    @State private var shareSheetShown: Bool = false
-    @State private var sharedItems: [Any] = []
     
     var body: some View {
         let menuItems = Group {
@@ -50,8 +48,7 @@ struct MessageView: View {
             }
             if !message.content.isEmpty {
                 Button(action: {
-                    sharedItems = [message.content]
-                    shareSheetShown = true
+                    ShareSheet(items: [message.content]).present()
                 }) {
                     Text("Share Text")
                     Image(systemName: "square.and.arrow.up")
@@ -59,8 +56,7 @@ struct MessageView: View {
             }
             ForEach(message.attachments ?? []) { attachment in
                 Button(action: {
-                    sharedItems = [attachment.url.smartResolved]
-                    shareSheetShown = true
+                    ShareSheet(items: [attachment.url.smartResolved]).present()
                 }) {
                     Text("Share \(attachment.name)")
                     Image(systemName: "square.and.arrow.up")
@@ -86,7 +82,7 @@ struct MessageView: View {
             }
         }
         
-        Group {
+        VStack {
             switch settings.presentation.messageHistoryStyle {
             case .compact:
                 CompactMessageView(message: message)
@@ -102,9 +98,6 @@ struct MessageView: View {
                     if !isMe { Spacer() }
                 }
             }
-        }
-        .sheet(isPresented: $shareSheetShown) {
-            ShareSheet(items: sharedItems)
         }
     }
 }
