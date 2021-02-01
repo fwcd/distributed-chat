@@ -58,6 +58,8 @@
 		C7BC336F25B3C00900989E95 /* DistributedChatAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC336E25B3C00900989E95 /* DistributedChatAppUITests.swift */; };
 		C7BC338A25B3C2EE00989E95 /* DistributedChat in Frameworks */ = {isa = PBXBuildFile; productRef = C7BC338925B3C2EE00989E95 /* DistributedChat */; };
 		C7C24EA325C8B42100222AAA /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EA225C8B42100222AAA /* ImagePicker.swift */; };
+		C7C24EB125C8C61D00222AAA /* RootSheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EB025C8C61C00222AAA /* RootSheetModifier.swift */; };
+		C7C24EC525C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EC425C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift */; };
 		C7ED978A25C5CD28002ACC5A /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */; };
 		C7ED979225C5D226002ACC5A /* VoiceNoteRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */; };
 		C7ED97A025C5E57A002ACC5A /* FileAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */; };
@@ -159,6 +161,8 @@
 		C7BC337025B3C00900989E95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7BC337F25B3C1D100989E95 /* DistributedChat */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DistributedChat; path = ../DistributedChat; sourceTree = "<group>"; };
 		C7C24EA225C8B42100222AAA /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		C7C24EB025C8C61C00222AAA /* RootSheetModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSheetModifier.swift; sourceTree = "<group>"; };
+		C7C24EC425C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleUIViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceNoteRecordButton.swift; sourceTree = "<group>"; };
 		C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentView.swift; sourceTree = "<group>"; };
@@ -324,6 +328,8 @@
 				C77D49CE25BC78C70073A964 /* EnumPicker.swift */,
 				C707E1D625C892E400164EF7 /* ShareSheet.swift */,
 				C7C24EA225C8B42100222AAA /* ImagePicker.swift */,
+				C7C24EC425C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift */,
+				C7C24EB025C8C61C00222AAA /* RootSheetModifier.swift */,
 				C7734CED25BCFE5D0057DF96 /* QuickLookView.swift */,
 				C7734D1125BD00330057DF96 /* QuickLookAttachment.swift */,
 				C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */,
@@ -700,6 +706,7 @@
 				C77D49CF25BC78C70073A964 /* EnumPicker.swift in Sources */,
 				C76F1CAD25C4E676005DE1C6 /* NewChannelView.swift in Sources */,
 				C76F1CA525C4E53A005DE1C6 /* ChannelSnippetView.swift in Sources */,
+				C7C24EC525C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift in Sources */,
 				C7734CC225BCE8910057DF96 /* MessageComposeView.swift in Sources */,
 				C77D499D25BC76010073A964 /* Settings.swift in Sources */,
 				C7734CD825BCF4760057DF96 /* URLUtils.swift in Sources */,
@@ -719,6 +726,7 @@
 				C7734CBA25BCE6CE0057DF96 /* MessageHistoryView.swift in Sources */,
 				C7734CA925BCDB1D0057DF96 /* Network.swift in Sources */,
 				C7ED97A025C5E57A002ACC5A /* FileAttachmentView.swift in Sources */,
+				C7C24EB125C8C61D00222AAA /* RootSheetModifier.swift in Sources */,
 				C7734D9125BE27BD0057DF96 /* CollectionUtils.swift in Sources */,
 				C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */,
 			);

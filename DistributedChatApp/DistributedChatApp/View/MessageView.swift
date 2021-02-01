@@ -48,7 +48,7 @@ struct MessageView: View {
             }
             if !message.content.isEmpty {
                 Button(action: {
-                    ShareSheet(items: [message.content]).present()
+                    ShareSheet(items: [message.content]).presentIndependently()
                 }) {
                     Text("Share Text")
                     Image(systemName: "square.and.arrow.up")
@@ -56,7 +56,7 @@ struct MessageView: View {
             }
             ForEach(message.attachments ?? []) { attachment in
                 Button(action: {
-                    ShareSheet(items: [attachment.url.smartResolved]).present()
+                    ShareSheet(items: [attachment.url.smartResolved]).presentIndependently()
                 }) {
                     Text("Share \(attachment.name)")
                     Image(systemName: "square.and.arrow.up")

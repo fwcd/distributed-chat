@@ -23,6 +23,8 @@ struct MessageComposeView: View {
     @State private var draftVoiceNoteUrl: URL? = nil
     @State private var attachmentActionSheetShown: Bool = false
     @State private var attachmentFilePickerShown: Bool = false
+    @State private var attachmentImagePickerShown: Bool = false
+    @State private var attachmentImagePickerStyle: ImagePicker.SourceType = .photoLibrary
     
     private var draftAttachmentUrls: [(URL, ChatAttachmentType)] {
         [
@@ -90,14 +92,12 @@ struct MessageComposeView: View {
                 title: Text("Add Attachment"),
                 buttons: [
                     .default(Text("Photo Library")) {
-                        ImagePicker(sourceType: .photoLibrary) {
-                            draftImageUrls = [$0].compactMap { $0 }
-                        }.present()
+                        attachmentImagePickerStyle = .photoLibrary
+                        attachmentImagePickerShown = true
                     },
                     .default(Text("Camera")) {
-                        ImagePicker(sourceType: .camera) {
-                            draftImageUrls = [$0].compactMap { $0 }
-                        }.present()
+                        attachmentImagePickerStyle = .camera
+                        attachmentImagePickerShown = true
                     },
                     .default(Text("File")) {
                         attachmentFilePickerShown = true
@@ -111,6 +111,12 @@ struct MessageComposeView: View {
                 ]
             )
         }
+        .modifier(RootSheetModifier(isPresented: $attachmentImagePickerShown) {
+            ImagePicker(sourceType: attachmentImagePickerStyle) {
+                draftImageUrls = [$0].compactMap { $0 }
+                attachmentImagePickerShown = false
+            }
+        })
         .fileImporter(isPresented: $attachmentFilePickerShown, allowedContentTypes: [.data], allowsMultipleSelection: false) {
             if case let .success(urls) = $0 {
                 draftFileUrls = urls
