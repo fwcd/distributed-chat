@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */; };
+		C707E1D725C892E400164EF7 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707E1D625C892E400164EF7 /* ShareSheet.swift */; };
 		C75441BF25BF3A9A003E2F71 /* NearbyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75441BE25BF3A9A003E2F71 /* NearbyUser.swift */; };
 		C76F1CA525C4E53A005DE1C6 /* ChannelSnippetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F1CA425C4E53A005DE1C6 /* ChannelSnippetView.swift */; };
 		C76F1CAD25C4E676005DE1C6 /* NewChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F1CAC25C4E676005DE1C6 /* NewChannelView.swift */; };
@@ -98,6 +99,7 @@
 
 /* Begin PBXFileReference section */
 		C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatStatus+Color.swift"; sourceTree = "<group>"; };
+		C707E1D625C892E400164EF7 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		C75441BE25BF3A9A003E2F71 /* NearbyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUser.swift; sourceTree = "<group>"; };
 		C76F1CA425C4E53A005DE1C6 /* ChannelSnippetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelSnippetView.swift; sourceTree = "<group>"; };
 		C76F1CAC25C4E676005DE1C6 /* NewChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChannelView.swift; sourceTree = "<group>"; };
@@ -307,6 +309,7 @@
 				C77D49C025BC780A0073A964 /* BubbleMessageView.swift */,
 				C7734CE525BCFD180057DF96 /* AttachmentView.swift */,
 				C7ED97A725C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift */,
+				C707E1D625C892E400164EF7 /* ShareSheet.swift */,
 				C7ED97C825C60091002ACC5A /* WaveformView.swift */,
 				C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */,
 				C77D49D625BC7B600073A964 /* NetworkView.swift */,
@@ -681,6 +684,7 @@
 				C7BC335425B3C00700989E95 /* ContentView.swift in Sources */,
 				C77D498725BC73F70073A964 /* SettingsView.swift in Sources */,
 				C7ED97B025C5E705002ACC5A /* AudioPlayer.swift in Sources */,
+				C707E1D725C892E400164EF7 /* ShareSheet.swift in Sources */,
 				C7ED97C925C60091002ACC5A /* WaveformView.swift in Sources */,
 				C77D49C125BC780A0073A964 /* BubbleMessageView.swift in Sources */,
 				C7734CB225BCDEEA0057DF96 /* StringUtils.swift in Sources */,
