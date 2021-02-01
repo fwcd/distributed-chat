@@ -24,6 +24,7 @@ struct MessageComposeView: View {
     @State private var attachmentActionSheetShown: Bool = false
     @State private var attachmentFilePickerShown: Bool = false
     @State private var attachmentImagePickerShown: Bool = false
+    @State private var attachmentImagePickerStyle: ImagePicker.SourceType = .photoLibrary
     
     private var draftAttachmentUrls: [(URL, ChatAttachmentType)] {
         [
@@ -90,8 +91,17 @@ struct MessageComposeView: View {
             ActionSheet(
                 title: Text("Add Attachment"),
                 buttons: [
-                    .default(Text("Image")) { attachmentImagePickerShown = true },
-                    .default(Text("File")) { attachmentFilePickerShown = true },
+                    .default(Text("Photo Library")) {
+                        attachmentImagePickerStyle = .photoLibrary
+                        attachmentImagePickerShown = true
+                    },
+                    .default(Text("Camera")) {
+                        attachmentImagePickerStyle = .camera
+                        attachmentImagePickerShown = true
+                    },
+                    .default(Text("File")) {
+                        attachmentFilePickerShown = true
+                    },
                     .cancel {
                         // TODO: Workaround for attachmentFilePickerShown
                         // staying true if the user only slides the sheet
@@ -102,7 +112,7 @@ struct MessageComposeView: View {
             )
         }
         .sheet(isPresented: $attachmentImagePickerShown) {
-            ImagePicker(sourceType: .photoLibrary) {
+            ImagePicker(sourceType: attachmentImagePickerStyle) {
                 draftImageUrls = [$0]
                 attachmentImagePickerShown = false
             }
