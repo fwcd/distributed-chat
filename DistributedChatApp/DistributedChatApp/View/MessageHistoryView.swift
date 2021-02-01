@@ -23,68 +23,8 @@ struct MessageHistoryView: View {
             ScrollViewReader { scrollView in
                 VStack(alignment: .leading) {
                     ForEach(messages[channelName]) { message in
-                        let menuItems = Group {
-                            Button(action: {
-                                messages.deleteMessage(id: message.id)
-                            }) {
-                                Text("Delete Locally")
-                                Image(systemName: "trash")
-                            }
-                            Button(action: {
-                                replyingToMessageId = message.id
-                            }) {
-                                Text("Reply")
-                                Image(systemName: "arrowshape.turn.up.left.fill")
-                            }
-                            if messages.unread.contains(message.id) {
-                                Button(action: {
-                                    messages.unread.remove(message.id)
-                                }) {
-                                    Text("Mark as Read")
-                                    Image(systemName: "circlebadge")
-                                }
-                            } else {
-                                Button(action: {
-                                    messages.unread.insert(message.id)
-                                }) {
-                                    Text("Mark as Unread")
-                                    Image(systemName: "circlebadge.fill")
-                                }
-                            }
-                            Button(action: {
-                                UIPasteboard.general.string = message.content
-                            }) {
-                                Text("Copy")
-                                Image(systemName: "doc.on.doc")
-                            }
-                            Button(action: {
-                                UIPasteboard.general.string = message.id.uuidString
-                            }) {
-                                Text("Copy Message ID")
-                                Image(systemName: "doc.on.doc")
-                            }
-                            Button(action: {
-                                UIPasteboard.general.url = URL(string: "distributedchat:///message/\(message.id)")
-                            }) {
-                                Text("Copy Message URL")
-                                Image(systemName: "doc.on.doc.fill")
-                            }
-                        }
-                        
-                        switch settings.presentation.messageHistoryStyle {
-                        case .compact:
-                            CompactMessageView(message: message)
-                                .contextMenu { menuItems }
-                        case .bubbles:
-                            let isMe = controller.me.id == message.author.id
-                            HStack {
-                                if isMe { Spacer() }
-                                BubbleMessageView(message: message, isMe: isMe) { repliedToId in
-                                    scrollView.scrollTo(repliedToId)
-                                }
-                                .contextMenu { menuItems }
-                                if !isMe { Spacer() }
-                            }
+                        MessageView(message: message, controller: controller, replyingToMessageId: $replyingToMessageId) { id in
+                            scrollView.scrollTo(id)
                         }
                     }
                 }
