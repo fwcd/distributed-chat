@@ -22,6 +22,7 @@ struct MessageComposeView: View {
     @State private var draftVoiceNoteUrl: URL? = nil
     @State private var attachmentActionSheetShown: Bool = false
     @State private var attachmentFilePickerShown: Bool = false
+    @State private var attachmentImagePickerShown: Bool = false
     
     private var draftAttachmentUrls: [(URL, ChatAttachmentType)] {
         (draftFileUrls.map { ($0, .file) } + [(draftVoiceNoteUrl, .voiceNote)])
@@ -83,16 +84,19 @@ struct MessageComposeView: View {
             ActionSheet(
                 title: Text("Add Attachment"),
                 buttons: [
-                    // TODO: Image picker, contacts picker etc.
+                    .default(Text("Image")) { attachmentImagePickerShown = true },
                     .default(Text("File")) { attachmentFilePickerShown = true },
                     .cancel {
                         // TODO: Workaround for attachmentFilePickerShown
                         // staying true if the user only slides the sheet
                         // down.
                         attachmentFilePickerShown = false
-                    }
+                    },
                 ]
             )
+        }
+        .sheet(isPresented: $attachmentImagePickerShown) {
+            ImagePicker()
         }
         .fileImporter(isPresented: $attachmentFilePickerShown, allowedContentTypes: [.data], allowsMultipleSelection: false) {
             if case let .success(urls) = $0 {

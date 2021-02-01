@@ -57,6 +57,7 @@
 		C7BC336425B3C00900989E95 /* DistributedChatAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC336325B3C00900989E95 /* DistributedChatAppTests.swift */; };
 		C7BC336F25B3C00900989E95 /* DistributedChatAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC336E25B3C00900989E95 /* DistributedChatAppUITests.swift */; };
 		C7BC338A25B3C2EE00989E95 /* DistributedChat in Frameworks */ = {isa = PBXBuildFile; productRef = C7BC338925B3C2EE00989E95 /* DistributedChat */; };
+		C7C24EA325C8B42100222AAA /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EA225C8B42100222AAA /* ImagePicker.swift */; };
 		C7ED978A25C5CD28002ACC5A /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */; };
 		C7ED979225C5D226002ACC5A /* VoiceNoteRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */; };
 		C7ED97A025C5E57A002ACC5A /* FileAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */; };
@@ -157,6 +158,7 @@
 		C7BC336E25B3C00900989E95 /* DistributedChatAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatAppUITests.swift; sourceTree = "<group>"; };
 		C7BC337025B3C00900989E95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7BC337F25B3C1D100989E95 /* DistributedChat */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DistributedChat; path = ../DistributedChat; sourceTree = "<group>"; };
+		C7C24EA225C8B42100222AAA /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceNoteRecordButton.swift; sourceTree = "<group>"; };
 		C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentView.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */,
 				C77D49CE25BC78C70073A964 /* EnumPicker.swift */,
 				C707E1D625C892E400164EF7 /* ShareSheet.swift */,
+				C7C24EA225C8B42100222AAA /* ImagePicker.swift */,
 				C7734CED25BCFE5D0057DF96 /* QuickLookView.swift */,
 				C7734D1125BD00330057DF96 /* QuickLookAttachment.swift */,
 				C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */,
@@ -703,6 +706,7 @@
 				C7734D3C25BDE9B50057DF96 /* Profile.swift in Sources */,
 				C7ED97A825C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift in Sources */,
 				C7982D2A25BB8981000DC0F1 /* ChannelView.swift in Sources */,
+				C7C24EA325C8B42100222AAA /* ImagePicker.swift in Sources */,
 				C77D499525BC75B40073A964 /* MessageHistoryStyle.swift in Sources */,
 				C77D49B325BC777E0073A964 /* CompactMessageView.swift in Sources */,
 				C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */,
