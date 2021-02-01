@@ -102,6 +102,7 @@ struct ChannelsView: View {
                 }
             }
         }
+        .navigationViewStyle(DoubleColumnNavigationViewStyle())
         .sheet(isPresented: $channelNameDraftSheetShown) {
             NewChannelView {
                 channelNameDraftSheetShown = false

@@ -108,6 +108,7 @@ struct NetworkView: View {
             }
             .navigationTitle("Network")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
