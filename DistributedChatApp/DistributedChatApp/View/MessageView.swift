@@ -16,6 +16,8 @@ struct MessageView: View {
     
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var settings: Settings
+    @State private var shareSheetShown: Bool = false
+    @State private var sharedItems: [Any] = []
     
     var body: some View {
         let menuItems = Group {
@@ -46,10 +48,28 @@ struct MessageView: View {
                     Image(systemName: "circlebadge.fill")
                 }
             }
+            if !message.content.isEmpty {
+                Button(action: {
+                    sharedItems = [message.content]
+                    shareSheetShown = true
+                }) {
+                    Text("Share Text")
+                    Image(systemName: "square.and.arrow.up")
+                }
+            }
+            ForEach(message.attachments ?? []) { attachment in
+                Button(action: {
+                    sharedItems = [attachment.url.smartResolved]
+                    shareSheetShown = true
+                }) {
+                    Text("Share \(attachment.name)")
+                    Image(systemName: "square.and.arrow.up")
+                }
+            }
             Button(action: {
                 UIPasteboard.general.string = message.content
             }) {
-                Text("Copy")
+                Text("Copy Text")
                 Image(systemName: "doc.on.doc")
             }
             Button(action: {
@@ -66,20 +86,25 @@ struct MessageView: View {
             }
         }
         
-        switch settings.presentation.messageHistoryStyle {
-        case .compact:
-            CompactMessageView(message: message)
-                .contextMenu { menuItems }
-        case .bubbles:
-            let isMe = controller.me.id == message.author.id
-            HStack {
-                if isMe { Spacer() }
-                BubbleMessageView(message: message, isMe: isMe) { repliedToId in
-                    onJumpToMessage?(repliedToId)
+        Group {
+            switch settings.presentation.messageHistoryStyle {
+            case .compact:
+                CompactMessageView(message: message)
+                    .contextMenu { menuItems }
+            case .bubbles:
+                let isMe = controller.me.id == message.author.id
+                HStack {
+                    if isMe { Spacer() }
+                    BubbleMessageView(message: message, isMe: isMe) { repliedToId in
+                        onJumpToMessage?(repliedToId)
+                    }
+                    .contextMenu { menuItems }
+                    if !isMe { Spacer() }
                 }
-                .contextMenu { menuItems }
-                if !isMe { Spacer() }
             }
+        }
+        .sheet(isPresented: $shareSheetShown) {
+            ShareSheet(items: sharedItems)
         }
     }
 }
