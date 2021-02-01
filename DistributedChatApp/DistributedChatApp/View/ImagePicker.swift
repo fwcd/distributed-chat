@@ -20,15 +20,25 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
     
     func makeUIViewController(context: Context) -> UIImagePickerController {
+        makeUIViewControllerImpl(coordinator: context.coordinator)
+    }
+    
+    private func makeUIViewControllerImpl(coordinator: Coordinator) -> UIImagePickerController {
         let vc = UIImagePickerController()
         vc.sourceType = sourceType.usingUIKit
         vc.allowsEditing = true
-        vc.delegate = context.coordinator
+        vc.delegate = coordinator
         return vc
     }
     
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {
         // Do nothing
+    }
+    
+    /// Presents the share sheet directly through UIKit.
+    func present() {
+        let vc = makeUIViewControllerImpl(coordinator: makeCoordinator())
+        UIApplication.shared.windows.first?.rootViewController?.present(vc, animated: true, completion: nil)
     }
     
     enum SourceType {
