@@ -29,9 +29,10 @@ struct ChannelsView: View {
         NavigationView {
             List {
                 let nearbyCount = network.nearbyUsers.count
+                let reachableCount = network.presences.filter { $0.key != controller.me.id }.count
                 HStack {
                     Image(systemName: "antenna.radiowaves.left.and.right")
-                    Text("\(nearbyCount) \("user".pluralized(with: nearbyCount)) currently nearby")
+                    Text("\(reachableCount) \("user".pluralized(with: reachableCount)) reachable, \(nearbyCount) \("user".pluralized(with: nearbyCount)) nearby")
                 }
                 ForEach(allChannelNames, id: \.self) { channelName in
                     NavigationLink(destination: ChannelView(channelName: channelName, controller: controller), tag: channelName, selection: $navigation.activeChannelName) {

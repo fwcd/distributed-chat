@@ -35,7 +35,7 @@ struct BubbleMessageView: View {
                         .foregroundColor(isMe ? .white : .gray)
                     Text(message.content)
                     ForEach(message.attachments ?? []) { attachment in
-                        AttachmentView(attachment: attachment)
+                        AttachmentView(attachment: attachment, voiceNoteColor: isMe ? .white : .black)
                     }
                 }
                 .foregroundColor(isMe ? .white : .black)

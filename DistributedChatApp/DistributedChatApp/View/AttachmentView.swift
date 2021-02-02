@@ -10,11 +10,12 @@ import SwiftUI
 
 struct AttachmentView: View {
     let attachment: ChatAttachment
+    var voiceNoteColor: Color = .primary
     
     var body: some View {
         switch attachment.type {
         case .voiceNote:
-            VoiceNoteAttachmentView(attachment: attachment)
+            VoiceNoteAttachmentView(attachment: attachment, color: voiceNoteColor)
         case .image:
             ImageAttachmentView(attachment: attachment)
         case .contact:
