@@ -20,35 +20,54 @@ struct MessageComposeView: View {
     
     @EnvironmentObject private var messages: Messages
     @State private var draft: String = ""
-    @State private var draftFileUrls: [URL] = []
-    @State private var draftImageUrls: [URL] = []
-    @State private var draftContacts: [CNContact] = []
-    @State private var draftVoiceNoteUrl: URL? = nil
+    @State private var draftAttachments: [DraftAttachment] = []
     @State private var attachmentActionSheetShown: Bool = false
     @State private var attachmentFilePickerShown: Bool = false
     @State private var attachmentContactPickerShown: Bool = false
     @State private var attachmentImagePickerShown: Bool = false
     @State private var attachmentImagePickerStyle: ImagePicker.SourceType = .photoLibrary
     
-    private var draftAttachmentUrls: [(URL, ChatAttachmentType)] {
-        [
-            draftFileUrls.map { ($0, .file) },
-//            draftContactUrls.map { ($0, .contact) },
-            draftImageUrls.map { ($0, .image) },
-            [(draftVoiceNoteUrl, .voiceNote)]
-        ]
-        .joined()
-        .compactMap { (opt, type) in opt.map { ($0, type) } }
-    }
-    
-    private var draftAttachments: [ChatAttachment] {
-        draftAttachmentUrls.compactMap { (url, type) in
+    private enum DraftAttachment {
+        case file(URL)
+        case image(URL)
+        case voiceNote(URL)
+        case contact(CNContact)
+        
+        var asURL: URL? {
+            switch self {
+            case .file(let url):
+                return url
+            case .image(let url):
+                return url
+            case .voiceNote(let url):
+                return url
+            default:
+                return nil
+            }
+        }
+        var asChatAttachmentType: ChatAttachmentType {
+            switch self {
+            case .file(_):
+                return .file
+            case .image(_):
+                return .image
+            case .voiceNote(_):
+                return .voiceNote
+            case .contact(_):
+                return .contact
+            }
+        }
+        var asChatAttachment: ChatAttachment? {
+            guard let url = asURL else { return nil }
             let mimeType = url.mimeType
             let fileName = url.lastPathComponent
-            print(url)
             guard let data = try? Data.smartContents(of: url),
-                  let url = URL(string: "data:\(mimeType);base64,\(data.base64EncodedString())") else { return nil }
-            return ChatAttachment(type: type, name: fileName, url: url)
+                  let dataURL = URL(string: "data:\(mimeType);base64,\(data.base64EncodedString())") else { return nil }
+            return ChatAttachment(
+                type: asChatAttachmentType,
+                name: fileName,
+                url: dataURL
+            )
         }
     }
     
@@ -56,7 +75,7 @@ struct MessageComposeView: View {
         ZStack {
             // Dummy view for presenting the contacts UI, see SwiftUIKit
             ContactPicker(showPicker: $attachmentContactPickerShown) {
-                draftContacts = [$0]
+                draftAttachments.append(.contact($0))
             }
             .frame(width: 0, height: 0, alignment: .center)
             
@@ -71,7 +90,7 @@ struct MessageComposeView: View {
                         }
                     }
                 }
-                let attachmentCount = draftAttachmentUrls.count
+                let attachmentCount = draftAttachments.count
                 if attachmentCount > 0 {
                     ClosableStatusBar(onClose: {
                         clearAttachments()
@@ -86,9 +105,9 @@ struct MessageComposeView: View {
                     }
                     TextField("Message #\(channelName ?? globalChannelName)...", text: $draft, onCommit: sendDraft)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                    if draft.isEmpty && draftAttachmentUrls.isEmpty {
+                    if draft.isEmpty && draftAttachments.isEmpty {
                         VoiceNoteRecordButton {
-                            draftVoiceNoteUrl = $0
+                            draftAttachments.append(.voiceNote($0))
                         }
                         .font(.system(size: iconSize))
                     } else {
@@ -128,13 +147,15 @@ struct MessageComposeView: View {
             }
             .fullScreenCover(isPresented: $attachmentImagePickerShown) {
                 ImagePicker(sourceType: attachmentImagePickerStyle) {
-                    draftImageUrls = [$0].compactMap { $0 }
+                    if let url = $0 {
+                        draftAttachments.append(.image(url))
+                    }
                     attachmentImagePickerShown = false
                 }.edgesIgnoringSafeArea(.all)
             }
             .fileImporter(isPresented: $attachmentFilePickerShown, allowedContentTypes: [.data], allowsMultipleSelection: false) {
                 if case let .success(urls) = $0 {
-                    draftFileUrls = urls
+                    draftAttachments += urls.map { .file($0) }
                 }
                 attachmentFilePickerShown = false
             }
@@ -142,8 +163,8 @@ struct MessageComposeView: View {
     }
     
     private func sendDraft() {
-        if !draft.isEmpty || !draftAttachmentUrls.isEmpty {
-            let attachments = draftAttachments.nilIfEmpty
+        if !draft.isEmpty || !draftAttachments.isEmpty {
+            let attachments = draftAttachments.compactMap(\.asChatAttachment).nilIfEmpty
             controller.send(content: draft, on: channelName, attaching: attachments, replyingTo: replyingToMessageId)
             clearDraft()
         }
@@ -156,10 +177,7 @@ struct MessageComposeView: View {
     }
     
     private func clearAttachments() {
-        draftImageUrls = []
-//        draftContactUrls = []
-        draftFileUrls = []
-        draftVoiceNoteUrl = nil
+        draftAttachments = []
     }
 }
 
