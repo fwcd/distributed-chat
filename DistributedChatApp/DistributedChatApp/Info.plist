@@ -45,6 +45,8 @@
 	<string>The app lets you captures images and videos and send them to a channel.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>The app lets you record voice notes with your microphone.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>The app lets you save images from message attachments to your local photo library.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
