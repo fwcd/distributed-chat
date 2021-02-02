@@ -79,7 +79,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         func dequeueChunk(length: Int) -> Data {
             let chunk = outgoingData.prefix(length)
-            outgoingData.removeFirst(length)
+            outgoingData.removeFirst(min(length, outgoingData.count))
             return chunk
         }
     }
@@ -128,6 +128,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             if let data = "\(raw)\n".data(using: .utf8), state.inboxCharacteristic != nil {
                 state.outgoingData += data
                 if !state.isWriting {
+                    state.isWriting = true
                     writeOutgoingData(of: peripheral)
                 }
             }
@@ -366,7 +367,9 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     }
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        writeOutgoingData(of: peripheral)
+        if let state = nearbyPeripherals[peripheral], state.isWriting {
+            writeOutgoingData(of: peripheral)
+        }
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
