@@ -9,8 +9,8 @@ import DistributedChat
 import SwiftUI
 
 struct QuickLookAttachmentView<Content>: View where Content: View {
-    let attachment: ChatAttachment
-    let content: () -> Content
+    private let attachment: ChatAttachment
+    private let content: () -> Content
     
     @State private var quickLookShown: Bool = false
     @State private var shareSheetShown: Bool = false
@@ -41,6 +41,11 @@ struct QuickLookAttachmentView<Content>: View where Content: View {
                 ShareSheet(items: [attachment.url.smartResolved])
             }
         }
+    }
+    
+    init(attachment: ChatAttachment, @ViewBuilder content: @escaping () -> Content) {
+        self.attachment = attachment
+        self.content = content
     }
 }
 

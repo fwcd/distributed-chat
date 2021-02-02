@@ -61,6 +61,7 @@
 		C7C24EC525C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EC425C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift */; };
 		C7C24EE825C8D4E200222AAA /* SwiftUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = C7C24EE725C8D4E200222AAA /* SwiftUIKit */; };
 		C7C24EF025C8DD6A00222AAA /* QuickLookAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EEF25C8DD6900222AAA /* QuickLookAttachmentView.swift */; };
+		C7C24EFE25C8DE3F00222AAA /* ImageAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EFD25C8DE3F00222AAA /* ImageAttachmentView.swift */; };
 		C7ED978A25C5CD28002ACC5A /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */; };
 		C7ED979225C5D226002ACC5A /* VoiceNoteRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */; };
 		C7ED97A025C5E57A002ACC5A /* FileAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */; };
@@ -164,6 +165,7 @@
 		C7C24EA225C8B42100222AAA /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		C7C24EC425C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleUIViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		C7C24EEF25C8DD6900222AAA /* QuickLookAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookAttachmentView.swift; sourceTree = "<group>"; };
+		C7C24EFD25C8DE3F00222AAA /* ImageAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAttachmentView.swift; sourceTree = "<group>"; };
 		C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceNoteRecordButton.swift; sourceTree = "<group>"; };
 		C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentView.swift; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 				C7ED97A725C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift */,
 				C7ED97C825C60091002ACC5A /* WaveformView.swift */,
 				C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */,
+				C7C24EFD25C8DE3F00222AAA /* ImageAttachmentView.swift */,
 				C7C24EEF25C8DD6900222AAA /* QuickLookAttachmentView.swift */,
 				C77D49D625BC7B600073A964 /* NetworkView.swift */,
 				C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */,
@@ -731,6 +734,7 @@
 				C7734CBA25BCE6CE0057DF96 /* MessageHistoryView.swift in Sources */,
 				C7734CA925BCDB1D0057DF96 /* Network.swift in Sources */,
 				C7ED97A025C5E57A002ACC5A /* FileAttachmentView.swift in Sources */,
+				C7C24EFE25C8DE3F00222AAA /* ImageAttachmentView.swift in Sources */,
 				C7734D9125BE27BD0057DF96 /* CollectionUtils.swift in Sources */,
 				C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */,
 			);

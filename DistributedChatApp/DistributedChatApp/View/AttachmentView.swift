@@ -15,8 +15,8 @@ struct AttachmentView: View {
         switch attachment.type {
         case .voiceNote:
             VoiceNoteAttachmentView(attachment: attachment)
-//        case .image:
-//            ImageAttachmentView(attachment: attachment)
+        case .image:
+            ImageAttachmentView(attachment: attachment)
         default:
             FileAttachmentView(attachment: attachment)
         }
