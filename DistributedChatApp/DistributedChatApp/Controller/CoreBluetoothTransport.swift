@@ -43,8 +43,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     /// Tracks remote peripherals discovered by the central that feature our service's GATT characteristic.
     private var nearbyPeripherals: [CBPeripheral: DiscoveredPeripheral] = [:] {
         didSet {
-            log.debug("Updating nearby users...")
-            network.nearbyUsers = nearbyPeripherals.filter(\.value.isDistributedChat).map { (peripheral: CBPeripheral, discovered) in
+            log.info("Updating nearby users to \(nearbyPeripherals)...")
+            network.nearbyUsers = nearbyPeripherals.filter(\.value.isConnected).filter(\.value.isDistributedChat).map { (peripheral: CBPeripheral, discovered) in
                 NearbyUser(
                     peripheralIdentifier: peripheral.identifier,
                     peripheralName: peripheral.name,
@@ -63,7 +63,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private var nearbyCentrals: [CBCentral: DiscoveredCentral] = [:]
     
     /// A discovered, connected BLE peripheral (i.e. a remote other device).
-    private class DiscoveredPeripheral {
+    private class DiscoveredPeripheral: CustomStringConvertible {
+        var isConnected: Bool = false // Only false while initially connecting
         var isDistributedChat: Bool = false
         var rssi: Int? = nil
         
@@ -76,6 +77,8 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         var isWriting: Bool = false
         var outgoingData: Data = Data()
+        
+        var description: String { "DiscoveredPeripheral (isDistributedChat: \(isDistributedChat), userID: \(userID.map(\.uuidString) ?? "?"), userName: \(userName ?? "?")" }
         
         func dequeueChunk(length: Int) -> Data {
             let chunk = outgoingData.prefix(length)
@@ -124,13 +127,15 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     func broadcast(_ raw: String) {
         log.info("Broadcasting \(raw) to \(nearbyPeripherals.count) nearby peripherals.")
         
-        for (peripheral, state) in nearbyPeripherals {
-            if let data = "\(raw)\n".data(using: .utf8), state.inboxCharacteristic != nil {
+        for (peripheral, state) in nearbyPeripherals where state.isConnected && state.inboxCharacteristic != nil {
+            if let data = "\(raw)\n".data(using: .utf8) {
                 state.outgoingData += data
                 if !state.isWriting {
                     state.isWriting = true
                     writeOutgoingData(of: peripheral)
                 }
+            } else {
+                log.warning("Could not encode data to UTF-8 for broadcasting")
             }
         }
     }
@@ -199,7 +204,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                     .autoconnect()
                     .sink { [unowned self] _ in
                         log.debug("Reading RSSIs")
-                        for peripheral in nearbyPeripherals.keys {
+                        for (peripheral, state) in nearbyPeripherals where state.isConnected {
                             peripheral.readRSSI()
                         }
                     }
@@ -289,7 +294,9 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         if !nearbyPeripherals.keys.contains(peripheral) {
             log.info("Discovered remote peripheral \(peripheral.name ?? "?") with advertised name \(advertisementData[CBAdvertisementDataLocalNameKey] ?? "?") (RSSI: \(rssi)")
-            nearbyPeripherals[peripheral] = DiscoveredPeripheral()
+            let state = DiscoveredPeripheral()
+            state.isConnected = false
+            nearbyPeripherals[peripheral] = state
             centralManager.connect(peripheral)
         } else {
             log.debug("Remote peripheral \(peripheral.name ?? "?") has already been discovered!")
@@ -297,15 +304,30 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     }
     
     func peripheral(_ peripheral: CBPeripheral, didReadRSSI rssi: NSNumber, error: Error?) {
+        if let error = error {
+            log.error("Error while reading RSSI: \(error)")
+            return
+        }
+        
         nearbyPeripherals[peripheral]?.rssi = rssi.intValue
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        log.info("Did connect to remote peripheral, discovering services...")
-        peripheral.discoverServices([serviceUUID])
+        if let state = nearbyPeripherals[peripheral] {
+            log.info("Did connect to remote peripheral, discovering services...")
+            state.isConnected = true
+            peripheral.discoverServices([serviceUUID])
+        } else {
+            log.warning("No state for peripheral after connecting")
+        }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        if let error = error {
+            log.error("Error while discovering services: \(error)")
+            return
+        }
+        
         log.debug("Discovered services on remote peripheral \(peripheral.name ?? "?")")
         
         if let service = peripheral.services?.first(where: { $0.uuid == serviceUUID }) {
@@ -315,6 +337,11 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        if let error = error {
+            log.error("Error while discovering characteristics: \(error)")
+            return
+        }
+        
         log.info("Discovered characteristics on remote peripheral \(peripheral.name ?? "?")")
         
         if service.uuid == serviceUUID, let characteristics = service.characteristics, let state = nearbyPeripherals[peripheral] {
@@ -334,18 +361,27 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        let state = nearbyPeripherals[peripheral]
+        if let error = error {
+            log.error("Error while updating value for characteristic: \(error)")
+            return
+        }
         
-        switch characteristic.uuid {
-        case userIDCharacteristicUUID:
-            state?.userID = characteristic.value
-                .flatMap { String(data: $0, encoding: .utf8) }
-                .flatMap { UUID(uuidString: $0) }
-        case userNameCharacteristicUUID:
-            state?.userName = characteristic.value
-                .flatMap { String(data: $0, encoding: .utf8) }
-        default:
-            break
+        if let state = nearbyPeripherals[peripheral] {
+            switch characteristic.uuid {
+            case userIDCharacteristicUUID:
+                log.info("Updating value for remote user ID characteristic...")
+                state.userID = characteristic.value
+                    .flatMap { String(data: $0, encoding: .utf8) }
+                    .flatMap { UUID(uuidString: $0) }
+            case userNameCharacteristicUUID:
+                log.info("Updating value for remote user name characteristic...")
+                state.userName = characteristic.value
+                    .flatMap { String(data: $0, encoding: .utf8) }
+            default:
+                break
+            }
+        } else {
+            log.warning("No state for peripheral after it updated a value.")
         }
     }
     
@@ -363,10 +399,17 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                     state.isWriting = false
                 }
             }
+        } else {
+            log.warning("No state for peripheral while writing outgoing data.")
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+        if let error = error {
+            log.error("Error while writing value for characteristic: \(error)")
+            return
+        }
+        
         if let state = nearbyPeripherals[peripheral], state.isWriting {
             writeOutgoingData(of: peripheral)
         }
@@ -375,11 +418,19 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         log.info("Disconnected from remote peripheral \(peripheral.name ?? "?")")
         
+        if let error = error {
+            log.error("Error after disconnecting peripheral: \(error)")
+        }
+        
         nearbyPeripherals[peripheral] = nil
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         log.info("Failed to connect to remote peripheral \(peripheral.name ?? "?")")
+        
+        if let error = error {
+            log.error("Error after failing to connect to peripheral: \(error)")
+        }
         
         nearbyPeripherals[peripheral] = nil
     }
