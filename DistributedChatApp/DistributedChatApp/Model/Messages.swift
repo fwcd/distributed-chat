@@ -73,8 +73,13 @@ class Messages: ObservableObject {
         }
         
         do {
-            try Data.smartContents(of: attachment.url).smartWrite(to: url)
+            var data = try Data.smartContents(of: attachment.url)
+            if let compression = attachment.compression {
+                data = try data.decompressed(with: compression)
+            }
+            try data.smartWrite(to: url)
             attachment.url = url
+            attachment.compression = nil
         } catch {
             log.error("Could not store attachment: \(error)")
         }

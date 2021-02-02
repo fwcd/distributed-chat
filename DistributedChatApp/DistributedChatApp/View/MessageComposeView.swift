@@ -13,6 +13,9 @@ import SwiftUIKit
 
 fileprivate let log = Logger(label: "DistributedChatApp.MessageComposeView")
 
+/// The compression algorithm used for encoding.
+fileprivate let compression: ChatAttachment.Compression = .lzfse
+
 struct MessageComposeView: View {
     let channelName: String?
     let controller: ChatController
@@ -86,11 +89,14 @@ struct MessageComposeView: View {
         }
         var asChatAttachment: ChatAttachment? {
             guard let data = data,
-                  let dataURL = URL(string: "data:\(mimeType);base64,\(data.base64EncodedString())") else { return nil }
+                  let compressed = try? data.compressed(with: compression),
+                  let dataURL = URL(string: "data:\(mimeType);base64,\(compressed.base64EncodedString())") else { return nil }
+            log.debug("Compressed size is \(compressed.count) bytes vs \(data.count) bytes uncompressed")
             return ChatAttachment(
                 type: type,
                 name: fileName,
-                url: dataURL
+                url: dataURL,
+                compression: compression
             )
         }
     }
