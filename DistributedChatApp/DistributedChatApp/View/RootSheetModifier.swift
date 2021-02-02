@@ -17,7 +17,13 @@ struct RootSheetModifier<Inner>: ViewModifier where Inner: SimpleUIViewControlle
     func body(content: Content) -> some View {
         content.onChange(of: isPresented) {
             if $0 {
-                let view = inner()
+                var view = inner()
+                let customDismissHandler = view.onDismiss
+                view.onDismiss = {
+                    customDismissHandler?()
+                    self.viewController = nil
+                    isPresented = false
+                }
                 let viewController = view.makeUIViewController(coordinator: view.makeCoordinator())
                 UIApplication.shared.windows.first?.rootViewController?.present(viewController, animated: true, completion: nil)
                 self.viewController = viewController

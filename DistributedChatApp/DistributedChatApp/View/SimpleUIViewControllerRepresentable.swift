@@ -8,6 +8,9 @@
 import SwiftUI
 
 protocol SimpleUIViewControllerRepresentable: UIViewControllerRepresentable {
+    /// To be invoked when the UIViewController is 'dismissed'.
+    var onDismiss: (() -> Void)? { get set }
+    
     /// Creates a view controller from just the coordinator
     func makeUIViewController(coordinator: Coordinator) -> UIViewControllerType
 }

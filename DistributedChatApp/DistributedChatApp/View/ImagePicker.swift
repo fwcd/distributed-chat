@@ -14,9 +14,10 @@ fileprivate let log = Logger(label: "DistributedChatApp.ImagePicker")
 struct ImagePicker: SimpleUIViewControllerRepresentable {
     let sourceType: SourceType
     let onComplete: (URL?) -> Void
+    var onDismiss: (() -> Void)? = nil
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(onComplete: onComplete)
+        Coordinator(onComplete: onComplete, onDismiss: onDismiss)
     }
     
     func makeUIViewController(coordinator: Coordinator) -> UIImagePickerController {
@@ -50,9 +51,11 @@ struct ImagePicker: SimpleUIViewControllerRepresentable {
     
     class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         private let onComplete: (URL?) -> Void
+        private let onDismiss: (() -> Void)?
         
-        init(onComplete: @escaping (URL?) -> Void) {
+        init(onComplete: @escaping (URL?) -> Void, onDismiss: (() -> Void)?) {
             self.onComplete = onComplete
+            self.onDismiss = onDismiss
         }
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -71,6 +74,7 @@ struct ImagePicker: SimpleUIViewControllerRepresentable {
                 log.warning("No image picked")
                 onComplete(nil)
             }
+            onDismiss?()
         }
     }
 }

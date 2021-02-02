@@ -13,7 +13,7 @@ fileprivate let log = Logger(label: "DistributedChatApp.ShareSheet")
 
 struct ShareSheet: SimpleUIViewControllerRepresentable {
     let items: [Any]
-    var onComplete: (() -> Void)? = nil
+    var onDismiss: (() -> Void)? = nil
     
     func makeUIViewController(coordinator: ()) -> UIActivityViewController {
         let vc = UIActivityViewController(activityItems: items, applicationActivities: nil)
@@ -22,7 +22,7 @@ struct ShareSheet: SimpleUIViewControllerRepresentable {
                 log.error("Error after completing share sheet: \(error)")
                 return
             }
-            onComplete?()
+            onDismiss?()
         }
         return vc
     }
