@@ -249,8 +249,10 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                 
                 while let line = state.dequeueLine() {
                     log.info("Receive line via inbox: \(line)")
-                    for listener in listeners {
-                        listener(line)
+                    DispatchQueue.main.async { [self] in
+                        for listener in listeners {
+                            listener(line)
+                        }
                     }
                 }
                 
