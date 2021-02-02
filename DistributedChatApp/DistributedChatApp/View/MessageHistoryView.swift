@@ -16,7 +16,6 @@ struct MessageHistoryView: View {
     
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var settings: Settings
-    @State private var focusedMessageId: UUID?
     
     var body: some View {
         ScrollView(.vertical) {
@@ -40,15 +39,12 @@ struct MessageHistoryView: View {
                         scrollView.scrollTo(id)
                     }
                 }
-                .onChange(of: focusedMessageId) {
-                    if let id = $0 {
+                .onChange(of: messages.messages) { _ in
+                    if let id = messages[channelName].last?.id {
                         scrollView.scrollTo(id)
                     }
                 }
             }
-        }
-        .onReceive(messages.$messages) { _ in
-            focusedMessageId = messages[channelName].last?.id
         }
     }
 }
