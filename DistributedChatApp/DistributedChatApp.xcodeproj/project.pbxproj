@@ -63,6 +63,7 @@
 		C7C24EF025C8DD6A00222AAA /* QuickLookAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EEF25C8DD6900222AAA /* QuickLookAttachmentView.swift */; };
 		C7C24EFE25C8DE3F00222AAA /* ImageAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EFD25C8DE3F00222AAA /* ImageAttachmentView.swift */; };
 		C7C24F0625C8E35400222AAA /* DataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24F0525C8E35400222AAA /* DataUtils.swift */; };
+		C7C24F2325C8E83600222AAA /* ContactAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24F2225C8E83600222AAA /* ContactAttachmentView.swift */; };
 		C7ED978A25C5CD28002ACC5A /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */; };
 		C7ED979225C5D226002ACC5A /* VoiceNoteRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */; };
 		C7ED97A025C5E57A002ACC5A /* FileAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */; };
@@ -168,6 +169,7 @@
 		C7C24EEF25C8DD6900222AAA /* QuickLookAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookAttachmentView.swift; sourceTree = "<group>"; };
 		C7C24EFD25C8DE3F00222AAA /* ImageAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAttachmentView.swift; sourceTree = "<group>"; };
 		C7C24F0525C8E35400222AAA /* DataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUtils.swift; sourceTree = "<group>"; };
+		C7C24F2225C8E83600222AAA /* ContactAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactAttachmentView.swift; sourceTree = "<group>"; };
 		C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceNoteRecordButton.swift; sourceTree = "<group>"; };
 		C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentView.swift; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 				C7ED97C825C60091002ACC5A /* WaveformView.swift */,
 				C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */,
 				C7C24EFD25C8DE3F00222AAA /* ImageAttachmentView.swift */,
+				C7C24F2225C8E83600222AAA /* ContactAttachmentView.swift */,
 				C7C24EEF25C8DD6900222AAA /* QuickLookAttachmentView.swift */,
 				C77D49D625BC7B600073A964 /* NetworkView.swift */,
 				C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */,
@@ -712,6 +715,7 @@
 				C7ED97C925C60091002ACC5A /* WaveformView.swift in Sources */,
 				C77D49C125BC780A0073A964 /* BubbleMessageView.swift in Sources */,
 				C7734CB225BCDEEA0057DF96 /* StringUtils.swift in Sources */,
+				C7C24F2325C8E83600222AAA /* ContactAttachmentView.swift in Sources */,
 				C77D49D725BC7B600073A964 /* NetworkView.swift in Sources */,
 				C7734CE625BCFD180057DF96 /* AttachmentView.swift in Sources */,
 				C77D49CF25BC78C70073A964 /* EnumPicker.swift in Sources */,

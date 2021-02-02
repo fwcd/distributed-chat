@@ -17,6 +17,8 @@ struct AttachmentView: View {
             VoiceNoteAttachmentView(attachment: attachment)
         case .image:
             ImageAttachmentView(attachment: attachment)
+        case .contact:
+            ContactAttachmentView(attachment: attachment)
         default:
             FileAttachmentView(attachment: attachment)
         }
