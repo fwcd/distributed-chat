@@ -7,6 +7,7 @@
 
 import CoreBluetooth
 import Combine
+import Dispatch
 import DistributedChat
 import Foundation
 import Logging
@@ -44,18 +45,20 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     private var nearbyPeripherals: [CBPeripheral: DiscoveredPeripheral] = [:] {
         didSet {
             log.info("Updating nearby users to \(nearbyPeripherals)...")
-            network.nearbyUsers = nearbyPeripherals.filter(\.value.isConnected).filter(\.value.isDistributedChat).map { (peripheral: CBPeripheral, discovered) in
-                NearbyUser(
-                    peripheralIdentifier: peripheral.identifier,
-                    peripheralName: peripheral.name,
-                    chatUser: {
-                        guard let userName = discovered.userName,
-                              let userID = discovered.userID else { return nil }
-                        return ChatUser(id: userID, name: userName)
-                    }(),
-                    rssi: discovered.rssi
-                )
-            }.sorted { $0.id.uuidString < $1.id.uuidString } // An arbitrary, but stable ordering
+            DispatchQueue.main.async { [self] in
+                network.nearbyUsers = nearbyPeripherals.filter(\.value.isConnected).filter(\.value.isDistributedChat).map { (peripheral: CBPeripheral, discovered) in
+                    NearbyUser(
+                        peripheralIdentifier: peripheral.identifier,
+                        peripheralName: peripheral.name,
+                        chatUser: {
+                            guard let userName = discovered.userName,
+                                  let userID = discovered.userID else { return nil }
+                            return ChatUser(id: userID, name: userName)
+                        }(),
+                        rssi: discovered.rssi
+                    )
+                }.sorted { $0.id.uuidString < $1.id.uuidString } // An arbitrary, but stable ordering
+            }
         }
     }
     
