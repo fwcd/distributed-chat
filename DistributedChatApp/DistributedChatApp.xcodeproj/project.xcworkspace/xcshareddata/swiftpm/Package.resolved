@@ -27,6 +27,15 @@
           "revision": "176d41d46429e79c806333025b226e0c50a0c602",
           "version": "0.2.2"
         }
+      },
+      {
+        "package": "SwiftUIKit",
+        "repositoryURL": "https://github.com/youjinp/SwiftUIKit.git",
+        "state": {
+          "branch": null,
+          "revision": "c4babb929dcb899a3939f093f6f63d1694932949",
+          "version": "0.0.14"
+        }
       }
     ]
   },

@@ -9,6 +9,7 @@ import DistributedChat
 import Contacts
 import Logging
 import SwiftUI
+import SwiftUIKit
 
 fileprivate let log = Logger(label: "DistributedChatApp.MessageComposeView")
 
@@ -52,89 +53,91 @@ struct MessageComposeView: View {
     }
     
     var body: some View {
-        VStack {
-            if let id = replyingToMessageId, let message = messages[id] {
-                ClosableStatusBar(onClose: {
-                    replyingToMessageId = nil
-                }) {
-                    HStack {
-                        Text("Replying to")
-                        PlainMessageView(message: message)
-                    }
-                }
-            }
-            let attachmentCount = draftAttachmentUrls.count
-            if attachmentCount > 0 {
-                ClosableStatusBar(onClose: {
-                    clearAttachments()
-                }) {
-                    Text("\(attachmentCount) \("attachment".pluralized(with: attachmentCount))")
-                }
-            }
-            HStack {
-                Button(action: { attachmentActionSheetShown = true }) {
-                    Image(systemName: "plus")
-                        .font(.system(size: iconSize))
-                }
-                TextField("Message #\(channelName ?? globalChannelName)...", text: $draft, onCommit: sendDraft)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                if draft.isEmpty && draftAttachmentUrls.isEmpty {
-                    VoiceNoteRecordButton {
-                        draftVoiceNoteUrl = $0
-                    }
-                    .font(.system(size: iconSize))
-                } else {
-                    Button(action: sendDraft) {
-                        Text("Send")
-                            .fontWeight(.bold)
-                    }
-                }
-            }
-        }
-        .actionSheet(isPresented: $attachmentActionSheetShown) {
-            ActionSheet(
-                title: Text("Add Attachment"),
-                buttons: [
-                    .default(Text("Photo Library")) {
-                        attachmentImagePickerStyle = .photoLibrary
-                        attachmentImagePickerShown = true
-                    },
-                    .default(Text("Camera")) {
-                        attachmentImagePickerStyle = .camera
-                        attachmentImagePickerShown = true
-                    },
-                    .default(Text("Contact")) {
-                        attachmentContactPickerShown = true
-                    },
-                    .default(Text("File")) {
-                        attachmentFilePickerShown = true
-                    },
-                    .cancel {
-                        // TODO: Workaround for attachmentFilePickerShown
-                        // staying true if the user only slides the sheet
-                        // down.
-                        attachmentFilePickerShown = false
-                    },
-                ]
-            )
-        }
-        .fullScreenCover(isPresented: $attachmentImagePickerShown) {
-            ImagePicker(sourceType: attachmentImagePickerStyle) {
-                draftImageUrls = [$0].compactMap { $0 }
-                attachmentImagePickerShown = false
-            }.edgesIgnoringSafeArea(.all)
-        }
-        .sheet(isPresented: $attachmentContactPickerShown) {
-            ContactPicker {
+        ZStack {
+            // Dummy view for presenting the contacts UI, see SwiftUIKit
+            ContactPicker(showPicker: $attachmentContactPickerShown) {
                 draftContacts = [$0]
-                attachmentContactPickerShown = false
             }
-        }
-        .fileImporter(isPresented: $attachmentFilePickerShown, allowedContentTypes: [.data], allowsMultipleSelection: false) {
-            if case let .success(urls) = $0 {
-                draftFileUrls = urls
+            .frame(width: 0, height: 0, alignment: .center)
+            
+            VStack {
+                if let id = replyingToMessageId, let message = messages[id] {
+                    ClosableStatusBar(onClose: {
+                        replyingToMessageId = nil
+                    }) {
+                        HStack {
+                            Text("Replying to")
+                            PlainMessageView(message: message)
+                        }
+                    }
+                }
+                let attachmentCount = draftAttachmentUrls.count
+                if attachmentCount > 0 {
+                    ClosableStatusBar(onClose: {
+                        clearAttachments()
+                    }) {
+                        Text("\(attachmentCount) \("attachment".pluralized(with: attachmentCount))")
+                    }
+                }
+                HStack {
+                    Button(action: { attachmentActionSheetShown = true }) {
+                        Image(systemName: "plus")
+                            .font(.system(size: iconSize))
+                    }
+                    TextField("Message #\(channelName ?? globalChannelName)...", text: $draft, onCommit: sendDraft)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    if draft.isEmpty && draftAttachmentUrls.isEmpty {
+                        VoiceNoteRecordButton {
+                            draftVoiceNoteUrl = $0
+                        }
+                        .font(.system(size: iconSize))
+                    } else {
+                        Button(action: sendDraft) {
+                            Text("Send")
+                                .fontWeight(.bold)
+                        }
+                    }
+                }
             }
-            attachmentFilePickerShown = false
+            .actionSheet(isPresented: $attachmentActionSheetShown) {
+                ActionSheet(
+                    title: Text("Add Attachment"),
+                    buttons: [
+                        .default(Text("Photo Library")) {
+                            attachmentImagePickerStyle = .photoLibrary
+                            attachmentImagePickerShown = true
+                        },
+                        .default(Text("Camera")) {
+                            attachmentImagePickerStyle = .camera
+                            attachmentImagePickerShown = true
+                        },
+                        .default(Text("Contact")) {
+                            attachmentContactPickerShown = true
+                        },
+                        .default(Text("File")) {
+                            attachmentFilePickerShown = true
+                        },
+                        .cancel {
+                            // TODO: Workaround for attachmentFilePickerShown
+                            // staying true if the user only slides the sheet
+                            // down.
+                            attachmentFilePickerShown = false
+                        },
+                    ]
+                )
+            }
+            .fullScreenCover(isPresented: $attachmentImagePickerShown) {
+                ImagePicker(sourceType: attachmentImagePickerStyle) {
+                    draftImageUrls = [$0].compactMap { $0 }
+                    attachmentImagePickerShown = false
+                }.edgesIgnoringSafeArea(.all)
+            }
+            .fileImporter(isPresented: $attachmentFilePickerShown, allowedContentTypes: [.data], allowsMultipleSelection: false) {
+                if case let .success(urls) = $0 {
+                    draftFileUrls = urls
+                }
+                attachmentFilePickerShown = false
+            }
         }
     }
     

@@ -59,7 +59,7 @@
 		C7BC338A25B3C2EE00989E95 /* DistributedChat in Frameworks */ = {isa = PBXBuildFile; productRef = C7BC338925B3C2EE00989E95 /* DistributedChat */; };
 		C7C24EA325C8B42100222AAA /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EA225C8B42100222AAA /* ImagePicker.swift */; };
 		C7C24EC525C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EC425C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift */; };
-		C7C24ED925C8D1CE00222AAA /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24ED825C8D1CE00222AAA /* ContactPicker.swift */; };
+		C7C24EE825C8D4E200222AAA /* SwiftUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = C7C24EE725C8D4E200222AAA /* SwiftUIKit */; };
 		C7ED978A25C5CD28002ACC5A /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */; };
 		C7ED979225C5D226002ACC5A /* VoiceNoteRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */; };
 		C7ED97A025C5E57A002ACC5A /* FileAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */; };
@@ -162,7 +162,6 @@
 		C7BC337F25B3C1D100989E95 /* DistributedChat */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DistributedChat; path = ../DistributedChat; sourceTree = "<group>"; };
 		C7C24EA225C8B42100222AAA /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		C7C24EC425C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleUIViewControllerRepresentable.swift; sourceTree = "<group>"; };
-		C7C24ED825C8D1CE00222AAA /* ContactPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPicker.swift; sourceTree = "<group>"; };
 		C7ED978925C5CD28002ACC5A /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		C7ED979125C5D226002ACC5A /* VoiceNoteRecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceNoteRecordButton.swift; sourceTree = "<group>"; };
 		C7ED979F25C5E57A002ACC5A /* FileAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentView.swift; sourceTree = "<group>"; };
@@ -200,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7BC338A25B3C2EE00989E95 /* DistributedChat in Frameworks */,
+				C7C24EE825C8D4E200222AAA /* SwiftUIKit in Frameworks */,
 				C7ED97C125C60055002ACC5A /* FDWaveformView in Frameworks */,
 				C7734D4B25BDF52C0057DF96 /* LoggingOSLog in Frameworks */,
 			);
@@ -328,7 +328,6 @@
 				C77D49CE25BC78C70073A964 /* EnumPicker.swift */,
 				C707E1D625C892E400164EF7 /* ShareSheet.swift */,
 				C7C24EA225C8B42100222AAA /* ImagePicker.swift */,
-				C7C24ED825C8D1CE00222AAA /* ContactPicker.swift */,
 				C7C24EC425C8C81C00222AAA /* SimpleUIViewControllerRepresentable.swift */,
 				C7734CED25BCFE5D0057DF96 /* QuickLookView.swift */,
 				C7734D1125BD00330057DF96 /* QuickLookAttachment.swift */,
@@ -502,6 +501,7 @@
 				C7BC338925B3C2EE00989E95 /* DistributedChat */,
 				C7734D4A25BDF52C0057DF96 /* LoggingOSLog */,
 				C7ED97C025C60055002ACC5A /* FDWaveformView */,
+				C7C24EE725C8D4E200222AAA /* SwiftUIKit */,
 			);
 			productName = DistributedChatApp;
 			productReference = C7BC334E25B3C00700989E95 /* DistributedChatApp.app */;
@@ -588,6 +588,7 @@
 			packageReferences = (
 				C7734D4925BDF52B0057DF96 /* XCRemoteSwiftPackageReference "swift-log-oslog" */,
 				C7ED97BF25C60055002ACC5A /* XCRemoteSwiftPackageReference "FDWaveformView" */,
+				C7C24EE625C8D4E200222AAA /* XCRemoteSwiftPackageReference "SwiftUIKit" */,
 			);
 			productRefGroup = C7BC334F25B3C00700989E95 /* Products */;
 			projectDirPath = "";
@@ -723,7 +724,6 @@
 				C7734CEE25BCFE5D0057DF96 /* QuickLookView.swift in Sources */,
 				C7ED978A25C5CD28002ACC5A /* AudioRecorder.swift in Sources */,
 				C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */,
-				C7C24ED925C8D1CE00222AAA /* ContactPicker.swift in Sources */,
 				C7734CBA25BCE6CE0057DF96 /* MessageHistoryView.swift in Sources */,
 				C7734CA925BCDB1D0057DF96 /* Network.swift in Sources */,
 				C7ED97A025C5E57A002ACC5A /* FileAttachmentView.swift in Sources */,
@@ -1245,6 +1245,14 @@
 				minimumVersion = 0.2.2;
 			};
 		};
+		C7C24EE625C8D4E200222AAA /* XCRemoteSwiftPackageReference "SwiftUIKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/youjinp/SwiftUIKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.14;
+			};
+		};
 		C7ED97BF25C60055002ACC5A /* XCRemoteSwiftPackageReference "FDWaveformView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/fulldecent/FDWaveformView.git";
@@ -1276,6 +1284,11 @@
 		C7BC338925B3C2EE00989E95 /* DistributedChat */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DistributedChat;
+		};
+		C7C24EE725C8D4E200222AAA /* SwiftUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7C24EE625C8D4E200222AAA /* XCRemoteSwiftPackageReference "SwiftUIKit" */;
+			productName = SwiftUIKit;
 		};
 		C7ED97C025C60055002ACC5A /* FDWaveformView */ = {
 			isa = XCSwiftPackageProductDependency;
