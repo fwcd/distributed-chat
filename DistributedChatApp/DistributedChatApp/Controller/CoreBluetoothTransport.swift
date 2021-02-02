@@ -44,9 +44,10 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     /// Tracks remote peripherals discovered by the central that feature our service's GATT characteristic.
     private var nearbyPeripherals: [CBPeripheral: DiscoveredPeripheral] = [:] {
         didSet {
-            log.info("Updating nearby users to \(nearbyPeripherals)...")
+            log.trace("Updating nearby users to \(nearbyPeripherals)...")
+            let peripherals = nearbyPeripherals
             DispatchQueue.main.async { [self] in
-                network.nearbyUsers = nearbyPeripherals.filter(\.value.isConnected).filter(\.value.isDistributedChat).map { (peripheral: CBPeripheral, discovered) in
+                network.nearbyUsers = peripherals.filter(\.value.isConnected).filter(\.value.isDistributedChat).map { (peripheral: CBPeripheral, discovered) in
                     NearbyUser(
                         peripheralIdentifier: peripheral.identifier,
                         peripheralName: peripheral.name,
@@ -349,10 +350,12 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         if service.uuid == serviceUUID, let characteristics = service.characteristics {
             log.info("Found DistributedChat service on remote peripheral \(peripheral.name ?? "?") with \(characteristics.count) characteristics.")
             
-            nearbyPeripherals[peripheral]?.isDistributedChat = true
-            nearbyPeripherals[peripheral]?.inboxCharacteristic = characteristics.first { $0.uuid == inboxCharacteristicUUID }
-            nearbyPeripherals[peripheral]?.userIDCharacteristic = characteristics.first { $0.uuid == userIDCharacteristicUUID }
-            nearbyPeripherals[peripheral]?.userNameCharacteristic = characteristics.first { $0.uuid == userNameCharacteristicUUID }
+            var state = nearbyPeripherals[peripheral]
+            state?.isDistributedChat = true
+            state?.inboxCharacteristic = characteristics.first { $0.uuid == inboxCharacteristicUUID }
+            state?.userIDCharacteristic = characteristics.first { $0.uuid == userIDCharacteristicUUID }
+            state?.userNameCharacteristic = characteristics.first { $0.uuid == userNameCharacteristicUUID }
+            nearbyPeripherals[peripheral] = state
             
             peripheral.readRSSI()
             
