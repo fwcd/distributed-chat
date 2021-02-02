@@ -55,7 +55,7 @@ noble.on('discover', async peripheral => {
             content: content
           }
         ]
-      });
+      }) + '\n';
       await inboxChar.writeAsync(Buffer.from(json, 'utf-8'), false);
     }
   }
