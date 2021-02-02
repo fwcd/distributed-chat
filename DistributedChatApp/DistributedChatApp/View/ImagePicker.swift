@@ -22,7 +22,6 @@ struct ImagePicker: SimpleUIViewControllerRepresentable {
     func makeUIViewController(coordinator: Coordinator) -> UIImagePickerController {
         let vc = UIImagePickerController()
         vc.sourceType = sourceType.usingUIKit
-        vc.allowsEditing = true
         vc.delegate = coordinator
         return vc
     }
