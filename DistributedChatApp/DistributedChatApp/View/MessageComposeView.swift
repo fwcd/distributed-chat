@@ -33,7 +33,7 @@ struct MessageComposeView: View {
         case voiceNote(URL)
         case contact(CNContact)
         
-        var asURL: URL? {
+        var url: URL? {
             switch self {
             case .file(let url):
                 return url
@@ -45,7 +45,7 @@ struct MessageComposeView: View {
                 return nil
             }
         }
-        var asChatAttachmentType: ChatAttachmentType {
+        var type: ChatAttachmentType {
             switch self {
             case .file(_):
                 return .file
@@ -57,14 +57,38 @@ struct MessageComposeView: View {
                 return .contact
             }
         }
+        var mimeType: String {
+            url?.mimeType ?? "application/octet-stream"
+        }
+        var fileName: String {
+            if let url = url {
+                return url.lastPathComponent
+            } else if case .contact(let contact) = self {
+                let name = [
+                    contact.namePrefix,
+                    contact.givenName,
+                    contact.familyName,
+                    contact.nameSuffix
+                ].compactMap(\.nilIfEmpty).joined().nilIfEmpty ?? "contact"
+                return "\(name).vcf"
+            } else {
+                return "attachment"
+            }
+        }
+        var data: Data? {
+            if let url = url {
+                return try? Data.smartContents(of: url)
+            } else if case .contact(let contact) = self {
+                return try? CNContactVCardSerialization.data(with: [contact])
+            } else {
+                return nil
+            }
+        }
         var asChatAttachment: ChatAttachment? {
-            guard let url = asURL else { return nil }
-            let mimeType = url.mimeType
-            let fileName = url.lastPathComponent
-            guard let data = try? Data.smartContents(of: url),
+            guard let data = data,
                   let dataURL = URL(string: "data:\(mimeType);base64,\(data.base64EncodedString())") else { return nil }
             return ChatAttachment(
-                type: asChatAttachmentType,
+                type: type,
                 name: fileName,
                 url: dataURL
             )
