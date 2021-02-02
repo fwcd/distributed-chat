@@ -111,12 +111,12 @@ struct MessageComposeView: View {
                 ]
             )
         }
-        .modifier(RootSheetModifier(isPresented: $attachmentImagePickerShown) {
+        .fullScreenCover(isPresented: $attachmentImagePickerShown) {
             ImagePicker(sourceType: attachmentImagePickerStyle) {
                 draftImageUrls = [$0].compactMap { $0 }
                 attachmentImagePickerShown = false
-            }
-        })
+            }.edgesIgnoringSafeArea(.all)
+        }
         .fileImporter(isPresented: $attachmentFilePickerShown, allowedContentTypes: [.data], allowsMultipleSelection: false) {
             if case let .success(urls) = $0 {
                 draftFileUrls = urls
