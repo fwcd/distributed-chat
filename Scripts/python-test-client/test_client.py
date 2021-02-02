@@ -40,7 +40,7 @@ while True:
                         content = input(f'  >> Enter a chat message to send: ')
                         # See ChatProtocol.Message in DistributedChat package for a
                         # description of the JSON message structure.
-                        s = json.dumps({
+                        s = (json.dumps({
                             'visitedUsers': [],
                             'addedChatMessages': [
                                 {
@@ -53,7 +53,7 @@ while True:
                                     'content': content
                                 }
                             ]
-                        }).encode('utf8')
+                        }) + '\n').encode('utf8')
                         c = characteristics[0]
                         c.write(s, withResponse=True)
                         print('  >> Wrote successfully!')
