@@ -6,6 +6,7 @@
 //
 
 import DistributedChat
+import Contacts
 import Logging
 import SwiftUI
 
@@ -20,15 +21,18 @@ struct MessageComposeView: View {
     @State private var draft: String = ""
     @State private var draftFileUrls: [URL] = []
     @State private var draftImageUrls: [URL] = []
+    @State private var draftContacts: [CNContact] = []
     @State private var draftVoiceNoteUrl: URL? = nil
     @State private var attachmentActionSheetShown: Bool = false
     @State private var attachmentFilePickerShown: Bool = false
+    @State private var attachmentContactPickerShown: Bool = false
     @State private var attachmentImagePickerShown: Bool = false
     @State private var attachmentImagePickerStyle: ImagePicker.SourceType = .photoLibrary
     
     private var draftAttachmentUrls: [(URL, ChatAttachmentType)] {
         [
             draftFileUrls.map { ($0, .file) },
+//            draftContactUrls.map { ($0, .contact) },
             draftImageUrls.map { ($0, .image) },
             [(draftVoiceNoteUrl, .voiceNote)]
         ]
@@ -99,6 +103,9 @@ struct MessageComposeView: View {
                         attachmentImagePickerStyle = .camera
                         attachmentImagePickerShown = true
                     },
+                    .default(Text("Contact")) {
+                        attachmentContactPickerShown = true
+                    },
                     .default(Text("File")) {
                         attachmentFilePickerShown = true
                     },
@@ -116,6 +123,12 @@ struct MessageComposeView: View {
                 draftImageUrls = [$0].compactMap { $0 }
                 attachmentImagePickerShown = false
             }.edgesIgnoringSafeArea(.all)
+        }
+        .sheet(isPresented: $attachmentContactPickerShown) {
+            ContactPicker {
+                draftContacts = [$0]
+                attachmentContactPickerShown = false
+            }
         }
         .fileImporter(isPresented: $attachmentFilePickerShown, allowedContentTypes: [.data], allowsMultipleSelection: false) {
             if case let .success(urls) = $0 {
@@ -141,6 +154,7 @@ struct MessageComposeView: View {
     
     private func clearAttachments() {
         draftImageUrls = []
+//        draftContactUrls = []
         draftFileUrls = []
         draftVoiceNoteUrl = nil
     }
