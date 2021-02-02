@@ -12,6 +12,7 @@ import SwiftUI
 
 struct VoiceNoteAttachmentView: View {
     let attachment: ChatAttachment
+    let color: Color
     
     @StateObject private var player = AudioPlayer()
     
@@ -29,7 +30,7 @@ struct VoiceNoteAttachmentView: View {
                 }
                 .font(.system(size: 24))
                 if let url = player.url {
-                    WaveformView(url: url, color: .white)
+                    WaveformView(url: url, color: color)
                         .frame(width: 80, height: 30)
                 }
             }
