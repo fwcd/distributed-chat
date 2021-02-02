@@ -12,7 +12,7 @@ struct CompactMessageView: View {
     let message: ChatMessage
     
     var body: some View {
-        HStack {
+        HStack(alignment: .top) {
             Text("\(message.author.displayName):")
                 .fontWeight(.bold)
             Text(message.content)
