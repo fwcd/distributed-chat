@@ -43,12 +43,12 @@
 	<string>The app needs to connect to other devices running the app over Bluetooth to establish a mesh network for chat messages.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>The app lets you captures images and videos and send them to a channel.</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>The app lets you save files in your downloads folder</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>The app lets you record voice notes with your microphone.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>The app lets you save images from message attachments to your local photo library.</string>
-	<key>NSDownloadsFolderUsageDescription</key>
-	<string>The app lets you save files in your downloads folder</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
