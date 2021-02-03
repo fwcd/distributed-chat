@@ -23,6 +23,9 @@ fileprivate let userNameCharacteristicUUID = CBUUID(string: "b2234f40-2c0b-401b-
 /// Custom UUID for the user ID characteristic (user to display 'nearby' users)
 fileprivate let userIDCharacteristicUUID = CBUUID(string: "13a4d26e-0a75-4fde-9340-4974e3da3100")
 
+/// Determines how GATT characteristics (specifically the inbox) shall be written
+fileprivate let writeType = CBCharacteristicWriteType.withResponse
+
 /// A transport implementation that uses Bluetooth Low Energy and a
 /// custom GATT service with a write-only characteristic to transfer
 /// messages.
@@ -245,7 +248,10 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
                 
                 // TODO: Perhaps limit the maximum incoming data length so malicious actors cannot fill up our memory?
                 state.incomingData += data
-                peripheralManager.respond(to: request, withResult: .success)
+                
+                if writeType == .withResponse {
+                    peripheralManager.respond(to: request, withResult: .success)
+                }
                 
                 while let line = state.dequeueLine() {
                     log.info("Receive line via inbox: \(line)")
@@ -410,7 +416,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
     
     func writeOutgoingData(of peripheral: CBPeripheral) {
         assert(nearbyPeripherals[peripheral]?.isWriting ?? false)
-        let chunkLength = peripheral.maximumWriteValueLength(for: .withResponse)
+        let chunkLength = peripheral.maximumWriteValueLength(for: writeType)
         
         guard let state = nearbyPeripherals[peripheral],
               let characteristic = state.inboxCharacteristic else {
@@ -425,7 +431,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         
         if !chunk.isEmpty {
             log.info("Writing chunk of outgoing data...")
-            peripheral.writeValue(chunk, for: characteristic, type: .withResponse)
+            peripheral.writeValue(chunk, for: characteristic, type: writeType)
         }
     }
     
