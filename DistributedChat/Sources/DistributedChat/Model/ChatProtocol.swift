@@ -1,8 +1,8 @@
 import Foundation
 
 public enum ChatProtocol {
-    public struct Message: Codable {
-        public var visitedUsers: Set<UUID>
+    public struct Message: Identifiable, Codable {
+        public var id: UUID
         public var addedChatMessages: [ChatMessage]?
         public var updatedPresences: [ChatPresence]?
 
@@ -12,11 +12,11 @@ public enum ChatProtocol {
         // TODO: Removed messages, status updates, etc.?
 
         public init(
-            visitedUsers: Set<UUID> = [],
+            id: UUID = UUID(),
             addedChatMessages: [ChatMessage]? = nil,
             updatedPresences: [ChatPresence]? = nil
         ) {
-            self.visitedUsers = visitedUsers
+            self.id = id
             self.addedChatMessages = addedChatMessages
             self.updatedPresences = updatedPresences
         }

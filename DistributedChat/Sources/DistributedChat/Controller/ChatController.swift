@@ -9,6 +9,7 @@ public class ChatController {
     private let transportWrapper: ChatTransportWrapper<ChatProtocol.Message>
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
+    private var receivedProtoMessages: Set<UUID> = []
 
     private var presenceTimer: RepeatingTimer?
     public private(set) var presence = ChatPresence()
@@ -25,20 +26,19 @@ public class ChatController {
     }
 
     private func handleReceive(_ protoMessage: ChatProtocol.Message) {
-        // TODO: Rebroadcast message and make sure that
-        //       incoming messages did NOT origin from us
-        //       (i.e. went in a loop), as otherwise the
-        //       listeners would be fired twice with this
-        //       message.
+        // TODO: Expire old proto message ids to reduce memory consumption?
+        //       Attach ttls and/or 'actual' expiry datetimes to messages?
+        
+        // TODO: Logical/vector clocks to ensure consistent ordering? This
+        //       is especially important for destructive operations like
+        //       presence updates (which overwrite the old presence).
 
-        if !protoMessage.visitedUsers.contains(me.id) {
-            // Rebroadcast message
-            // TODO: What if a message takes two different paths
-            //       to the same device?
+        if !receivedProtoMessages.contains(protoMessage.id) {
+            receivedProtoMessages.insert(protoMessage.id)
             
-            var newProtoMessage = protoMessage
-            newProtoMessage.visitedUsers.insert(me.id)
-            transportWrapper.broadcast(newProtoMessage)
+            // Rebroadcast message
+            
+            transportWrapper.broadcast(protoMessage)
             
             // Handle message
             
@@ -90,7 +90,7 @@ public class ChatController {
         log.debug("Broadcasting presence: \(presence.status) (\(presence.info))")
         transportWrapper.broadcast(ChatProtocol.Message(updatedPresences: [presence]))
     }
-
+    
     public func onAddChatMessage(_ handler: @escaping (ChatMessage) -> Void) {
         addChatMessageListeners.append(handler)
     }
