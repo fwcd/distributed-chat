@@ -56,11 +56,11 @@ public class ChatController {
         }
     }
 
-    public func send(content: String, on channelName: String? = nil, attaching attachments: [ChatAttachment]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
+    public func send(content: String, on channel: ChatChannel? = nil, attaching attachments: [ChatAttachment]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
         let chatMessage = ChatMessage(
             author: me,
             content: content,
-            channelName: channelName,
+            channel: channel,
             attachments: attachments,
             repliedToMessageId: repliedToMessageId
         )
