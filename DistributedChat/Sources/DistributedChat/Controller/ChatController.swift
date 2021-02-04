@@ -31,15 +31,27 @@ public class ChatController {
         //       listeners would be fired twice with this
         //       message.
 
-        for message in protoMessage.addedChatMessages ?? [] {
-            for listener in addChatMessageListeners {
-                listener(message)
+        if !protoMessage.visitedUsers.contains(me.id) {
+            // Rebroadcast message
+            // TODO: What if a message takes two different paths
+            //       to the same device?
+            
+            var newProtoMessage = protoMessage
+            newProtoMessage.visitedUsers.insert(me.id)
+            transportWrapper.broadcast(newProtoMessage)
+            
+            // Handle message
+            
+            for message in protoMessage.addedChatMessages ?? [] {
+                for listener in addChatMessageListeners {
+                    listener(message)
+                }
             }
-        }
-        
-        for presence in protoMessage.updatedPresences ?? [] {
-            for listener in updatePresenceListeners {
-                listener(presence)
+            
+            for presence in protoMessage.updatedPresences ?? [] {
+                for listener in updatePresenceListeners {
+                    listener(presence)
+                }
             }
         }
     }
