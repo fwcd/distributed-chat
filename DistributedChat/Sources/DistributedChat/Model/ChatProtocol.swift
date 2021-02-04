@@ -8,13 +8,13 @@ public enum ChatProtocol {
     public struct Message: Codable {
         public var visitedUsers: Set<UUID>
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 181be05 (Forward to messages. TODO: Circular routes)
+=======
+>>>>>>> ad98de9 (WIP: Switch to logical clocks)
         public var addedChatMessages: [ChatMessage]?
         public var updatedPresences: [ChatPresence]?
-=======
-        public var addedChatMessages: [ChatMessage]
-        public var vectorClock: Dictionary<UUID, Int>
->>>>>>> de6b84a (Forward to messages. TODO: Circular routes)
+        public var logicalClock: Int
 
         // TODO: Logical clock for eventual consistency
         // (e.g. Lamport timestamp or vector clock)
@@ -27,21 +27,18 @@ public enum ChatProtocol {
 =======
             visitedUsers: Set<UUID> = [],
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 181be05 (Forward to messages. TODO: Circular routes)
+=======
+>>>>>>> ad98de9 (WIP: Switch to logical clocks)
             addedChatMessages: [ChatMessage]? = nil,
-            updatedPresences: [ChatPresence]? = nil
+            updatedPresences: [ChatPresence]? = nil,
+            logicalClock: Int? = nil
         ) {
             self.id = id
             self.addedChatMessages = addedChatMessages
             self.updatedPresences = updatedPresences
-=======
-            addedChatMessages: [ChatMessage] = [],
-            vectorClock: Dictionary<UUID, Int> = [:]
-        ) {
-            self.visitedUsers = visitedUsers
-            self.addedChatMessages = addedChatMessages
-            self.vectorClock = vectorClock
->>>>>>> de6b84a (Forward to messages. TODO: Circular routes)
-        }
+            self.logicalClock = logicalClock
+        } 
     }
 }

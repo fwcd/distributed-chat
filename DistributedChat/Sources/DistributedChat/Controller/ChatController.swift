@@ -47,10 +47,13 @@ public class ChatController {
             var visitedUsers = Set(protoMessage.visitedUsers)
             visitedUsers.insert(me.id)
             // Rebroadcast message
-            transportWrapper.broadcast(ChatProtocol.Message(visitedUsers: visitedUsers, addedChatMessages: protoMessage.addedChatMessages, vectorClock: protoMessage.vectorClock))
+            transportWrapper.broadcast(ChatProtocol.Message(visitedUsers: visitedUsers, addedChatMessages: protoMessage.addedChatMessages, logicalClock: protoMessage.logicalClock))
                         
             // Handle message
             
+
+            updateClock(logicalClock: protoMessage.logicalClock)
+
             for message in protoMessage.addedChatMessages ?? [] where message.isReceived(by: me.id) {
                 for listener in addChatMessageListeners {
                     listener(message)
@@ -112,6 +115,16 @@ public class ChatController {
 
     private func findPublicKeys(for userId: UUID) -> ChatCryptoKeys.Public? {
         findUser(for: userId)?.publicKeys
+    private func updateClock(logicalClock: Int) {
+        var newPresence = presence
+        newPresence.user.logicalClock = max(newPresence.user.logicalClock, logicalClock) + 1
+        update(presence: newPresence)
+    }
+
+    private func incrementClock() {
+        var newPresence = presence
+        newPresence.user.logicalClock = newPresence.user.logicalClock + 1
+        update(presence: newPresence)
     }
     
     private func broadcastPresence() {
@@ -119,20 +132,42 @@ public class ChatController {
         transportWrapper.broadcast(ChatProtocol.Message(updatedPresences: [presence]))
     }
 
-    private func updateVectorClock(vectorClock: Dictionary<UUID,Int>) {
-        // TODO: Consider deleting old entries
-        var newMe = me
-        for (id, time) in vectorClock {
-            if newMe.vectorClock.keys.contains(id) {
-                if time > newMe.vectorClock[id]! {
-                    newMe.vectorClock[id] = time
-                }
-            } else {
-                newMe.vectorClock[id] = time
-            }
-        }
-        update(me: newMe)
-    }
+    // TODO: Delete
+    // private func updateVectorClock(vectorClock: Dictionary<UUID,Int>) {
+    //     // TODO: Consider deleting old entries
+    //     var newMe = me
+    //     for (id, time) in vectorClock {
+    //         if newMe.vectorClock.keys.contains(id) {
+    //             if time > newMe.vectorClock[id]! {
+    //                 newMe.vectorClock[id] = time
+    //             }
+    //         } else {
+    //             newMe.vectorClock[id] = time
+    //         }
+    //     }
+    //     update(me: newMe)
+    // }
+
+    // TODO: Delete
+    // private func compareVectorTimes(vectorTime1: Dictionary<UUID,Int>, vectorTime2: Dictionary<UUID,Int>){
+    //     var returnValue: Int = 0
+    //     for id in vectorTime1.intersection(vectorTime2) {
+    //         if time1[key] < time2[key] {
+    //             if return_value <= 0 {
+    //                 return_value = -1
+    //             } else {
+    //                 return 0
+    //             }
+    //         } else if time1[key] > time2[key]{:
+    //             if return_value >= 0 {
+    //                 return_value = 1
+    //             } else {
+    //                 return 0
+    //             }
+    //         }
+    //     }
+    //     return return_value
+    // }
 
     public func onAddChatMessage(_ handler: @escaping (ChatMessage) -> Void) {
         addChatMessageListeners.append(handler)
