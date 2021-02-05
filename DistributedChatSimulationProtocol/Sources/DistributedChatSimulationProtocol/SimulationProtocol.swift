@@ -54,6 +54,8 @@ public enum SimulationProtocol {
         case observe
         case addLink(Link)
         case removeLink(Link)
+        case setLinkReliability(Double)
+        case setLinkDelay(Double)
 
         // server -> client
         case helloNotification(HelloOrGoodbyeWithUUID)
@@ -61,6 +63,8 @@ public enum SimulationProtocol {
         case addLinkNotification(Link)
         case removeLinkNotification(Link)
         case broadcastNotification(BroadcastWithLink)
+        case setLinkReliabilityNotification(Double)
+        case setLinkDelayNotification(Double)
 
         public enum CodingKeys: String, CodingKey {
             case type
@@ -86,6 +90,10 @@ public enum SimulationProtocol {
                 self = .addLink(try container.decode(Link.self, forKey: .data))
             case "removeLink":
                 self = .removeLink(try container.decode(Link.self, forKey: .data))
+            case "setLinkReliability":
+                self = .setLinkReliability(try container.decode(Double.self, forKey: .data))
+            case "setLinkDelay":
+                self = .setLinkDelay(try container.decode(Double.self, forKey: .data))
             case "helloNotification":
                 self = .helloNotification(try container.decode(HelloOrGoodbyeWithUUID.self, forKey: .data))
             case "goodbyeNotification":
@@ -96,6 +104,10 @@ public enum SimulationProtocol {
                 self = .removeLinkNotification(try container.decode(Link.self, forKey: .data))
             case "broadcastNotification":
                 self = .broadcastNotification(try container.decode(BroadcastWithLink.self, forKey: .data))
+            case "setLinkReliabilityNotification":
+                self = .setLinkReliabilityNotification(try container.decode(Double.self, forKey: .data))
+            case "setLinkDelayNotification":
+                self = .setLinkDelayNotification(try container.decode(Double.self, forKey: .data))
             default:
                 throw MessageError.unknownType(type)
             }
@@ -119,6 +131,12 @@ public enum SimulationProtocol {
             case .removeLink(let removeLink):
                 try container.encode("removeLink", forKey: .type)
                 try container.encode(removeLink, forKey: .data)
+            case .setLinkReliability(let value):
+                try container.encode("setLinkReliability", forKey: .type)
+                try container.encode(value, forKey: .data)
+            case .setLinkDelay(let value):
+                try container.encode("setLinkDelay", forKey: .type)
+                try container.encode(value, forKey: .data)
             case .helloNotification(let helloNotification):
                 try container.encode("helloNotification", forKey: .type)
                 try container.encode(helloNotification, forKey: .data)
@@ -134,6 +152,12 @@ public enum SimulationProtocol {
             case .broadcastNotification(let broadcastNotification):
                 try container.encode("broadcastNotification", forKey: .type)
                 try container.encode(broadcastNotification, forKey: .data)
+            case .setLinkReliabilityNotification(let value):
+                try container.encode("setLinkReliabilityNotification", forKey: .type)
+                try container.encode(value, forKey: .data)
+            case .setLinkDelayNotification(let value):
+                try container.encode("setLinkDelayNotification", forKey: .type)
+                try container.encode(value, forKey: .data)
             }
         }
     }
