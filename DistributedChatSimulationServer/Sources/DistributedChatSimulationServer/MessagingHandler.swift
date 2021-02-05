@@ -113,19 +113,22 @@ class MessagingHandler {
 
         case .broadcast(let broadcast):
             let observers = clients.values.filter(\.isObserver)
-            for uuid in senderClient.links {
-                if let client = clients[uuid] {
-                    let notification = SimulationProtocol.Message.broadcastNotification(.init(
-                        content: broadcast.content,
-                        link: .init(fromUUID: "\(sender)", toUUID: "\(uuid)")
-                    ))
-                    try client.send(notification)
-                    for observer in observers {
-                        try observer.send(notification)
+            // TODO: Apply link delay
+            if Double.random(in: 0..<1) < linkReliability {
+                for uuid in senderClient.links {
+                    if let client = clients[uuid] {
+                        let notification = SimulationProtocol.Message.broadcastNotification(.init(
+                            content: broadcast.content,
+                            link: .init(fromUUID: "\(sender)", toUUID: "\(uuid)")
+                        ))
+                        try client.send(notification)
+                        for observer in observers {
+                            try observer.send(notification)
+                        }
                     }
                 }
+                log.info("Broadcasted '\(broadcast.content)' from \(name(of: sender))")
             }
-            log.info("Broadcasted '\(broadcast.content)' from \(name(of: sender))")
 
         default:
             log.info("Unexpected message \(message) from \(name(of: sender))")
