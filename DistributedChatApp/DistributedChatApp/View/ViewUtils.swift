@@ -18,11 +18,11 @@ extension Optional where Wrapped == ChatChannel {
     func displayName(with network: Network) -> String {
         switch self {
         case .room(let name)?:
-            return name
+            return "#\(name)"
         case .dm(let userId)?:
-            return network.presences[userId]?.user.displayName ?? userId.uuidString
+            return "@\(network.presences[userId]?.user.displayName ?? userId.uuidString)"
         case nil:
-            return globalChannelName
+            return "#\(globalChannelName)"
         }
     }
 }

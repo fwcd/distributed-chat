@@ -134,7 +134,7 @@ struct MessageComposeView: View {
                         Image(systemName: "plus")
                             .font(.system(size: iconSize))
                     }
-                    TextField("Message #\(channel.displayName(with: network))...", text: $draft, onCommit: sendDraft)
+                    TextField("Message \(channel.displayName(with: network))...", text: $draft, onCommit: sendDraft)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     if draft.isEmpty && draftAttachments.isEmpty {
                         VoiceNoteRecordButton {

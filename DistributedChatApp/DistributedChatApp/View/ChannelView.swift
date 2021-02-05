@@ -22,7 +22,7 @@ struct ChannelView: View {
             MessageComposeView(channel: channel, controller: controller, replyingToMessageId: $replyingToMessageId)
         }
         .padding(15)
-        .navigationTitle("#\(channel.displayName(with: network))")
+        .navigationTitle(channel.displayName(with: network))
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             messages.autoReadChannels.insert(channel)
