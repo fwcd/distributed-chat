@@ -6,10 +6,7 @@ import Foundation
 
 fileprivate let salt = "DistributedChat.ChatCrypto".data(using: .utf8)!
 
-public struct ChatCryptoKeys {
-    public let publicKeys: Public
-    public let privateKeys: Private
-
+public enum ChatCryptoKeys {
     public struct Public: Codable {
         public let encryptionKey: Curve25519.KeyAgreement.PublicKey
         public let signingKey: Curve25519.Signing.PublicKey
@@ -58,6 +55,18 @@ public struct ChatCryptoKeys {
         public let encryptionKey: Curve25519.KeyAgreement.PrivateKey
         public let signingKey: Curve25519.Signing.PrivateKey
 
+        public var publicKeys: Public {
+            Public(
+                encryptionKey: encryptionKey.publicKey,
+                signingKey: signingKey.publicKey
+            )
+        }
+
+        public init() {
+            encryptionKey = .init()
+            signingKey = .init()
+        }
+
         /// Encrypts data for the given recipient's public keys using
         /// X25519 key agreement, ed25519 signatures and the symmetric
         /// ChaCha20-Poly1305 cipher.
@@ -103,19 +112,5 @@ public struct ChatCryptoKeys {
             let box = try ChaChaPoly.SealedBox(combined: cipher.sealed)
             return try ChaChaPoly.open(box, using: symmetricKey)
         }
-    }
-
-    public init() {
-        let privateEncryptionKey = Curve25519.KeyAgreement.PrivateKey()
-        let privateSigningKey = Curve25519.Signing.PrivateKey()
-
-        publicKeys = .init(
-            encryptionKey: privateEncryptionKey.publicKey,
-            signingKey: privateSigningKey.publicKey
-        )
-        privateKeys = .init(
-            encryptionKey: privateEncryptionKey,
-            signingKey: privateSigningKey
-        )
     }
 }

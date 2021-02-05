@@ -11,8 +11,10 @@ public class ChatController {
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
 
+    private let privateKeys = ChatCryptoKeys.Private()
     private var presenceTimer: RepeatingTimer?
     public private(set) var presence: ChatPresence
+
     public var me: ChatUser { presence.user }
 
     public init(me: ChatUser = ChatUser(), transport: ChatTransport) {
