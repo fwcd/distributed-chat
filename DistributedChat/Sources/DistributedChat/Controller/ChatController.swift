@@ -12,14 +12,18 @@ public class ChatController {
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
     private var userFinders: [(UUID) -> ChatUser?] = []
 
-    private let privateKeys = ChatCryptoKeys.Private()
+    private let privateKeys: ChatCryptoKeys.Private
     private var presenceTimer: RepeatingTimer?
     public private(set) var presence: ChatPresence
 
     public var me: ChatUser { presence.user }
 
     public init(me: ChatUser = ChatUser(), transport: ChatTransport) {
+        let privateKeys = ChatCryptoKeys.Private()
+        self.privateKeys = privateKeys
+
         presence = ChatPresence(user: me)
+        presence.user.publicKeys = privateKeys.publicKeys
         
         transportWrapper = ChatTransportWrapper(transport: transport)
         transportWrapper.onReceive(handleReceive)

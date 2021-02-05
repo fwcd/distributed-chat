@@ -2,7 +2,7 @@ import Foundation
 
 public struct ChatUser: Identifiable, Hashable, Codable {
     public let id: UUID
-    public let publicKeys: ChatCryptoKeys.Public?
+    public var publicKeys: ChatCryptoKeys.Public?
     public var name: String
     
     public var displayName: String { name.isEmpty ? "User \(id.uuidString.prefix(5))" : name }
