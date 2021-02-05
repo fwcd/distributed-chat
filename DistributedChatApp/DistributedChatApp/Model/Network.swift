@@ -10,6 +10,8 @@ import Combine
 import Foundation
 
 class Network: ObservableObject {
+    /// The ID of our node.
+    let myId: UUID
     /// Nodes that are in immediate reach, i.e. in Bluetooth LE range.
     @Published var nearbyUsers: [NearbyUser]
     /// Nodes that are reachable via the network.
@@ -20,7 +22,8 @@ class Network: ObservableObject {
         presences.values.sorted { $0.user.displayName < $1.user.displayName }
     }
     
-    init(nearbyUsers: [NearbyUser] = [], presences: [ChatPresence] = []) {
+    init(myId: UUID = UUID(), nearbyUsers: [NearbyUser] = [], presences: [ChatPresence] = []) {
+        self.myId = myId
         self.nearbyUsers = nearbyUsers
         self.presences = Dictionary(presences.map { ($0.user.id, $0) }, uniquingKeysWith: { k, _ in k })
     }

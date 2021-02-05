@@ -11,10 +11,12 @@ public class ChatController {
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
 
     private var presenceTimer: RepeatingTimer?
-    public private(set) var presence = ChatPresence()
+    public private(set) var presence: ChatPresence
     public var me: ChatUser { presence.user }
 
-    public init(transport: ChatTransport) {
+    public init(me: ChatUser = ChatUser(), transport: ChatTransport) {
+        presence = ChatPresence(user: me)
+        
         transportWrapper = ChatTransportWrapper(transport: transport)
         transportWrapper.onReceive(handleReceive)
         

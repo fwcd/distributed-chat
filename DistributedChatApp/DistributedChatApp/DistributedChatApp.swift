@@ -27,13 +27,14 @@ private class AppState {
     init() {
         LoggingSystem.bootstrap(LoggingOSLog.init)
         
+        let me = ChatUser()
         let settings = Settings()
-        let network = Network()
         let profile = Profile()
         let navigation = Navigation()
-        let transport = CoreBluetoothTransport(settings: settings, network: network, profile: profile)
-        let controller = ChatController(transport: transport)
         let messages = Messages()
+        let network = Network(myId: me.id)
+        let controller = ChatController(me: me, transport: transport)
+        let transport = CoreBluetoothTransport(settings: settings, network: network, profile: profile)
         
         controller.onAddChatMessage { [unowned messages] message in
             messages.append(message: message)
