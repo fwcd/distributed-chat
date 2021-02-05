@@ -12,36 +12,38 @@
         <div class="wrapper">
             <h1>#(title)</h1>
             <div class="settings">
-                <div class="setting">
-                    <input type="checkbox" id="live-edges-enabled" name="live-edges-enabled" checked>
-                    <label for="live-edges-enabled">Live edges</label>
+                <div class="settings-bar">
+                    <div class="setting">
+                        <input type="checkbox" id="live-edges-enabled" name="live-edges-enabled" checked>
+                        <label for="live-edges-enabled">Live edges</label>
+                    </div>
+                    <div class="setting">
+                        <select id="live-edge-mode">
+                            <option value="raw">Raw</option>
+                            <option value="formatted" selected>Formatted</option>
+                        </select>
+                    </div>
+                    <div class="setting">
+                        <input type="checkbox" id="live-chat-enabled" name="live-chat-enabled" checked>
+                        <label for="live-chat-enabled">Chat messages</label>
+                    </div>
+                    <div class="setting">
+                        <input type="checkbox" id="live-presences-enabled" name="live-presences-enabled" checked>
+                        <label for="live-presences-enabled">Presence updates</label>
+                    </div>
                 </div>
-                <div class="setting">
-                    <select id="live-edge-mode">
-                        <option value="raw">Raw</option>
-                        <option value="formatted" selected>Formatted</option>
-                    </select>
-                </div>
-                <div class="setting">
-                    <input type="checkbox" id="live-chat-enabled" name="live-chat-enabled" checked>
-                    <label for="live-chat-enabled">Chat messages</label>
-                </div>
-                <div class="setting">
-                    <input type="checkbox" id="live-presences-enabled" name="live-presences-enabled" checked>
-                    <label for="live-presences-enabled">Presence updates</label>
-                </div>
-            </div>
-            <div class="settings">
-                <div class="setting">
-                    <input type="range" id="link-reliability" name="link-reliability" min="0" max="1" step="0.0001">
-                    <label for="link-reliability">Link reliability</label>
-                    <span id="link-reliability-display">?</span>
-                </div>
-                <div class="setting">
-                    <input type="range" id="link-delay" name="link-delay" min="0" max="5" step="0.001">
-                    <label for="link-delay">Link delay</label>
-                    <span id="link-delay-display">?</span>
-                    s
+                <div class="settings-bar">
+                    <div class="setting">
+                        <input type="range" id="link-reliability" name="link-reliability" min="0" max="1" step="0.0001">
+                        <label for="link-reliability">Link reliability</label>
+                        <span id="link-reliability-display">?</span>
+                    </div>
+                    <div class="setting">
+                        <input type="range" id="link-delay" name="link-delay" min="0" max="5" step="0.001">
+                        <label for="link-delay">Link delay</label>
+                        <span id="link-delay-display">?</span>
+                        s
+                    </div>
                 </div>
             </div>
             <div id="graph"></div>
