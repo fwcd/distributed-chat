@@ -141,14 +141,14 @@ struct DistributedChatApp: App {
                                     let channel = try ChatChannel(parsing: rawChannel)
                                     if state.messages.channels.contains(channel) {
                                         log.debug("Parsed URL as \(channel.displayName(with: state.network))...")
-                                        state.navigation.activeChannel = Optional<ChatChannel?>.some(channel)
+                                        state.navigation.open(channel: channel)
                                     }
                                 } catch {
                                     log.warning("Could not parse channel URL: \(error)")
                                 }
                             } else {
                                 log.debug("Parsed URL as #global...")
-                                state.navigation.activeChannel = Optional<ChatChannel?>.some(nil)
+                                state.navigation.open(channel: nil)
                             }
                         case ["/", "message"]:
                             if components.count == 3, let id = UUID(uuidString: components[2]), let message = state.messages[id] {

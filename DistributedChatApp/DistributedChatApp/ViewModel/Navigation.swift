@@ -10,4 +10,8 @@ import DistributedChat
 
 class Navigation: ObservableObject {
     @Published var activeChannel: ChatChannel?? = nil
+    
+    func open(channel: ChatChannel?) {
+        activeChannel = Optional.some(channel)
+    }
 }
