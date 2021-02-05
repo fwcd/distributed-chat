@@ -22,7 +22,7 @@ extension Optional where Wrapped == ChatChannel {
         case .dm(let userIds)?:
             return userIds
                 .filter { $0 != network.myId }
-                .map { network.presences[$0]?.user.displayName ?? $0.uuidString }
+                .map { (network.presences[$0] ?? network.offlinePresences[$0])?.user.displayName ?? $0.uuidString }
                 .joined(separator: ",")
         case nil:
             return globalChannelName
