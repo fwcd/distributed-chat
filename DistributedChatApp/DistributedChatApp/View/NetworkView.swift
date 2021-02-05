@@ -66,43 +66,8 @@ struct NetworkView: View {
                 }
                 
                 Section(header: Text("Presences")) {
-                    List(network.presences.values.sorted { $0.user.displayName < $1.user.displayName }) { presence in
-                        HStack {
-                            Image(systemName: "circlebadge.fill")
-                                .foregroundColor(presence.status.color)
-                            VStack(alignment: .leading) {
-                                Text(presence.user.displayName)
-                                    .multilineTextAlignment(.leading)
-                                if !presence.info.isEmpty {
-                                    Text(presence.info)
-                                        .multilineTextAlignment(.leading)
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                        }
-                        .contextMenu {
-                            Button(action: {
-                                UIPasteboard.general.string = presence.user.id.uuidString
-                            }) {
-                                Text("Copy User ID")
-                                Image(systemName: "doc.on.doc")
-                            }
-                            Button(action: {
-                                UIPasteboard.general.string = presence.user.name
-                            }) {
-                                Text("Copy User Name")
-                                Image(systemName: "doc.on.doc")
-                            }
-                            if !presence.info.isEmpty {
-                                Button(action: {
-                                    UIPasteboard.general.string = presence.info
-                                }) {
-                                    Text("Copy Status Info")
-                                    Image(systemName: "doc.on.doc")
-                                }
-                            }
-                        }
+                    List(network.orderedPresences) { presence in
+                        PresenceView(presence: presence)
                     }
                 }
             }

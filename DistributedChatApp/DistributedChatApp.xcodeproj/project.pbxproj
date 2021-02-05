@@ -39,6 +39,7 @@
 		C77D49D725BC7B600073A964 /* NetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77D49D625BC7B600073A964 /* NetworkView.swift */; };
 		C77D49E525BC85F70073A964 /* PlainMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77D49E425BC85F70073A964 /* PlainMessageView.swift */; };
 		C77DBABF25CCBC8100D66EB5 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77DBABE25CCBC8100D66EB5 /* Users.swift */; };
+		C77DBACD25CCC92D00D66EB5 /* PresenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77DBACC25CCC92D00D66EB5 /* PresenceView.swift */; };
 		C7982CCB25BB8521000DC0F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7982CCA25BB8521000DC0F1 /* Assets.xcassets */; };
 		C7982CCE25BB8521000DC0F1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7982CCD25BB8521000DC0F1 /* Preview Assets.xcassets */; };
 		C7982CDA25BB8522000DC0F1 /* DistributedChatMacAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982CD925BB8522000DC0F1 /* DistributedChatMacAppTests.swift */; };
@@ -138,6 +139,7 @@
 		C77D49D625BC7B600073A964 /* NetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkView.swift; sourceTree = "<group>"; };
 		C77D49E425BC85F70073A964 /* PlainMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainMessageView.swift; sourceTree = "<group>"; };
 		C77DBABE25CCBC8100D66EB5 /* Users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
+		C77DBACC25CCC92D00D66EB5 /* PresenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenceView.swift; sourceTree = "<group>"; };
 		C7982CC425BB851F000DC0F1 /* DistributedChatMacApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatMacApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7982CCA25BB8521000DC0F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C7982CCD25BB8521000DC0F1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 				C7C24F2225C8E83600222AAA /* ContactAttachmentView.swift */,
 				C7C24EEF25C8DD6900222AAA /* QuickLookAttachmentView.swift */,
 				C77D49D625BC7B600073A964 /* NetworkView.swift */,
+				C77DBACC25CCC92D00D66EB5 /* PresenceView.swift */,
 				C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */,
 				C77D498625BC73F70073A964 /* SettingsView.swift */,
 				C77C1DDF25BBB127005D0B7C /* ViewUtils.swift */,
@@ -737,6 +740,7 @@
 				C77D49B325BC777E0073A964 /* CompactMessageView.swift in Sources */,
 				C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */,
 				C75441BF25BF3A9A003E2F71 /* NearbyUser.swift in Sources */,
+				C77DBACD25CCC92D00D66EB5 /* PresenceView.swift in Sources */,
 				C7734D2E25BDE1D90057DF96 /* PersistenceUtils.swift in Sources */,
 				C7C24F0625C8E35400222AAA /* DataUtils.swift in Sources */,
 				C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */,

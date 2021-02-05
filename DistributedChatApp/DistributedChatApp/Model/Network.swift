@@ -16,7 +16,9 @@ class Network: ObservableObject {
     /// TODO: Expire old presences after a certain timeout
     @Published private(set) var presences: [UUID: ChatPresence]
     
-    // TODO: Reachable users
+    var orderedPresences: [ChatPresence] {
+        presences.values.sorted { $0.user.displayName < $1.user.displayName }
+    }
     
     init(nearbyUsers: [NearbyUser] = [], presences: [ChatPresence] = []) {
         self.nearbyUsers = nearbyUsers
