@@ -19,11 +19,14 @@ class Network: ObservableObject {
     @Published private(set) var presences: [UUID: ChatPresence]
     private var messages: Messages
     
+    var offlinePresences: [UUID: ChatPresence] {
+        Dictionary(uniqueKeysWithValues: messages.users
+            .filter { !presences.keys.contains($0.id) }
+            .map { ($0.id, ChatPresence(user: $0, status: .offline)) })
+    }
     var allPresences: [ChatPresence] {
         presences.values.sorted { $0.user.displayName < $1.user.displayName }
-            + messages.users
-                .filter { !presences.keys.contains($0.id) }
-                .map { ChatPresence(user: $0, status: .offline) }
+            + offlinePresences.values.sorted { $0.user.displayName < $1.user.displayName }
     }
     
     init(myId: UUID = UUID(), nearbyUsers: [NearbyUser] = [], presences: [ChatPresence] = [], messages: Messages = Messages()) {
