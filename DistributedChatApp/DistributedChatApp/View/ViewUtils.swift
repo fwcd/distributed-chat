@@ -20,7 +20,7 @@ extension Optional where Wrapped == ChatChannel {
         case .room(let name)?:
             return name
         case .dm(let userId)?:
-            return userId.uuidString // TODO: Use Users to fetch user name
+            return network.presences[userId]?.user.displayName ?? userId.uuidString
         case nil:
             return globalChannelName
         }
