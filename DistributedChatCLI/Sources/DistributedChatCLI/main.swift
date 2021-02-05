@@ -2,7 +2,6 @@ import ArgumentParser
 import Dispatch
 import DistributedChat
 import Foundation
-import LineNoise
 
 struct DistributedChatCLI: ParsableCommand {
     @Argument(help: "The messaging WebSocket URL of the simulation server to connect to")
@@ -17,7 +16,7 @@ struct DistributedChatCLI: ParsableCommand {
         SimulationTransport.connect(url: simulationMessagingURL, name: name) { transport in
             DispatchQueue.main.async {
                 print("Connected to \(simulationMessagingURL)")
-                try! runREPL(transport: transport)
+                runREPL(transport: transport)
             }
         }
 
@@ -25,22 +24,9 @@ struct DistributedChatCLI: ParsableCommand {
         dispatchMain()
     }
 
-    private func runREPL(transport: ChatTransport) throws {
-        let controller = ChatController(transport: transport)
-        let ln = LineNoise()
-
-        controller.update(name: name)
-        controller.onAddChatMessage { msg in
-            print("\r>> \(msg.author.displayName): \(msg.content)\r")
-        }
-
-        while let input = try? ln.getLine(prompt: "") {
-            ln.addHistory(input)
-
-            controller.send(content: input)
-        }
-
-        print()
+    private func runREPL(transport: ChatTransport) {
+        let repl = ChatREPL(transport: transport, name: name)
+        repl.run()
         Foundation.exit(EXIT_SUCCESS)
     }
 }
