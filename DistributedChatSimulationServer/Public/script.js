@@ -6,8 +6,28 @@ function liveEdgesEnabled() {
     return document.getElementById("live-edges-enabled").checked;
 }
 
-function liveLabelsEnabled() {
-    return document.getElementById("live-labels-enabled").checked;
+function liveLabelMode() {
+    return document.getElementById("live-edge-mode").value;
+}
+
+function linkToEdge(link) {
+    switch (liveLabelMode()) {
+    case "formatted":
+        const json = JSON.parse(link);
+        const chatMessages = json.addedChatMessages;
+        const presences = json.updatedPresences;
+
+        if (chatMessages) {
+            const messages = chatMessages.map(m => `${m.author.name}: ${m.content}`).join(", ");
+            return [messages, "green"];
+        } else if (presences) {
+            const presences = presences.map(p => `${p.user.name}: ${p.user.status}`).join(", ");
+            return [presences, "yellow"];
+        }
+    default:
+        break;
+    }
+    return [link, "violet"];
 }
 
 function updateDynamically(nodes, edges) {
@@ -44,12 +64,13 @@ function updateDynamically(nodes, edges) {
             if (liveEdgesEnabled()) {
                 const timeoutMs = 1000;
                 const link = message.data.link;
+                const [label, color] = linkToEdge(link);
                 const [id] = edges.add({
                     from: link.fromUUID,
                     to: link.toUUID,
-                    label: liveLabelsEnabled() ? message.data.content : undefined,
+                    label: label,
                     arrows: "to",
-                    color: "violet",
+                    color: color,
                     widthConstraint: 400
                 });
                 console.log(id);

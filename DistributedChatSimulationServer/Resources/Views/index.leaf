@@ -14,11 +14,13 @@
             <div class="options">
                 <div class="option">
                     <input type="checkbox" id="live-edges-enabled" name="live-edges-enabled" checked>
-                    <label for="live-edges-enabled">Show message edges in real-time</label>
+                    <label for="live-edges-enabled">Live edges</label>
                 </div>
                 <div class="option">
-                    <input type="checkbox" id="live-labels-enabled" name="live-labels-enabled">
-                    <label for="live-labels-enabled">Show message contents in real-time</label>
+                    <select id="live-edge-mode">
+                        <option value="raw">Raw</option>
+                        <option value="formatted" selected>Formatted</option>
+                    </select>
                 </div>
             </div>
             <div id="graph"></div>
