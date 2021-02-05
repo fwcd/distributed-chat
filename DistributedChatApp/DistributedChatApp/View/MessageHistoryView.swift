@@ -10,7 +10,7 @@ import SwiftUI
 import UIKit
 
 struct MessageHistoryView: View {
-    let channelName: String?
+    let channel: ChatChannel?
     let controller: ChatController
     @Binding var replyingToMessageId: UUID?
     
@@ -21,7 +21,7 @@ struct MessageHistoryView: View {
         ScrollView(.vertical) {
             ScrollViewReader { scrollView in
                 VStack(alignment: .leading) {
-                    ForEach(messages[channelName]) { message in
+                    ForEach(messages[channel]) { message in
                         MessageView(message: message, controller: controller, replyingToMessageId: $replyingToMessageId) { id in
                             scrollView.scrollTo(id)
                         }
@@ -35,12 +35,12 @@ struct MessageHistoryView: View {
                     alignment: .topLeading
                 )
                 .onAppear {
-                    if let id = messages[channelName].last?.id {
+                    if let id = messages[channel].last?.id {
                         scrollView.scrollTo(id)
                     }
                 }
                 .onChange(of: messages.messages) { _ in
-                    if let id = messages[channelName].last?.id {
+                    if let id = messages[channel].last?.id {
                         scrollView.scrollTo(id)
                     }
                 }
@@ -61,7 +61,7 @@ struct MessageHistoryView_Previews: PreviewProvider {
     @StateObject static var settings = Settings()
     @State static var replyingToMessageId: UUID? = nil
     static var previews: some View {
-        MessageHistoryView(channelName: nil, controller: controller, replyingToMessageId: $replyingToMessageId)
+        MessageHistoryView(channel: nil, controller: controller, replyingToMessageId: $replyingToMessageId)
             .environmentObject(messages)
             .environmentObject(settings)
     }

@@ -40,13 +40,15 @@ public class ChatController {
             
             transportWrapper.broadcast(protoMessage)
             
-            // Handle message
+            // Handle messages for me
             
-            for message in protoMessage.addedChatMessages ?? [] {
+            for message in protoMessage.addedChatMessages ?? [] where message.isReceived(by: me.id) {
                 for listener in addChatMessageListeners {
                     listener(message)
                 }
             }
+            
+            // Handle presence updates
             
             for presence in protoMessage.updatedPresences ?? [] {
                 for listener in updatePresenceListeners {
@@ -56,11 +58,11 @@ public class ChatController {
         }
     }
 
-    public func send(content: String, on channelName: String? = nil, attaching attachments: [ChatAttachment]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
+    public func send(content: String, on channel: ChatChannel? = nil, attaching attachments: [ChatAttachment]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
         let chatMessage = ChatMessage(
             author: me,
             content: content,
-            channelName: channelName,
+            channel: channel,
             attachments: attachments,
             repliedToMessageId: repliedToMessageId
         )

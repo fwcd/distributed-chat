@@ -13,18 +13,18 @@ import Logging
 fileprivate let log = Logger(label: "DistributedChatApp.Messages")
 
 class Messages: ObservableObject {
-    @Published var autoReadChannelNames: Set<String?> = []
-    @Published(persistingTo: "Messages/unread.json") var unread: Set<UUID> = []
-    @Published(persistingTo: "Messages/pinnedChannelNames.json") private(set) var pinnedChannelNames: Set<String?> = [nil]
+    @Published var autoReadChannels: Set<ChatChannel?> = []
+    @Published(persistingTo: "Messages/unreadMessageIds.json") var unreadMessageIds: Set<UUID> = []
+    @Published(persistingTo: "Messages/pinnedChannels.json") private(set) var pinnedChannels: Set<ChatChannel?> = [nil]
     @Published(persistingTo: "Messages/messages.json") private(set) var messages: [UUID: ChatMessage] = [:]
     
-    var unreadChannelNames: Set<String?> { Set(unread.compactMap { messages[$0] }.map(\.channelName)) }
+    var unreadChannels: Set<ChatChannel?> { Set(unreadMessageIds.compactMap { messages[$0] }.map(\.channel)) }
     
-    var channelNames: [String?] {
-        pinnedChannelNames.sorted { ($0 ?? "") < ($1 ?? "") } + messages.values
+    var channels: [ChatChannel?] {
+        pinnedChannels.sorted { ($0.map { "\($0)" } ?? "") < ($1.map { "\($0)" } ?? "") } + messages.values
             .sorted { $0.timestamp > $1.timestamp }
-            .compactMap(\.channelName)
-            .filter { !pinnedChannelNames.contains($0) }
+            .compactMap(\.channel)
+            .filter { !pinnedChannels.contains($0) }
             .distinct
     }
     
@@ -34,9 +34,9 @@ class Messages: ObservableObject {
         self.messages = Dictionary(messages.map { ($0.id, $0) }, uniquingKeysWith: { k, _ in k })
     }
     
-    subscript(channelName: String?) -> [ChatMessage] {
+    subscript(channel: ChatChannel?) -> [ChatMessage] {
         messages.values
-            .filter { $0.channelName == channelName }
+            .filter { $0.channel == channel }
             .sorted { $0.timestamp < $1.timestamp }
     }
     
@@ -54,8 +54,8 @@ class Messages: ObservableObject {
         }
         
         messages[message.id] = message
-        if !autoReadChannelNames.contains(message.channelName) {
-            unread.insert(message.id)
+        if !autoReadChannels.contains(message.channel) {
+            unreadMessageIds.insert(message.id)
         }
     }
     
@@ -87,21 +87,21 @@ class Messages: ObservableObject {
         return attachment
     }
     
-    func clear(channelName: String?) {
-        messages = messages.filter { $0.value.channelName != channelName }
+    func clear(channel: ChatChannel?) {
+        messages = messages.filter { $0.value.channel != channel }
     }
     
-    func markAsRead(channelName: String?) {
-        unread = unread.filter { messages[$0]?.channelName != channelName }
+    func markAsRead(channel: ChatChannel?) {
+        unreadMessageIds = unreadMessageIds.filter { messages[$0]?.channel != channel }
     }
     
-    func pin(channelName: String?) {
-        pinnedChannelNames.insert(channelName)
+    func pin(channel: ChatChannel?) {
+        pinnedChannels.insert(channel)
     }
     
-    func unpin(channelName: String?) {
-        if channelName != nil { // #global cannot be unpinned
-            pinnedChannelNames.remove(channelName)
+    func unpin(channel: ChatChannel?) {
+        if channel != nil { // #global cannot be unpinned
+            pinnedChannels.remove(channel)
         }
     }
     

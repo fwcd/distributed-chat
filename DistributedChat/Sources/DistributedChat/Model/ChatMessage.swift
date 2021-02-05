@@ -5,7 +5,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
     public var timestamp: Date // TODO: Specify time zone?
     public var author: ChatUser
     public var content: String
-    public var channelName: String?
+    public var channel: ChatChannel?
     public var attachments: [ChatAttachment]?
     public var repliedToMessageId: UUID?
     
@@ -14,7 +14,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         timestamp: Date = Date(),
         author: ChatUser,
         content: String,
-        channelName: String? = nil,
+        channel: ChatChannel? = nil,
         attachments: [ChatAttachment]? = nil,
         repliedToMessageId: UUID? = nil
     ) {
@@ -22,8 +22,18 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         self.timestamp = timestamp
         self.author = author
         self.content = content
-        self.channelName = channelName
+        self.channel = channel
         self.attachments = attachments
         self.repliedToMessageId = repliedToMessageId
+    }
+    
+    /// Checks whether the given user id should receive the message.
+    public func isReceived(by userId: UUID) -> Bool {
+        switch channel {
+        case .dm(let recipientId)?:
+            return recipientId == userId || author.id == userId
+        default:
+            return true
+        }
     }
 }
