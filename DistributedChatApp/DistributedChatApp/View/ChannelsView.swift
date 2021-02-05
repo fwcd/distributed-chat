@@ -128,6 +128,11 @@ struct ChannelsView: View {
                 ]
             )
         }
+        .onReceive(navigation.$activeChannel) {
+            if case let channel?? = $0, !allChannels.contains(channel) {
+                newChannels = [channel]
+            }
+        }
     }
 }
 
