@@ -52,8 +52,10 @@ public class ChatController {
         for encryptedMessage in protoMessage.addedChatMessages ?? [] where encryptedMessage.isReceived(by: me.id) || emitAllReceivedChatMessages {
             let chatMessage = encryptedMessage.decryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
 
-            for listener in addChatMessageListeners {
-                listener(chatMessage)
+            if !chatMessage.isEncrypted || emitAllReceivedChatMessages {
+                for listener in addChatMessageListeners {
+                    listener(chatMessage)
+                }
             }
         }
         

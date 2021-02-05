@@ -20,7 +20,7 @@ class ChatREPL {
         controller.update(name: name)
 
         controller.onAddChatMessage { [unowned self] msg in
-            let displayContent = msg.isEncrypted ? "<encrypted>" : (msg.content ?? "<no content>")
+            let displayContent = msg.isEncrypted ? "<encrypted: \(msg.encryptedContent.map { "\($0.sealed.base64EncodedString().prefix(10))..." } ?? "?")>" : (msg.content ?? "<no content>")
             print("\r[\(displayName(of: msg.channel))] \(msg.author.displayName): \(displayContent)\r")
         }
 
@@ -41,6 +41,14 @@ class ChatREPL {
             },
             "network": { [unowned self] in
                 print("\rCurrently reachable: \(network.presences.values.map { "\($0.user.displayName) (\($0.status.description.lowercased()))" }.joined(separator: ", "))\r")
+            },
+            "toggle-all-messages": { [unowned self] in
+                controller.emitAllReceivedChatMessages = !controller.emitAllReceivedChatMessages
+                if controller.emitAllReceivedChatMessages {
+                    print("\rEnabled all messages, you will now get all incoming messages, even encrypted ones!\r")
+                } else {
+                    print("\rDisabled all messages, only those for you will be emitted from now!\r")
+                }
             }
         ]
     }
