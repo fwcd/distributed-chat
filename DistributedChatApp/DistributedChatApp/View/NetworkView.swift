@@ -69,8 +69,6 @@ struct NetworkView: View {
                     List(network.allPresences) { presence in
                         PresenceView(presence: presence)
                     }
-                    Text(String("\(network.offlinePresences) vs \(network.presences)"))
-                    Text(String("\(network.messages.messages)"))
                 }
             }
             .navigationTitle("Network")

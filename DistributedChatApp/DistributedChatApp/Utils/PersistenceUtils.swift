@@ -6,7 +6,6 @@
 //
 
 import DistributedChat
-import Dispatch
 import Foundation
 import Combine
 import Logging
@@ -14,18 +13,8 @@ import Logging
 private let encoder = makeJSONEncoder()
 private let decoder = makeJSONDecoder()
 private let log = Logger(label: "DistributedChatApp.PersistenceUtils")
-private var queue = DispatchQueue(label: "DistributedChatApp.PersistenceUtils")
-
+private let persistenceEnabled = !isRunningInSwiftUIPreview()
 private var subscriptions = [String: AnyCancellable]()
-private var persistenceDisablers = 0
-
-func withoutPersistence(_ action: @escaping () -> Void) {
-    queue.async {
-        persistenceDisablers += 1
-        action()
-        persistenceDisablers = max(0, persistenceDisablers - 1)
-    }
-}
 
 func persistenceFileURL(path: String) -> URL {
     let url = path
@@ -42,7 +31,7 @@ func persistenceFileURL(path: String) -> URL {
 
 extension Published where Value: Codable {
     init(wrappedValue: Value, persistingTo path: String) {
-        if persistenceDisablers <= 0 {
+        if persistenceEnabled {
             let url = persistenceFileURL(path: path)
             let save = { (value: Value) in
                 do {
