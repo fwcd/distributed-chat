@@ -44,11 +44,13 @@ struct ChatView_Previews: PreviewProvider {
         ChatMessage(author: bob, content: "This is fancy!"),
     ])
     @StateObject static var settings = Settings()
-    @StateObject static var network = Network()
+    @StateObject static var network = Network(myId: controller.me.id, messages: messages)
+    @StateObject static var navigation = Navigation()
     static var previews: some View {
         ChannelView(channel: nil, controller: controller)
             .environmentObject(messages)
             .environmentObject(settings)
             .environmentObject(network)
+            .environmentObject(navigation)
     }
 }

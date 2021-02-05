@@ -59,10 +59,12 @@ struct MessageHistoryView_Previews: PreviewProvider {
         ChatMessage(author: bob, content: "This is fancy!"),
     ])
     @StateObject static var settings = Settings()
+    @StateObject static var navigation = Navigation()
     @State static var replyingToMessageId: UUID? = nil
     static var previews: some View {
         MessageHistoryView(channel: nil, controller: controller, replyingToMessageId: $replyingToMessageId)
             .environmentObject(messages)
             .environmentObject(settings)
+            .environmentObject(navigation)
     }
 }

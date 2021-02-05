@@ -16,6 +16,7 @@ struct MessageView: View {
     
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var settings: Settings
+    @EnvironmentObject private var navigation: Navigation
     
     var body: some View {
         let menuItems = Group {
@@ -80,6 +81,26 @@ struct MessageView: View {
                 Text("Copy Message URL")
                 Image(systemName: "doc.on.doc.fill")
             }
+            Group {
+                Button(action: {
+                    UIPasteboard.general.string = message.author.id.uuidString
+                }) {
+                    Text("Copy Author ID")
+                    Image(systemName: "doc.on.doc")
+                }
+                Button(action: {
+                    UIPasteboard.general.string = message.author.name
+                }) {
+                    Text("Copy Author Name")
+                    Image(systemName: "doc.on.doc")
+                }
+                Button(action: {
+                    navigation.open(channel: .dm([controller.me.id, message.author.id]))
+                }) {
+                    Text("Open DM channel")
+                    Image(systemName: "at")
+                }
+            }
         }
         
         VStack {
@@ -112,10 +133,12 @@ struct MessageView_Previews: PreviewProvider {
         ChatMessage(author: bob, content: "This is fancy!"),
     ])
     @StateObject static var settings = Settings()
+    @StateObject static var navigation = Navigation()
     @State static var replyingToMessageId: UUID? = nil
     static var previews: some View {
         MessageView(message: messages.messages.values.first { $0.content == "Hello!" }!, controller: controller, replyingToMessageId: $replyingToMessageId)
             .environmentObject(messages)
             .environmentObject(settings)
+            .environmentObject(navigation)
     }
 }
