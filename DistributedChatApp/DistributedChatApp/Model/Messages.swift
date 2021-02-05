@@ -19,13 +19,18 @@ class Messages: ObservableObject {
     @Published(persistingTo: "Messages/messages.json") private(set) var messages: [UUID: ChatMessage] = [:]
     
     var unreadChannels: Set<ChatChannel?> { Set(unreadMessageIds.compactMap { messages[$0] }.map(\.channel)) }
-    
     var channels: [ChatChannel?] {
         pinnedChannels.sorted { ($0.map { "\($0)" } ?? "") < ($1.map { "\($0)" } ?? "") } + messages.values
             .sorted { $0.timestamp > $1.timestamp }
             .compactMap(\.channel)
             .filter { !pinnedChannels.contains($0) }
             .distinct
+    }
+    
+    var users: Set<ChatUser> {
+        Set([UUID: [ChatMessage]](grouping: messages.values, by: { $0.author.id })
+            .values
+            .compactMap { $0.max { $0.timestamp < $1.timestamp }?.author }) // Use the newest version of the user
     }
     
     init() {}

@@ -17,6 +17,8 @@ extension ChatStatus {
             return .yellow
         case .busy:
             return .red
+        case .offline:
+            return .gray
         }
     }
 }

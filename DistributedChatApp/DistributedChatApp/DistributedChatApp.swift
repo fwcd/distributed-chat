@@ -31,7 +31,7 @@ private class AppState {
         let profile = Profile()
         let navigation = Navigation()
         let messages = Messages()
-        let network = Network(myId: profile.presence.user.id)
+        let network = Network(myId: profile.presence.user.id, messages: messages)
         let transport = CoreBluetoothTransport(settings: settings, network: network, profile: profile)
         let controller = ChatController(me: profile.presence.user, transport: transport)
         

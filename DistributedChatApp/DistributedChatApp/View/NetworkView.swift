@@ -66,7 +66,7 @@ struct NetworkView: View {
                 }
                 
                 Section(header: Text("Presences")) {
-                    List(network.orderedPresences) { presence in
+                    List(network.allPresences) { presence in
                         PresenceView(presence: presence)
                     }
                 }
