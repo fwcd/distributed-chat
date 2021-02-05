@@ -16,7 +16,8 @@ class ChatREPL {
         controller.update(name: name)
 
         controller.onAddChatMessage { [unowned self] msg in
-            print("\r[\(displayName(of: msg.channel))] \(msg.author.displayName): \(msg.content)\r")
+            let displayContent = msg.isEncrypted ? "<encrypted>" : (msg.content ?? "<no content>")
+            print("\r[\(displayName(of: msg.channel))] \(msg.author.displayName): \(displayContent)\r")
         }
 
         controller.onUpdatePresence { [unowned self] presence in
@@ -24,6 +25,10 @@ class ChatREPL {
             if hasChanged {
                 print("\r> \(presence.user.displayName) is now \(presence.status.description.lowercased())\r")
             }
+        }
+
+        controller.onFindUser { [unowned self] id in
+            network.presences[id]?.user
         }
     }
 
