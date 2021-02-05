@@ -53,7 +53,7 @@ class ChatREPL {
     private func parseMessage(from raw: String) -> (String, ChatChannel?) {
         let split = raw.split(separator: " ", maxSplits: 1).map(String.init)
 
-        if split.count == 2, let channel = parseChannel(from: raw) {
+        if split.count == 2, let channel = parseChannel(from: split[0]) {
             return (split[1], channel)
         } else {
             return (raw, nil) // on #global
