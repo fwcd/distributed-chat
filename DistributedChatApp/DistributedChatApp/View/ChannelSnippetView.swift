@@ -26,7 +26,7 @@ struct ChannelSnippetView: View {
                 Image(systemName: "number")
             }
             VStack(alignment: .leading) {
-                Text(channel.displayName(with: network))
+                Text(channel.rawDisplayName(with: network))
                     .font(.headline)
                 if let message = messages[channel].last,
                    settings.presentation.showChannelPreviews {
