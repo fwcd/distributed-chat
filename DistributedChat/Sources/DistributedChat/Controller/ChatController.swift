@@ -10,6 +10,7 @@ public class ChatController {
     private let transportWrapper: ChatTransportWrapper<ChatProtocol.Message>
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
+    private var userFinders: [(UUID) -> ChatUser?] = []
 
     private let privateKeys = ChatCryptoKeys.Private()
     private var presenceTimer: RepeatingTimer?
@@ -43,9 +44,11 @@ public class ChatController {
         
         // Handle messages for me
         
-        for message in protoMessage.addedChatMessages ?? [] where message.isReceived(by: me.id) {
+        for encryptedMessage in protoMessage.addedChatMessages ?? [] where encryptedMessage.isReceived(by: me.id) {
+            let chatMessage = encryptedMessage.decryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
+
             for listener in addChatMessageListeners {
-                listener(message)
+                listener(chatMessage)
             }
         }
         
@@ -66,8 +69,9 @@ public class ChatController {
             attachments: attachments,
             repliedToMessageId: repliedToMessageId
         )
+        let encryptedMessage = chatMessage.encryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
+        let protoMessage = ChatProtocol.Message(addedChatMessages: [encryptedMessage])
 
-        let protoMessage = ChatProtocol.Message(addedChatMessages: [chatMessage])
         transportWrapper.broadcast(protoMessage)
         
         for listener in addChatMessageListeners {
@@ -88,6 +92,14 @@ public class ChatController {
         newPresence.user.name = name
         update(presence: newPresence)
     }
+
+    private func findUser(for userId: UUID) -> ChatUser? {
+        userFinders.lazy.compactMap { $0(userId) }.first
+    }
+
+    private func findPublicKeys(for userId: UUID) -> ChatCryptoKeys.Public? {
+        findUser(for: userId)?.publicKeys
+    }
     
     private func broadcastPresence() {
         log.debug("Broadcasting presence: \(presence.status) (\(presence.info))")
@@ -100,5 +112,9 @@ public class ChatController {
     
     public func onUpdatePresence(_ handler: @escaping (ChatPresence) -> Void) {
         updatePresenceListeners.append(handler)
+    }
+
+    public func onFindUser(_ handler: @escaping (UUID) -> ChatUser?) {
+        userFinders.append(handler)
     }
 }

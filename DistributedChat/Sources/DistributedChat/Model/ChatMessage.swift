@@ -1,5 +1,8 @@
 import Crypto
 import Foundation
+import Logging
+
+fileprivate let log = Logger(label: "DistributedChat.ChatMessage")
 
 public struct ChatMessage: Identifiable, Hashable, Codable {
     public let id: UUID
@@ -12,6 +15,12 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
     public var repliedToMessageId: UUID?
 
     public var isEncrypted: Bool { encryptedContent != nil || (attachments?.contains(where: \.isEncrypted) ?? false) }
+    public var dmRecipientId: UUID? {
+        if case let .dm(userIds) = channel, userIds.count == 2, userIds.contains(author.id) {
+            return userIds.first { $0 != author.id }
+        }
+        return nil
+    }
     
     public init(
         id: UUID = UUID(),
@@ -46,10 +55,28 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         }
     }
 
-    /// Encrypts a message for the recipients if its a DM.
-    public func encryptedIfNeeded() throws -> ChatMessage? {
-        // TODO
-        nil
+    /// Encrypts a message for the recipient if it's a two-person DM.
+    public func encryptedIfNeeded(with sender: ChatCryptoKeys.Private, keyFinder: (UUID) -> ChatCryptoKeys.Public?) -> ChatMessage {
+        if let recipientId = dmRecipientId, let recipientKeys = keyFinder(recipientId) {
+            do {
+                return try encrypted(with: sender, for: recipientKeys)
+            } catch {
+                log.warning("Could not encrypt message: \(self)")
+            }
+        }
+        return self
+    }
+
+    /// Decrypts a message from the author if it's a two-person DM.
+    public func decryptedIfNeeded(with recipient: ChatCryptoKeys.Private, keyFinder: (UUID) -> ChatCryptoKeys.Public?) -> ChatMessage {
+        if let senderKeys = keyFinder(author.id) {
+            do {
+                return try decrypted(with: recipient, from: senderKeys)
+            } catch {
+                log.warning("Could not decrypt message: \(self)")
+            }
+        }
+        return self
     }
 
     public func encrypted(with sender: ChatCryptoKeys.Private, for recipient: ChatCryptoKeys.Public) throws -> ChatMessage {
