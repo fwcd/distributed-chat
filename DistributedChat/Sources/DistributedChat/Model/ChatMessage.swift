@@ -5,7 +5,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
     public let id: UUID
     public var timestamp: Date // TODO: Specify time zone?
     public var author: ChatUser
-    public var content: String
+    public var content: String?
     public var encryptedContent: ChatCryptoCipherData?
     public var channel: ChatChannel?
     public var attachments: [ChatAttachment]?
@@ -17,12 +17,15 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         id: UUID = UUID(),
         timestamp: Date = Date(),
         author: ChatUser,
-        content: String = "",
+        content: String? = nil,
         encryptedContent: ChatCryptoCipherData? = nil,
         channel: ChatChannel? = nil,
         attachments: [ChatAttachment]? = nil,
         repliedToMessageId: UUID? = nil
     ) {
+        // Enforce mutual exclusion
+        assert((content == nil) != (encryptedContent == nil))
+
         self.id = id
         self.timestamp = timestamp
         self.author = author
@@ -51,10 +54,10 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
 
     public func encrypted(with sender: ChatCryptoKeys.Private, for recipient: ChatCryptoKeys.Public) throws -> ChatMessage {
         guard !isEncrypted else { throw ChatCryptoError.alreadyEncrypted }
-        guard let plainData = content.data(using: .utf8) else { throw ChatCryptoError.nonEncodableText }
+        guard let plainData = content?.data(using: .utf8) else { throw ChatCryptoError.nonEncodableText }
 
         var newMessage = self
-        newMessage.content = ""
+        newMessage.content = nil
         newMessage.encryptedContent = try sender.encrypt(plain: plainData, for: recipient)
         newMessage.attachments = try attachments?.map { try $0.encrypted(with: sender, for: recipient) }
 
