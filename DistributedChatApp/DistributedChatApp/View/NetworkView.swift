@@ -69,6 +69,8 @@ struct NetworkView: View {
                     List(network.allPresences) { presence in
                         PresenceView(presence: presence)
                     }
+                    Text(String("\(network.offlinePresences) vs \(network.presences)"))
+                    Text(String("\(network.messages.messages)"))
                 }
             }
             .navigationTitle("Network")
@@ -86,7 +88,8 @@ struct NetworkView_Previews: PreviewProvider {
     ], presences: [
         ChatPresence(user: alice, status: .online),
         ChatPresence(user: bob, status: .away, info: "At the gym"),
-    ])
+    ], messages: Messages())
+    
     static var previews: some View {
         NetworkView()
             .environmentObject(network)

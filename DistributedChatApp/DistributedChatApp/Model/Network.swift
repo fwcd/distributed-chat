@@ -17,7 +17,7 @@ class Network: ObservableObject {
     /// Nodes that are reachable via the network.
     /// TODO: Expire old presences after a certain timeout
     @Published private(set) var presences: [UUID: ChatPresence]
-    private var messages: Messages
+    var messages: Messages
     
     var offlinePresences: [UUID: ChatPresence] {
         Dictionary(uniqueKeysWithValues: messages.users
