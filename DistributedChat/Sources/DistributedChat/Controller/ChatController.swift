@@ -9,7 +9,6 @@ public class ChatController {
     private let transportWrapper: ChatTransportWrapper<ChatProtocol.Message>
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
-    private var receivedProtoMessages: Set<UUID> = []
 
     private var presenceTimer: RepeatingTimer?
     public private(set) var presence = ChatPresence()
@@ -33,27 +32,23 @@ public class ChatController {
         //       is especially important for destructive operations like
         //       presence updates (which overwrite the old presence).
 
-        if !receivedProtoMessages.contains(protoMessage.id) {
-            receivedProtoMessages.insert(protoMessage.id)
-            
-            // Rebroadcast message
-            
-            transportWrapper.broadcast(protoMessage)
-            
-            // Handle messages for me
-            
-            for message in protoMessage.addedChatMessages ?? [] where message.isReceived(by: me.id) {
-                for listener in addChatMessageListeners {
-                    listener(message)
-                }
+        // Rebroadcast message
+        
+        transportWrapper.broadcast(protoMessage)
+        
+        // Handle messages for me
+        
+        for message in protoMessage.addedChatMessages ?? [] where message.isReceived(by: me.id) {
+            for listener in addChatMessageListeners {
+                listener(message)
             }
-            
-            // Handle presence updates
-            
-            for presence in protoMessage.updatedPresences ?? [] {
-                for listener in updatePresenceListeners {
-                    listener(presence)
-                }
+        }
+        
+        // Handle presence updates
+        
+        for presence in protoMessage.updatedPresences ?? [] {
+            for listener in updatePresenceListeners {
+                listener(presence)
             }
         }
     }
@@ -66,8 +61,9 @@ public class ChatController {
             attachments: attachments,
             repliedToMessageId: repliedToMessageId
         )
-        
-        transportWrapper.broadcast(ChatProtocol.Message(addedChatMessages: [chatMessage]))
+
+        let protoMessage = ChatProtocol.Message(addedChatMessages: [chatMessage])
+        transportWrapper.broadcast(protoMessage)
         
         for listener in addChatMessageListeners {
             listener(chatMessage)

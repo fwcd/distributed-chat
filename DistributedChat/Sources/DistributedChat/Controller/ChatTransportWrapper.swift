@@ -8,9 +8,10 @@ fileprivate let log = Logger(label: "DistributedChat.ChatTransportWrapper")
 /// An abstraction of the transport layer that
 /// operates on (JSON-)codable types rather than
 /// strings.
-class ChatTransportWrapper<T> where T: Codable {
+class ChatTransportWrapper<T> where T: Codable & Identifiable {
     private let transport: ChatTransport
     private var receiveListeners: [(T) -> Void] = []
+    private var receivedProtoMessages: Set<T.ID> = []
 
     init(transport: ChatTransport)  {
         self.transport = transport
@@ -18,8 +19,12 @@ class ChatTransportWrapper<T> where T: Codable {
         transport.onReceive { [unowned self] json in
             do {
                 let protoMessage = try decoder.decode(T.self, from: json.data(using: .utf8)!)
-                for listener in receiveListeners {
-                    listener(protoMessage)
+
+                if !receivedProtoMessages.contains(protoMessage.id) {
+                    receivedProtoMessages.insert(protoMessage.id)
+                    for listener in receiveListeners {
+                        listener(protoMessage)
+                    }
                 }
             } catch {
                 log.error("Could not decode protocol message: \(error)")
@@ -30,6 +35,8 @@ class ChatTransportWrapper<T> where T: Codable {
     /// Sends a protocol message to all reachable nodes.
     func broadcast(_ protoMessage: T) {
         do {
+            receivedProtoMessages.insert(protoMessage.id)
+
             let json = String(data: try encoder.encode(protoMessage), encoding: .utf8)!
             transport.broadcast(json)
         } catch {
