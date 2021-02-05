@@ -2,6 +2,8 @@ import Foundation
 import LineNoise
 import DistributedChat
 
+fileprivate let globalChannelName = "global"
+
 class ChatREPL {
     private let transport: ChatTransport
     private let controller: ChatController
@@ -32,22 +34,34 @@ class ChatREPL {
         case .room(let name)?:
             return "#\(name)"
         case nil:
-            return "#global"
+            return "#\(globalChannelName)"
         }
     }
 
-    private func parse(input: String) -> (String, ChatChannel?) {
-        let split = input.split(separator: " ", maxSplits: 1).map(String.init)
+    private func parseChannel(from raw: String) -> ChatChannel? {
+        let name = String(raw.dropFirst())
+        switch raw.first {
+        case "@"?:
+            return resolveUser(from: name).map { .dm($0) }
+        case "#"?:
+            return name == globalChannelName ? nil : .room(name)
+        default:
+            return nil
+        }
+    }
 
-        if split.count == 2, let channel = try? ChatChannel(parsing: tryResolveUserName(split[0])) {
+    private func parseMessage(from raw: String) -> (String, ChatChannel?) {
+        let split = raw.split(separator: " ", maxSplits: 1).map(String.init)
+
+        if split.count == 2, let channel = parseChannel(from: raw) {
             return (split[1], channel)
         } else {
-            return (input, nil) // on #global
+            return (raw, nil) // on #global
         }
     }
 
-    private func tryResolveUserName(_ raw: String) -> String {
-        UUID(uuidString: raw).flatMap { network.presences[$0] }?.user.displayName ?? raw
+    private func resolveUser(from raw: String) -> UUID? {
+        network.presences.values.map(\.user).first { $0.displayName == raw }?.id
     }
 
     func run() {
@@ -67,7 +81,7 @@ class ChatREPL {
         while let input = try? ln.getLine(prompt: "") {
             ln.addHistory(input)
 
-            let (content, channel) = parse(input: input)
+            let (content, channel) = parseMessage(from: input)
             controller.send(content: content, on: channel)
         }
 
