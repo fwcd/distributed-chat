@@ -86,7 +86,8 @@ public class ChatController {
             repliedToMessageId: repliedToMessageId
         )
         let encryptedMessage = chatMessage.encryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
-        let protoMessage = ChatProtocol.Message(addedChatMessages: [encryptedMessage])
+        incrementClock()
+        let protoMessage = ChatProtocol.Message(addedChatMessages: [encryptedMessage], logicalClock: presence.user.logicalClock)
 
         transportWrapper.broadcast(protoMessage)
         
@@ -129,7 +130,8 @@ public class ChatController {
     
     private func broadcastPresence() {
         log.debug("Broadcasting presence: \(presence.status) (\(presence.info))")
-        transportWrapper.broadcast(ChatProtocol.Message(updatedPresences: [presence]))
+        incrementClock()
+        transportWrapper.broadcast(ChatProtocol.Message(updatedPresences: [presence], logicalClock: presence.user.logicalClock))
     }
 
     // TODO: Delete
