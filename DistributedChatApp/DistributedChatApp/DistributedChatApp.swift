@@ -94,7 +94,7 @@ struct DistributedChatApp: App {
                             if granted {
                                 state.controller.onAddChatMessage { message in
                                     let content = UNMutableNotificationContent()
-                                    content.title = "\(message.author.displayName) in #\(message.channel.displayName)"
+                                    content.title = "\(message.author.displayName) in #\(message.channel.displayName(with: state.network))"
                                     content.body = message.content
                                     content.targetContentIdentifier = "distributedchat:///message/\(message.id)"
                                     let request = UNNotificationRequest(identifier: "DistributedChat message", content: content, trigger: nil)
@@ -140,7 +140,7 @@ struct DistributedChatApp: App {
                                 do {
                                     let channel = try ChatChannel(parsing: rawChannel)
                                     if state.messages.channels.contains(channel) {
-                                        log.debug("Parsed URL as \(channel.displayName)...")
+                                        log.debug("Parsed URL as \(channel.displayName(with: state.network))...")
                                         state.navigation.activeChannel = Optional<ChatChannel?>.some(channel)
                                     }
                                 } catch {

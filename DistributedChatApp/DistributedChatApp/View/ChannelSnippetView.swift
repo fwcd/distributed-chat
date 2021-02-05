@@ -13,6 +13,7 @@ struct ChannelSnippetView: View {
     
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var settings: Settings
+    @EnvironmentObject private var network: Network
     
     var body: some View {
         HStack {
@@ -25,7 +26,7 @@ struct ChannelSnippetView: View {
                 Image(systemName: "number")
             }
             VStack(alignment: .leading) {
-                Text(channel.displayName)
+                Text(channel.displayName(with: network))
                     .font(.headline)
                 if let message = messages[channel].last,
                    settings.presentation.showChannelPreviews {
@@ -45,9 +46,11 @@ struct ChannelSnippetView: View {
 struct ChannelSnippetView_Previews: PreviewProvider {
     @StateObject static var messages = Messages()
     @StateObject static var settings = Settings()
+    @StateObject static var network = Network()
     static var previews: some View {
         ChannelSnippetView(channel: .room("test"))
             .environmentObject(messages)
             .environmentObject(settings)
+            .environmentObject(network)
     }
 }

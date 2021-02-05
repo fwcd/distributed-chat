@@ -71,7 +71,7 @@ struct ChannelsView: View {
                         }
                         if let channel = channel {
                             Button(action: {
-                                UIPasteboard.general.string = channel.displayName
+                                UIPasteboard.general.string = channel.displayName(with: network)
                             }) {
                                 Text("Copy Channel Name")
                                 Image(systemName: "doc.on.doc")
@@ -112,7 +112,7 @@ struct ChannelsView: View {
         }
         .actionSheet(isPresented: $deletionConfirmationShown) {
             ActionSheet(
-                title: Text("Are you sure you want to delete ALL messages in \(deletingChannels.map(\.displayName).joined(separator: ", "))?"),
+                title: Text("Are you sure you want to delete ALL messages in \(deletingChannels.map { $0.displayName(with: network) }.joined(separator: ", "))?"),
                 message: Text("Messages will only be deleted locally."),
                 buttons: [
                     .destructive(Text("Delete")) {

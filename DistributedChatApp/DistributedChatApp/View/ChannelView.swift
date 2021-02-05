@@ -13,6 +13,7 @@ struct ChannelView: View {
     let controller: ChatController
     
     @EnvironmentObject private var messages: Messages
+    @EnvironmentObject private var network: Network
     @State private var replyingToMessageId: UUID?
     
     var body: some View {
@@ -21,7 +22,7 @@ struct ChannelView: View {
             MessageComposeView(channel: channel, controller: controller, replyingToMessageId: $replyingToMessageId)
         }
         .padding(15)
-        .navigationTitle("#\(channel.displayName)")
+        .navigationTitle("#\(channel.displayName(with: network))")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             messages.autoReadChannels.insert(channel)
@@ -43,9 +44,11 @@ struct ChatView_Previews: PreviewProvider {
         ChatMessage(author: bob, content: "This is fancy!"),
     ])
     @StateObject static var settings = Settings()
+    @StateObject static var network = Network()
     static var previews: some View {
         ChannelView(channel: nil, controller: controller)
             .environmentObject(messages)
             .environmentObject(settings)
+            .environmentObject(network)
     }
 }

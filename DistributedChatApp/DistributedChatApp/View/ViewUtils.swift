@@ -15,8 +15,7 @@ let iconSize: CGFloat = 22
 fileprivate let globalChannelName = "global"
 
 extension Optional where Wrapped == ChatChannel {
-//    func displayName(with users: Users) -> String {
-    var displayName: String {
+    func displayName(with network: Network) -> String {
         switch self {
         case .room(let name)?:
             return name
@@ -29,7 +28,7 @@ extension Optional where Wrapped == ChatChannel {
 }
 
 extension ChatChannel {
-    var displayName: String {
-        Optional.some(self).displayName
+    func displayName(with network: Network) -> String {
+        Optional.some(self).displayName(with: network)
     }
 }
