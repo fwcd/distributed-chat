@@ -8,9 +8,13 @@ class ChatREPL {
     private let transport: ChatTransport
     private let controller: ChatController
     private let network: Network = Network()
+
+    private let commandPrefix: String
+    private var commands: [String: () -> Void]!
     
-    init(transport: ChatTransport, name: String) {
+    init(transport: ChatTransport, name: String, commandPrefix: String = ".") {
         self.transport = transport
+        self.commandPrefix = commandPrefix
 
         controller = ChatController(transport: transport)
         controller.update(name: name)
@@ -30,6 +34,15 @@ class ChatREPL {
         controller.onFindUser { [unowned self] id in
             network.presences[id]?.user
         }
+
+        commands = [
+            "help": { [unowned self] in
+                print("\rAvailable commands: \(commands.keys.map { commandPrefix + $0 }.joined(separator: ", "))\r")
+            },
+            "network": { [unowned self] in
+                print("\rCurrently reachable: \(network.presences.values.map { "\($0.user.displayName) (\($0.status.description.lowercased()))" }.joined(separator: ", "))\r")
+            }
+        ]
     }
 
     private func displayName(of channel: ChatChannel?) -> String {
@@ -73,6 +86,12 @@ class ChatREPL {
         network.presences.values.map(\.user).first { $0.displayName == raw }?.id
     }
 
+    private func parseCommand(from raw: String) -> (() -> Void)? {
+        guard raw.starts(with: commandPrefix) else { return nil }
+        let commandName = String(raw.dropFirst(commandPrefix.count))
+        return commands[commandName]
+    }
+
     func run() {
         print("""
             ----------------------------------
@@ -90,8 +109,12 @@ class ChatREPL {
         while let input = try? ln.getLine(prompt: "") {
             ln.addHistory(input)
 
-            let (content, channel) = parseMessage(from: input)
-            controller.send(content: content, on: channel)
+            if let command = parseCommand(from: input) {
+                command()
+            } else {
+                let (content, channel) = parseMessage(from: input)
+                controller.send(content: content, on: channel)
+            }
         }
 
         print()
