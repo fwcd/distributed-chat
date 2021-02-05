@@ -8,6 +8,8 @@ fileprivate let decoder = JSONDecoder()
 
 class MessagingHandler {
     private var clients: [UUID: ClientState] = [:]
+    private var linkReliability: Double = 1.0 // from 0 (never transmit) to 1 (always transmit)
+    private var linkDelay: Double = 0.0       // in seconds
 
     private class ClientState {
         private let ws: WebSocket
@@ -64,6 +66,7 @@ class MessagingHandler {
         case .observe:
             senderClient.isObserver = true
             try sendClientsAndLinks(to: sender)
+            try sendLinkConfiguration(to: sender)
             log.info("\(name(of: sender)) is now an observer!")
 
         case .addLink(let link):
@@ -94,6 +97,18 @@ class MessagingHandler {
                 log.info("Removed link from \(name(of: fromUUID)) to \(name(of: toUUID))")
             } else {
                 log.error("Could not remove link, invalid UUID(s)")
+            }
+        
+        case .setLinkReliability(let linkReliability):
+            self.linkReliability = linkReliability
+            for (id, client) in clients where client.isObserver && id != sender {
+                try client.send(.setLinkReliabilityNotification(linkReliability))
+            }
+
+        case .setLinkDelay(let linkDelay):
+            self.linkDelay = linkDelay
+            for (id, client) in clients where client.isObserver && id != sender {
+                try client.send(.setLinkReliabilityNotification(linkReliability))
             }
 
         case .broadcast(let broadcast):
@@ -144,6 +159,13 @@ class MessagingHandler {
                 }
             }
         }
+    }
+
+    private func sendLinkConfiguration(to sender: UUID) throws {
+        let senderClient = clients[sender]!
+
+        try senderClient.send(.setLinkReliabilityNotification(linkReliability))
+        try senderClient.send(.setLinkDelayNotification(linkDelay))
     }
 
     private func name(of uuid: UUID) -> String {
