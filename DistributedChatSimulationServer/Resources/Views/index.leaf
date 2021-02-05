@@ -11,22 +11,22 @@
     <body>
         <div class="wrapper">
             <h1>#(title)</h1>
-            <div class="options">
-                <div class="option">
+            <div class="settings">
+                <div class="setting">
                     <input type="checkbox" id="live-edges-enabled" name="live-edges-enabled" checked>
                     <label for="live-edges-enabled">Live edges</label>
                 </div>
-                <div class="option">
+                <div class="setting">
                     <select id="live-edge-mode">
                         <option value="raw">Raw</option>
                         <option value="formatted" selected>Formatted</option>
                     </select>
                 </div>
-                <div class="option">
+                <div class="setting">
                     <input type="checkbox" id="live-chat-enabled" name="live-chat-enabled" checked>
                     <label for="live-chat-enabled">Chat messages</label>
                 </div>
-                <div class="option">
+                <div class="setting">
                     <input type="checkbox" id="live-presences-enabled" name="live-presences-enabled" checked>
                     <label for="live-presences-enabled">Presence updates</label>
                 </div>
