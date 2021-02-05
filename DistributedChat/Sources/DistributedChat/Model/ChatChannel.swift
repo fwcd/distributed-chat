@@ -44,7 +44,7 @@ public enum ChatChannel: Codable, Hashable, CustomStringConvertible {
     private init(type: String, data: String) throws {
         switch type {
         case "room":
-            self = .room(type)
+            self = .room(data)
         case "dm":
             guard let userId = UUID(uuidString: data) else { throw ChannelError.invalidUUID(data) }
             self = .dm(userId)
