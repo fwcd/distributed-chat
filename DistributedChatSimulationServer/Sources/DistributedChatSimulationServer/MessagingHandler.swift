@@ -110,7 +110,7 @@ class MessagingHandler {
         case .setLinkDelay(let linkDelay):
             self.linkDelay = linkDelay
             for (id, client) in clients where client.isObserver && id != sender {
-                try client.send(.setLinkReliabilityNotification(linkReliability))
+                try client.send(.setLinkDelayNotification(linkDelay))
             }
 
         case .broadcast(let broadcast):
