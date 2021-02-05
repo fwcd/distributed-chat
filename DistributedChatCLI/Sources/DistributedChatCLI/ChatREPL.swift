@@ -106,9 +106,10 @@ class ChatREPL {
             --- DISTRIBUTED CHAT REPL v0.1 ---
             ----------------------------------
 
-            Type anything to send to #global or prefix your message
-            with a channel, e.g. #my-channel or @SomeUserName.
-            Note that the user has to be online. Enjoy!
+            Type anything to send to #global or prefix your
+            message with a channel, e.g. #my-channel or
+            @SomeUserName. Note that the user has to be online.
+            Type .help for a list of commands. Enjoy!
 
             """)
 
