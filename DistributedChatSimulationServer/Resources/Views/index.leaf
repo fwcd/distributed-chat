@@ -22,6 +22,14 @@
                         <option value="formatted" selected>Formatted</option>
                     </select>
                 </div>
+                <div class="option">
+                    <input type="checkbox" id="live-chat-enabled" name="live-chat-enabled" checked>
+                    <label for="live-chat-enabled">Chat messages</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="live-presences-enabled" name="live-presences-enabled" checked>
+                    <label for="live-presences-enabled">Presence updates</label>
+                </div>
             </div>
             <div id="graph"></div>
         </div>

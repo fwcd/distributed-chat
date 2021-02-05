@@ -10,24 +10,34 @@ function liveLabelMode() {
     return document.getElementById("live-edge-mode").value;
 }
 
-function contentToEdge(link) {
+function liveChatEnabled() {
+    return document.getElementById("live-chat-enabled").checked;
+}
+
+function livePresencesEnabled() {
+    return document.getElementById("live-presences-enabled").checked;
+}
+
+function formatChatProtocolMessage(raw) {
     switch (liveLabelMode()) {
     case "formatted":
-        const json = JSON.parse(link);
+        const json = JSON.parse(raw);
         const chatMessages = json.addedChatMessages;
         const presences = json.updatedPresences;
 
-        if (chatMessages) {
+        if (chatMessages && liveChatEnabled()) {
             const formatted = chatMessages.map(m => `${m.author.name}: ${m.content}`).join(", ");
             return [formatted, "green"];
-        } else if (presences) {
+        }
+        if (presences && livePresencesEnabled()) {
             const formatted = presences.map(p => `${p.user.name}: ${p.status}`).join(", ");
             return [formatted, "yellow"];
         }
+
+        return undefined;
     default:
-        break;
+        return [raw, "violet"];
     }
-    return [link, "violet"];
 }
 
 function updateDynamically(nodes, edges) {
@@ -61,11 +71,11 @@ function updateDynamically(nodes, edges) {
             }
             break;
         case "broadcastNotification":
-            if (liveEdgesEnabled()) {
+            const parsedContent = formatChatProtocolMessage(message.data.content);
+            if (liveEdgesEnabled() && parsedContent) {
+                const [label, color] = parsedContent;
                 const timeoutMs = 1000;
-                const content = message.data.content;
                 const link = message.data.link;
-                const [label, color] = contentToEdge(content);
                 const [id] = edges.add({
                     from: link.fromUUID,
                     to: link.toUUID,
