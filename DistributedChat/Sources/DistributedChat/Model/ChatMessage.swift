@@ -30,8 +30,8 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
     /// Checks whether the given user id should receive the message.
     public func isReceived(by userId: UUID) -> Bool {
         switch channel {
-        case .dm(let recipientId)?:
-            return recipientId == userId || author.id == userId
+        case .dm(let userIds)?:
+            return userIds.contains(userId)
         default:
             return true
         }

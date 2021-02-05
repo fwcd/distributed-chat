@@ -1,17 +1,20 @@
 import Foundation
 
+fileprivate let separator: Character = ":"
+fileprivate let userIdSeparator: Character = ","
+
 public enum ChatChannel: Codable, Hashable, CustomStringConvertible {
     /// A public chatroom-style channel.
     case room(String)
-    /// A direct messaging channel with another user (whose id is specified here).
-    case dm(UUID)
+    /// A direct messaging channel. All included members' ids are specified here.
+    case dm(Set<UUID>)
     
     public var description: String {
         switch self {
         case .room(let name):
-            return "room:\(name)"
-        case .dm(let userId):
-            return "dm:\(userId)"
+            return "room\(separator)\(name)"
+        case .dm(let userIds):
+            return "dm\(separator)\(userIds.map(\.uuidString).joined(separator: String(userIdSeparator)))"
         }
     }
     
@@ -27,7 +30,7 @@ public enum ChatChannel: Codable, Hashable, CustomStringConvertible {
     }
     
     public init(parsing str: String) throws {
-        let split = str.split(separator: ":", maxSplits: 1).map(String.init)
+        let split = str.split(separator: separator, maxSplits: 1).map(String.init)
         guard split.count == 2 else { throw ChannelError.couldNotParse(str) }
         
         try self.init(type: split[0], data: split[1])
@@ -44,10 +47,16 @@ public enum ChatChannel: Codable, Hashable, CustomStringConvertible {
     private init(type: String, data: String) throws {
         switch type {
         case "room":
-            self = .room(type)
+            self = .room(data)
         case "dm":
-            guard let userId = UUID(uuidString: data) else { throw ChannelError.invalidUUID(data) }
-            self = .dm(userId)
+            let userIds = try Set(data
+                .split(separator: userIdSeparator)
+                .map(String.init)
+                .map { (raw: String) -> UUID in
+                    guard let userId = UUID(uuidString: raw) else { throw ChannelError.invalidUUID(data) }
+                    return userId
+                })
+            self = .dm(userIds)
         default:
             throw ChannelError.unknownType("Unknown channel type \(type)")
         }
@@ -60,9 +69,9 @@ public enum ChatChannel: Codable, Hashable, CustomStringConvertible {
         case .room(let name):
             try container.encode("room", forKey: .type)
             try container.encode(name, forKey: .data)
-        case .dm(let userId):
+        case .dm(let userIds):
             try container.encode("dm", forKey: .type)
-            try container.encode(userId.uuidString, forKey: .data)
+            try container.encode(userIds.map(\.uuidString).joined(separator: String(userIdSeparator)), forKey: .data)
         }
     }
 }
