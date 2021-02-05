@@ -1,10 +1,12 @@
 import DistributedChatSimulationProtocol
 import Foundation
+import NIO
 import Vapor
 
 fileprivate let log = Logger(label: "ClientManager")
 fileprivate let encoder = JSONEncoder()
 fileprivate let decoder = JSONDecoder()
+fileprivate let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
 
 class MessagingHandler {
     private var clients: [UUID: ClientState] = [:]
@@ -112,22 +114,25 @@ class MessagingHandler {
             }
 
         case .broadcast(let broadcast):
-            let observers = clients.values.filter(\.isObserver)
-            // TODO: Apply link delay
-            if Double.random(in: 0..<1) < linkReliability {
-                for uuid in senderClient.links {
-                    if let client = clients[uuid] {
-                        let notification = SimulationProtocol.Message.broadcastNotification(.init(
-                            content: broadcast.content,
-                            link: .init(fromUUID: "\(sender)", toUUID: "\(uuid)")
-                        ))
-                        try client.send(notification)
-                        for observer in observers {
-                            try observer.send(notification)
+            let eventLoop = group.next()
+            eventLoop.scheduleTask(deadline: .now() + .milliseconds(Int64(linkDelay * 1000))) { [weak self] in
+                guard let this = self else { return }
+                if Double.random(in: 0..<1) < this.linkReliability {
+                    let observers = this.clients.values.filter(\.isObserver)
+                    for uuid in senderClient.links {
+                        if let client = this.clients[uuid] {
+                            let notification = SimulationProtocol.Message.broadcastNotification(.init(
+                                content: broadcast.content,
+                                link: .init(fromUUID: "\(sender)", toUUID: "\(uuid)")
+                            ))
+                            try client.send(notification)
+                            for observer in observers {
+                                try observer.send(notification)
+                            }
                         }
                     }
+                    log.info("Broadcasted '\(broadcast.content)' from \(this.name(of: sender))")
                 }
-                log.info("Broadcasted '\(broadcast.content)' from \(name(of: sender))")
             }
 
         default:
