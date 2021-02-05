@@ -27,11 +27,8 @@ public enum ChatCryptoKeys {
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            let base64EncryptionKey = try container.decode(String.self, forKey: .encryptionKey)
-            let base64SigningKey = try container.decode(String.self, forKey: .signingKey)
-
-            guard let rawEncryptionKey = Data(base64Encoded: base64EncryptionKey) else { throw ChatCryptoError.invalidBase64(base64EncryptionKey) }
-            guard let rawSigningKey = Data(base64Encoded: base64SigningKey) else { throw ChatCryptoError.invalidBase64(base64SigningKey) }
+            let rawEncryptionKey = try container.decode(Data.self, forKey: .encryptionKey)
+            let rawSigningKey = try container.decode(Data.self, forKey: .signingKey)
 
             encryptionKey = try .init(rawRepresentation: rawEncryptionKey)
             signingKey = try .init(rawRepresentation: rawSigningKey)
@@ -43,11 +40,8 @@ public enum ChatCryptoKeys {
             let rawEncryptionKey = encryptionKey.rawRepresentation
             let rawSigningKey = signingKey.rawRepresentation
 
-            let base64EncryptionKey = rawEncryptionKey.base64EncodedString()
-            let base64SigningKey = rawSigningKey.base64EncodedString()
-
-            try container.encode(base64EncryptionKey, forKey: .encryptionKey)
-            try container.encode(base64SigningKey, forKey: .signingKey)
+            try container.encode(rawEncryptionKey, forKey: .encryptionKey)
+            try container.encode(rawSigningKey, forKey: .signingKey)
         }
     }
 
