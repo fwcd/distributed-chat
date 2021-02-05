@@ -11,6 +11,9 @@ import DistributedChat
 struct PresenceView: View {
     let presence: ChatPresence
     
+    @EnvironmentObject private var network: Network
+    @EnvironmentObject private var navigation: Navigation
+    
     var body: some View {
         HStack {
             Image(systemName: "circlebadge.fill")
@@ -47,12 +50,23 @@ struct PresenceView: View {
                     Image(systemName: "doc.on.doc")
                 }
             }
+            Button(action: {
+                navigation.open(channel: .dm([network.myId, presence.user.id]))
+            }) {
+                Text("Open DM channel")
+                Image(systemName: "at")
+            }
         }
     }
 }
 
 struct PresenceView_Previews: PreviewProvider {
+    @StateObject static var network = Network()
+    @StateObject static var navigation = Navigation()
+    
     static var previews: some View {
         PresenceView(presence: ChatPresence(user: .init()))
+            .environmentObject(network)
+            .environmentObject(navigation)
     }
 }

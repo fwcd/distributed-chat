@@ -10,6 +10,7 @@ import SwiftUI
 
 struct NetworkView: View {
     @EnvironmentObject private var network: Network
+    @EnvironmentObject private var navigation: Navigation
     
     var body: some View {
         NavigationView {
@@ -37,6 +38,12 @@ struct NetworkView: View {
                                 }) {
                                     Text("Copy User Name")
                                     Image(systemName: "doc.on.doc")
+                                }
+                                Button(action: {
+                                    navigation.open(channel: .dm([network.myId, chatUser.id]))
+                                }) {
+                                    Text("Open DM channel")
+                                    Image(systemName: "at")
                                 }
                             }
                             Button(action: {
@@ -87,9 +94,11 @@ struct NetworkView_Previews: PreviewProvider {
         ChatPresence(user: alice, status: .online),
         ChatPresence(user: bob, status: .away, info: "At the gym"),
     ], messages: Messages())
+    @StateObject static var navigation = Navigation()
     
     static var previews: some View {
         NetworkView()
             .environmentObject(network)
+            .environmentObject(navigation)
     }
 }
