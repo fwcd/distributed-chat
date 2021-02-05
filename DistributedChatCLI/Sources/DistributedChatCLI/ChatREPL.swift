@@ -115,6 +115,12 @@ class ChatREPL {
 
         let ln = LineNoise()
 
+        ln.setCompletionCallback { [unowned self] buffer in
+            commands.keys
+                .map { commandPrefix + $0 }
+                .filter { $0.hasPrefix(buffer) }
+        }
+
         while let input = try? ln.getLine(prompt: "") {
             ln.addHistory(input)
 
