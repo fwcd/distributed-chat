@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import DistributedChat
+
+// TODO: Support creation of DM channels
 
 struct NewChannelView: View {
-    let onCommit: (String) -> Void
+    let onCommit: (ChatChannel) -> Void
     
     @State private var channelNameDraft: String = ""
     
@@ -22,7 +25,7 @@ struct NewChannelView: View {
                         .trimmingCharacters(in: .whitespacesAndNewlines)
                         .replacingOccurrences(of: " ", with: "-")
                     
-                    onCommit(finalDraft)
+                    onCommit(.room(finalDraft))
                 }
             })
             .font(.title2)

@@ -31,16 +31,16 @@ struct MessageView: View {
                 Text("Reply")
                 Image(systemName: "arrowshape.turn.up.left.fill")
             }
-            if messages.unread.contains(message.id) {
+            if messages.unreadMessageIds.contains(message.id) {
                 Button(action: {
-                    messages.unread.remove(message.id)
+                    messages.unreadMessageIds.remove(message.id)
                 }) {
                     Text("Mark as Read")
                     Image(systemName: "circlebadge")
                 }
             } else {
                 Button(action: {
-                    messages.unread.insert(message.id)
+                    messages.unreadMessageIds.insert(message.id)
                 }) {
                     Text("Mark as Unread")
                     Image(systemName: "circlebadge.fill")

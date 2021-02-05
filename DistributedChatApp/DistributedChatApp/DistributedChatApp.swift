@@ -94,7 +94,7 @@ struct DistributedChatApp: App {
                             if granted {
                                 state.controller.onAddChatMessage { message in
                                     let content = UNMutableNotificationContent()
-                                    content.title = "\(message.author.displayName) in #\(message.channelName ?? globalChannelName)"
+                                    content.title = "\(message.author.displayName) in #\(message.channel.displayName)"
                                     content.body = message.content
                                     content.targetContentIdentifier = "distributedchat:///message/\(message.id)"
                                     let request = UNNotificationRequest(identifier: "DistributedChat message", content: content, trigger: nil)
@@ -104,7 +104,7 @@ struct DistributedChatApp: App {
                                         }
                                     }
                                 }
-                                state.subscriptions.append(state.messages.$unread.sink { unread in
+                                state.subscriptions.append(state.messages.$unreadMessageIds.sink { unread in
                                     DispatchQueue.main.async {
                                         UIApplication.shared.applicationIconBadgeNumber = unread.count
                                     }
@@ -126,7 +126,7 @@ struct DistributedChatApp: App {
                     guard url.isDistributedChatSchemed else { return }
                     
                     // distributedchat:///channel           --> channel #global
-                    // distributedchat:///channel/test      --> channel #test
+                    // distributedchat:///channel/room:test --> channel #test
                     // distributedchat:///message/<uuid>    --> specific message (TODO: Actually scroll to message)
                     
                     log.info("Opening URL \(url)...")
@@ -136,19 +136,24 @@ struct DistributedChatApp: App {
                         switch components[..<2] {
                         case ["/", "channel"]:
                             if components.count == 3 {
-                                let channelName = components[2]
-                                if state.messages.channelNames.contains(channelName) {
-                                    log.debug("Parsed URL as #\(channelName)...")
-                                    state.navigation.activeChannelName = channelName
+                                let rawChannel = components[2]
+                                do {
+                                    let channel = try ChatChannel(parsing: rawChannel)
+                                    if state.messages.channels.contains(channel) {
+                                        log.debug("Parsed URL as \(channel.displayName)...")
+                                        state.navigation.activeChannel = Optional<ChatChannel?>.some(channel)
+                                    }
+                                } catch {
+                                    log.warning("Could not parse channel URL: \(error)")
                                 }
                             } else {
                                 log.debug("Parsed URL as #global...")
-                                state.navigation.activeChannelName = Optional<String?>.some(nil)
+                                state.navigation.activeChannel = Optional<ChatChannel?>.some(nil)
                             }
                         case ["/", "message"]:
                             if components.count == 3, let id = UUID(uuidString: components[2]), let message = state.messages[id] {
                                 log.debug("Parsed URL as message with ID \(id)...")
-                                state.navigation.activeChannelName = message.channelName
+                                state.navigation.activeChannel = message.channel
                             }
                         default:
                             break

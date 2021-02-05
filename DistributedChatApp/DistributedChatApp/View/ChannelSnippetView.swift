@@ -6,32 +6,35 @@
 //
 
 import SwiftUI
+import DistributedChat
 
 struct ChannelSnippetView: View {
-    let channelName: String?
+    let channel: ChatChannel?
     
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var settings: Settings
     
     var body: some View {
         HStack {
-            if messages.unreadChannelNames.contains(channelName) {
+            if messages.unreadChannels.contains(channel) {
                 Image(systemName: "circlebadge.fill")
                     .foregroundColor(.blue)
+            } else if case .dm(_) = channel {
+                Image(systemName: "at")
             } else {
                 Image(systemName: "number")
             }
             VStack(alignment: .leading) {
-                Text(channelName ?? globalChannelName)
+                Text(channel.displayName)
                     .font(.headline)
-                if let message = messages[channelName].last,
+                if let message = messages[channel].last,
                    settings.presentation.showChannelPreviews {
                     PlainMessageView(message: message)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
             }
-            if messages.pinnedChannelNames.contains(channelName) {
+            if messages.pinnedChannels.contains(channel) {
                 Spacer()
                 Image(systemName: "pin.circle.fill")
             }
@@ -43,7 +46,7 @@ struct ChannelSnippetView_Previews: PreviewProvider {
     @StateObject static var messages = Messages()
     @StateObject static var settings = Settings()
     static var previews: some View {
-        ChannelSnippetView(channelName: "test")
+        ChannelSnippetView(channel: .room("test"))
             .environmentObject(messages)
             .environmentObject(settings)
     }

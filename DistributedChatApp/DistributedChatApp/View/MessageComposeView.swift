@@ -17,7 +17,7 @@ fileprivate let log = Logger(label: "DistributedChatApp.MessageComposeView")
 fileprivate let compression: ChatAttachment.Compression = .lzfse
 
 struct MessageComposeView: View {
-    let channelName: String?
+    let channel: ChatChannel?
     let controller: ChatController
     @Binding var replyingToMessageId: UUID?
     
@@ -133,7 +133,7 @@ struct MessageComposeView: View {
                         Image(systemName: "plus")
                             .font(.system(size: iconSize))
                     }
-                    TextField("Message #\(channelName ?? globalChannelName)...", text: $draft, onCommit: sendDraft)
+                    TextField("Message #\(channel.displayName)...", text: $draft, onCommit: sendDraft)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     if draft.isEmpty && draftAttachments.isEmpty {
                         VoiceNoteRecordButton {
@@ -195,7 +195,7 @@ struct MessageComposeView: View {
     private func sendDraft() {
         if !draft.isEmpty || !draftAttachments.isEmpty {
             let attachments = draftAttachments.compactMap(\.asChatAttachment).nilIfEmpty
-            controller.send(content: draft, on: channelName, attaching: attachments, replyingTo: replyingToMessageId)
+            controller.send(content: draft, on: channel, attaching: attachments, replyingTo: replyingToMessageId)
             clearDraft()
         }
     }
@@ -216,7 +216,7 @@ struct MessageComposeView_Previews: PreviewProvider {
     @StateObject static var messages = Messages()
     @State static var replyingToMessageId: UUID? = nil
     static var previews: some View {
-        MessageComposeView(channelName: nil, controller: controller, replyingToMessageId: $replyingToMessageId)
+        MessageComposeView(channel: nil, controller: controller, replyingToMessageId: $replyingToMessageId)
             .environmentObject(messages)
     }
 }

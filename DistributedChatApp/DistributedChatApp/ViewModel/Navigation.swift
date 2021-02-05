@@ -6,7 +6,8 @@
 //
 
 import Combine
+import DistributedChat
 
 class Navigation: ObservableObject {
-    @Published var activeChannelName: String?? = nil
+    @Published var activeChannel: ChatChannel?? = nil
 }

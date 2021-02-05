@@ -9,20 +9,20 @@ import DistributedChat
 import SwiftUI
 
 struct ChannelsView: View {
-    let channelNames: [String?]
+    let channels: [ChatChannel?]
     let controller: ChatController
     
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var navigation: Navigation
     @EnvironmentObject private var settings: Settings
     @EnvironmentObject private var network: Network
-    @State private var newChannelNames: [String] = []
-    @State private var channelNameDraftSheetShown: Bool = false
-    @State private var deletingChannelNames: [String?] = []
+    @State private var newChannels: [ChatChannel] = []
+    @State private var channelDraftSheetShown: Bool = false
+    @State private var deletingChannels: [ChatChannel?] = []
     @State private var deletionConfirmationShown: Bool = false
     
-    private var allChannelNames: [String?] {
-        channelNames + newChannelNames.filter { !channelNames.contains($0) }
+    private var allChannels: [ChatChannel?] {
+        channels + newChannels.filter { !channels.contains($0) }
     }
     
     var body: some View {
@@ -34,51 +34,51 @@ struct ChannelsView: View {
                     Image(systemName: "antenna.radiowaves.left.and.right")
                     Text("\(reachableCount) \("user".pluralized(with: reachableCount)) reachable, \(nearbyCount) \("user".pluralized(with: nearbyCount)) nearby")
                 }
-                ForEach(allChannelNames, id: \.self) { channelName in
-                    NavigationLink(destination: ChannelView(channelName: channelName, controller: controller), tag: channelName, selection: $navigation.activeChannelName) {
-                        ChannelSnippetView(channelName: channelName)
+                ForEach(allChannels, id: \.self) { channel in
+                    NavigationLink(destination: ChannelView(channel: channel, controller: controller), tag: channel, selection: $navigation.activeChannel) {
+                        ChannelSnippetView(channel: channel)
                     }
                     .contextMenu {
                         Button(action: {
-                            deletingChannelNames = [channelName]
+                            deletingChannels = [channel]
                             deletionConfirmationShown = true
                         }) {
                             Text("Delete Locally")
                             Image(systemName: "trash")
                         }
-                        if messages.unreadChannelNames.contains(channelName) {
+                        if messages.unreadChannels.contains(channel) {
                             Button(action: {
-                                messages.markAsRead(channelName: channelName)
+                                messages.markAsRead(channel: channel)
                             }) {
                                 Text("Mark as Read")
                                 Image(systemName: "circlebadge")
                             }
                         }
-                        if !messages.pinnedChannelNames.contains(channelName) {
+                        if !messages.pinnedChannels.contains(channel) {
                             Button(action: {
-                                messages.pin(channelName: channelName)
+                                messages.pin(channel: channel)
                             }) {
                                 Text("Pin")
                                 Image(systemName: "pin.fill")
                             }
-                        } else if channelName != nil {
+                        } else if channel != nil {
                             Button(action: {
-                                messages.unpin(channelName: channelName)
+                                messages.unpin(channel: channel)
                             }) {
                                 Text("Unpin")
                                 Image(systemName: "pin.slash.fill")
                             }
                         }
-                        if let channelName = channelName {
+                        if let channel = channel {
                             Button(action: {
-                                UIPasteboard.general.string = channelName
+                                UIPasteboard.general.string = channel.displayName
                             }) {
                                 Text("Copy Channel Name")
                                 Image(systemName: "doc.on.doc")
                             }
                         }
                         Button(action: {
-                            UIPasteboard.general.url = URL(string: "distributedchat:///channel\(channelName.map { "/\($0)" } ?? "")")
+                            UIPasteboard.general.url = URL(string: "distributedchat:///channel\(channel.map { "/\($0)" } ?? "")")
                         }) {
                             Text("Copy Channel URL")
                             Image(systemName: "doc.on.doc.fill")
@@ -86,7 +86,7 @@ struct ChannelsView: View {
                     }
                 }
                 .onDelete { indexSet in
-                    deletingChannelNames = indexSet.map { allChannelNames[$0] }
+                    deletingChannels = indexSet.map { allChannels[$0] }
                     deletionConfirmationShown = true
                 }
             }
@@ -95,7 +95,7 @@ struct ChannelsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        channelNameDraftSheetShown = true
+                        channelDraftSheetShown = true
                     }) {
                         Image(systemName: "square.and.pencil")
                             .resizable()
@@ -104,26 +104,26 @@ struct ChannelsView: View {
             }
         }
         .navigationViewStyle(DoubleColumnNavigationViewStyle())
-        .sheet(isPresented: $channelNameDraftSheetShown) {
+        .sheet(isPresented: $channelDraftSheetShown) {
             NewChannelView {
-                channelNameDraftSheetShown = false
-                newChannelNames = [$0]
+                channelDraftSheetShown = false
+                newChannels = [$0]
             }
         }
         .actionSheet(isPresented: $deletionConfirmationShown) {
             ActionSheet(
-                title: Text("Are you sure you want to delete ALL messages in \(deletingChannelNames.map { $0 ?? globalChannelName }.joined(separator: ", "))?"),
+                title: Text("Are you sure you want to delete ALL messages in \(deletingChannels.map(\.displayName).joined(separator: ", "))?"),
                 message: Text("Messages will only be deleted locally."),
                 buttons: [
                     .destructive(Text("Delete")) {
-                        for channelName in deletingChannelNames {
-                            messages.clear(channelName: channelName)
+                        for channel in deletingChannels {
+                            messages.clear(channel: channel)
                         }
-                        newChannelNames.removeAll(where: deletingChannelNames.contains)
-                        deletingChannelNames = []
+                        newChannels.removeAll(where: deletingChannels.contains)
+                        deletingChannels = []
                     },
                     .cancel {
-                        deletingChannelNames = []
+                        deletingChannels = []
                     }
                 ]
             )
@@ -137,7 +137,7 @@ struct ChatsView_Previews: PreviewProvider {
     @StateObject static var settings = Settings()
     @StateObject static var network = Network()
     static var previews: some View {
-        ChannelsView(channelNames: [], controller: ChatController(transport: MockTransport()))
+        ChannelsView(channels: [], controller: ChatController(transport: MockTransport()))
             .environmentObject(messages)
             .environmentObject(navigation)
             .environmentObject(settings)
