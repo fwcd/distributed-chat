@@ -1,3 +1,4 @@
+import Crypto
 import Foundation
 
 public struct ChatMessage: Identifiable, Hashable, Codable {
@@ -35,5 +36,11 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         default:
             return true
         }
+    }
+
+    /// Encrypts a message for the recipients if its a DM.
+    public func encryptedIfNeeded() throws -> ChatMessage? {
+        // TODO
+        nil
     }
 }
