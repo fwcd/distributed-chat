@@ -12,3 +12,5 @@ let globalChannelName = "global"
 
 /// The size of icons e.g. in the compose bar
 let iconSize: CGFloat = 22
+
+extension 
