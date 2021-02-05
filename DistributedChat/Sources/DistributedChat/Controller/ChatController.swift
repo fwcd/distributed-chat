@@ -11,6 +11,7 @@ public class ChatController {
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
     private var userFinders: [(UUID) -> ChatUser?] = []
+    public var emitAllReceivedChatMessages: Bool = false // including encrypted ones/those not for me
 
     private let privateKeys: ChatCryptoKeys.Private
     private var presenceTimer: RepeatingTimer?
@@ -48,7 +49,7 @@ public class ChatController {
         
         // Handle messages for me
         
-        for encryptedMessage in protoMessage.addedChatMessages ?? [] where encryptedMessage.isReceived(by: me.id) {
+        for encryptedMessage in protoMessage.addedChatMessages ?? [] where encryptedMessage.isReceived(by: me.id) || emitAllReceivedChatMessages {
             let chatMessage = encryptedMessage.decryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
 
             for listener in addChatMessageListeners {
