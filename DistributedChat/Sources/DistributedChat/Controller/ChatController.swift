@@ -5,6 +5,7 @@ fileprivate let log = Logger(label: "DistributedChat.ChatController")
 
 /// The central structure of the distributed chat.
 /// Carries out actions, e.g. on the user's behalf.
+@available(iOS 13, *)
 public class ChatController {
     private let transportWrapper: ChatTransportWrapper<ChatProtocol.Message>
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []

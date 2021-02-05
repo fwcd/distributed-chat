@@ -8,6 +8,7 @@ fileprivate let log = Logger(label: "DistributedChat.ChatTransportWrapper")
 /// An abstraction of the transport layer that
 /// operates on (JSON-)codable types rather than
 /// strings.
+@available(iOS 13, *)
 class ChatTransportWrapper<T> where T: Codable & Identifiable {
     private let transport: ChatTransport
     private var receiveListeners: [(T) -> Void] = []
