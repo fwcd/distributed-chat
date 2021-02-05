@@ -4,4 +4,5 @@ public enum ChatCryptoError: Error {
     case couldNotDecode(String)
     case alreadyEncrypted
     case alreadyDecrypted
+    case nonEncodableText
 }

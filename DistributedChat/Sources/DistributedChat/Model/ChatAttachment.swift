@@ -4,25 +4,28 @@ public struct ChatAttachment: Codable, Identifiable, Hashable {
     public var id: UUID
     public var type: ChatAttachmentType
     public var name: String
-    public var data: Data?                       // only if unencrypted
-    public var cipherData: ChatCryptoCipherData? // only if encrypted
+    public var data: Data?                          // only if unencrypted
+    public var encryptedData: ChatCryptoCipherData? // only if encrypted
     public var compression: Compression?
 
-    public var isEncrypted: Bool { cipherData != nil }
+    public var isEncrypted: Bool { encryptedData != nil }
     
     public init(
         id: UUID = UUID(),
         type: ChatAttachmentType = .file,
         name: String,
         data: Data? = nil,
-        cipherData: ChatCryptoCipherData? = nil,
+        encryptedData: ChatCryptoCipherData? = nil,
         compression: Compression? = nil
     ) {
+        // Enforce mutual exclusion
+        assert((data == nil) != (encryptedData == nil))
+
         self.id = id
         self.type = type
         self.name = name
         self.data = data
-        self.cipherData = cipherData
+        self.encryptedData = encryptedData
         self.compression = compression
     }
     
@@ -33,19 +36,23 @@ public struct ChatAttachment: Codable, Identifiable, Hashable {
         case zlib = 3
     }
 
-    public func encrypt(with sender: ChatCryptoKeys.Private, for recipient: ChatCryptoKeys.Public) throws -> ChatAttachment {
+    public func encrypted(with sender: ChatCryptoKeys.Private, for recipient: ChatCryptoKeys.Public) throws -> ChatAttachment {
         guard let plain = data else { throw ChatCryptoError.alreadyEncrypted }
+
         var newAttachment = self
         newAttachment.data = nil
-        newAttachment.cipherData = try sender.encrypt(plain: plain, for: recipient)
+        newAttachment.encryptedData = try sender.encrypt(plain: plain, for: recipient)
+
         return newAttachment
     }
 
-    public func decrypt(with recipient: ChatCryptoKeys.Private, from sender: ChatCryptoKeys.Public) throws -> ChatAttachment {
-        guard let cipher = cipherData else { throw ChatCryptoError.alreadyEncrypted }
+    public func decrypted(with recipient: ChatCryptoKeys.Private, from sender: ChatCryptoKeys.Public) throws -> ChatAttachment {
+        guard let cipher = encryptedData else { throw ChatCryptoError.alreadyEncrypted }
+
         var newAttachment = self
         newAttachment.data = try recipient.decrypt(cipher: cipher, by: sender)
-        newAttachment.cipherData = nil
+        newAttachment.encryptedData = nil
+
         return newAttachment
     }
 }
