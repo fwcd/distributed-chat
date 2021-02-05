@@ -69,11 +69,11 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
 
     /// Decrypts a message from the author if it's a two-person DM.
     public func decryptedIfNeeded(with recipient: ChatCryptoKeys.Private, keyFinder: (UUID) -> ChatCryptoKeys.Public?) -> ChatMessage {
-        if let senderKeys = keyFinder(author.id) {
+        if isEncrypted, let senderKeys = keyFinder(author.id) {
             do {
                 return try decrypted(with: recipient, from: senderKeys)
             } catch {
-                log.warning("Could not decrypt message: \(self)")
+                log.debug("Could not decrypt message: \(self)")
             }
         }
         return self
