@@ -2,21 +2,21 @@ function lookupEdges(from, to, edges) {
     return edges.get().filter((({ from: f, to: t }) => (f === from && t === to) || (t === from && f == to)));
 }
 
-function liveEdgesEnabled() {
-    return document.getElementById("live-edges-enabled").checked;
-}
+function liveEdgesEnabled() { return document.getElementById("live-edges-enabled").checked; }
 
-function liveLabelMode() {
-    return document.getElementById("live-edge-mode").value;
-}
+function liveLabelMode() { return document.getElementById("live-edge-mode").value; }
 
-function liveChatEnabled() {
-    return document.getElementById("live-chat-enabled").checked;
-}
+function liveChatEnabled() { return document.getElementById("live-chat-enabled").checked; }
 
-function livePresencesEnabled() {
-    return document.getElementById("live-presences-enabled").checked;
-}
+function livePresencesEnabled() { return document.getElementById("live-presences-enabled").checked; }
+
+function linkReliability() { return document.getElementById("link-reliability"); }
+
+function linkReliabilityDisplay() { return document.getElementById("link-reliability-display"); }
+
+function linkDelay() { return document.getElementById("link-delay"); }
+
+function linkDelayDisplay() { return document.getElementById("link-delay-display"); }
 
 function formatChatProtocolMessage(raw) {
     switch (liveLabelMode()) {
@@ -44,6 +44,9 @@ function updateDynamically(nodes, edges) {
     // Connects to the /messaging WebSocket endpoint to
     // dynamically update the graph with nodes.
     const ws = new WebSocket(`ws://${location.host}/messaging`);
+
+    // How many decimal places shall be rendered for link settings.
+    const displayPrecision = 2;
 
     ws.addEventListener("open", () => {
         ws.send(JSON.stringify({type: "observe"}));
@@ -89,9 +92,38 @@ function updateDynamically(nodes, edges) {
                     edges.remove(id);
                 }, timeoutMs);
             }
+            break;
+        case "setLinkReliabilityNotification":
+            const reliability = message.data;
+            linkReliability().value = reliability;
+            linkReliabilityDisplay().innerText = reliability.toFixed(displayPrecision);
+            break;
+        case "setLinkDelayNotification":
+            const delay = message.data;
+            linkDelay().value = delay;
+            linkDelayDisplay().innerText = delay.toFixed(displayPrecision);
+            break;
         default:
             break;
         }
+    });
+
+    linkReliability().addEventListener("change", function() {
+        const value = parseFloat(this.value);
+        ws.send(JSON.stringify({
+            type: "setLinkReliability",
+            data: value
+        }));
+        linkReliabilityDisplay().innerText = value.toFixed(displayPrecision);
+    });
+
+    linkDelay().addEventListener("change", function() {
+        const value = parseFloat(this.value);
+        ws.send(JSON.stringify({
+            type: "setLinkDelay",
+            data: value
+        }));
+        linkDelayDisplay().innerText = value.toFixed(displayPrecision);
     });
 
     return ws;

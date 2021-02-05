@@ -31,6 +31,19 @@
                     <label for="live-presences-enabled">Presence updates</label>
                 </div>
             </div>
+            <div class="settings">
+                <div class="setting">
+                    <input type="range" id="link-reliability" name="link-reliability" min="0" max="1" step="0.0001">
+                    <label for="link-reliability">Link reliability</label>
+                    <span id="link-reliability-display">?</span>
+                </div>
+                <div class="setting">
+                    <input type="range" id="link-delay" name="link-delay" min="0" max="10" step="0.001">
+                    <label for="link-delay">Link delay</label>
+                    <span id="link-delay-display">?</span>
+                    s
+                </div>
+            </div>
             <div id="graph"></div>
         </div>
     </body>

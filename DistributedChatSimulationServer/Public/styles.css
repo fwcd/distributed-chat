@@ -18,10 +18,18 @@ h1 {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    margin: 10px 0;
 }
 
 .setting {
     margin: 0 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.setting > * {
+    margin: 0 5px;
 }
 
 @media (min-width: 1000px) {
