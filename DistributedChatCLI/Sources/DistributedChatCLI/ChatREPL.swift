@@ -36,13 +36,39 @@ class ChatREPL {
         }
     }
 
+    private func parse(input: String) -> (String, ChatChannel?) {
+        let split = input.split(separator: " ", maxSplits: 1).map(String.init)
+
+        if split.count == 2, let channel = try? ChatChannel(parsing: tryResolveUserName(split[0])) {
+            return (split[1], channel)
+        } else {
+            return (input, nil) // on #global
+        }
+    }
+
+    private func tryResolveUserName(_ raw: String) -> String {
+        UUID(uuidString: raw).flatMap { network.presences[$0] }?.user.displayName ?? raw
+    }
+
     func run() {
+        print("""
+            ----------------------------------
+            --- DISTRIBUTED CHAT REPL v0.1 ---
+            ----------------------------------
+
+            Type anything to send to #global or prefix your message
+            with a channel, e.g. #my-channel or @SomeUserName.
+            Note that the user has to be online. Enjoy!
+
+            """)
+
         let ln = LineNoise()
 
         while let input = try? ln.getLine(prompt: "") {
             ln.addHistory(input)
 
-            controller.send(content: input)
+            let (content, channel) = parse(input: input)
+            controller.send(content: content, on: channel)
         }
 
         print()
