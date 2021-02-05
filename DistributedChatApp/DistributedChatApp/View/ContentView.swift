@@ -8,17 +8,14 @@
 import DistributedChat
 import SwiftUI
 
-private let channelsTab = 1
-
 struct ContentView: View {
     let controller: ChatController
     
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var navigation: Navigation
-    @State private var currentTab: Int = channelsTab
     
     var body: some View {
-        TabView(selection: $currentTab) {
+        TabView {
             ChannelsView(channels: messages.channels, controller: controller)
                 .tabItem {
                     VStack {
@@ -49,11 +46,6 @@ struct ContentView: View {
                 }
         }
         .environmentObject(messages)
-        .onReceive(navigation.$activeChannel) {
-            if $0 != Optional<ChatChannel?>.none {
-                currentTab = channelsTab
-            }
-        }
     }
 }
 
