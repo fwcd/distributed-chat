@@ -1,7 +1,7 @@
 import Crypto
 import Foundation
 
-public struct ChatCryptoCipherData: Codable {
+public struct ChatCryptoCipherData: Codable, Hashable {
     public let sealed: Data
     public let signature: Data
     public let ephemeralPublicKey: Data
