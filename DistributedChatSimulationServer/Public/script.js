@@ -10,7 +10,7 @@ function liveLabelMode() {
     return document.getElementById("live-edge-mode").value;
 }
 
-function linkToEdge(link) {
+function contentToEdge(link) {
     switch (liveLabelMode()) {
     case "formatted":
         const json = JSON.parse(link);
@@ -18,11 +18,11 @@ function linkToEdge(link) {
         const presences = json.updatedPresences;
 
         if (chatMessages) {
-            const messages = chatMessages.map(m => `${m.author.name}: ${m.content}`).join(", ");
-            return [messages, "green"];
+            const formatted = chatMessages.map(m => `${m.author.name}: ${m.content}`).join(", ");
+            return [formatted, "green"];
         } else if (presences) {
-            const presences = presences.map(p => `${p.user.name}: ${p.user.status}`).join(", ");
-            return [presences, "yellow"];
+            const formatted = presences.map(p => `${p.user.name}: ${p.status}`).join(", ");
+            return [formatted, "yellow"];
         }
     default:
         break;
@@ -63,8 +63,9 @@ function updateDynamically(nodes, edges) {
         case "broadcastNotification":
             if (liveEdgesEnabled()) {
                 const timeoutMs = 1000;
+                const content = message.data.content;
                 const link = message.data.link;
-                const [label, color] = linkToEdge(link);
+                const [label, color] = contentToEdge(content);
                 const [id] = edges.add({
                     from: link.fromUUID,
                     to: link.toUUID,
