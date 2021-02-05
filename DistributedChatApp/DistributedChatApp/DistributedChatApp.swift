@@ -31,9 +31,9 @@ private class AppState {
         let profile = Profile()
         let navigation = Navigation()
         let messages = Messages()
-        let network = Network(myId: profile.presence.user.id, messages: messages)
+        let network = Network(myId: profile.me.id, messages: messages)
         let transport = CoreBluetoothTransport(settings: settings, network: network, profile: profile)
-        let controller = ChatController(me: profile.presence.user, transport: transport)
+        let controller = ChatController(me: profile.me, transport: transport)
         
         controller.onAddChatMessage { [unowned messages] message in
             messages.append(message: message)

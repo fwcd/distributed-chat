@@ -215,7 +215,7 @@ struct MessageComposeView: View {
 struct MessageComposeView_Previews: PreviewProvider {
     static let controller = ChatController(transport: MockTransport())
     @StateObject static var messages = Messages()
-    @StateObject static var network = Network()
+    @StateObject static var network = Network(messages: messages)
     @State static var replyingToMessageId: UUID? = nil
     static var previews: some View {
         MessageComposeView(channel: nil, controller: controller, replyingToMessageId: $replyingToMessageId)

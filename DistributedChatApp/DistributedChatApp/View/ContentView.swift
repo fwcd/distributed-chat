@@ -52,8 +52,8 @@ struct ContentView_Previews: PreviewProvider {
     @StateObject static var settings = Settings()
     @StateObject static var messages = Messages()
     @StateObject static var navigation = Navigation()
-    @StateObject static var network = Network()
     @StateObject static var profile = Profile()
+    @StateObject static var network = Network(myId: profile.me.id, messages: messages)
     static var previews: some View {
         ContentView(controller: ChatController(transport: MockTransport()))
             .environmentObject(settings)

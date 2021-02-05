@@ -46,7 +46,7 @@ struct ChannelSnippetView: View {
 struct ChannelSnippetView_Previews: PreviewProvider {
     @StateObject static var messages = Messages()
     @StateObject static var settings = Settings()
-    @StateObject static var network = Network()
+    @StateObject static var network = Network(messages: messages)
     static var previews: some View {
         ChannelSnippetView(channel: .room("test"))
             .environmentObject(messages)
