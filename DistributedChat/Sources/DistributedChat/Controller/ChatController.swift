@@ -40,13 +40,15 @@ public class ChatController {
             
             transportWrapper.broadcast(protoMessage)
             
-            // Handle message
+            // Handle messages for me
             
-            for message in protoMessage.addedChatMessages ?? [] {
+            for message in protoMessage.addedChatMessages ?? [] where message.isReceived(by: me.id) {
                 for listener in addChatMessageListeners {
                     listener(message)
                 }
             }
+            
+            // Handle presence updates
             
             for presence in protoMessage.updatedPresences ?? [] {
                 for listener in updatePresenceListeners {

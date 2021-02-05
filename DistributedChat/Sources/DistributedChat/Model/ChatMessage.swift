@@ -26,4 +26,14 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         self.attachments = attachments
         self.repliedToMessageId = repliedToMessageId
     }
+    
+    /// Checks whether the given user id should receive the message.
+    public func isReceived(by userId: UUID) -> Bool {
+        switch channel {
+        case .dm(let recipientId)?:
+            return recipientId == userId || author.id == userId
+        default:
+            return true
+        }
+    }
 }
