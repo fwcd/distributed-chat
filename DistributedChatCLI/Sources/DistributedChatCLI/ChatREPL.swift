@@ -29,8 +29,12 @@ class ChatREPL {
 
     private func displayName(of channel: ChatChannel?) -> String {
         switch channel {
-        case .dm(let userId)?:
-            return "@\(network.presences[userId]?.user.displayName ?? userId.uuidString)"
+        case .dm(let userIds)?:
+            let name = userIds
+                .filter { $0 != controller.me.id }
+                .map { network.presences[$0]?.user.displayName ?? $0.uuidString }
+                .joined(separator: ",")
+            return "@\(name)"
         case .room(let name)?:
             return "#\(name)"
         case nil:
@@ -42,7 +46,7 @@ class ChatREPL {
         let name = String(raw.dropFirst())
         switch raw.first {
         case "@"?:
-            return resolveUser(from: name).map { .dm($0) }
+            return resolveUser(from: name).map { .dm([controller.me.id, $0]) }
         case "#"?:
             return name == globalChannelName ? nil : .room(name)
         default:
