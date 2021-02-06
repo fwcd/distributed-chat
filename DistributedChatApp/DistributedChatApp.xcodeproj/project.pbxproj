@@ -515,7 +515,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				C7BC338425B3C28700989E95 /* PBXTargetDependency */,
+				C76545DA25CE19E0004F14E8 /* PBXTargetDependency */,
 			);
 			name = DistributedChatApp;
 			packageProductDependencies = (
@@ -779,6 +779,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C76545DA25CE19E0004F14E8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C76545D925CE19E0004F14E8 /* DistributedChat */;
+		};
 		C7982CD725BB8522000DC0F1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C7982CC325BB851F000DC0F1 /* DistributedChatMacApp */;
@@ -802,10 +806,6 @@
 			isa = PBXTargetDependency;
 			target = C7BC334D25B3C00700989E95 /* DistributedChatApp */;
 			targetProxy = C7BC336B25B3C00900989E95 /* PBXContainerItemProxy */;
-		};
-		C7BC338425B3C28700989E95 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = C7BC338325B3C28700989E95 /* DistributedChat */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1294,6 +1294,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C76545D925CE19E0004F14E8 /* DistributedChat */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DistributedChat;
+		};
 		C7734D4A25BDF52C0057DF96 /* LoggingOSLog */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C7734D4925BDF52B0057DF96 /* XCRemoteSwiftPackageReference "swift-log-oslog" */;
@@ -1304,10 +1308,6 @@
 			productName = DistributedChat;
 		};
 		C7982D1925BB85C2000DC0F1 /* DistributedChat */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = DistributedChat;
-		};
-		C7BC338325B3C28700989E95 /* DistributedChat */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DistributedChat;
 		};

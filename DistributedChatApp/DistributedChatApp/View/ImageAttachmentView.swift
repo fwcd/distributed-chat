@@ -13,7 +13,7 @@ struct ImageAttachmentView: View {
     
     var body: some View {
         QuickLookAttachmentView(attachment: attachment) {
-            if let data = try? Data.smartContents(of: attachment.url), let image = UIImage(data: data) {
+            if let data = try? attachment.extractedData(), let image = UIImage(data: data) {
                 Group {
                     Image(uiImage: image)
                         .resizable()

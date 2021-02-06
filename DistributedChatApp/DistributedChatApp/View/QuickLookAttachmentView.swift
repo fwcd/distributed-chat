@@ -38,7 +38,7 @@ struct QuickLookAttachmentView<Content>: View where Content: View {
                 }
             }
             .sheet(isPresented: $shareSheetShown) {
-                ShareSheet(items: [attachment.url.smartResolved])
+                ShareSheet(items: [attachment.url?.smartResolved].compactMap { $0 })
             }
         }
     }

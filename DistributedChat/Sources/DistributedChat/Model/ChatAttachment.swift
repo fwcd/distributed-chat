@@ -4,8 +4,9 @@ public struct ChatAttachment: Codable, Identifiable, Hashable {
     public var id: UUID
     public var type: ChatAttachmentType
     public var name: String
-    public var data: Data?                          // only if unencrypted
-    public var encryptedData: ChatCryptoCipherData? // only if encrypted
+    public var url: URL?                            // \
+    public var data: Data?                          //  |- mutually exclusive
+    public var encryptedData: ChatCryptoCipherData? // /
     public var compression: Compression?
 
     public var isEncrypted: Bool { encryptedData != nil }
@@ -14,16 +15,18 @@ public struct ChatAttachment: Codable, Identifiable, Hashable {
         id: UUID = UUID(),
         type: ChatAttachmentType = .file,
         name: String,
+        url: URL? = nil,
         data: Data? = nil,
         encryptedData: ChatCryptoCipherData? = nil,
         compression: Compression? = nil
     ) {
         // Enforce mutual exclusion
-        assert((data == nil) != (encryptedData == nil))
+        assert([url as Any, data as Any, encryptedData as Any].compactMap { $0 }.count == 1)
 
         self.id = id
         self.type = type
         self.name = name
+        self.url = url
         self.data = data
         self.encryptedData = encryptedData
         self.compression = compression

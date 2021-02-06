@@ -20,8 +20,7 @@ class ChatREPL {
         controller.update(name: name)
 
         controller.onAddChatMessage { [unowned self] msg in
-            let displayContent = msg.isEncrypted ? "<encrypted: \(msg.encryptedContent.map { "\($0.sealed.base64EncodedString().prefix(10))..." } ?? "?")>" : (msg.content ?? "<no content>")
-            print("\r[\(displayName(of: msg.channel))] \(msg.author.displayName): \(displayContent)\r")
+            print("\r[\(displayName(of: msg.channel))] \(msg.author.displayName): \(msg.displayContent)\r")
         }
 
         controller.onUpdatePresence { [unowned self] presence in

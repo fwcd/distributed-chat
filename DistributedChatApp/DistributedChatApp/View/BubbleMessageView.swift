@@ -30,12 +30,19 @@ struct BubbleMessageView: View {
             }
             ZStack {
                 VStack(alignment: .leading) {
-                    Text(message.author.displayName)
-                        .font(.caption)
-                        .foregroundColor(isMe ? .white : .gray)
-                    Text(message.content)
-                    ForEach(message.attachments ?? []) { attachment in
-                        AttachmentView(attachment: attachment, voiceNoteColor: isMe ? .white : .black)
+                    if message.isEncrypted {
+                        Image(systemName: "lock.fill")
+                        Text("Encrypted")
+                    } else {
+                        Text(message.author.displayName)
+                            .font(.caption)
+                            .foregroundColor(isMe ? .white : .gray)
+                        if let content = message.content, !content.isEmpty {
+                            Text(content)
+                        }
+                        ForEach(message.attachments ?? []) { attachment in
+                            AttachmentView(attachment: attachment, voiceNoteColor: isMe ? .white : .black)
+                        }
                     }
                 }
                 .foregroundColor(isMe ? .white : .black)
@@ -59,14 +66,17 @@ struct BubbleMessageView: View {
 struct BubbleMessageView_Previews: PreviewProvider {
     static let message1 = ChatMessage(author: ChatUser(name: "Alice"), content: "Hi!")
     static let message2 = ChatMessage(author: ChatUser(name: "Bob"), content: "This is a long\nmultiline message!", repliedToMessageId: message1.id)
+    static let message3 = ChatMessage(author: ChatUser(name: "Charles"), encryptedContent: ChatCryptoCipherData(sealed: Data(), signature: Data(), ephemeralPublicKey: Data()), repliedToMessageId: message1.id)
     @StateObject static var messages = Messages(messages: [
         message1,
-        message2
+        message2,
+        message3
     ])
     static var previews: some View {
         VStack {
             BubbleMessageView(message: message1, isMe: false)
             BubbleMessageView(message: message2, isMe: true)
+            BubbleMessageView(message: message3, isMe: true)
         }
         .environmentObject(messages)
     }

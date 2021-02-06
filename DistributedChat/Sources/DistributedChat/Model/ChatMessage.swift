@@ -21,6 +21,11 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         }
         return nil
     }
+    public var displayContent: String {
+        isEncrypted
+            ? "<encrypted: \(encryptedContent.map { "\($0.sealed.base64EncodedString().prefix(10))..." } ?? "?")>"
+            : (content ?? "<no content>")
+    }
     
     public init(
         id: UUID = UUID(),

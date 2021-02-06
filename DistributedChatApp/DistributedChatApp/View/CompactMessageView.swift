@@ -13,11 +13,18 @@ struct CompactMessageView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            Text("\(message.author.displayName):")
-                .fontWeight(.bold)
-            Text(message.content)
-            ForEach(message.attachments ?? []) { attachment in
-                AttachmentView(attachment: attachment)
+            if message.isEncrypted {
+                Image(systemName: "lock.fill")
+                Text("Encrypted")
+            } else {
+                Text("\(message.author.displayName):")
+                    .fontWeight(.bold)
+                if let content = message.content {
+                    Text(content)
+                }
+                ForEach(message.attachments ?? []) { attachment in
+                    AttachmentView(attachment: attachment)
+                }
             }
         }
     }

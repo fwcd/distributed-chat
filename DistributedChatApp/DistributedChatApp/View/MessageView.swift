@@ -47,24 +47,26 @@ struct MessageView: View {
                     Image(systemName: "circlebadge.fill")
                 }
             }
-            if !message.content.isEmpty {
+            if let content = message.content, !content.isEmpty {
                 Button(action: {
-                    ShareSheet(items: [message.content]).presentIndependently()
+                    ShareSheet(items: [content]).presentIndependently()
                 }) {
                     Text("Share Text")
                     Image(systemName: "square.and.arrow.up")
                 }
             }
             ForEach(message.attachments ?? []) { attachment in
-                Button(action: {
-                    ShareSheet(items: [attachment.url.smartResolved]).presentIndependently()
-                }) {
-                    Text("Share \(attachment.name)")
-                    Image(systemName: "square.and.arrow.up")
+                if let url = attachment.url {
+                    Button(action: {
+                        ShareSheet(items: [url.smartResolved]).presentIndependently()
+                    }) {
+                        Text("Share \(attachment.name)")
+                        Image(systemName: "square.and.arrow.up")
+                    }
                 }
             }
             Button(action: {
-                UIPasteboard.general.string = message.content
+                UIPasteboard.general.string = message.content ?? ""
             }) {
                 Text("Copy Text")
                 Image(systemName: "doc.on.doc")
