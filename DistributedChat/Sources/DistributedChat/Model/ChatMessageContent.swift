@@ -1,4 +1,4 @@
-public enum ChatMessageContent: Hashable, Codable, ExpressibleByStringLiteral, CustomStringConvertible {
+public enum ChatMessageContent: Hashable, Codable, ExpressibleByStringLiteral, ExpressibleByStringInterpolation, CustomStringConvertible {
     case text(String)
     case encrypted(ChatCryptoCipherData)
 
