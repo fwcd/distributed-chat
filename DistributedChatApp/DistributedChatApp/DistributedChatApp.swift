@@ -43,6 +43,10 @@ private class AppState {
             network.register(presence: presence)
         }
         
+        controller.onFindUser { [unowned network] id in
+            network.presences[id]?.user ?? network.offlinePresences[id]?.user
+        }
+        
         subscriptions.append(profile.$presence.sink(receiveValue: controller.update(presence:)))
         
         self.settings = settings
