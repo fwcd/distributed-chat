@@ -10,6 +10,7 @@ public class ChatController {
     private let transportWrapper: ChatTransportWrapper<ChatProtocol.Message>
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
+    private var deleteMessageListeners: [(ChatDeletion) -> Void] = []
     private var userFinders: [(UUID) -> ChatUser?] = []
     public var emitAllReceivedChatMessages: Bool = false // including encrypted ones/those not for me
 
@@ -77,6 +78,12 @@ public class ChatController {
                 listener(presence)
             }
         }
+
+        for deletion in protoMessage.deleteMessages ?? [] {
+            for listener in deleteMessageListeners {
+                listener(deletion)
+            }
+        }
     }
 
     public func send(content: String, on channel: ChatChannel? = nil, attaching attachments: [ChatAttachment]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
@@ -119,7 +126,7 @@ public class ChatController {
     private func findPublicKeys(for userId: UUID) -> ChatCryptoKeys.Public? {
         findUser(for: userId)?.publicKeys
     }
-    
+
     private func updateClock(logicalClock: Int) {
         var newPresence = presence
         newPresence.user.logicalClock = max(newPresence.user.logicalClock, logicalClock) + 1
@@ -181,6 +188,10 @@ public class ChatController {
     
     public func onUpdatePresence(_ handler: @escaping (ChatPresence) -> Void) {
         updatePresenceListeners.append(handler)
+    }
+
+    public func onDeleteMessage(_ handler: @escaping (ChatDeletion) -> Void) {
+        deleteMessageListeners.append(handler)
     }
 
     public func onFindUser(_ handler: @escaping (UUID) -> ChatUser?) {
