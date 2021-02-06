@@ -37,7 +37,7 @@ struct BubbleMessageView: View {
                         Text(message.author.displayName)
                             .font(.caption)
                             .foregroundColor(isMe ? .white : .gray)
-                        if let content = message.content, !content.isEmpty {
+                        if let content = message.plainContent, !content.isEmpty {
                             Text(content)
                         }
                         ForEach(message.attachments ?? []) { attachment in
@@ -66,7 +66,7 @@ struct BubbleMessageView: View {
 struct BubbleMessageView_Previews: PreviewProvider {
     static let message1 = ChatMessage(author: ChatUser(name: "Alice"), content: "Hi!")
     static let message2 = ChatMessage(author: ChatUser(name: "Bob"), content: "This is a long\nmultiline message!", repliedToMessageId: message1.id)
-    static let message3 = ChatMessage(author: ChatUser(name: "Charles"), encryptedContent: ChatCryptoCipherData(sealed: Data(), signature: Data(), ephemeralPublicKey: Data()), repliedToMessageId: message1.id)
+    static let message3 = ChatMessage(author: ChatUser(name: "Charles"), content: .left(ChatCryptoCipherData(sealed: Data(), signature: Data(), ephemeralPublicKey: Data())), repliedToMessageId: message1.id)
     @StateObject static var messages = Messages(messages: [
         message1,
         message2,

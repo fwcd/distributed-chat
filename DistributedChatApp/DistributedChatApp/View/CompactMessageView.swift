@@ -19,7 +19,7 @@ struct CompactMessageView: View {
             } else {
                 Text("\(message.author.displayName):")
                     .fontWeight(.bold)
-                if let content = message.content {
+                if let content = message.plainContent {
                     Text(content)
                 }
                 ForEach(message.attachments ?? []) { attachment in

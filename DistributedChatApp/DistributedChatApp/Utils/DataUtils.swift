@@ -13,17 +13,23 @@ fileprivate let log = Logger(label: "DistributedChatApp.DataUtils")
 
 enum ChatAttachmentExtractionError: Error {
     case cannotExtractEncryptedData
-    case noData
 }
 
 extension ChatAttachment {
     func extractedData() throws -> Data {
-        guard !isEncrypted else { throw ChatAttachmentExtractionError.cannotExtractEncryptedData }
-        guard var data = try self.data ?? url.map({ try Data.smartContents(of: $0) }) else { throw ChatAttachmentExtractionError.noData }
-        if let compression = compression {
-            data = try data.decompressed(with: compression)
+        var extracted: Data
+        switch content {
+        case .left(let url):
+            extracted = try Data.smartContents(of: url)
+        case .center(_):
+            throw ChatAttachmentExtractionError.cannotExtractEncryptedData
+        case .right(let data):
+            extracted = data
         }
-        return data
+        if let compression = compression {
+            extracted = try extracted.decompressed(with: compression)
+        }
+        return extracted
     }
 }
 

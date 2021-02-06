@@ -47,7 +47,7 @@ struct MessageView: View {
                     Image(systemName: "circlebadge.fill")
                 }
             }
-            if let content = message.content, !content.isEmpty {
+            if let content = message.plainContent, !content.isEmpty {
                 Button(action: {
                     ShareSheet(items: [content]).presentIndependently()
                 }) {
@@ -66,7 +66,7 @@ struct MessageView: View {
                 }
             }
             Button(action: {
-                UIPasteboard.general.string = message.content ?? ""
+                UIPasteboard.general.string = message.plainContent ?? ""
             }) {
                 Text("Copy Text")
                 Image(systemName: "doc.on.doc")

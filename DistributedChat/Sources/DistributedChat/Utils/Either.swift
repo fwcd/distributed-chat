@@ -18,21 +18,21 @@ extension Either: Equatable where L: Equatable, R: Equatable {}
 
 extension Either: Hashable where L: Hashable, R: Hashable {}
 
-extension Either: ExpressibleByUnicodeScalarLiteral where L: ExpressibleByStringLiteral {
-    public init(unicodeScalarLiteral value: L.UnicodeScalarLiteralType) {
-        self = .left(L.init(unicodeScalarLiteral: value))
+extension Either: ExpressibleByUnicodeScalarLiteral where R: ExpressibleByStringLiteral {
+    public init(unicodeScalarLiteral value: R.UnicodeScalarLiteralType) {
+        self = .right(R.init(unicodeScalarLiteral: value))
     }
 }
 
-extension Either: ExpressibleByExtendedGraphemeClusterLiteral where L: ExpressibleByStringLiteral {
-    public init(extendedGraphemeClusterLiteral value: L.ExtendedGraphemeClusterLiteralType) {
-        self = .left(L.init(extendedGraphemeClusterLiteral: value))
+extension Either: ExpressibleByExtendedGraphemeClusterLiteral where R: ExpressibleByStringLiteral {
+    public init(extendedGraphemeClusterLiteral value: R.ExtendedGraphemeClusterLiteralType) {
+        self = .right(R.init(extendedGraphemeClusterLiteral: value))
     }
 }
 
-extension Either: ExpressibleByStringLiteral where L: ExpressibleByStringLiteral {
-    public init(stringLiteral value: L.StringLiteralType) {
-        self = .left(L.init(stringLiteral: value))
+extension Either: ExpressibleByStringLiteral where R: ExpressibleByStringLiteral {
+    public init(stringLiteral value: R.StringLiteralType) {
+        self = .right(R.init(stringLiteral: value))
     }
 }
 

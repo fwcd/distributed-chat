@@ -80,9 +80,7 @@ class Messages: ObservableObject {
         do {
             let data = try attachment.extractedData()
             try data.smartWrite(to: url)
-            attachment.url = url
-            attachment.data = nil
-            attachment.encryptedData = nil
+            attachment.content = .left(url)
             attachment.compression = nil
         } catch {
             log.error("Could not store attachment: \(error)")
