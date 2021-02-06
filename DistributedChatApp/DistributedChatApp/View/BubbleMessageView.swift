@@ -31,8 +31,11 @@ struct BubbleMessageView: View {
             ZStack {
                 VStack(alignment: .leading) {
                     if message.isEncrypted {
-                        Image(systemName: "lock.fill")
-                        Text("Encrypted")
+                        HStack {
+                            Image(systemName: "lock.fill")
+                            Text("Encrypted")
+                                .foregroundColor(isMe ? .white : .gray)
+                        }
                     } else {
                         HStack {
                             if message.wasEncrypted ?? false {
