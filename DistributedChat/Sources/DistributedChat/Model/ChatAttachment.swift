@@ -4,19 +4,16 @@ public struct ChatAttachment: Codable, Identifiable, Hashable {
     public var id: UUID
     public var type: ChatAttachmentType
     public var name: String
-    public var content: Either3<URL, ChatCryptoCipherData, Data>
+    public var content: ChatAttachmentContent
     public var compression: Compression?
 
-    public var data: Data? { content.asRight }
-    public var encryptedData: ChatCryptoCipherData? { content.asCenter }
-    public var url: URL? { content.asLeft }
-    public var isEncrypted: Bool { content.isRight }
+    public var isEncrypted: Bool { content.asEncrypted != nil }
     
     public init(
         id: UUID = UUID(),
         type: ChatAttachmentType = .file,
         name: String,
-        content: Either3<URL, ChatCryptoCipherData, Data>,
+        content: ChatAttachmentContent,
         compression: Compression? = nil
     ) {
         self.id = id
@@ -34,19 +31,20 @@ public struct ChatAttachment: Codable, Identifiable, Hashable {
     }
 
     public func encrypted(with sender: ChatCryptoKeys.Private, for recipient: ChatCryptoKeys.Public) throws -> ChatAttachment {
-        guard let plain = data else { throw ChatCryptoError.alreadyEncrypted }
+        if case .url(_) = content { throw ChatCryptoError.urlIsNotEncryptable }
+        guard case let .data(plain) = content else { throw ChatCryptoError.alreadyEncrypted }
 
         var newAttachment = self
-        newAttachment.content = .center(try sender.encrypt(plain: plain, for: recipient))
+        newAttachment.content = .encrypted(try sender.encrypt(plain: plain, for: recipient))
 
         return newAttachment
     }
 
     public func decrypted(with recipient: ChatCryptoKeys.Private, from sender: ChatCryptoKeys.Public) throws -> ChatAttachment {
-        guard let cipher = encryptedData else { throw ChatCryptoError.alreadyEncrypted }
+        guard case let .encrypted(cipherData) = content else { throw ChatCryptoError.alreadyEncrypted }
 
         var newAttachment = self
-        newAttachment.content = .right(try recipient.decrypt(cipher: cipher, by: sender))
+        newAttachment.content = .data(try recipient.decrypt(cipher: cipherData, by: sender))
 
         return newAttachment
     }

@@ -51,7 +51,7 @@ extension Either3: Codable where L: Codable, C: Codable, R: Codable {
         } else if let right = try? container.decode(R.self) {
             self = .right(right)
         } else {
-            throw EitherDecodingError.couldNotDecode
+            throw DecodeError.couldNotDecode
         }
     }
     

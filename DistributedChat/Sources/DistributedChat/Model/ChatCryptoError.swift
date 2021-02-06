@@ -5,4 +5,5 @@ public enum ChatCryptoError: Error {
     case alreadyEncrypted
     case alreadyDecrypted
     case nonEncodableText
+    case urlIsNotEncryptable
 }
