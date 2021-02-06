@@ -19,11 +19,11 @@ extension ChatAttachment {
     func extractedData() throws -> Data {
         var extracted: Data
         switch content {
-        case .left(let url):
+        case .url(let url):
             extracted = try Data.smartContents(of: url)
-        case .center(_):
+        case .encrypted(_):
             throw ChatAttachmentExtractionError.cannotExtractEncryptedData
-        case .right(let data):
+        case .data(let data):
             extracted = data
         }
         if let compression = compression {

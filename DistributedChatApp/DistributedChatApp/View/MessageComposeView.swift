@@ -95,7 +95,7 @@ struct MessageComposeView: View {
             return ChatAttachment(
                 type: type,
                 name: fileName,
-                content: .right(compressed),
+                content: .data(compressed),
                 compression: compression
             )
         }

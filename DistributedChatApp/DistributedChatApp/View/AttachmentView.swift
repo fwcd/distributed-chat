@@ -28,6 +28,6 @@ struct AttachmentView: View {
 
 struct AttachmentView_Previews: PreviewProvider {
     static var previews: some View {
-        AttachmentView(attachment: ChatAttachment(name: "test.txt", content: .left(URL(string: "data:text/plain;base64,dGVzdDEyMwo=")!)))
+        AttachmentView(attachment: ChatAttachment(name: "test.txt", content: .url(URL(string: "data:text/plain;base64,dGVzdDEyMwo=")!)))
     }
 }

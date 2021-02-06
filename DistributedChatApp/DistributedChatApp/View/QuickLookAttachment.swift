@@ -16,13 +16,13 @@ class QuickLookAttachment: NSObject, QLPreviewItem {
     private let attachment: ChatAttachment
     private let tempURL: URL?
     
-    var previewItemURL: URL? { tempURL ?? attachment.url?.smartResolved }
+    var previewItemURL: URL? { tempURL ?? attachment.content.asURL?.smartResolved }
     var previewItemTitle: String? { attachment.name }
     
     init(attachment: ChatAttachment, useTempFile: Bool = false) throws {
         self.attachment = attachment
         
-        if useTempFile, let attachmentUrl = attachment.url {
+        if useTempFile, let attachmentUrl = attachment.content.asURL {
             let url = FileManager.default.temporaryDirectory.appendingPathComponent(attachment.name)
             try Data.smartContents(of: attachmentUrl).smartWrite(to: url) // might overwrite an old file with that attachment name
             tempURL = url
