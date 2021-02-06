@@ -12,6 +12,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
     public var channel: ChatChannel?
     public var attachments: [ChatAttachment]?
     public var repliedToMessageId: UUID?
+    public var wasEncrypted: Bool?
 
     public var isEncrypted: Bool { content.isEncrypted || (attachments?.contains(where: \.isEncrypted) ?? false) }
     public var dmRecipientId: UUID? {
@@ -32,7 +33,8 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         content: ChatMessageContent,
         channel: ChatChannel? = nil,
         attachments: [ChatAttachment]? = nil,
-        repliedToMessageId: UUID? = nil
+        repliedToMessageId: UUID? = nil,
+        wasEncrypted: Bool? = nil
     ) {
         self.id = id
         self.timestamp = timestamp
@@ -41,6 +43,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         self.channel = channel
         self.attachments = attachments
         self.repliedToMessageId = repliedToMessageId
+        self.wasEncrypted = wasEncrypted
     }
     
     /// Checks whether the given user id should receive the message.
@@ -95,6 +98,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         var newMessage = self
         newMessage.content = .text(text)
         newMessage.attachments = try attachments?.map { try $0.decrypted(with: recipient, from: sender) }
+        newMessage.wasEncrypted = true
 
         return newMessage
     }

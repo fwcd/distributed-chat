@@ -34,7 +34,12 @@ struct BubbleMessageView: View {
                         Image(systemName: "lock.fill")
                         Text("Encrypted")
                     } else {
-                        Text(message.author.displayName)
+                        HStack {
+                            if message.wasEncrypted ?? false {
+                                Image(systemName: "lock")
+                            }
+                            Text(message.author.displayName)
+                        }
                             .font(.caption)
                             .foregroundColor(isMe ? .white : .gray)
                         if let content = message.content.asText, !content.isEmpty {
@@ -65,7 +70,7 @@ struct BubbleMessageView: View {
 
 struct BubbleMessageView_Previews: PreviewProvider {
     static let message1 = ChatMessage(author: ChatUser(name: "Alice"), content: "Hi!")
-    static let message2 = ChatMessage(author: ChatUser(name: "Bob"), content: "This is a long\nmultiline message!", repliedToMessageId: message1.id)
+    static let message2 = ChatMessage(author: ChatUser(name: "Bob"), content: "This is a long\nmultiline message!", repliedToMessageId: message1.id, wasEncrypted: true)
     static let message3 = ChatMessage(author: ChatUser(name: "Charles"), content: .encrypted(ChatCryptoCipherData(sealed: Data(), signature: Data(), ephemeralPublicKey: Data())), repliedToMessageId: message1.id)
     @StateObject static var messages = Messages(messages: [
         message1,
