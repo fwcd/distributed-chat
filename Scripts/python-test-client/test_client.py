@@ -41,6 +41,7 @@ while True:
                         # See ChatProtocol.Message in DistributedChat package for a
                         # description of the JSON message structure.
                         s = (json.dumps({
+                            'id': str(uuid4()),
                             'visitedUsers': [],
                             'addedChatMessages': [
                                 {
@@ -50,7 +51,10 @@ while True:
                                         'id': my_id,
                                         'name': my_name
                                     },
-                                    'content': content
+                                    'content': {
+                                        'type': 'text',
+                                        'data': content
+                                    }
                                 }
                             ]
                         }) + '\n').encode('utf8')

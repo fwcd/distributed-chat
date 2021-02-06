@@ -12,7 +12,7 @@ struct PlainMessageView: View {
     let message: ChatMessage
     
     var body: some View {
-        Text("\(message.author.displayName): \(message.content)")
+        Text("\(message.author.displayName): \(message.displayContent)")
     }
 }
 

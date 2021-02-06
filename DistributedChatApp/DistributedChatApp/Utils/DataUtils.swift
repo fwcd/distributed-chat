@@ -11,6 +11,28 @@ import Logging
 
 fileprivate let log = Logger(label: "DistributedChatApp.DataUtils")
 
+enum ChatAttachmentExtractionError: Error {
+    case cannotExtractEncryptedData
+}
+
+extension ChatAttachment {
+    func extractedData() throws -> Data {
+        var extracted: Data
+        switch content {
+        case .url(let url):
+            extracted = try Data.smartContents(of: url)
+        case .encrypted(_):
+            throw ChatAttachmentExtractionError.cannotExtractEncryptedData
+        case .data(let data):
+            extracted = data
+        }
+        if let compression = compression {
+            extracted = try extracted.decompressed(with: compression)
+        }
+        return extracted
+    }
+}
+
 extension ChatAttachment.Compression {
     var algorithm: NSData.CompressionAlgorithm {
         switch self {

@@ -18,6 +18,17 @@ function linkDelay() { return document.getElementById("link-delay"); }
 
 function linkDelayDisplay() { return document.getElementById("link-delay-display"); }
 
+function formatChatProtocolContent(content) {
+    switch (content.type) {
+    case "text":
+        return content.data;
+    case "encrypted":
+        return "<encrypted>";
+    default:
+        return "?";
+    }
+}
+
 function formatChatProtocolMessage(raw) {
     switch (liveLabelMode()) {
     case "formatted":
@@ -26,7 +37,7 @@ function formatChatProtocolMessage(raw) {
         const presences = json.updatedPresences;
 
         if (chatMessages && liveChatEnabled()) {
-            const formatted = chatMessages.map(m => `${m.author.name}: ${m.content}`).join(", ");
+            const formatted = chatMessages.map(m => `${m.author.name}: ${formatChatProtocolContent(m.content)}`).join(", ");
             return [formatted, "green"];
         }
         if (presences && livePresencesEnabled()) {

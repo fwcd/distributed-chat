@@ -95,7 +95,7 @@ struct DistributedChatApp: App {
                                 state.controller.onAddChatMessage { message in
                                     let content = UNMutableNotificationContent()
                                     content.title = "\(message.author.displayName) in \(message.channel.displayName(with: state.network))"
-                                    content.body = message.content
+                                    content.body = message.displayContent
                                     content.targetContentIdentifier = "distributedchat:///message/\(message.id)"
                                     let request = UNNotificationRequest(identifier: "DistributedChat message", content: content, trigger: nil)
                                     center.add(request) { error in

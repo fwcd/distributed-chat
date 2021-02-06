@@ -10,13 +10,21 @@ public class ChatController {
     private let transportWrapper: ChatTransportWrapper<ChatProtocol.Message>
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
+    private var userFinders: [(UUID) -> ChatUser?] = []
+    public var emitAllReceivedChatMessages: Bool = false // including encrypted ones/those not for me
 
+    private let privateKeys: ChatCryptoKeys.Private
     private var presenceTimer: RepeatingTimer?
     public private(set) var presence: ChatPresence
+
     public var me: ChatUser { presence.user }
 
     public init(me: ChatUser = ChatUser(), transport: ChatTransport) {
+        let privateKeys = ChatCryptoKeys.Private()
+        self.privateKeys = privateKeys
+
         presence = ChatPresence(user: me)
+        presence.user.publicKeys = privateKeys.publicKeys
         
         transportWrapper = ChatTransportWrapper(transport: transport)
         transportWrapper.onReceive(handleReceive)
@@ -41,9 +49,13 @@ public class ChatController {
         
         // Handle messages for me
         
-        for message in protoMessage.addedChatMessages ?? [] where message.isReceived(by: me.id) {
-            for listener in addChatMessageListeners {
-                listener(message)
+        for encryptedMessage in protoMessage.addedChatMessages ?? [] where encryptedMessage.isReceived(by: me.id) || emitAllReceivedChatMessages {
+            let chatMessage = encryptedMessage.decryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
+
+            if !chatMessage.isEncrypted || emitAllReceivedChatMessages {
+                for listener in addChatMessageListeners {
+                    listener(chatMessage)
+                }
             }
         }
         
@@ -59,13 +71,14 @@ public class ChatController {
     public func send(content: String, on channel: ChatChannel? = nil, attaching attachments: [ChatAttachment]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
         let chatMessage = ChatMessage(
             author: me,
-            content: content,
+            content: .text(content),
             channel: channel,
             attachments: attachments,
             repliedToMessageId: repliedToMessageId
         )
+        let encryptedMessage = chatMessage.encryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
+        let protoMessage = ChatProtocol.Message(addedChatMessages: [encryptedMessage])
 
-        let protoMessage = ChatProtocol.Message(addedChatMessages: [chatMessage])
         transportWrapper.broadcast(protoMessage)
         
         for listener in addChatMessageListeners {
@@ -86,6 +99,14 @@ public class ChatController {
         newPresence.user.name = name
         update(presence: newPresence)
     }
+
+    private func findUser(for userId: UUID) -> ChatUser? {
+        userFinders.lazy.compactMap { $0(userId) }.first
+    }
+
+    private func findPublicKeys(for userId: UUID) -> ChatCryptoKeys.Public? {
+        findUser(for: userId)?.publicKeys
+    }
     
     private func broadcastPresence() {
         log.debug("Broadcasting presence: \(presence.status) (\(presence.info))")
@@ -98,5 +119,9 @@ public class ChatController {
     
     public func onUpdatePresence(_ handler: @escaping (ChatPresence) -> Void) {
         updatePresenceListeners.append(handler)
+    }
+
+    public func onFindUser(_ handler: @escaping (UUID) -> ChatUser?) {
+        userFinders.append(handler)
     }
 }

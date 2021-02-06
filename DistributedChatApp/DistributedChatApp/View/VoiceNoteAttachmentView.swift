@@ -36,7 +36,9 @@ struct VoiceNoteAttachmentView: View {
             }
         }
         .onAppear {
-            player.url = attachment.url
+            if let url = attachment.content.asURL {
+                player.url = url
+            }
         }
     }
 }
