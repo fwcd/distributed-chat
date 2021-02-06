@@ -1,0 +1,37 @@
+public enum Either3<L, C, R> {
+    case left(L)
+    case center(C)
+    case right(R)
+}
+
+extension Either3: Equatable where L: Equatable, C: Equatable, R: Equatable {}
+
+extension Either3: Hashable where L: Hashable, C: Hashable, R: Hashable {}
+
+extension Either3: Codable where L: Codable, C: Codable, R: Codable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let left = try? container.decode(L.self) {
+            self = .left(left)
+        } else if let center = try? container.decode(C.self) {
+            self = .center(center)
+        } else if let right = try? container.decode(R.self) {
+            self = .right(right)
+        } else {
+            throw EitherDecodingError.couldNotDecode
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        
+        switch self {
+        case .left(let left):
+            try container.encode(left)
+        case .center(let center):
+            try container.encode(center)
+        case .right(let right):
+            try container.encode(right)
+        }
+    }
+}
