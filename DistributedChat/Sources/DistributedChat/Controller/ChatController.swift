@@ -67,7 +67,9 @@ public class ChatController {
             if !chatMessage.isEncrypted || emitAllReceivedChatMessages {
                 for listener in addChatMessageListeners {
                     listener(chatMessage)
-        
+                }
+            }
+        }
         // Handle presence updates
         
         for presence in protoMessage.updatedPresences ?? [] {
@@ -116,6 +118,8 @@ public class ChatController {
 
     private func findPublicKeys(for userId: UUID) -> ChatCryptoKeys.Public? {
         findUser(for: userId)?.publicKeys
+    }
+    
     private func updateClock(logicalClock: Int) {
         var newPresence = presence
         newPresence.user.logicalClock = max(newPresence.user.logicalClock, logicalClock) + 1

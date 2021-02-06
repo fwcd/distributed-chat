@@ -8,15 +8,7 @@ public struct ChatUser: Identifiable, Hashable, Codable {
     
     public var displayName: String { name.isEmpty ? "User \(id.uuidString.prefix(5))" : name }
     
-<<<<<<< HEAD
-<<<<<<< HEAD
-    public init(id: UUID = UUID(), publicKeys: ChatCryptoKeys.Public? = nil, name: String = "") {
-=======
-    public init(id: UUID = UUID(), name: String = "", vectorClock: Dictionary<UUID,Int> = [:]) {
->>>>>>> 7c13644 (WIP: Implement vector clocks)
-=======
-    public init(id: UUID = UUID(), name: String = "", logicalClock: Int = 0) {
->>>>>>> 3963adb (WIP: Switch to logical clocks)
+    public init(id: UUID = UUID(), publicKeys: ChatCryptoKeys.Public? = nil, name: String = "", logicalClock: Int = 0) {
         self.id = id
         self.publicKeys = publicKeys
         self.name = name
