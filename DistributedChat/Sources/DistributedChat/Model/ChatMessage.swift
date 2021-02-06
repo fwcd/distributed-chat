@@ -13,7 +13,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
     public var attachments: [ChatAttachment]?
     public var repliedToMessageId: UUID?
 
-    public var isEncrypted: Bool { content.isText || (attachments?.contains(where: \.isEncrypted) ?? false) }
+    public var isEncrypted: Bool { content.isEncrypted || (attachments?.contains(where: \.isEncrypted) ?? false) }
     public var dmRecipientId: UUID? {
         if case let .dm(userIds) = channel, userIds.count == 2, userIds.contains(author.id) {
             return userIds.first { $0 != author.id }
