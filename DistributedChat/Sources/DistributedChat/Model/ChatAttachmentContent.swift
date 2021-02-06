@@ -5,18 +5,22 @@ public enum ChatAttachmentContent: Hashable, Codable {
     case encrypted(ChatCryptoCipherData)
     case data(Data)
 
-    var asURL: URL? {
+    public var asURL: URL? {
         guard case let .url(url) = self else { return nil }
         return url
     }
-    var asEncrypted: ChatCryptoCipherData? {
+    public var asEncrypted: ChatCryptoCipherData? {
         guard case let .encrypted(cipherData) = self else { return nil }
         return cipherData
     }
-    var asData: Data? {
+    public var asData: Data? {
         guard case let .data(data) = self else { return nil }
         return data
     }
+
+    public var isURL: Bool { asURL != nil }
+    public var isEncrypted: Bool { asEncrypted != nil }
+    public var isData: Bool { asData != nil }
 
     public enum CodingKeys: String, CodingKey {
         case type

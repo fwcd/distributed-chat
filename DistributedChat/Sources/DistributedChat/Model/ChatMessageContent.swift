@@ -1,14 +1,26 @@
-public enum ChatMessageContent: Hashable, Codable, ExpressibleByStringLiteral {
+public enum ChatMessageContent: Hashable, Codable, ExpressibleByStringLiteral, CustomStringConvertible {
     case text(String)
     case encrypted(ChatCryptoCipherData)
 
-    var asText: String? {
+    public var asText: String? {
         guard case let .text(text) = self else { return nil }
         return text
     }
-    var asEncrypted: ChatCryptoCipherData? {
+    public var asEncrypted: ChatCryptoCipherData? {
         guard case let .encrypted(cipherData) = self else { return nil }
         return cipherData
+    }
+
+    public var isText: Bool { asText != nil }
+    public var isEncrypted: Bool { asEncrypted != nil }
+
+    public var description: String {
+        switch self {
+        case .text(let text):
+            return text
+        case .encrypted(let encrypted):
+            return "<encrypted: \(encrypted.sealed.base64EncodedString().prefix(10))...>"
+        }
     }
 
     public enum CodingKeys: String, CodingKey {

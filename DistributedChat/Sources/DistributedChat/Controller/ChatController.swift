@@ -71,7 +71,7 @@ public class ChatController {
     public func send(content: String, on channel: ChatChannel? = nil, attaching attachments: [ChatAttachment]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
         let chatMessage = ChatMessage(
             author: me,
-            content: .right(content),
+            content: .text(content),
             channel: channel,
             attachments: attachments,
             repliedToMessageId: repliedToMessageId

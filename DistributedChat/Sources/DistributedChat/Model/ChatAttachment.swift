@@ -7,7 +7,7 @@ public struct ChatAttachment: Codable, Identifiable, Hashable {
     public var content: ChatAttachmentContent
     public var compression: Compression?
 
-    public var isEncrypted: Bool { content.asEncrypted != nil }
+    public var isEncrypted: Bool { content.isEncrypted }
     
     public init(
         id: UUID = UUID(),
