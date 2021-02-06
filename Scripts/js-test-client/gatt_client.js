@@ -52,7 +52,10 @@ noble.on('discover', async peripheral => {
               id: myID,
               name: myName
             },
-            content: content
+            content: {
+              type: 'text',
+              data: content
+            }
           }
         ]
       }) + '\n';

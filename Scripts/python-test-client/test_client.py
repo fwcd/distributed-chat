@@ -50,7 +50,10 @@ while True:
                                         'id': my_id,
                                         'name': my_name
                                     },
-                                    'content': content
+                                    'content': {
+                                        'type': 'text',
+                                        'data': content
+                                    }
                                 }
                             ]
                         }) + '\n').encode('utf8')
