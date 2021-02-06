@@ -41,6 +41,7 @@ while True:
                         # See ChatProtocol.Message in DistributedChat package for a
                         # description of the JSON message structure.
                         s = (json.dumps({
+                            'id': str(uuid4()),
                             'visitedUsers': [],
                             'addedChatMessages': [
                                 {

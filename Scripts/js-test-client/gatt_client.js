@@ -43,6 +43,7 @@ noble.on('discover', async peripheral => {
     while (true) {
       const content = await question('Please enter a message: ');
       const json = JSON.stringify({
+        id: uuid4(),
         visitedUsers: [],
         addedChatMessages: [
           {
