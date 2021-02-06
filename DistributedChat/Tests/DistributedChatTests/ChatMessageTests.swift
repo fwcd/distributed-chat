@@ -14,10 +14,10 @@ final class ChatMessageTests: XCTestCase {
         let bob = ChatUser(name: "Bob")
 
         let message1 = ChatMessage(author: alice, content: "Hi!") // implicitly .right through ExpressibleByStringLiteral
-        let message2 = ChatMessage(author: alice, content: .left(.init(sealed: Data([0, 1, 2]), signature: Data([3, 4]), ephemeralPublicKey: Data([5, 6, 7]))))
+        let message2 = ChatMessage(author: alice, content: .encrypted(.init(sealed: Data([0, 1, 2]), signature: Data([3, 4]), ephemeralPublicKey: Data([5, 6, 7]))))
         let message3 = ChatMessage(author: bob, content: "Test", attachments: [
-            ChatAttachment(type: .file, name: "example.html", content: .left(URL(string: "https://example.com")!)),
-            ChatAttachment(type: .voiceNote, name: "test.mp3", content: .center(.init(sealed: Data([8, 9, 10]), signature: Data(), ephemeralPublicKey: Data([13]))))
+            ChatAttachment(type: .file, name: "example.html", content: .url(URL(string: "https://example.com")!)),
+            ChatAttachment(type: .voiceNote, name: "test.mp3", content: .encrypted(.init(sealed: Data([8, 9, 10]), signature: Data(), ephemeralPublicKey: Data([13]))))
         ])
 
         try XCTAssertEqual(message1, coded(message1))
