@@ -2,6 +2,22 @@ public enum Either3<L, C, R> {
     case left(L)
     case center(C)
     case right(R)
+    
+    var asLeft: L? {
+        if case .left(let left) = self { return left }
+        return nil
+    }
+    var asCenter: C? {
+        if case .center(let center) = self { return center }
+        return nil
+    }
+    var asRight: R? {
+        if case .right(let right) = self { return right }
+        return nil
+    }
+    var isLeft: Bool { asLeft != nil }
+    var isCenter: Bool { asCenter != nil }
+    var isRight: Bool { asRight != nil }
 }
 
 extension Either3: Equatable where L: Equatable, C: Equatable, R: Equatable {}

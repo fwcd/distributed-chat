@@ -1,6 +1,17 @@
 public enum Either<L, R> {
     case left(L)
     case right(R)
+    
+    var asLeft: L? {
+        if case .left(let left) = self { return left }
+        return nil
+    }
+    var asRight: R? {
+        if case .right(let right) = self { return right }
+        return nil
+    }
+    var isLeft: Bool { asLeft != nil }
+    var isRight: Bool { asRight != nil }
 }
 
 extension Either: Equatable where L: Equatable, R: Equatable {}

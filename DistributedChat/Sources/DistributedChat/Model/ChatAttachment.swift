@@ -4,31 +4,25 @@ public struct ChatAttachment: Codable, Identifiable, Hashable {
     public var id: UUID
     public var type: ChatAttachmentType
     public var name: String
-    public var url: URL?                            // \
-    public var data: Data?                          //  |- mutually exclusive
-    public var encryptedData: ChatCryptoCipherData? // /
+    public var content: Either3<URL, ChatCryptoCipherData, Data>
     public var compression: Compression?
 
-    public var isEncrypted: Bool { encryptedData != nil }
+    public var data: Data? { content.asRight }
+    public var encryptedData: ChatCryptoCipherData? { content.asCenter }
+    public var url: URL? { content.asLeft }
+    public var isEncrypted: Bool { content.isRight }
     
     public init(
         id: UUID = UUID(),
         type: ChatAttachmentType = .file,
         name: String,
-        url: URL? = nil,
-        data: Data? = nil,
-        encryptedData: ChatCryptoCipherData? = nil,
+        content: Either3<URL, ChatCryptoCipherData, Data>,
         compression: Compression? = nil
     ) {
-        // Enforce mutual exclusion
-        assert([url as Any, data as Any, encryptedData as Any].compactMap { $0 }.count == 1)
-
         self.id = id
         self.type = type
         self.name = name
-        self.url = url
-        self.data = data
-        self.encryptedData = encryptedData
+        self.content = content
         self.compression = compression
     }
     
@@ -43,8 +37,7 @@ public struct ChatAttachment: Codable, Identifiable, Hashable {
         guard let plain = data else { throw ChatCryptoError.alreadyEncrypted }
 
         var newAttachment = self
-        newAttachment.data = nil
-        newAttachment.encryptedData = try sender.encrypt(plain: plain, for: recipient)
+        newAttachment.content = .center(try sender.encrypt(plain: plain, for: recipient))
 
         return newAttachment
     }
@@ -53,8 +46,7 @@ public struct ChatAttachment: Codable, Identifiable, Hashable {
         guard let cipher = encryptedData else { throw ChatCryptoError.alreadyEncrypted }
 
         var newAttachment = self
-        newAttachment.data = try recipient.decrypt(cipher: cipher, by: sender)
-        newAttachment.encryptedData = nil
+        newAttachment.content = .right(try recipient.decrypt(cipher: cipher, by: sender))
 
         return newAttachment
     }
