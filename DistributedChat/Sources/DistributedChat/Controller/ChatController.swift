@@ -17,7 +17,13 @@ public class ChatController {
 
     private let privateKeys: ChatCryptoKeys.Private
     private var presenceTimer: RepeatingTimer?
-    public private(set) var presence: ChatPresence
+    public private(set) var presence: ChatPresence {
+        didSet {
+            for listener in updatePresenceListeners {
+                listener(presence)
+            }
+        }
+    }
 
     public var me: ChatUser { presence.user }
 
@@ -113,16 +119,18 @@ public class ChatController {
 
     public func update(presence: ChatPresence) {
         self.presence = presence
-        
-        for listener in updatePresenceListeners {
-            listener(presence)
-        }
+    }
+
+    private func update(logicalClock: Int) {
+        presence.user.logicalClock = max(presence.user.logicalClock, logicalClock) + 1
     }
     
     public func update(name: String) {
-        var newPresence = presence
-        newPresence.user.name = name
-        update(presence: newPresence)
+        presence.user.name = name
+    }
+
+    private func incrementClock() {
+        presence.user.logicalClock += 1
     }
 
     private func findUser(for userId: UUID) -> ChatUser? {
@@ -131,18 +139,6 @@ public class ChatController {
 
     private func findPublicKeys(for userId: UUID) -> ChatCryptoKeys.Public? {
         findUser(for: userId)?.publicKeys
-    }
-
-    private func update(logicalClock: Int) {
-        var newPresence = presence
-        newPresence.user.logicalClock = max(newPresence.user.logicalClock, logicalClock) + 1
-        update(presence: newPresence)
-    }
-
-    private func incrementClock() {
-        var newPresence = presence
-        newPresence.user.logicalClock += 1
-        update(presence: newPresence)
     }
 
     private func handle(request: ChatProtocol.MessageRequest) {
