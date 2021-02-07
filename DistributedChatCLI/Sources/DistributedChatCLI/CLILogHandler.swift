@@ -11,7 +11,8 @@ struct CLILogHandler: LogHandler {
     }
 
     func log(level: Logger.Level, message: Logger.Message, metadata: Logger.Metadata?, file: String, function: String, line: UInt) {
-        print("\r> [\(level)] \(label): \(message)\r")
+        let shortLabel = label.split(separator: ".").last.map(String.init) ?? label
+        print("\r> \(shortLabel): \(message)\r")
     }
 
     subscript(metadataKey metadataKey: String) -> Logger.Metadata.Value? {
