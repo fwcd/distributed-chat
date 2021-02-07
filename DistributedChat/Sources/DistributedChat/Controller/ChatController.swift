@@ -103,13 +103,12 @@ public class ChatController {
             repliedToMessageId: repliedToMessageId
         )
         let encryptedMessage = chatMessage.encryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
-
-        incrementClock()
         let protoMessage = ChatProtocol.Message(
             sourceUserId: me.id,
             addedChatMessages: [encryptedMessage],
             logicalClock: presence.user.logicalClock
         )
+
         broadcast(protoMessage, store: true)
         
         for listener in addChatMessageListeners {
@@ -127,10 +126,6 @@ public class ChatController {
     
     public func update(name: String) {
         presence.user.name = name
-    }
-
-    private func incrementClock() {
-        presence.user.logicalClock += 1
     }
 
     private func findUser(for userId: UUID) -> ChatUser? {
@@ -161,7 +156,7 @@ public class ChatController {
         if store {
             protoMessageStorage.store(message: protoMessage)
         }
-        incrementClock()
+        presence.user.logicalClock += 1
     }
 
     private func buildMessageRequest() -> ChatProtocol.MessageRequest {
