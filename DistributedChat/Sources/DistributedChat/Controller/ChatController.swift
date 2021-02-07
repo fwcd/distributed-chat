@@ -7,7 +7,7 @@ fileprivate let log = Logger(label: "DistributedChat.ChatController")
 /// Carries out actions, e.g. on the user's behalf.
 @available(iOS 13, *)
 public class ChatController {
-    private let transportWrapper: ChatTransportWrapper<ChatProtocol.Message>
+    private let transportWrapper: ChatTransportWrapper
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
     private var deleteMessageListeners: [(ChatDeletion) -> Void] = []
@@ -28,7 +28,7 @@ public class ChatController {
         presence = ChatPresence(user: me)
         presence.user.publicKeys = privateKeys.publicKeys
         
-        transportWrapper = ChatTransportWrapper(transport: transport)
+        transportWrapper = ChatTransportWrapper(myUserId: me.id, transport: transport)
         transportWrapper.onReceive { [unowned self] in
             handle(protoMessage: $0)
         }
@@ -147,7 +147,10 @@ public class ChatController {
     }
 
     private func handle(request: ChatProtocol.MessageRequest) {
-        // buildProtoMessagesFrom(protoMessageRequest) and send it
+        for protoMessage in buildProtoMessagesFrom(request: request) {
+            incrementClock()
+            transportWrapper.broadcast(protoMessage)
+        }
     }
     
     private func broadcastPresence() {
@@ -170,8 +173,8 @@ public class ChatController {
 
     private func buildProtoMessagesFrom(request: ChatProtocol.MessageRequest) -> [ChatProtocol.Message] {
         var messages = [ChatProtocol.Message]()
-        for (key, value) in request.vectorTime {
-            messages += protoMessageStorage.getStoredMessages { message in message.sourceUserId == key && message.logicalClock > value }
+        for (userId, clock) in request.vectorTime {
+            messages += protoMessageStorage.getStoredMessages { $0.sourceUserId == userId && $0.logicalClock > clock }
         }
         return messages
     }
