@@ -13,6 +13,7 @@ public class ChatController {
     private var deleteMessageListeners: [(ChatDeletion) -> Void] = []
     private var userFinders: [(UUID) -> ChatUser?] = []
     public var emitAllReceivedChatMessages: Bool = false // including encrypted ones/those not for me
+    private var chatMessageStorage: ChatMessageStorage
 
     private let privateKeys: ChatCryptoKeys.Private
     private var presenceTimer: RepeatingTimer?
@@ -20,9 +21,10 @@ public class ChatController {
 
     public var me: ChatUser { presence.user }
 
-    public init(me: ChatUser = ChatUser(), transport: ChatTransport) {
+    public init(me: ChatUser = ChatUser(), transport: ChatTransport, chatMessageStorage: ChatMessageStorage = ChatMessageStorageList(storageSize: 100)) {
         let privateKeys = ChatCryptoKeys.Private()
         self.privateKeys = privateKeys
+        self.chatMessageStorage = chatMessageStorage
 
         presence = ChatPresence(user: me)
         presence.user.publicKeys = privateKeys.publicKeys
@@ -84,6 +86,10 @@ public class ChatController {
                 listener(deletion)
             }
         }
+        // TODO: Handle request for stored messages
+        if protoMessage.chatMessageRequest != nil {
+            handleRequest(protoMessage.chatMessageRequest)
+        }
     }
 
     public func send(content: String, on channel: ChatChannel? = nil, attaching attachments: [ChatAttachment]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
@@ -137,6 +143,8 @@ public class ChatController {
         var newPresence = presence
         newPresence.user.logicalClock = newPresence.user.logicalClock + 1
         update(presence: newPresence)
+    private func handleRequest(request: ChatMessageRequest) {
+        // buildMessageFromRequest(chatMessageRequest) and send it
     }
     
     private func broadcastPresence() {
@@ -182,6 +190,21 @@ public class ChatController {
     //     return return_value
     // }
 
+    private func buildMessageRequest() -> ChatMessageRequest {
+        var chatMessageRequest: ChatMessageRequest
+        for item in chatMessageStorage.getStoredMessages(required: nil) {
+            chatMessageRequest[item.author.id] = item.logicalClock
+        }
+    }
+
+    private func buildMessageFromRequest(request: ChatMessageRequest) -> [ChatMessage] {
+        var messages: [ChatMessage] = [ChatMessage]()
+        for (key, value) in request.vectorClock {
+            messages.concat(chatMessageStorage.getStoredMessages(required = (message -> Bool in message.author.id == key && message.logicalClock > value)))
+        }
+        return messages
+    }
+    
     public func onAddChatMessage(_ handler: @escaping (ChatMessage) -> Void) {
         addChatMessageListeners.append(handler)
     }
