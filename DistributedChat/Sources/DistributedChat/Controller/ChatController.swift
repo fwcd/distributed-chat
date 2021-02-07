@@ -157,6 +157,11 @@ public class ChatController {
         me.name = name
     }
 
+    private func incrementClock() {
+        me.logicalClock += 1
+        log.debug("Logical clock: \(me.logicalClock)")
+    }
+
     private func findUser(for userId: UUID) -> ChatUser? {
         userFinders.lazy.compactMap { $0(userId) }.first
     }
@@ -167,7 +172,7 @@ public class ChatController {
 
     private func handle(request: ChatProtocol.MessageRequest) {
         let protoMessages = buildProtoMessagesFrom(request: request)
-        log.info("Sending out \(protoMessages.count) protocol message(s) upon request...")
+        log.info("Sending out \(protoMessages.count) stored message(s) upon request...")
         for protoMessage in protoMessages {
             broadcast(protoMessage)
         }
@@ -187,7 +192,7 @@ public class ChatController {
         if store {
             protoMessageStorage.store(message: protoMessage)
         }
-        me.logicalClock += 1
+        incrementClock()
     }
 
     private func buildMessageRequest() -> ChatProtocol.MessageRequest {
