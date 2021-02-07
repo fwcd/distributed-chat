@@ -49,14 +49,15 @@ noble.on('discover', async peripheral => {
         timestamp: timestamp,
         sourceUserId: myID,
         visitedUsers: [],
-        logicalClock: logicalClock++,
+        logicalClock: logicalClock,
         addedChatMessages: [
           {
             id: uuid4(),
             timestamp: timestamp,
             author: {
               id: myID,
-              name: myName
+              name: myName,
+              logicalClock: logicalClock
             },
             content: {
               type: 'text',
@@ -66,6 +67,7 @@ noble.on('discover', async peripheral => {
         ]
       }) + '\n';
       await inboxChar.writeAsync(Buffer.from(json, 'utf-8'), false);
+      logicalClock++;
     }
   }
 });

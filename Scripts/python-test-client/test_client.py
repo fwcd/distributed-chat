@@ -54,7 +54,8 @@ while True:
                                     'timestamp': timestamp,
                                     'author': {
                                         'id': my_id,
-                                        'name': my_name
+                                        'name': my_name,
+                                        'logicalClock': logical_clock
                                     },
                                     'content': {
                                         'type': 'text',
