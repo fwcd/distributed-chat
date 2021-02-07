@@ -60,9 +60,10 @@ public struct ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
     }
 
     private mutating func crop() {
-        // Remove logically oldest item until list is small enough
-        while list.count > size {
-            list.remove(at: 0)
+        // Remove logically oldest items until list is small enough
+        let delta = list.count - size
+        if delta > 0 {
+            list.removeFirst(delta)
         }
     }
 }
