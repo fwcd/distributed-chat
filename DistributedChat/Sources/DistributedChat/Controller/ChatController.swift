@@ -40,38 +40,16 @@ public class ChatController {
     }
 
     private func handleReceive(_ protoMessage: ChatProtocol.Message) {
-        // TODO: Rebroadcast message and make sure that
-        //       incoming messages did NOT origin from us
-        //       (i.e. went in a loop), as otherwise the
-        //       listeners would be fired twice with this
-        //       message.
-        // What happens if one message takes two different
-        // path to the same device?
+        // Rebroadcast message
 
-        if !protoMessage.visitedUsers.contains(me.id) {
-            var visitedUsers = Set(protoMessage.visitedUsers)
-            visitedUsers.insert(me.id)
+        transportWrapper.broadcast(protoMessage)
 
-            // Rebroadcast message
+        // Store message and update clock
 
-            transportWrapper.broadcast(ChatProtocol.Message(
-                sourceUserId: protoMessage.sourceUserId,
-                visitedUsers: visitedUsers,
-                addedChatMessages: protoMessage.addedChatMessages,
-                logicalClock: protoMessage.logicalClock
-            ))
-            protoMessageStorage.store(message: protoMessage)
+        update(logicalClock: protoMessage.logicalClock)
+        protoMessageStorage.store(message: protoMessage)
 
-            // Handle message
-
-            updateClock(logicalClock: protoMessage.logicalClock)
-
-            for message in protoMessage.addedChatMessages ?? [] where message.isReceived(by: me.id) {
-                for listener in addChatMessageListeners {
-                    listener(message)
-                }
-            }
-        }
+        // Handle message
 
         for encryptedMessage in protoMessage.addedChatMessages ?? [] where encryptedMessage.isReceived(by: me.id) || emitAllReceivedChatMessages {
             let chatMessage = encryptedMessage.decryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
@@ -150,7 +128,7 @@ public class ChatController {
         findUser(for: userId)?.publicKeys
     }
 
-    private func updateClock(logicalClock: Int) {
+    private func update(logicalClock: Int) {
         var newPresence = presence
         newPresence.user.logicalClock = max(newPresence.user.logicalClock, logicalClock) + 1
         update(presence: newPresence)

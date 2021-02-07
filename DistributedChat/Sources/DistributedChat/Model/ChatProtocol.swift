@@ -4,7 +4,6 @@ public enum ChatProtocol {
     public struct Message: Identifiable, Codable {
         public var id: UUID
         public var sourceUserId: UUID
-        public var visitedUsers: Set<UUID>
         public var addedChatMessages: [ChatMessage]?
         public var updatedPresences: [ChatPresence]?
         public var deleteMessages: [ChatDeletion]?
@@ -16,7 +15,6 @@ public enum ChatProtocol {
         public init(
             id: UUID = UUID(),
             sourceUserId: UUID,
-            visitedUsers: Set<UUID> = [],
             addedChatMessages: [ChatMessage]? = nil,
             updatedPresences: [ChatPresence]? = nil,
             deleteMessages: [ChatDeletion]? = nil,
@@ -25,7 +23,6 @@ public enum ChatProtocol {
         ) {
             self.id = id
             self.sourceUserId = sourceUserId
-            self.visitedUsers = visitedUsers
             self.addedChatMessages = addedChatMessages
             self.updatedPresences = updatedPresences
             self.deleteMessages = deleteMessages
