@@ -7,13 +7,16 @@ fileprivate let log = Logger(label: "DistributedChat.ChatController")
 /// Carries out actions, e.g. on the user's behalf.
 @available(iOS 13, *)
 public class ChatController {
-    private let transportWrapper: ChatTransportWrapper
+    private let transportWrapper: ChatTransportWrapper<ChatProtocol.Message>
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
     private var deleteMessageListeners: [(ChatDeletion) -> Void] = []
     private var userFinders: [(UUID) -> ChatUser?] = []
     public var emitAllReceivedChatMessages: Bool = false // including encrypted ones/those not for me
+
+    // Internal state
     private var protoMessageStorage: ChatProtocolMessageStorage = ChatProtocolMessageListStorage(size: 100)
+    private var presences: [UUID: ChatPresence] = [:]
 
     private let privateKeys: ChatCryptoKeys.Private
     private var presenceTimer: RepeatingTimer?
@@ -25,7 +28,10 @@ public class ChatController {
         }
     }
 
-    public var me: ChatUser { presence.user }
+    public var me: ChatUser {
+        get { presence.user }
+        set { presence.user = newValue }
+    }
 
     public init(me: ChatUser = ChatUser(), transport: ChatTransport) {
         let privateKeys = ChatCryptoKeys.Private()
@@ -34,7 +40,7 @@ public class ChatController {
         presence = ChatPresence(user: me)
         presence.user.publicKeys = privateKeys.publicKeys
         
-        transportWrapper = ChatTransportWrapper(myUserId: me.id, transport: transport)
+        transportWrapper = ChatTransportWrapper(transport: transport)
         transportWrapper.onReceive { [unowned self] in
             handleReceive($0)
         }
@@ -54,43 +60,65 @@ public class ChatController {
 
         transportWrapper.broadcast(protoMessage)
 
-        // Store message and update clock
+        if protoMessage.isDestination(userId: me.id) {
+            // Store message and update clock
 
-        update(logicalClock: protoMessage.logicalClock)
-        protoMessageStorage.store(message: protoMessage)
+            update(logicalClock: protoMessage.logicalClock)
+            protoMessageStorage.store(message: protoMessage)
 
-        // Handle message additions
+            // Handle message additions
 
-        for encryptedMessage in protoMessage.addedChatMessages ?? [] where encryptedMessage.isReceived(by: me.id) || emitAllReceivedChatMessages {
-            let chatMessage = encryptedMessage.decryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
+            for encryptedMessage in protoMessage.addedChatMessages ?? [] where encryptedMessage.isReceived(by: me.id) || emitAllReceivedChatMessages {
+                let chatMessage = encryptedMessage.decryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
 
-            if !chatMessage.isEncrypted || emitAllReceivedChatMessages {
-                for listener in addChatMessageListeners {
-                    listener(chatMessage)
+                if !chatMessage.isEncrypted || emitAllReceivedChatMessages {
+                    for listener in addChatMessageListeners {
+                        listener(chatMessage)
+                    }
                 }
             }
-        }
 
-        // Handle presence updates
-        
-        for presence in protoMessage.updatedPresences ?? [] {
-            for listener in updatePresenceListeners {
-                listener(presence)
+            // Handle presence updates
+            
+            for newPresence in protoMessage.updatedPresences ?? [] {
+                let userId = newPresence.user.id
+                let oldPresence = presences[userId]
+
+                if oldPresence != newPresence {
+                    presences[userId] = newPresence
+
+                    if newPresence.status != .offline {
+                        // A new user is now reachable on the network,
+                        // we therefore request the newest messages from
+                        // him.
+
+                        broadcast(ChatProtocol.Message(
+                            sourceUserId: me.id,
+                            destinationUserId: newPresence.user.id,
+                            messageRequest: buildMessageRequest(),
+                            logicalClock: me.logicalClock
+                        ))
+                    }
+
+                    for listener in updatePresenceListeners {
+                        listener(newPresence)
+                    }
+                }
             }
-        }
 
-        // Handle message deletions
+            // Handle message deletions
 
-        for deletion in protoMessage.deletedChatMessages ?? [] {
-            for listener in deleteMessageListeners {
-                listener(deletion)
+            for deletion in protoMessage.deletedChatMessages ?? [] {
+                for listener in deleteMessageListeners {
+                    listener(deletion)
+                }
             }
-        }
 
-        // Handle protocol message requests
+            // Handle protocol message requests
 
-        if let request = protoMessage.messageRequest {
-            handle(request: request)
+            if let request = protoMessage.messageRequest {
+                handle(request: request)
+            }
         }
     }
 
@@ -106,7 +134,7 @@ public class ChatController {
         let protoMessage = ChatProtocol.Message(
             sourceUserId: me.id,
             addedChatMessages: [encryptedMessage],
-            logicalClock: presence.user.logicalClock
+            logicalClock: me.logicalClock
         )
 
         broadcast(protoMessage, store: true)
@@ -121,11 +149,11 @@ public class ChatController {
     }
 
     private func update(logicalClock: Int) {
-        presence.user.logicalClock = max(presence.user.logicalClock, logicalClock) + 1
+        me.logicalClock = max(me.logicalClock, logicalClock) + 1
     }
     
     public func update(name: String) {
-        presence.user.name = name
+        me.name = name
     }
 
     private func findUser(for userId: UUID) -> ChatUser? {
@@ -147,7 +175,7 @@ public class ChatController {
         broadcast(ChatProtocol.Message(
             sourceUserId: me.id,
             updatedPresences: [presence],
-            logicalClock: presence.user.logicalClock
+            logicalClock: me.logicalClock
         ), store: true)
     }
 
@@ -156,7 +184,7 @@ public class ChatController {
         if store {
             protoMessageStorage.store(message: protoMessage)
         }
-        presence.user.logicalClock += 1
+        me.logicalClock += 1
     }
 
     private func buildMessageRequest() -> ChatProtocol.MessageRequest {

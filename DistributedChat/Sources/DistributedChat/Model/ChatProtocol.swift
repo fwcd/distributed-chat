@@ -8,8 +8,8 @@ public enum ChatProtocol {
 
     public struct Message: Identifiable, Codable {
         public var id: UUID
-        public var sourceUserId: UUID     // the possibly indirect source user
-        public var recipientUserId: UUID? // the DIRECT recipient user, if there is any
+        public var sourceUserId: UUID       // the possibly indirect source user
+        public var destinationUserId: UUID? // the possibly indirect recipient user, if there is any
         public var addedChatMessages: [ChatMessage]?
         public var updatedPresences: [ChatPresence]?
         public var deletedChatMessages: [ChatDeletion]?
@@ -21,16 +21,16 @@ public enum ChatProtocol {
         public init(
             id: UUID = UUID(),
             sourceUserId: UUID,
-            recipientUserId: UUID? = nil,
+            destinationUserId: UUID? = nil,
             addedChatMessages: [ChatMessage]? = nil,
             updatedPresences: [ChatPresence]? = nil,
             deletedChatMessages: [ChatDeletion]? = nil,
-            logicalClock: Int,
-            messageRequest: MessageRequest? = nil
+            messageRequest: MessageRequest? = nil,
+            logicalClock: Int
         ) {
             self.id = id
             self.sourceUserId = sourceUserId
-            self.recipientUserId = recipientUserId
+            self.destinationUserId = destinationUserId
             self.addedChatMessages = addedChatMessages
             self.updatedPresences = updatedPresences
             self.deletedChatMessages = deletedChatMessages
@@ -38,9 +38,9 @@ public enum ChatProtocol {
             self.messageRequest = messageRequest
         }
 
-        /// Whether the given user should receive this protocol message.
-        public func isReceived(by userId: UUID) -> Bool {
-            recipientUserId.map { $0 == userId } ?? true
+        /// Whether the given user is the destination.
+        public func isDestination(userId: UUID) -> Bool {
+            destinationUserId.map { $0 == userId } ?? true
         }
     }
 }
