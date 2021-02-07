@@ -103,7 +103,7 @@ public class ChatController {
                     // A new user is now reachable on the network,
                     // we therefore request the newest messages.
 
-                    log.info("\(newPresence.user.displayName) is now reachable, we'll request messages...")
+                    log.debug("\(newPresence.user.displayName) is now reachable, we'll request messages...")
                     broadcast(ChatProtocol.Message(
                         sourceUserId: me.id,
                         messageRequest: buildMessageRequest(),
@@ -177,7 +177,7 @@ public class ChatController {
 
     private func handle(request: ChatProtocol.MessageRequest, from userId: UUID) {
         let protoMessages = buildProtoMessagesFrom(request: request)
-        log.info("Sending out \(protoMessages.count) stored message(s) upon request from \(findUser(for: userId)?.displayName ?? "?")...")
+        log.debug("Sending out \(protoMessages.count) stored message(s) upon request from \(findUser(for: userId)?.displayName ?? "?")...")
         for protoMessage in protoMessages {
             // We need fresh ids since otherwise most nodes will ignore the message
             var protoMessage = protoMessage
