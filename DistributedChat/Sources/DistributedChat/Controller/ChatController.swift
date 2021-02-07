@@ -25,6 +25,7 @@ public class ChatController {
         let privateKeys = ChatCryptoKeys.Private()
         self.privateKeys = privateKeys
         self.chatMessageStorage = chatMessageStorage
+        onDeleteMessage(deleteMessage)
 
         presence = ChatPresence(user: me)
         presence.user.publicKeys = privateKeys.publicKeys
@@ -51,7 +52,7 @@ public class ChatController {
             visitedUsers.insert(me.id)
             // Rebroadcast message
             transportWrapper.broadcast(ChatProtocol.Message(visitedUsers: visitedUsers, addedChatMessages: protoMessage.addedChatMessages, logicalClock: protoMessage.logicalClock))
-                        
+            chatMessageStorage.storeMessage(message: protoMessage)
             // Handle message
             
 
@@ -86,7 +87,7 @@ public class ChatController {
                 listener(deletion)
             }
         }
-        // TODO: Handle request for stored messages
+
         if protoMessage.chatMessageRequest != nil {
             handleRequest(protoMessage.chatMessageRequest)
         }
@@ -189,6 +190,10 @@ public class ChatController {
     //     }
     //     return return_value
     // }
+
+    private func deleteMessage(deletion: ChatDeletion) {
+        chatMessageStorage.deleteMessage(id: deletion.messageId)
+    }
 
     private func buildMessageRequest() -> ChatMessageRequest {
         var chatMessageRequest: ChatMessageRequest
