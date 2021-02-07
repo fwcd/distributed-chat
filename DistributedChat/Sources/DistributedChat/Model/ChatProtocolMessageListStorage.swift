@@ -1,6 +1,6 @@
 import Foundation
 
-public class ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
+public struct ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
     private var list: [ChatProtocol.Message]
     public var size: Int {
         didSet {
@@ -14,7 +14,7 @@ public class ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
         self.size = size
     }
 
-    public func store(message: ChatProtocol.Message) {
+    public mutating func store(message: ChatProtocol.Message) {
         // Add new item via insertion sort
         if !contains(id: message.id){
             for (index, value) in list.enumerated() {
@@ -28,7 +28,7 @@ public class ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
     }
 
     @discardableResult
-    public func deleteMessage(id: UUID) -> Bool {
+    public mutating func deleteMessage(id: UUID) -> Bool {
         for (index, value) in list.enumerated() {
             if value.id == id {
                 list.remove(at: index)
@@ -61,8 +61,8 @@ public class ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
         return false
     }
 
-    private func crop() {
-        // Remove logically oldes item until list is small enough
+    private mutating func crop() {
+        // Remove logically oldest item until list is small enough
         while list.count > size {
             list.remove(at: 0)
         }

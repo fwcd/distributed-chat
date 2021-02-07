@@ -13,7 +13,7 @@ public class ChatController {
     private var deleteMessageListeners: [(ChatDeletion) -> Void] = []
     private var userFinders: [(UUID) -> ChatUser?] = []
     public var emitAllReceivedChatMessages: Bool = false // including encrypted ones/those not for me
-    private var protoMessageStorage: ChatProtocolMessageStorage
+    private var protoMessageStorage: ChatProtocolMessageStorage = ChatProtocolMessageListStorage(size: 100)
 
     private let privateKeys: ChatCryptoKeys.Private
     private var presenceTimer: RepeatingTimer?
@@ -21,10 +21,9 @@ public class ChatController {
 
     public var me: ChatUser { presence.user }
 
-    public init(me: ChatUser = ChatUser(), transport: ChatTransport, protoMessageStorage: ChatProtocolMessageStorage = ChatProtocolMessageListStorage(size: 100)) {
+    public init(me: ChatUser = ChatUser(), transport: ChatTransport) {
         let privateKeys = ChatCryptoKeys.Private()
         self.privateKeys = privateKeys
-        self.protoMessageStorage = protoMessageStorage
 
         presence = ChatPresence(user: me)
         presence.user.publicKeys = privateKeys.publicKeys
