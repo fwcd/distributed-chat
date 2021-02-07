@@ -22,7 +22,8 @@ public class ChatProtocolMessageStorageList: ChatProtocolMessageStorage {
         }
     }
 
-    public func deleteMessage(id: UUID) -> Bool? {
+    @discardableResult
+    public func deleteMessage(id: UUID) -> Bool {
         for (index, value) in list.enumerated() {
             if value.id == id {
                 list.remove(at: index)

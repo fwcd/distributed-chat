@@ -26,8 +26,6 @@ public class ChatController {
         self.privateKeys = privateKeys
         self.protoMessageStorage = protoMessageStorage
 
-        onDeleteMessage(deleteMessage(deletion:))
-
         presence = ChatPresence(user: me)
         presence.user.publicKeys = privateKeys.publicKeys
         
@@ -38,6 +36,8 @@ public class ChatController {
         presenceTimer = RepeatingTimer(interval: 10.0) { [weak self] in
             self?.broadcastPresence()
         }
+
+        onDeleteMessage(deleteMessage(deletion:))
     }
 
     private func handleReceive(_ protoMessage: ChatProtocol.Message) {
@@ -52,11 +52,18 @@ public class ChatController {
         if !protoMessage.visitedUsers.contains(me.id) {
             var visitedUsers = Set(protoMessage.visitedUsers)
             visitedUsers.insert(me.id)
+
             // Rebroadcast message
-            transportWrapper.broadcast(ChatProtocol.Message(visitedUsers: visitedUsers, addedChatMessages: protoMessage.addedChatMessages, logicalClock: protoMessage.logicalClock))
+
+            transportWrapper.broadcast(ChatProtocol.Message(
+                sourceUserId: protoMessage.sourceUserId,
+                visitedUsers: visitedUsers,
+                addedChatMessages: protoMessage.addedChatMessages,
+                logicalClock: protoMessage.logicalClock
+            ))
             protoMessageStorage.storeMessage(message: protoMessage)
+
             // Handle message
-            
 
             updateClock(logicalClock: protoMessage.logicalClock)
 
@@ -85,14 +92,16 @@ public class ChatController {
             }
         }
 
+        // Handle message deletions
+
         for deletion in protoMessage.deleteMessages ?? [] {
             for listener in deleteMessageListeners {
                 listener(deletion)
             }
         }
 
-        if protoMessage.chatMessageRequest != nil {
-            handleRequest(protoMessage.chatMessageRequest)
+        if let chatMessageRequest = protoMessage.chatMessageRequest {
+            handleRequest(chatMessageRequest)
         }
     }
 
@@ -105,8 +114,13 @@ public class ChatController {
             repliedToMessageId: repliedToMessageId
         )
         let encryptedMessage = chatMessage.encryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
+
         incrementClock()
-        let protoMessage = ChatProtocol.Message(addedChatMessages: [encryptedMessage], logicalClock: presence.user.logicalClock)
+        let protoMessage = ChatProtocol.Message(
+            sourceUserId: me.id,
+            addedChatMessages: [encryptedMessage],
+            logicalClock: presence.user.logicalClock
+        )
 
         transportWrapper.broadcast(protoMessage)
         
@@ -147,14 +161,20 @@ public class ChatController {
         var newPresence = presence
         newPresence.user.logicalClock = newPresence.user.logicalClock + 1
         update(presence: newPresence)
-    private func handleRequest(request: ChatMessageRequest) {
+    }
+
+    private func handleRequest(_ request: ChatMessageRequest) {
         // buildMessageFromRequest(chatMessageRequest) and send it
     }
     
     private func broadcastPresence() {
         log.debug("Broadcasting presence: \(presence.status) (\(presence.info))")
         incrementClock()
-        transportWrapper.broadcast(ChatProtocol.Message(updatedPresences: [presence], logicalClock: presence.user.logicalClock))
+        transportWrapper.broadcast(ChatProtocol.Message(
+            sourceUserId: me.id,
+            updatedPresences: [presence],
+            logicalClock: presence.user.logicalClock
+        ))
     }
 
     private func deleteMessage(deletion: ChatDeletion) {
@@ -162,16 +182,17 @@ public class ChatController {
     }
 
     private func buildMessageRequest() -> ChatMessageRequest {
-        var chatMessageRequest: ChatMessageRequest
+        var request = ChatMessageRequest()
         for item in protoMessageStorage.getStoredMessages(required: nil) {
-            chatMessageRequest.vectorTime[item.author.id] = item.logicalClock
+            request.vectorTime[item.sourceUserId] = item.logicalClock
         }
+        return request
     }
 
-    private func buildMessageFromRequest(request: ChatMessageRequest) -> [ChatMessage] {
-        var messages: [ChatMessage] = [ChatMessage]()
+    private func buildMessageFromRequest(request: ChatMessageRequest) -> [ChatProtocol.Message] {
+        var messages = [ChatProtocol.Message]()
         for (key, value) in request.vectorTime {
-            messages += protoMessageStorage.getStoredMessages { message in message.author.id == key && message.logicalClock > value }
+            messages += protoMessageStorage.getStoredMessages { message in message.sourceUserId == key && message.logicalClock > value }
         }
         return messages
     }

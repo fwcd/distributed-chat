@@ -3,6 +3,7 @@ import Foundation
 public enum ChatProtocol {
     public struct Message: Identifiable, Codable {
         public var id: UUID
+        public var sourceUserId: UUID
         public var visitedUsers: Set<UUID>
         public var addedChatMessages: [ChatMessage]?
         public var updatedPresences: [ChatPresence]?
@@ -14,6 +15,7 @@ public enum ChatProtocol {
 
         public init(
             id: UUID = UUID(),
+            sourceUserId: UUID,
             visitedUsers: Set<UUID> = [],
             addedChatMessages: [ChatMessage]? = nil,
             updatedPresences: [ChatPresence]? = nil,
@@ -22,6 +24,7 @@ public enum ChatProtocol {
             chatMessageRequest: ChatMessageRequest? = nil
         ) {
             self.id = id
+            self.sourceUserId = sourceUserId
             self.visitedUsers = visitedUsers
             self.addedChatMessages = addedChatMessages
             self.updatedPresences = updatedPresences

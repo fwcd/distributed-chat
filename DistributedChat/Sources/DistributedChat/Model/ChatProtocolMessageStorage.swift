@@ -5,7 +5,8 @@ public protocol ChatProtocolMessageStorage {
 
     func storeMessage(message: ChatProtocol.Message)
 
-    func deleteMessage(id: UUID) -> Bool?
+    @discardableResult
+    func deleteMessage(id: UUID) -> Bool
 
     func setStorageSize(size: Int)
 
