@@ -62,6 +62,14 @@ swift run DistributedChatCLI --name Alice
 
 You can substitute any name for Alice. Once the CLI has started, the chosen name should show up as a node in the simulation server's web interface.
 
+For convenience, there is a bash script for starting multiple instances of the CLI together in a single `tmux` session. To use it, navigate into the root directory of this repository and run
+
+```
+Scripts/start_clis Alice Bob Charles Dave
+```
+
+...or however many clients you want to start. To stop all clients at once, press `Ctrl + B` then type `:kill-session` and press enter.
+
 ### iOS app
 
 Building and running the iOS app is only possible on macOS, so make sure to have the following available:
