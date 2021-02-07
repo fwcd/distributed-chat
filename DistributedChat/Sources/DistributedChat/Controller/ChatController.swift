@@ -84,21 +84,22 @@ public class ChatController {
                 let userId = newPresence.user.id
                 let oldPresence = presences[userId]
 
+                if oldPresence == nil {
+                    // A new user is now reachable on the network,
+                    // we therefore request the newest messages from
+                    // him.
+
+                    log.info("\(newPresence.user.displayName) is now reachable, we'll request messages from him...")
+                    broadcast(ChatProtocol.Message(
+                        sourceUserId: me.id,
+                        destinationUserId: newPresence.user.id,
+                        messageRequest: buildMessageRequest(),
+                        logicalClock: me.logicalClock
+                    ))
+                }
+
                 if oldPresence != newPresence {
                     presences[userId] = newPresence
-
-                    if newPresence.status != .offline {
-                        // A new user is now reachable on the network,
-                        // we therefore request the newest messages from
-                        // him.
-
-                        broadcast(ChatProtocol.Message(
-                            sourceUserId: me.id,
-                            destinationUserId: newPresence.user.id,
-                            messageRequest: buildMessageRequest(),
-                            logicalClock: me.logicalClock
-                        ))
-                    }
 
                     for listener in updatePresenceListeners {
                         listener(newPresence)
@@ -165,7 +166,9 @@ public class ChatController {
     }
 
     private func handle(request: ChatProtocol.MessageRequest) {
-        for protoMessage in buildProtoMessagesFrom(request: request) {
+        let protoMessages = buildProtoMessagesFrom(request: request)
+        log.info("Sending out \(protoMessages.count) protocol message(s) upon request...")
+        for protoMessage in protoMessages {
             broadcast(protoMessage)
         }
     }
