@@ -81,8 +81,8 @@ public class ChatController {
             }
         }
 
-        if let chatMessageRequest = protoMessage.chatMessageRequest {
-            handle(request: chatMessageRequest)
+        if let protoMessageRequest = protoMessage.protoMessageRequest {
+            handle(request: protoMessageRequest)
         }
     }
 
@@ -144,8 +144,8 @@ public class ChatController {
         update(presence: newPresence)
     }
 
-    private func handle(request: ChatMessageRequest) {
-        // buildProtoMessagesFrom(chatMessageRequest) and send it
+    private func handle(request: ChatProtocolMessageRequest) {
+        // buildProtoMessagesFrom(protoMessageRequest) and send it
     }
     
     private func broadcastPresence() {
@@ -158,15 +158,15 @@ public class ChatController {
         ))
     }
 
-    private func buildMessageRequest() -> ChatMessageRequest {
-        var request = ChatMessageRequest()
+    private func buildMessageRequest() -> ChatProtocolMessageRequest {
+        var request = ChatProtocolMessageRequest()
         for item in protoMessageStorage.getStoredMessages(required: nil) {
             request.vectorTime[item.sourceUserId] = item.logicalClock
         }
         return request
     }
 
-    private func buildProtoMessagesFrom(request: ChatMessageRequest) -> [ChatProtocol.Message] {
+    private func buildProtoMessagesFrom(request: ChatProtocolMessageRequest) -> [ChatProtocol.Message] {
         var messages = [ChatProtocol.Message]()
         for (key, value) in request.vectorTime {
             messages += protoMessageStorage.getStoredMessages { message in message.sourceUserId == key && message.logicalClock > value }
