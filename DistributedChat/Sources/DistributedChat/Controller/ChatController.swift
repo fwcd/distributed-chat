@@ -196,17 +196,16 @@ public class ChatController {
     }
 
     private func buildMessageRequest() -> ChatProtocol.MessageRequest {
-        var request = ChatProtocol.MessageRequest()
-        for item in protoMessageStorage.getStoredMessages(required: nil) {
-            request.vectorTime[item.sourceUserId] = item.logicalClock
-        }
-        return request
+        let stored = protoMessageStorage.getStoredMessages(required: nil)
+        let vectorTime = Dictionary(grouping: stored, by: { $0.sourceUserId })
+            .mapValues { $0.last?.timestamp ?? .distantPast }
+        return ChatProtocol.MessageRequest(vectorTime: vectorTime)
     }
 
     private func buildProtoMessagesFrom(request: ChatProtocol.MessageRequest) -> [ChatProtocol.Message] {
         var messages = [ChatProtocol.Message]()
-        for (userId, clock) in request.vectorTime {
-            messages += protoMessageStorage.getStoredMessages { $0.sourceUserId == userId && $0.logicalClock > clock }
+        for (userId, timestamp) in request.vectorTime {
+            messages += protoMessageStorage.getStoredMessages { $0.sourceUserId == userId && $0.timestamp > timestamp }
         }
         return messages
     }

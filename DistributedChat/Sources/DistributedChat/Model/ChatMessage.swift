@@ -6,7 +6,7 @@ fileprivate let log = Logger(label: "DistributedChat.ChatMessage")
 
 public struct ChatMessage: Identifiable, Hashable, Codable {
     public let id: UUID
-    public var timestamp: Date // TODO: Specify time zone? or always use UTC
+    public var timestamp: Date
     public var author: ChatUser
     public var content: ChatMessageContent
     public var channel: ChatChannel?
