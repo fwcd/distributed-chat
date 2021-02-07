@@ -15,13 +15,14 @@ public struct ChatUser: Identifiable, Hashable, Codable {
         self.logicalClock = logicalClock
     }
 
-    // Users are only combined by id
+    // Users are only combined by id and name
 
     public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.id == rhs.id
+        lhs.id == rhs.id && lhs.name == rhs.name
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+        hasher.combine(name)
     }
 }
