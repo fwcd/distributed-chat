@@ -30,7 +30,7 @@ public class ChatController {
         
         transportWrapper = ChatTransportWrapper(myUserId: me.id, transport: transport)
         transportWrapper.onReceive { [unowned self] in
-            handle(protoMessage: $0)
+            handleReceive($0)
         }
         
         // Broadcast the presence every 10 seconds
@@ -43,7 +43,7 @@ public class ChatController {
         }
     }
 
-    private func handle(protoMessage: ChatProtocol.Message) {
+    private func handleReceive(_ protoMessage: ChatProtocol.Message) {
         // Rebroadcast message
 
         transportWrapper.broadcast(protoMessage)
@@ -104,8 +104,7 @@ public class ChatController {
             addedChatMessages: [encryptedMessage],
             logicalClock: presence.user.logicalClock
         )
-
-        transportWrapper.broadcast(protoMessage)
+        broadcast(protoMessage, store: true)
         
         for listener in addChatMessageListeners {
             listener(chatMessage)
@@ -142,25 +141,31 @@ public class ChatController {
 
     private func incrementClock() {
         var newPresence = presence
-        newPresence.user.logicalClock = newPresence.user.logicalClock + 1
+        newPresence.user.logicalClock += 1
         update(presence: newPresence)
     }
 
     private func handle(request: ChatProtocol.MessageRequest) {
         for protoMessage in buildProtoMessagesFrom(request: request) {
-            incrementClock()
-            transportWrapper.broadcast(protoMessage)
+            broadcast(protoMessage)
         }
     }
     
     private func broadcastPresence() {
         log.debug("Broadcasting presence: \(presence.status) (\(presence.info))")
-        incrementClock()
-        transportWrapper.broadcast(ChatProtocol.Message(
+        broadcast(ChatProtocol.Message(
             sourceUserId: me.id,
             updatedPresences: [presence],
             logicalClock: presence.user.logicalClock
-        ))
+        ), store: true)
+    }
+
+    private func broadcast(_ protoMessage: ChatProtocol.Message, store: Bool = false) {
+        transportWrapper.broadcast(protoMessage)
+        if store {
+            protoMessageStorage.store(message: protoMessage)
+        }
+        incrementClock()
     }
 
     private func buildMessageRequest() -> ChatProtocol.MessageRequest {
