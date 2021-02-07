@@ -16,7 +16,7 @@ public struct ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
 
     public mutating func store(message: ChatProtocol.Message) {
         // Add new item via insertion sort
-        if !contains(id: message.id){
+        if !contains(id: message.id) {
             for (index, value) in list.enumerated() {
                 if value.logicalClock <= message.logicalClock && (index == list.count - 1 || list[index + 1].logicalClock > message.logicalClock) {
                     list.insert(message, at: index)
@@ -39,13 +39,11 @@ public struct ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
     }
 
     public func getStoredMessages(required: ((ChatProtocol.Message) -> Bool)?)  -> [ChatProtocol.Message] { 
-        if required == nil {
-            return list
-        }
+        guard let required = required else { return list }
 
         var returnValue: [ChatProtocol.Message] = [ChatProtocol.Message]()
         for item in list {
-            if required!(item) {
+            if required(item) {
                 returnValue.append(item)
             }
         }
