@@ -41,11 +41,9 @@ while True:
                         content = input(f'  >> Enter a chat message to send: ')
                         # See ChatProtocol.Message in DistributedChat package for a
                         # description of the JSON message structure.
-                        proto_message_id = str(uuid4())
                         timestamp = time.time()
                         s = (json.dumps({
-                            'id': proto_message_id,
-                            'originalId': proto_message_id,
+                            'id': str(uuid4()),
                             'timestamp': timestamp,
                             'logicalClock': logical_clock,
                             'visitedUsers': [],

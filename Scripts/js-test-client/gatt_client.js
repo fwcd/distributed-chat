@@ -43,11 +43,9 @@ noble.on('discover', async peripheral => {
 
     while (true) {
       const content = await question('Please enter a message: ');
-      const protoMessageId = uuid4();
       const timestamp = Date.now() / 1000.0;
       const json = JSON.stringify({
-        id: protoMessageId,
-        originalId: protoMessageId,
+        id: uuid4(),
         timestamp: timestamp,
         sourceUserId: uuid4(),
         visitedUsers: [],
