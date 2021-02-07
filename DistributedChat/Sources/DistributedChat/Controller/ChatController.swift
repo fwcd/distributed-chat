@@ -190,7 +190,7 @@ public class ChatController {
             sourceUserId: me.id,
             updatedPresences: [presence],
             logicalClock: me.logicalClock
-        ), store: true)
+        ))
     }
 
     private func broadcast(_ protoMessage: ChatProtocol.Message, store: Bool = false) {
