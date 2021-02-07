@@ -1,4 +1,7 @@
 import Foundation
+import Logging
+
+fileprivate let log = Logger(label: "DistributedChat.ChatProtocolMessageListStorage")
 
 public struct ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
     // TODO: Perhaps use a more efficient data structure, e.g.
@@ -29,6 +32,7 @@ public struct ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
             }
 
             crop()
+            log.debug("Stored chat messages: \(list.flatMap { $0.addedChatMessages ?? [] }.map(\.displayContent))")
         }
     }
 

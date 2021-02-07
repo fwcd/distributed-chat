@@ -7,7 +7,8 @@ public enum ChatProtocol {
     }
 
     public struct Message: Identifiable, Codable {
-        public var id: UUID
+        public var id: UUID                 // unique for EVERY message with the sole exception of rebroadcasts
+        public var originalId: UUID         // the original ID of a requested message
         public var timestamp: Date          // the (physical) timestamp
         public var sourceUserId: UUID       // the possibly indirect source user
         public var destinationUserId: UUID? // the possibly indirect recipient user, if there is any
@@ -19,6 +20,7 @@ public enum ChatProtocol {
 
         public init(
             id: UUID = UUID(),
+            originalId: UUID? = nil,
             timestamp: Date = Date(),
             sourceUserId: UUID,
             destinationUserId: UUID? = nil,
@@ -29,6 +31,7 @@ public enum ChatProtocol {
             logicalClock: Int
         ) {
             self.id = id
+            self.originalId = originalId ?? id
             self.timestamp = timestamp
             self.sourceUserId = sourceUserId
             self.destinationUserId = destinationUserId

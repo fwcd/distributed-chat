@@ -16,6 +16,7 @@ public class ChatController {
 
     // Internal state
     private var protoMessageStorage: ChatProtocolMessageStorage = ChatProtocolMessageListStorage(size: 100)
+    private var receivedOriginalProtoMessageIds: Set<UUID> = []
     private var presences: [UUID: ChatPresence] = [:]
 
     private let privateKeys: ChatCryptoKeys.Private
@@ -60,7 +61,11 @@ public class ChatController {
 
         transportWrapper.broadcast(protoMessage)
 
-        if protoMessage.isDestination(userId: me.id) {
+        let originalId = protoMessage.originalId
+
+        if !receivedOriginalProtoMessageIds.contains(originalId) && protoMessage.isDestination(userId: me.id) {
+            receivedOriginalProtoMessageIds.insert(originalId)
+
             // Store message and update clock
 
             update(logicalClock: protoMessage.logicalClock)
@@ -94,13 +99,11 @@ public class ChatController {
 
                 if oldPresence == nil {
                     // A new user is now reachable on the network,
-                    // we therefore request the newest messages from
-                    // him.
+                    // we therefore request the newest messages.
 
-                    log.info("\(newPresence.user.displayName) is now reachable, we'll request messages from him/her...")
+                    log.info("\(newPresence.user.displayName) is now reachable, we'll request messages...")
                     broadcast(ChatProtocol.Message(
                         sourceUserId: me.id,
-                        destinationUserId: newPresence.user.id,
                         messageRequest: buildMessageRequest(),
                         logicalClock: me.logicalClock
                     ))
@@ -118,7 +121,7 @@ public class ChatController {
             // Handle protocol message requests
 
             if let request = protoMessage.messageRequest {
-                handle(request: request)
+                handle(request: request, from: protoMessage.sourceUserId)
             }
         }
     }
@@ -170,10 +173,13 @@ public class ChatController {
         findUser(for: userId)?.publicKeys
     }
 
-    private func handle(request: ChatProtocol.MessageRequest) {
+    private func handle(request: ChatProtocol.MessageRequest, from userId: UUID) {
         let protoMessages = buildProtoMessagesFrom(request: request)
-        log.info("Sending out \(protoMessages.count) stored message(s) upon request...")
+        log.info("Sending out \(protoMessages.count) stored message(s) upon request from \(findUser(for: userId)?.displayName ?? "?")...")
         for protoMessage in protoMessages {
+            // We need fresh ids since otherwise most nodes will ignore the message
+            var protoMessage = protoMessage
+            protoMessage.id = UUID()
             broadcast(protoMessage)
         }
     }
@@ -192,6 +198,7 @@ public class ChatController {
         if store {
             protoMessageStorage.store(message: protoMessage)
         }
+        receivedOriginalProtoMessageIds.insert(protoMessage.originalId)
         incrementClock()
     }
 
