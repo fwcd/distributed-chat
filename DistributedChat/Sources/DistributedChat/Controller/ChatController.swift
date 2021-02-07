@@ -68,6 +68,8 @@ public class ChatController {
                 listener(presence)
             }
         }
+
+        // TODO: Handle request for stored messages
     }
 
     public func send(content: String, on channel: ChatChannel? = nil, attaching attachments: [ChatAttachment]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
@@ -113,6 +115,21 @@ public class ChatController {
     private func broadcastPresence() {
         log.debug("Broadcasting presence: \(presence.status) (\(presence.info))")
         transportWrapper.broadcast(ChatProtocol.Message(updatedPresences: [presence]))
+    }
+
+    private func buildMessageRequest() -> ChatMessageRequest {
+        var chatMessageRequest: ChatMessageRequest
+        for item in chatMessageStorage.getStoredMessages(required: nil) {
+            chatMessageRequest[item.author.id] = item.logicalClock
+        }
+    }
+
+    private func buildMessageFromRequest(request: ChatMessageRequest) -> [ChatMessage] {
+        var messages: [ChatMessage] = [ChatMessage]()
+        for (key, value) in request.vectorClock {
+            messages.concat(chatMessageStorage.getStoredMessages(required = (message -> Bool in message.author.id == key && message.logicalClock > value)))
+        }
+        return messages
     }
     
     public func onAddChatMessage(_ handler: @escaping (ChatMessage) -> Void) {

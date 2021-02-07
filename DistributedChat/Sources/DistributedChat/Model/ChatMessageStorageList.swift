@@ -6,7 +6,7 @@ public class ChatMessageStorageList: ChatMessageStorage {
 
     public required init(storageSize: Int) {
         self.size = storageSize
-        self.list = [ChatMessage]()
+        self.list = [ChatProtocol.Message]()
     }
 
     public func storeMessage(message: ChatProtocol.Message) {
