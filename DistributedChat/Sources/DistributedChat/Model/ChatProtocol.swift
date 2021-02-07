@@ -7,11 +7,8 @@ public enum ChatProtocol {
         public var addedChatMessages: [ChatMessage]?
         public var updatedPresences: [ChatPresence]?
         public var deleteMessages: [ChatDeletion]?
-        public var chatMessageRequest: chatMessageRequest?
+        public var chatMessageRequest: ChatMessageRequest?
         public var logicalClock: Int
-
-        // TODO: Logical clock for eventual consistency
-        // (e.g. Lamport timestamp or vector clock)
 
         // TODO: Removed messages, status updates, etc.?
 
@@ -21,8 +18,8 @@ public enum ChatProtocol {
             addedChatMessages: [ChatMessage]? = nil,
             updatedPresences: [ChatPresence]? = nil,
             deleteMessages: [ChatDeletion]? = nil,
-            logicalClock: Int
-            chatMessageRequest: chatMessageRequest? = nil
+            logicalClock: Int,
+            chatMessageRequest: ChatMessageRequest? = nil
         ) {
             self.id = id
             self.visitedUsers = visitedUsers
@@ -30,7 +27,6 @@ public enum ChatProtocol {
             self.updatedPresences = updatedPresences
             self.deleteMessages = deleteMessages
             self.logicalClock = logicalClock
-        } 
             self.chatMessageRequest = chatMessageRequest
         }
     }

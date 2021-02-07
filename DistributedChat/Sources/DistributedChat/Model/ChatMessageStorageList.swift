@@ -13,7 +13,7 @@ public class ChatMessageStorageList: ChatMessageStorage {
         // Add new item via insertion sort
         if !contains(id: message.id){
             for (index, value) in list.enumerated() {
-                if value.logicalClock <= message.logicalClock && (index == list.count()-1 || list[index+1].logicalClock > message.logicalClock) {
+                if value.logicalClock <= message.logicalClock && (index == list.count - 1 || list[index + 1].logicalClock > message.logicalClock) {
                     list.insert(message, at: index)
                 }
             }
@@ -35,7 +35,7 @@ public class ChatMessageStorageList: ChatMessageStorage {
     public func setStorageSize(size: Int) /* throws */ {
         if size <= 0 {
             // TODO: Use appropiate exception
-            return        
+            return
         }
         self.size = size
         crop()

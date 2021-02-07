@@ -1,6 +1,6 @@
 import Foundation
 
 public struct ChatMessageRequest {
-    // Resembles the newest timestamp from a received message for a speciifc author
-    public var vectorTime: Dictionary<UUID,Int>
+    /// Resembles the newest timestamp from a received message for a specific author
+    public var vectorTime: [UUID: Int]
 }

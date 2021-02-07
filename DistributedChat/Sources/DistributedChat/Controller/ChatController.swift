@@ -25,7 +25,8 @@ public class ChatController {
         let privateKeys = ChatCryptoKeys.Private()
         self.privateKeys = privateKeys
         self.chatMessageStorage = chatMessageStorage
-        onDeleteMessage(deleteMessage)
+
+        onDeleteMessage(deleteMessage(deletion:))
 
         presence = ChatPresence(user: me)
         presence.user.publicKeys = privateKeys.publicKeys
@@ -47,6 +48,7 @@ public class ChatController {
         //       message.
         // What happens if one message takes two different
         // path to the same device?
+
         if !protoMessage.visitedUsers.contains(me.id) {
             var visitedUsers = Set(protoMessage.visitedUsers)
             visitedUsers.insert(me.id)
@@ -74,6 +76,7 @@ public class ChatController {
                 }
             }
         }
+
         // Handle presence updates
         
         for presence in protoMessage.updatedPresences ?? [] {
@@ -154,43 +157,6 @@ public class ChatController {
         transportWrapper.broadcast(ChatProtocol.Message(updatedPresences: [presence], logicalClock: presence.user.logicalClock))
     }
 
-    // TODO: Delete
-    // private func updateVectorClock(vectorClock: Dictionary<UUID,Int>) {
-    //     // TODO: Consider deleting old entries
-    //     var newMe = me
-    //     for (id, time) in vectorClock {
-    //         if newMe.vectorClock.keys.contains(id) {
-    //             if time > newMe.vectorClock[id]! {
-    //                 newMe.vectorClock[id] = time
-    //             }
-    //         } else {
-    //             newMe.vectorClock[id] = time
-    //         }
-    //     }
-    //     update(me: newMe)
-    // }
-
-    // TODO: Delete
-    // private func compareVectorTimes(vectorTime1: Dictionary<UUID,Int>, vectorTime2: Dictionary<UUID,Int>){
-    //     var returnValue: Int = 0
-    //     for id in vectorTime1.intersection(vectorTime2) {
-    //         if time1[key] < time2[key] {
-    //             if return_value <= 0 {
-    //                 return_value = -1
-    //             } else {
-    //                 return 0
-    //             }
-    //         } else if time1[key] > time2[key]{:
-    //             if return_value >= 0 {
-    //                 return_value = 1
-    //             } else {
-    //                 return 0
-    //             }
-    //         }
-    //     }
-    //     return return_value
-    // }
-
     private func deleteMessage(deletion: ChatDeletion) {
         chatMessageStorage.deleteMessage(id: deletion.messageId)
     }
@@ -198,14 +164,14 @@ public class ChatController {
     private func buildMessageRequest() -> ChatMessageRequest {
         var chatMessageRequest: ChatMessageRequest
         for item in chatMessageStorage.getStoredMessages(required: nil) {
-            chatMessageRequest[item.author.id] = item.logicalClock
+            chatMessageRequest.vectorTime[item.author.id] = item.logicalClock
         }
     }
 
     private func buildMessageFromRequest(request: ChatMessageRequest) -> [ChatMessage] {
         var messages: [ChatMessage] = [ChatMessage]()
-        for (key, value) in request.vectorClock {
-            messages.concat(chatMessageStorage.getStoredMessages(required = (message -> Bool in message.author.id == key && message.logicalClock > value)))
+        for (key, value) in request.vectorTime {
+            messages += chatMessageStorage.getStoredMessages { message in message.author.id == key && message.logicalClock > value }
         }
         return messages
     }
