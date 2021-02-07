@@ -10,13 +10,13 @@ public class ChatController {
     private let transportWrapper: ChatTransportWrapper<ChatProtocol.Message>
     private var addChatMessageListeners: [(ChatMessage) -> Void] = []
     private var updatePresenceListeners: [(ChatPresence) -> Void] = []
-    private var deleteMessageListeners: [(ChatDeletion) -> Void] = []
+    private var deleteChatMessageListeners: [(ChatDeletion) -> Void] = []
     private var userFinders: [(UUID) -> ChatUser?] = []
     public var emitAllReceivedChatMessages: Bool = false // including encrypted ones/those not for me
 
     // Internal state
-    private var protoMessageStorage: ChatProtocolMessageStorage = ChatProtocolMessageListStorage(size: 100)
-    private var receivedOriginalProtoMessageIds: Set<UUID> = []
+    private var messageCache: ChatMessageCache = ChatMessageListCache(size: 100)
+    private var receivedMessageIds: Set<UUID> = []
     private var presences: [UUID: ChatPresence] = [:]
 
     private let privateKeys: ChatCryptoKeys.Private
@@ -51,8 +51,12 @@ public class ChatController {
             self?.broadcastPresence()
         }
 
-        onDeleteMessage { [unowned self] in
-            protoMessageStorage.deleteMessage(id: $0.messageId)
+        onAddChatMessage { [unowned self] in
+            messageCache.store(message: $0)
+        }
+
+        onDeleteChatMessage { [unowned self] in
+            messageCache.deleteMessage(id: $0.messageId)
         }
     }
 
@@ -61,21 +65,15 @@ public class ChatController {
 
         transportWrapper.broadcast(protoMessage)
 
-        let originalId = protoMessage.originalId
-
-        if !receivedOriginalProtoMessageIds.contains(originalId) && protoMessage.isDestination(userId: me.id) {
-            receivedOriginalProtoMessageIds.insert(originalId)
-
+        if protoMessage.isDestination(userId: me.id) {
             // Store message and update clock
 
             update(logicalClock: protoMessage.logicalClock)
-            if protoMessage.shouldStore {
-                protoMessageStorage.store(message: protoMessage)
-            }
 
             // Handle message additions
 
-            for encryptedMessage in protoMessage.addedChatMessages ?? [] where encryptedMessage.isReceived(by: me.id) || emitAllReceivedChatMessages {
+            for encryptedMessage in protoMessage.addedChatMessages ?? [] where !receivedMessageIds.contains(encryptedMessage.id) && (encryptedMessage.isReceived(by: me.id) || emitAllReceivedChatMessages) {
+                receivedMessageIds.insert(encryptedMessage.id)
                 let chatMessage = encryptedMessage.decryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
 
                 if !chatMessage.isEncrypted || emitAllReceivedChatMessages {
@@ -115,7 +113,7 @@ public class ChatController {
             // Handle message deletions
 
             for deletion in protoMessage.deletedChatMessages ?? [] {
-                for listener in deleteMessageListeners {
+                for listener in deleteChatMessageListeners {
                     listener(deletion)
                 }
             }
@@ -143,6 +141,7 @@ public class ChatController {
             logicalClock: me.logicalClock
         )
 
+        receivedMessageIds.insert(chatMessage.id)
         broadcast(protoMessage)
         
         for listener in addChatMessageListeners {
@@ -176,14 +175,13 @@ public class ChatController {
     }
 
     private func handle(request: ChatProtocol.MessageRequest, from userId: UUID) {
-        let protoMessages = buildProtoMessagesFrom(request: request)
-        log.debug("Sending out \(protoMessages.count) stored message(s) upon request from \(findUser(for: userId)?.displayName ?? "?")...")
-        for protoMessage in protoMessages {
-            // We need fresh ids since otherwise most nodes will ignore the message
-            var protoMessage = protoMessage
-            protoMessage.id = UUID()
-            broadcast(protoMessage)
-        }
+        let messages = buildMessagesFrom(request: request).sorted { $0.timestamp < $1.timestamp }
+        log.debug("Sending out \(messages.count) stored message(s) upon request from \(findUser(for: userId)?.displayName ?? "?")...")
+        broadcast(ChatProtocol.Message(
+            sourceUserId: me.id,
+            addedChatMessages: messages,
+            logicalClock: me.logicalClock
+        ))
     }
     
     private func broadcastPresence() {
@@ -197,27 +195,23 @@ public class ChatController {
 
     private func broadcast(_ protoMessage: ChatProtocol.Message) {
         transportWrapper.broadcast(protoMessage)
-        if protoMessage.shouldStore {
-            protoMessageStorage.store(message: protoMessage)
-        }
-        receivedOriginalProtoMessageIds.insert(protoMessage.originalId)
         incrementClock()
     }
 
     private func buildMessageRequest() -> ChatProtocol.MessageRequest {
-        let stored = protoMessageStorage.getStoredMessages(required: nil)
+        let stored = messageCache.getStoredMessages(required: nil)
         let vectorTime = Dictionary(uniqueKeysWithValues: presences.keys.map { ($0, Date.distantPast) })
             .merging(
-                Dictionary(grouping: stored, by: { $0.sourceUserId }).compactMapValues { $0.map(\.timestamp).max() },
+                Dictionary(grouping: stored, by: { $0.author.id }).compactMapValues { $0.map(\.timestamp).max() },
                 uniquingKeysWith: max
             )
         log.debug("Request vector: \(vectorTime)")
         return ChatProtocol.MessageRequest(vectorTime: vectorTime)
     }
 
-    private func buildProtoMessagesFrom(request: ChatProtocol.MessageRequest) -> [ChatProtocol.Message] {
-        protoMessageStorage
-            .getStoredMessages { $0.timestamp > (request.vectorTime[$0.sourceUserId] ?? Date.distantPast) }
+    private func buildMessagesFrom(request: ChatProtocol.MessageRequest) -> [ChatMessage] {
+        messageCache
+            .getStoredMessages { $0.timestamp > (request.vectorTime[$0.author.id] ?? Date.distantPast) }
     }
     
     public func onAddChatMessage(_ handler: @escaping (ChatMessage) -> Void) {
@@ -228,8 +222,8 @@ public class ChatController {
         updatePresenceListeners.append(handler)
     }
 
-    public func onDeleteMessage(_ handler: @escaping (ChatDeletion) -> Void) {
-        deleteMessageListeners.append(handler)
+    public func onDeleteChatMessage(_ handler: @escaping (ChatDeletion) -> Void) {
+        deleteChatMessageListeners.append(handler)
     }
 
     public func onFindUser(_ handler: @escaping (UUID) -> ChatUser?) {

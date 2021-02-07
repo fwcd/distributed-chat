@@ -1,38 +1,38 @@
 import Foundation
 import Logging
 
-fileprivate let log = Logger(label: "DistributedChat.ChatProtocolMessageListStorage")
+fileprivate let log = Logger(label: "DistributedChat.ChatMessageListCache")
 
-public struct ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
+public struct ChatMessageListCache: ChatMessageCache {
     // TODO: Perhaps use a more efficient data structure, e.g.
     //       a cyclic buffer to make cropping efficient or
     //       a priority queue to make insertion efficient?
-    private var list: [ChatProtocol.Message]
+    private var list: [ChatMessage]
     public var size: Int {
         didSet {
-            if size < 0 { fatalError("Storage size cannot be less than zero!") }
+            if size < 0 { fatalError("Cache size cannot be less than zero!") }
             crop()
         }
     }
 
     public init(size: Int) {
-        self.list = [ChatProtocol.Message]()
+        self.list = [ChatMessage]()
         self.size = size
     }
 
-    public mutating func store(message: ChatProtocol.Message) {
+    public mutating func store(message: ChatMessage) {
         // Add new item via insertion sort
         if list.isEmpty {
             list.append(message)
         } else if !contains(id: message.id) {
             for (index, value) in list.enumerated() {
-                if value.logicalClock <= message.logicalClock && (index == list.count - 1 || list[index + 1].logicalClock > message.logicalClock) {
+                if value.timestamp <= message.timestamp && (index == list.count - 1 || list[index + 1].timestamp > message.timestamp) {
                     list.insert(message, at: index)
                 }
             }
 
             crop()
-            log.debug("Stored chat messages: \(list.flatMap { $0.addedChatMessages ?? [] }.map(\.displayContent))")
+            log.debug("Stored chat messages: \(list.map(\.displayContent))")
         }
     }
 
@@ -47,10 +47,10 @@ public struct ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
         return false
     }
 
-    public func getStoredMessages(required: ((ChatProtocol.Message) -> Bool)?)  -> [ChatProtocol.Message] { 
+    public func getStoredMessages(required: ((ChatMessage) -> Bool)?)  -> [ChatMessage] { 
         guard let required = required else { return list }
 
-        var returnValue: [ChatProtocol.Message] = [ChatProtocol.Message]()
+        var returnValue: [ChatMessage] = [ChatMessage]()
         for item in list {
             if required(item) {
                 returnValue.append(item)
