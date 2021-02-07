@@ -59,6 +59,9 @@ function updateDynamically(nodes, edges) {
     // How many decimal places shall be rendered for link settings.
     const displayPrecision = 2;
 
+    // How many 'in-flight' messages there currently are.
+    let liveCount = 0;
+
     ws.addEventListener("open", () => {
         ws.send(JSON.stringify({type: "observe"}));
     });
@@ -86,7 +89,7 @@ function updateDynamically(nodes, edges) {
             break;
         case "broadcastNotification":
             const parsedContent = formatChatProtocolMessage(message.data.content);
-            if (liveEdgesEnabled() && parsedContent) {
+            if (liveEdgesEnabled() && parsedContent && liveCount <= (8 * nodes.length)) {
                 const [label, color] = parsedContent;
                 const timeoutMs = 1000;
                 const link = message.data.link;
@@ -98,9 +101,11 @@ function updateDynamically(nodes, edges) {
                     color: color,
                     widthConstraint: 400
                 });
+                liveCount += 1;
                 console.log(id);
                 window.setTimeout(() => {
                     edges.remove(id);
+                    liveCount -= 1;
                 }, timeoutMs);
             }
             break;
