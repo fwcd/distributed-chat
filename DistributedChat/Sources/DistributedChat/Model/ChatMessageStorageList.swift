@@ -1,6 +1,6 @@
 import Foundation
 
-public class ChatMessageStorageList: ChatMessageStorage {
+public class ChatProtocolMessageStorageList: ChatProtocolMessageStorage {
     private var size: Int
     private var list: [ChatProtocol.Message]
 

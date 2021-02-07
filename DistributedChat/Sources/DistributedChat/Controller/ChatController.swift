@@ -13,7 +13,7 @@ public class ChatController {
     private var deleteMessageListeners: [(ChatDeletion) -> Void] = []
     private var userFinders: [(UUID) -> ChatUser?] = []
     public var emitAllReceivedChatMessages: Bool = false // including encrypted ones/those not for me
-    private var chatMessageStorage: ChatMessageStorage
+    private var protoMessageStorage: ChatProtocolMessageStorage
 
     private let privateKeys: ChatCryptoKeys.Private
     private var presenceTimer: RepeatingTimer?
@@ -21,10 +21,10 @@ public class ChatController {
 
     public var me: ChatUser { presence.user }
 
-    public init(me: ChatUser = ChatUser(), transport: ChatTransport, chatMessageStorage: ChatMessageStorage = ChatMessageStorageList(storageSize: 100)) {
+    public init(me: ChatUser = ChatUser(), transport: ChatTransport, protoMessageStorage: ChatProtocolMessageStorage = ChatProtocolMessageStorageList(storageSize: 100)) {
         let privateKeys = ChatCryptoKeys.Private()
         self.privateKeys = privateKeys
-        self.chatMessageStorage = chatMessageStorage
+        self.protoMessageStorage = protoMessageStorage
 
         onDeleteMessage(deleteMessage(deletion:))
 
@@ -54,7 +54,7 @@ public class ChatController {
             visitedUsers.insert(me.id)
             // Rebroadcast message
             transportWrapper.broadcast(ChatProtocol.Message(visitedUsers: visitedUsers, addedChatMessages: protoMessage.addedChatMessages, logicalClock: protoMessage.logicalClock))
-            chatMessageStorage.storeMessage(message: protoMessage)
+            protoMessageStorage.storeMessage(message: protoMessage)
             // Handle message
             
 
@@ -158,12 +158,12 @@ public class ChatController {
     }
 
     private func deleteMessage(deletion: ChatDeletion) {
-        chatMessageStorage.deleteMessage(id: deletion.messageId)
+        protoMessageStorage.deleteMessage(id: deletion.messageId)
     }
 
     private func buildMessageRequest() -> ChatMessageRequest {
         var chatMessageRequest: ChatMessageRequest
-        for item in chatMessageStorage.getStoredMessages(required: nil) {
+        for item in protoMessageStorage.getStoredMessages(required: nil) {
             chatMessageRequest.vectorTime[item.author.id] = item.logicalClock
         }
     }
@@ -171,7 +171,7 @@ public class ChatController {
     private func buildMessageFromRequest(request: ChatMessageRequest) -> [ChatMessage] {
         var messages: [ChatMessage] = [ChatMessage]()
         for (key, value) in request.vectorTime {
-            messages += chatMessageStorage.getStoredMessages { message in message.author.id == key && message.logicalClock > value }
+            messages += protoMessageStorage.getStoredMessages { message in message.author.id == key && message.logicalClock > value }
         }
         return messages
     }

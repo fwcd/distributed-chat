@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol ChatMessageStorage {
+public protocol ChatProtocolMessageStorage {
     init(storageSize: Int)
 
     func storeMessage(message: ChatProtocol.Message)
