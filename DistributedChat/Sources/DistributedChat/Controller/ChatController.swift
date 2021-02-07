@@ -163,7 +163,7 @@ public class ChatController {
     }
 
     private func findUser(for userId: UUID) -> ChatUser? {
-        userFinders.lazy.compactMap { $0(userId) }.first
+        presences[userId]?.user ?? userFinders.lazy.compactMap { $0(userId) }.first
     }
 
     private func findPublicKeys(for userId: UUID) -> ChatCryptoKeys.Public? {
