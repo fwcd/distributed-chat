@@ -18,6 +18,8 @@ public enum ChatProtocol {
         public var messageRequest: MessageRequest?
         public var logicalClock: Int
 
+        public var shouldStore: Bool { [addedChatMessages?.isEmpty ?? true, deletedChatMessages?.isEmpty ?? true].contains { !$0 } }
+
         public init(
             id: UUID = UUID(),
             originalId: UUID? = nil,

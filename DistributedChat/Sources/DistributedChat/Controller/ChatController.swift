@@ -69,7 +69,9 @@ public class ChatController {
             // Store message and update clock
 
             update(logicalClock: protoMessage.logicalClock)
-            protoMessageStorage.store(message: protoMessage)
+            if protoMessage.shouldStore {
+                protoMessageStorage.store(message: protoMessage)
+            }
 
             // Handle message additions
 
@@ -141,7 +143,7 @@ public class ChatController {
             logicalClock: me.logicalClock
         )
 
-        broadcast(protoMessage, store: true)
+        broadcast(protoMessage)
         
         for listener in addChatMessageListeners {
             listener(chatMessage)
@@ -193,9 +195,9 @@ public class ChatController {
         ))
     }
 
-    private func broadcast(_ protoMessage: ChatProtocol.Message, store: Bool = false) {
+    private func broadcast(_ protoMessage: ChatProtocol.Message) {
         transportWrapper.broadcast(protoMessage)
-        if store {
+        if protoMessage.shouldStore {
             protoMessageStorage.store(message: protoMessage)
         }
         receivedOriginalProtoMessageIds.insert(protoMessage.originalId)
