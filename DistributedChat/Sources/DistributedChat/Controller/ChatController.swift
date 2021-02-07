@@ -176,12 +176,14 @@ public class ChatController {
 
     private func handle(request: ChatProtocol.MessageRequest, from userId: UUID) {
         let messages = buildMessagesFrom(request: request).sorted { $0.timestamp < $1.timestamp }
-        log.debug("Sending out \(messages.count) stored message(s) upon request from \(findUser(for: userId)?.displayName ?? "?")...")
-        broadcast(ChatProtocol.Message(
-            sourceUserId: me.id,
-            addedChatMessages: messages,
-            logicalClock: me.logicalClock
-        ))
+        if !messages.isEmpty {
+            log.debug("Sending out \(messages.count) stored message(s) upon request from \(findUser(for: userId)?.displayName ?? "?")...")
+            broadcast(ChatProtocol.Message(
+                sourceUserId: me.id,
+                addedChatMessages: messages,
+                logicalClock: me.logicalClock
+            ))
+        }
     }
     
     private func broadcastPresence() {
