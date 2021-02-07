@@ -84,26 +84,26 @@ public class ChatController {
                 let userId = newPresence.user.id
                 let oldPresence = presences[userId]
 
-                if oldPresence == nil {
-                    // A new user is now reachable on the network,
-                    // we therefore request the newest messages from
-                    // him.
-
-                    log.info("\(newPresence.user.displayName) is now reachable, we'll request messages from him...")
-                    broadcast(ChatProtocol.Message(
-                        sourceUserId: me.id,
-                        destinationUserId: newPresence.user.id,
-                        messageRequest: buildMessageRequest(),
-                        logicalClock: me.logicalClock
-                    ))
-                }
-
                 if oldPresence != newPresence {
                     presences[userId] = newPresence
 
                     for listener in updatePresenceListeners {
                         listener(newPresence)
                     }
+                }
+
+                if oldPresence == nil {
+                    // A new user is now reachable on the network,
+                    // we therefore request the newest messages from
+                    // him.
+
+                    log.info("\(newPresence.user.displayName) is now reachable, we'll request messages from him/her...")
+                    broadcast(ChatProtocol.Message(
+                        sourceUserId: me.id,
+                        destinationUserId: newPresence.user.id,
+                        messageRequest: buildMessageRequest(),
+                        logicalClock: me.logicalClock
+                    ))
                 }
             }
 
@@ -197,17 +197,18 @@ public class ChatController {
 
     private func buildMessageRequest() -> ChatProtocol.MessageRequest {
         let stored = protoMessageStorage.getStoredMessages(required: nil)
-        let vectorTime = Dictionary(grouping: stored, by: { $0.sourceUserId })
-            .mapValues { $0.last?.timestamp ?? .distantPast }
+        let vectorTime = Dictionary(uniqueKeysWithValues: presences.keys.map { ($0, Date.distantPast) })
+            .merging(
+                Dictionary(grouping: stored, by: { $0.sourceUserId }).compactMapValues { $0.map(\.timestamp).max() },
+                uniquingKeysWith: max
+            )
+        log.debug("Request vector: \(vectorTime)")
         return ChatProtocol.MessageRequest(vectorTime: vectorTime)
     }
 
     private func buildProtoMessagesFrom(request: ChatProtocol.MessageRequest) -> [ChatProtocol.Message] {
-        var messages = [ChatProtocol.Message]()
-        for (userId, timestamp) in request.vectorTime {
-            messages += protoMessageStorage.getStoredMessages { $0.sourceUserId == userId && $0.timestamp > timestamp }
-        }
-        return messages
+        protoMessageStorage
+            .getStoredMessages { $0.timestamp > (request.vectorTime[$0.sourceUserId] ?? Date.distantPast) }
     }
     
     public func onAddChatMessage(_ handler: @escaping (ChatMessage) -> Void) {

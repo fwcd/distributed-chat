@@ -1,6 +1,9 @@
 import Foundation
 
 public struct ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
+    // TODO: Perhaps use a more efficient data structure, e.g.
+    //       a cyclic buffer to make cropping efficient or
+    //       a priority queue to make insertion efficient?
     private var list: [ChatProtocol.Message]
     public var size: Int {
         didSet {
@@ -16,7 +19,9 @@ public struct ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
 
     public mutating func store(message: ChatProtocol.Message) {
         // Add new item via insertion sort
-        if !contains(id: message.id) {
+        if list.isEmpty {
+            list.append(message)
+        } else if !contains(id: message.id) {
             for (index, value) in list.enumerated() {
                 if value.logicalClock <= message.logicalClock && (index == list.count - 1 || list[index + 1].logicalClock > message.logicalClock) {
                     list.insert(message, at: index)
@@ -47,7 +52,7 @@ public struct ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
                 returnValue.append(item)
             }
         }
-        return returnValue;
+        return returnValue
     }
 
     private func contains(id: UUID) -> Bool {
