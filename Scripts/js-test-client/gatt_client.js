@@ -39,16 +39,23 @@ noble.on('discover', async peripheral => {
     console.log(`Discovered our characteristics!`);
     const userName = (await userNameChar.readAsync()).toString('utf-8');
     const userID = (await userIDChar.readAsync()).toString('utf-8');
+    let logicalClock = 0;
 
     while (true) {
       const content = await question('Please enter a message: ');
+      const protoMessageId = uuid4();
+      const timestamp = Date.now() / 1000.0;
       const json = JSON.stringify({
-        id: uuid4(),
+        id: protoMessageId,
+        originalId: protoMessageId,
+        timestamp: timestamp,
+        sourceUserId: uuid4(),
         visitedUsers: [],
+        logicalClock: logicalClock++,
         addedChatMessages: [
           {
             id: uuid4(),
-            timestamp: Date.now() / 1000.0,
+            timestamp: timestamp,
             author: {
               id: myID,
               name: myName

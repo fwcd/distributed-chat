@@ -36,17 +36,23 @@ while True:
                 if characteristics:
                     my_name = 'Test Client'
                     my_id = str(uuid4())
+                    logical_clock = 0
                     while True:
                         content = input(f'  >> Enter a chat message to send: ')
                         # See ChatProtocol.Message in DistributedChat package for a
                         # description of the JSON message structure.
+                        proto_message_id = str(uuid4())
+                        timestamp = time.time()
                         s = (json.dumps({
-                            'id': str(uuid4()),
+                            'id': proto_message_id,
+                            'originalId': proto_message_id,
+                            'timestamp': timestamp,
+                            'logicalClock': logical_clock,
                             'visitedUsers': [],
                             'addedChatMessages': [
                                 {
                                     'id': str(uuid4()),
-                                    'timestamp': time.time(),
+                                    'timestamp': timestamp,
                                     'author': {
                                         'id': my_id,
                                         'name': my_name
@@ -61,6 +67,7 @@ while True:
                         c = characteristics[0]
                         c.write(s, withResponse=True)
                         print('  >> Wrote successfully!')
-                    else:
-                        print('  >> Could not find our characteristic. :(')
+                        logical_clock += 1
+                else:
+                    print('  >> Could not find our characteristic. :(')
                 peripheral.disconnect()
