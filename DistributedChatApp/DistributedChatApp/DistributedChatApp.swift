@@ -8,6 +8,7 @@
 import AVFoundation
 import Combine
 import DistributedChat
+import Dispatch
 import Logging
 import LoggingOSLog
 import SwiftUI
@@ -36,11 +37,15 @@ private class AppState {
         let controller = ChatController(me: profile.me, transport: transport)
         
         controller.onAddChatMessage { [unowned messages] message in
-            messages.append(message: message)
+            DispatchQueue.main.async {
+                messages.append(message: message)
+            }
         }
         
         controller.onUpdatePresence { [unowned network] presence in
-            network.register(presence: presence)
+            DispatchQueue.main.async {
+                network.register(presence: presence)
+            }
         }
         
         controller.onFindUser { [unowned network] id in
