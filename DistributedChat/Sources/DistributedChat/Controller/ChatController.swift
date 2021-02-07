@@ -29,17 +29,21 @@ public class ChatController {
         presence.user.publicKeys = privateKeys.publicKeys
         
         transportWrapper = ChatTransportWrapper(transport: transport)
-        transportWrapper.onReceive(handleReceive)
+        transportWrapper.onReceive { [unowned self] in
+            handle(protoMessage: $0)
+        }
         
         // Broadcast the presence every 10 seconds
         presenceTimer = RepeatingTimer(interval: 10.0) { [weak self] in
             self?.broadcastPresence()
         }
 
-        onDeleteMessage(deleteMessage(deletion:))
+        onDeleteMessage { [unowned self] in
+            protoMessageStorage.deleteMessage(id: $0.messageId)
+        }
     }
 
-    private func handleReceive(_ protoMessage: ChatProtocol.Message) {
+    private func handle(protoMessage: ChatProtocol.Message) {
         // Rebroadcast message
 
         transportWrapper.broadcast(protoMessage)
@@ -49,7 +53,7 @@ public class ChatController {
         update(logicalClock: protoMessage.logicalClock)
         protoMessageStorage.store(message: protoMessage)
 
-        // Handle message
+        // Handle message additions
 
         for encryptedMessage in protoMessage.addedChatMessages ?? [] where encryptedMessage.isReceived(by: me.id) || emitAllReceivedChatMessages {
             let chatMessage = encryptedMessage.decryptedIfNeeded(with: privateKeys, keyFinder: findPublicKeys(for:))
@@ -78,7 +82,7 @@ public class ChatController {
         }
 
         if let chatMessageRequest = protoMessage.chatMessageRequest {
-            handleRequest(chatMessageRequest)
+            handle(request: chatMessageRequest)
         }
     }
 
@@ -140,8 +144,8 @@ public class ChatController {
         update(presence: newPresence)
     }
 
-    private func handleRequest(_ request: ChatMessageRequest) {
-        // buildMessageFromRequest(chatMessageRequest) and send it
+    private func handle(request: ChatMessageRequest) {
+        // buildProtoMessagesFrom(chatMessageRequest) and send it
     }
     
     private func broadcastPresence() {
@@ -154,10 +158,6 @@ public class ChatController {
         ))
     }
 
-    private func deleteMessage(deletion: ChatDeletion) {
-        protoMessageStorage.deleteMessage(id: deletion.messageId)
-    }
-
     private func buildMessageRequest() -> ChatMessageRequest {
         var request = ChatMessageRequest()
         for item in protoMessageStorage.getStoredMessages(required: nil) {
@@ -166,7 +166,7 @@ public class ChatController {
         return request
     }
 
-    private func buildMessageFromRequest(request: ChatMessageRequest) -> [ChatProtocol.Message] {
+    private func buildProtoMessagesFrom(request: ChatMessageRequest) -> [ChatProtocol.Message] {
         var messages = [ChatProtocol.Message]()
         for (key, value) in request.vectorTime {
             messages += protoMessageStorage.getStoredMessages { message in message.sourceUserId == key && message.logicalClock > value }
