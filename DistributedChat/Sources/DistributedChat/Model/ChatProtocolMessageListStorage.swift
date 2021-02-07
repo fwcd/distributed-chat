@@ -1,15 +1,20 @@
 import Foundation
 
-public class ChatProtocolMessageStorageList: ChatProtocolMessageStorage {
-    private var size: Int
+public class ChatProtocolMessageListStorage: ChatProtocolMessageStorage {
     private var list: [ChatProtocol.Message]
-
-    public required init(storageSize: Int) {
-        self.size = storageSize
-        self.list = [ChatProtocol.Message]()
+    public var size: Int {
+        didSet {
+            if size < 0 { fatalError("Storage size cannot be less than zero!") }
+            crop()
+        }
     }
 
-    public func storeMessage(message: ChatProtocol.Message) {
+    public init(size: Int) {
+        self.list = [ChatProtocol.Message]()
+        self.size = size
+    }
+
+    public func store(message: ChatProtocol.Message) {
         // Add new item via insertion sort
         if !contains(id: message.id){
             for (index, value) in list.enumerated() {
@@ -31,15 +36,6 @@ public class ChatProtocolMessageStorageList: ChatProtocolMessageStorage {
             }
         }
         return false
-    }
-
-    public func setStorageSize(size: Int) /* throws */ {
-        if size <= 0 {
-            // TODO: Use appropiate exception
-            return
-        }
-        self.size = size
-        crop()
     }
 
     public func getStoredMessages(required: ((ChatProtocol.Message) -> Bool)?)  -> [ChatProtocol.Message] { 
@@ -65,7 +61,7 @@ public class ChatProtocolMessageStorageList: ChatProtocolMessageStorage {
         return false
     }
 
-    private func crop () {
+    private func crop() {
         // Remove logically oldes item until list is small enough
         while list.count > size {
             list.remove(at: 0)

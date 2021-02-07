@@ -1,14 +1,12 @@
 import Foundation
 
 public protocol ChatProtocolMessageStorage {
-    init(storageSize: Int)
+    var size: Int { get set }
 
-    func storeMessage(message: ChatProtocol.Message)
+    func store(message: ChatProtocol.Message)
 
     @discardableResult
     func deleteMessage(id: UUID) -> Bool
-
-    func setStorageSize(size: Int)
 
     func getStoredMessages(required: ((ChatProtocol.Message) -> Bool)?) -> [ChatProtocol.Message]
 }

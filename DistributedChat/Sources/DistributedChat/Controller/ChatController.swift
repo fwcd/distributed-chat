@@ -21,7 +21,7 @@ public class ChatController {
 
     public var me: ChatUser { presence.user }
 
-    public init(me: ChatUser = ChatUser(), transport: ChatTransport, protoMessageStorage: ChatProtocolMessageStorage = ChatProtocolMessageStorageList(storageSize: 100)) {
+    public init(me: ChatUser = ChatUser(), transport: ChatTransport, protoMessageStorage: ChatProtocolMessageStorage = ChatProtocolMessageListStorage(size: 100)) {
         let privateKeys = ChatCryptoKeys.Private()
         self.privateKeys = privateKeys
         self.protoMessageStorage = protoMessageStorage
@@ -61,7 +61,7 @@ public class ChatController {
                 addedChatMessages: protoMessage.addedChatMessages,
                 logicalClock: protoMessage.logicalClock
             ))
-            protoMessageStorage.storeMessage(message: protoMessage)
+            protoMessageStorage.store(message: protoMessage)
 
             // Handle message
 
