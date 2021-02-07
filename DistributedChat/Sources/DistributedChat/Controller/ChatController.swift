@@ -70,6 +70,9 @@ public class ChatController {
         }
 
         // TODO: Handle request for stored messages
+        if protoMessage.chatMessageRequest != nil {
+            handleRequest(protoMessage.chatMessageRequest)
+        }
     }
 
     public func send(content: String, on channel: ChatChannel? = nil, attaching attachments: [ChatAttachment]? = nil, replyingTo repliedToMessageId: UUID? = nil) {
@@ -110,6 +113,10 @@ public class ChatController {
 
     private func findPublicKeys(for userId: UUID) -> ChatCryptoKeys.Public? {
         findUser(for: userId)?.publicKeys
+    }
+
+    private func handleRequest(request: ChatMessageRequest) {
+        // buildMessageFromRequest(chatMessageRequest) and send it
     }
     
     private func broadcastPresence() {
