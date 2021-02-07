@@ -2,6 +2,7 @@ import ArgumentParser
 import Dispatch
 import DistributedChat
 import Foundation
+import Logging
 
 struct DistributedChatCLI: ParsableCommand {
     @Argument(help: "The messaging WebSocket URL of the simulation server to connect to")
@@ -11,6 +12,8 @@ struct DistributedChatCLI: ParsableCommand {
     var name: String
 
     func run() {
+        LoggingSystem.bootstrap { CLILogHandler(label: $0) }
+
         print("Connecting to \(simulationMessagingURL)...")
 
         SimulationTransport.connect(url: simulationMessagingURL, name: name) { transport in
