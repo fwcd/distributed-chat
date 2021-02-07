@@ -38,31 +38,33 @@ The dependency graph between these packages looks like this:
        iOS only                     cross-platform, for testing
 ```
 
-## Build & Run
+## Building and Running
 
-### Cross-platform
+First, make sure to have Swift 5.3+ or newer installed. Recent versions for Ubuntu and macOS can be found [here](https://swift.org/download/).
 
-To build the `DistributedChat`, `DistributedChatCLI` or `DistributedSimulationServer` packages, make sure to have the following installed:
+### Simulation Server
 
-* Swift 5.3+
-
-Then navigate into the package subdirectory and run
-
-```
-swift build
-```
-
-or
+To run the simulation server, navigate into the directory `DistributedChatSimulationServer` and execute:
 
 ```
 swift run
 ```
 
-if the package is executable.
+The web interface should now be accessible at `http://localhost:8080`.
 
-### macOS
+### CLI
 
-To build the `DistributedChatApp`, make sure to have the following installed:
+To start a single instance of the CLI, make sure that the simulation server is running, navigate into `DistributedChatCLI` and execute:
+
+```
+swift run DistributedChatCLI --name Alice
+```
+
+You can substitute any name for Alice. Once the CLI has started, the chosen name should show up as a node in the simulation server's web interface.
+
+### iOS app
+
+Building and running the iOS app is only possible on macOS, so make sure to have the following available:
 
 * Xcode 12+
 * Swift 5.3 (should be included with Xcode)
