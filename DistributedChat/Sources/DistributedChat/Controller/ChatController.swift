@@ -75,14 +75,16 @@ public class ChatController {
 
         // Handle message deletions
 
-        for deletion in protoMessage.deleteMessages ?? [] {
+        for deletion in protoMessage.deletedChatMessages ?? [] {
             for listener in deleteMessageListeners {
                 listener(deletion)
             }
         }
 
-        if let protoMessageRequest = protoMessage.protoMessageRequest {
-            handle(request: protoMessageRequest)
+        // Handle protocol message requests
+
+        if let request = protoMessage.messageRequest {
+            handle(request: request)
         }
     }
 
@@ -144,7 +146,7 @@ public class ChatController {
         update(presence: newPresence)
     }
 
-    private func handle(request: ChatProtocolMessageRequest) {
+    private func handle(request: ChatProtocol.MessageRequest) {
         // buildProtoMessagesFrom(protoMessageRequest) and send it
     }
     
@@ -158,15 +160,15 @@ public class ChatController {
         ))
     }
 
-    private func buildMessageRequest() -> ChatProtocolMessageRequest {
-        var request = ChatProtocolMessageRequest()
+    private func buildMessageRequest() -> ChatProtocol.MessageRequest {
+        var request = ChatProtocol.MessageRequest()
         for item in protoMessageStorage.getStoredMessages(required: nil) {
             request.vectorTime[item.sourceUserId] = item.logicalClock
         }
         return request
     }
 
-    private func buildProtoMessagesFrom(request: ChatProtocolMessageRequest) -> [ChatProtocol.Message] {
+    private func buildProtoMessagesFrom(request: ChatProtocol.MessageRequest) -> [ChatProtocol.Message] {
         var messages = [ChatProtocol.Message]()
         for (key, value) in request.vectorTime {
             messages += protoMessageStorage.getStoredMessages { message in message.sourceUserId == key && message.logicalClock > value }
