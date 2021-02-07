@@ -46,6 +46,7 @@ while True:
                             'id': str(uuid4()),
                             'timestamp': timestamp,
                             'logicalClock': logical_clock,
+                            'sourceUserId': my_id,
                             'visitedUsers': [],
                             'addedChatMessages': [
                                 {

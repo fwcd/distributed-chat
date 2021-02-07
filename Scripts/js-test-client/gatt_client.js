@@ -47,7 +47,7 @@ noble.on('discover', async peripheral => {
       const json = JSON.stringify({
         id: uuid4(),
         timestamp: timestamp,
-        sourceUserId: uuid4(),
+        sourceUserId: myID,
         visitedUsers: [],
         logicalClock: logicalClock++,
         addedChatMessages: [
