@@ -6,15 +6,15 @@
 [![Simulation Protocol Build](https://github.com/fwcd/distributed-chat/workflows/Simulation%20Protocol/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3A"Simulation+Protocol")
 [![Simulation Server Build](https://github.com/fwcd/distributed-chat/workflows/Simulation%20Server/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3A"Simulation+Server")
 
-<div style="text-align: center">
+<div align="center">
 <p>
-<img alt="Logo" src="Images/logo.svg" style="width: 200px;">
+<img alt="Logo" src="Images/logo.svg" width="200">
 </p>
 
 <p>
-<img alt="Lock Screen Screenshot" src="Images/lockscreen.png" style="width: 140px;">
-<img alt="Channels Screen Screenshot" src="Images/channels.png" style="width: 140px;">
-<img alt="Channel Screenshot" src="Images/channel.png" style="width: 140px;">
+<img alt="Lock Screen Screenshot" src="Images/lockscreen.png" width="140">
+<img alt="Channels Screen Screenshot" src="Images/channels.png" width="140">
+<img alt="Channel Screenshot" src="Images/channel.png" width="140">
 </p>
 </div>
 
