@@ -6,9 +6,26 @@
 [![Simulation Protocol Build](https://github.com/fwcd/distributed-chat/workflows/Simulation%20Protocol/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3A"Simulation+Protocol")
 [![Simulation Server Build](https://github.com/fwcd/distributed-chat/workflows/Simulation%20Server/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3A"Simulation+Server")
 
-A cross-platform distributed chat application that uses mesh networks to transmit messages.
+<div style="text-align: center">
+<p>
+<img alt="Logo" src="Images/logo.svg" style="width: 200px;">
+</p>
 
-![Logo](logo.svg)
+<p>
+<img alt="Lock Screen Screenshot" src="Images/lockscreen.png" style="width: 140px;">
+<img alt="Channels Screen Screenshot" src="Images/channels.png" style="width: 140px;">
+<img alt="Channel Screenshot" src="Images/channel.png" style="width: 140px;">
+</p>
+</div>
+
+A distributed chat messenger that uses Bluetooth LE mesh networks.
+
+* Fully decentralized architecture, no server or Internet connection required
+* Message caching, delayed transmission
+* Public and private end-to-end-encrypted messaging channels
+* Voice messages, image, file and contact attachments
+* Full simulation environment with configurable nodes, links and much more included
+* Cross-platform, portable core
 
 ## Components
 
