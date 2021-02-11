@@ -36,6 +36,7 @@ The project consists of the following components:
 * `DistributedChatCLI`: The CLI implementation, uses HTTP/WebSockets as transport with the simulation server
 * `DistributedChatSimulationProtocol`: The high-level JSON-based protocol used between CLI and simulation server
 * `DistributedChatSimulationServer`: The companion server for the CLI, relays messages between connected CLI nodes, provides web-interface for configuring links between nodes
+* `Scripts`: Scripts for launching CLI instances conveniently and for testing the BLE transport
 
 The dependency graph between these packages looks like this:
 
