@@ -24,15 +24,19 @@ public class BluetoothLinuxTransport: ChatTransport {
         log.info("Found host controller \(hostController.identifier) with address \(try! hostController.readDeviceAddress())")
 
         central = GATTCentral(hostController: hostController)
-        try central.scan(foundDevice: handle(discovery:))
+        central.newConnection = { (scanData, advReport) in
+            try BluetoothLinux.L2CAPSocket(controllerAddress: scanData.peripheral.identifier)
+        }
+
+        try central.scan(foundDevice: handle(peripheralDiscovery:))
     }
 
     deinit {
         central.stopScan()
     }
 
-    private func handle(discovery: ScanData<Peripheral, GATTCentral.Advertisement>) {
-        log.info("Discovered peripheral \(discovery.peripheral.identifier) (RSSI: \(discovery.rssi), connectable: \(discovery.isConnectable))")
+    private func handle(peripheralDiscovery scanData: ScanData<Peripheral, GATTCentral.Advertisement>) {
+        log.info("Discovered peripheral \(scanData.peripheral.identifier) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
     }
 
     public func broadcast(_ raw: String) {
