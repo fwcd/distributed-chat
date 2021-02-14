@@ -18,7 +18,7 @@ fileprivate let characteristicUUID = UUID(uuidString: "440a594c-3cc2-494a-a08a-b
 typealias GATTCentral = GATT.GATTCentral<BluetoothLinux.HostController, BluetoothLinux.L2CAPSocket>
 
 public class BluetoothLinuxTransport: ChatTransport {
-    private let central: GATTCentral
+    private let localCentral: GATTCentral
     private let queue = DispatchQueue(label: "DistributedChatCLI.BluetoothLinuxTransport")
 
     private var nearbyPeripherals: [Peripheral: DiscoveredPeripheral] = [:]
@@ -33,23 +33,23 @@ public class BluetoothLinuxTransport: ChatTransport {
 
         // TODO: Act as a peripheral too
 
-        central = GATTCentral(hostController: hostController)
-        central.newConnection = { (scanData, advReport) in
+        localCentral = GATTCentral(hostController: hostController)
+        localCentral.newConnection = { (scanData, advReport) in
             try BluetoothLinux.L2CAPSocket.lowEnergyClient(
                 destination: (address: advReport.address, type: .init(lowEnergy: advReport.addressType))
             )
         }
-        central.didDisconnect = { [unowned self] peripheral in
+        localCentral.didDisconnect = { [unowned self] peripheral in
             log.info("Disconnected from \(peripheral.identifier)")
             nearbyPeripherals[peripheral] = nil
         }
-        central.log = { msg in
+        localCentral.log = { msg in
             log.debug("Internal: \(msg)")
         }
 
         queue.async { [weak self] in
             do {
-                try self?.central.scan(filterDuplicates: false) { scanData in
+                try self?.localCentral.scan(filterDuplicates: false) { scanData in
                     self?.handle(peripheralDiscovery: scanData)
                 }
             } catch {
@@ -59,7 +59,7 @@ public class BluetoothLinuxTransport: ChatTransport {
     }
 
     deinit {
-        central.stopScan()
+        localCentral.stopScan()
     }
 
     private func handle(peripheralDiscovery scanData: ScanData<Peripheral, GATTCentral.Advertisement>) {
@@ -68,7 +68,7 @@ public class BluetoothLinuxTransport: ChatTransport {
 
         if !nearbyPeripherals.keys.contains(peripheral) {
             do {
-                try central.connect(to: peripheral)
+                try localCentral.connect(to: peripheral)
                 nearbyPeripherals[peripheral] = DiscoveredPeripheral()
 
                 log.info("Connected to \(peripheral.identifier)")
