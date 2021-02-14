@@ -17,9 +17,9 @@ fileprivate let serviceUUID = BluetoothUUID(rawValue: "59553ceb-2ffa-4018-8a6c-4
 /// Custom UUID for the (write-only) message inbox characteristic
 fileprivate let inboxCharacteristicUUID = BluetoothUUID(rawValue: "440a594c-3cc2-494a-a08a-be8dd23549ff")!
 /// Custom UUID for the user name characteristic (used to display 'nearby' users)
-fileprivate let userNameCharacteristicUUID = BluetoothUUID(rawValue: "b2234f40-2c0b-401b-8145-c612b9a7bae1")
+fileprivate let userNameCharacteristicUUID = BluetoothUUID(rawValue: "b2234f40-2c0b-401b-8145-c612b9a7bae1")!
 /// Custom UUID for the user ID characteristic (user to display 'nearby' users)
-fileprivate let userIDCharacteristicUUID = BluetoothUUID(rawValue: "13a4d26e-0a75-4fde-9340-4974e3da3100")
+fileprivate let userIDCharacteristicUUID = BluetoothUUID(rawValue: "13a4d26e-0a75-4fde-9340-4974e3da3100")!
 
 typealias GATTCentral = GATT.GATTCentral<BluetoothLinux.HostController, BluetoothLinux.L2CAPSocket>
 typealias GATTPeripheral = GATT.GATTPeripheral<BluetoothLinux.HostController, BluetoothLinux.L2CAPSocket>
@@ -38,7 +38,11 @@ public class BluetoothLinuxTransport: ChatTransport {
         var inboxCharacteristic: Characteristic<Peripheral>? = nil
     }
 
-    public init(actAsPeripheral: Bool = true, actAsCentral: Bool = true) throws {
+    public init(
+        actAsPeripheral: Bool = true,
+        actAsCentral: Bool = true,
+        me: ChatUser
+    ) throws {
         // Set up controllers. Note that you need at least 2 controller if
         // you want to run both as a peripheral and central (which is required
         // to both send and receive messages).
@@ -57,12 +61,6 @@ public class BluetoothLinuxTransport: ChatTransport {
         // Set up local GATT peripheral for receiving messages
 
         if let localPeripheral = localPeripheral {
-            let serverSocket = try BluetoothLinux.L2CAPSocket.lowEnergyServer()
-
-            localPeripheral.newConnection = {
-                let clientSocket = try serverSocket.waitForConnection()
-                return (socket: clientSocket, central: Central(identifier: clientSocket.address))
-            }
             localPeripheral.log = { msg in
                 log.info("Peripheral (internal): \(msg)")
             }
@@ -70,6 +68,36 @@ public class BluetoothLinuxTransport: ChatTransport {
                 log.info("Peripheral: Got write request: \(request)")
                 // TODO
                 return nil
+            }
+
+            try localPeripheral.add(service: .init(
+                uuid: serviceUUID,
+                primary: true,
+                characteristics: [
+                    .init(
+                        uuid: inboxCharacteristicUUID,
+                        permissions: [.write],
+                        properties: [.write]
+                    ),
+                    .init(
+                        uuid: userNameCharacteristicUUID,
+                        // TODO: value
+                        permissions: [.read],
+                        properties: [.read]
+                    ),
+                    .init(
+                        uuid: userIDCharacteristicUUID,
+                        // TODO: value
+                        permissions: [.read],
+                        properties: [.read]
+                    )
+                ]
+            ))
+
+            let serverSocket = try BluetoothLinux.L2CAPSocket.lowEnergyServer()
+            localPeripheral.newConnection = {
+                let clientSocket = try serverSocket.waitForConnection()
+                return (socket: clientSocket, central: Central(identifier: clientSocket.address))
             }
 
             peripheralQueue.async {
@@ -84,17 +112,18 @@ public class BluetoothLinuxTransport: ChatTransport {
         // Set up local GATT central for sending messages
 
         if let localCentral = localCentral {
-            localCentral.newConnection = { (scanData, advReport) in
-                try BluetoothLinux.L2CAPSocket.lowEnergyClient(
-                    destination: (address: advReport.address, type: .init(lowEnergy: advReport.addressType))
-                )
-            }
             localCentral.didDisconnect = { [unowned self] peripheral in
                 log.info("Central: Disconnected from \(peripheral.identifier)")
                 nearbyPeripherals[peripheral] = nil
             }
             localCentral.log = { msg in
                 log.debug("Central: (internal) \(msg)")
+            }
+
+            localCentral.newConnection = { (scanData, advReport) in
+                try BluetoothLinux.L2CAPSocket.lowEnergyClient(
+                    destination: (address: advReport.address, type: .init(lowEnergy: advReport.addressType))
+                )
             }
 
             centralQueue.async { [weak self] in

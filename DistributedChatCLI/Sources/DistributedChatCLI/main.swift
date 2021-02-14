@@ -25,29 +25,31 @@ struct DistributedChatCLI: ParsableCommand {
             CLILogHandler(label: label, logLevel: label.starts(with: "DistributedChatCLI.") ? level : .info)
         }
 
+        let me = ChatUser(name: name)
+
         if bluetooth {
-            try runWithBluetoothLE()
+            try runWithBluetoothLE(me: me)
         } else {
-            runWithSimulationServer()
+            runWithSimulationServer(me: me)
         }
     }
 
-    private func runWithBluetoothLE() throws {
+    private func runWithBluetoothLE(me: ChatUser) throws {
         #if os(Linux)
         log.info("Initializing Bluetooth Linux transport...")
-        try runREPL(transport: BluetoothLinuxTransport())
+        try runREPL(transport: BluetoothLinuxTransport(me: me), me: me)
         #else
         log.error("The Bluetooth stack is currently Linux-only! (TODO: Share the CoreBluetooth-based backend from the iOS app with a potential Mac version of the CLI)")
         #endif
     }
 
-    private func runWithSimulationServer() {
+    private func runWithSimulationServer(me: ChatUser) {
         log.info("Connecting to \(simulationMessagingURL)...")
 
         SimulationTransport.connect(url: simulationMessagingURL, name: name) { transport in
             DispatchQueue.main.async {
                 log.info("Connected to \(simulationMessagingURL)")
-                runREPL(transport: transport)
+                runREPL(transport: transport, me: me)
             }
         }
 
@@ -55,8 +57,8 @@ struct DistributedChatCLI: ParsableCommand {
         dispatchMain()
     }
 
-    private func runREPL(transport: ChatTransport) {
-        let repl = ChatREPL(transport: transport, name: name)
+    private func runREPL(transport: ChatTransport, me: ChatUser) {
+        let repl = ChatREPL(transport: transport, me: me)
         repl.run()
         Foundation.exit(EXIT_SUCCESS)
     }

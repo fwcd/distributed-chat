@@ -12,12 +12,12 @@ class ChatREPL {
     private let commandPrefix: String
     private var commands: [String: () -> Void]!
     
-    init(transport: ChatTransport, name: String, commandPrefix: String = ".") {
+    init(transport: ChatTransport, me: ChatUser, commandPrefix: String = ".") {
         self.transport = transport
         self.commandPrefix = commandPrefix
 
         controller = ChatController(transport: transport)
-        controller.update(name: name)
+        controller.update(me: me)
 
         controller.onAddChatMessage { [unowned self] msg in
             print("\r[\(displayName(of: msg.channel))] \(msg.author.displayName): \(msg.displayContent)\r")
