@@ -56,6 +56,15 @@
         }
       },
       {
+        "package": "GATT",
+        "repositoryURL": "https://github.com/fwcd/swift-gatt.git",
+        "state": {
+          "branch": null,
+          "revision": "9b742fa388d12af0959984f015e6e18c35b1dba1",
+          "version": null
+        }
+      },
+      {
         "package": "swift-log",
         "repositoryURL": "https://github.com/apple/swift-log.git",
         "state": {
