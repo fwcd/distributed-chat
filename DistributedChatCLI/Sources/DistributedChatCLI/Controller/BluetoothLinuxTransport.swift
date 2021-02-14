@@ -64,7 +64,7 @@ public class BluetoothLinuxTransport: ChatTransport {
 
         if let localPeripheral = localPeripheral {
             localPeripheral.log = { msg in
-                log.debug("Peripheral (internal): \(msg)")
+                log.trace("Peripheral (internal): \(msg)")
             }
             localPeripheral.willWrite = { [unowned self] request in
                 log.debug("Peripheral: Got write request: \(request)")
@@ -73,7 +73,7 @@ public class BluetoothLinuxTransport: ChatTransport {
                     // TODO: Handle 512 byte (or more precisely: maximumValueLength) chunking
                     if let msgs = String(data: request.value, encoding: .utf8)?.split(separator: "\n").map(String.init) {
                         for msg in msgs {
-                            log.info("Peripheral: Wrote to inbox: \(msg)")
+                            log.debug("Peripheral: Wrote to inbox: \(msg)")
                             for listener in listeners {
                                 listener(msg)
                             }
@@ -111,9 +111,9 @@ public class BluetoothLinuxTransport: ChatTransport {
 
             let serverSocket = try BluetoothLinux.L2CAPSocket.lowEnergyServer()
             localPeripheral.newConnection = {
-                log.info("Peripheral: Waiting for connection...")
+                log.debug("Peripheral: Waiting for connection...")
                 let clientSocket = try serverSocket.waitForConnection()
-                log.info("Peripheral: Connected to central")
+                log.info("Peripheral: Connected to \(clientSocket.address)")
                 return (socket: clientSocket, central: Central(identifier: clientSocket.address))
             }
 
@@ -135,7 +135,7 @@ public class BluetoothLinuxTransport: ChatTransport {
                 nearbyPeripherals[peripheral] = nil
             }
             localCentral.log = { msg in
-                log.debug("Central: (internal) \(msg)")
+                log.trace("Central: (internal) \(msg)")
             }
 
             localCentral.newConnection = { (scanData, advReport) in
