@@ -19,6 +19,12 @@ typealias GATTCentral = GATT.GATTCentral<BluetoothLinux.HostController, Bluetoot
 public class BluetoothLinuxTransport: ChatTransport {
     private let central: GATTCentral
 
+    private var nearbyPeripherals: [Peripheral: DiscoveredPeripheral] = [:]
+
+    private class DiscoveredPeripheral {
+        // TODO
+    }
+
     public init() throws {
         guard let hostController = BluetoothLinux.HostController.default else { throw BluetoothLinuxError.noHostController }
         log.info("Found host controller \(hostController.identifier) with address \(try! hostController.readDeviceAddress())")
@@ -29,11 +35,12 @@ public class BluetoothLinuxTransport: ChatTransport {
         central.newConnection = { (scanData, advReport) in
             try BluetoothLinux.L2CAPSocket(controllerAddress: scanData.peripheral.identifier)
         }
-        central.didDisconnect = { peripheral in
+        central.didDisconnect = { [unowned self] peripheral in
             log.info("Disconnected from \(peripheral.identifier)")
+            nearbyPeripherals[peripheral] = nil
         }
 
-        try central.scan(foundDevice: handle(peripheralDiscovery:))
+        try central.scan(filterDuplicates: false, foundDevice: handle(peripheralDiscovery:))
     }
 
     deinit {
@@ -44,11 +51,15 @@ public class BluetoothLinuxTransport: ChatTransport {
         let peripheral = scanData.peripheral
         log.info("Discovered peripheral \(peripheral.identifier) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
 
-        do {
-            try central.connect(to: peripheral)
-            log.info("Connected to \(peripheral.identifier)")
-        } catch {
-            log.notice("Could not connect to peripheral: \(error)")
+        if !nearbyPeripherals.keys.contains(peripheral) {
+            do {
+                try central.connect(to: peripheral)
+                nearbyPeripherals[peripheral] = DiscoveredPeripheral()
+
+                log.info("Connected to \(peripheral.identifier)")
+            } catch {
+                log.notice("Could not connect to peripheral: \(error)")
+            }
         }
     }
 
