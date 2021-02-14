@@ -11,9 +11,13 @@ fileprivate let log = Logger(label: "DistributedChatCLI.BluetoothLinuxTransport"
 // TODO: Ideally move these constants into a module shared with the CoreBluetooth version
 
 /// Custom UUID specifically for the 'Distributed Chat' service
-fileprivate let serviceUUID = UUID(uuidString: "59553ceb-2ffa-4018-8a6c-453a5292044d")!
-/// Custom UUID specific to the characteristic holding the L2CAP channel's PSM (see below)
-fileprivate let characteristicUUID = UUID(uuidString: "440a594c-3cc2-494a-a08a-be8dd23549ff")!
+fileprivate let serviceUUID = BluetoothUUID(rawValue: "59553ceb-2ffa-4018-8a6c-453a5292044d")!
+/// Custom UUID for the (write-only) message inbox characteristic
+fileprivate let inboxCharacteristicUUID = BluetoothUUID(rawValue: "440a594c-3cc2-494a-a08a-be8dd23549ff")!
+/// Custom UUID for the user name characteristic (used to display 'nearby' users)
+fileprivate let userNameCharacteristicUUID = BluetoothUUID(rawValue: "b2234f40-2c0b-401b-8145-c612b9a7bae1")
+/// Custom UUID for the user ID characteristic (user to display 'nearby' users)
+fileprivate let userIDCharacteristicUUID = BluetoothUUID(rawValue: "13a4d26e-0a75-4fde-9340-4974e3da3100")
 
 typealias GATTCentral = GATT.GATTCentral<BluetoothLinux.HostController, BluetoothLinux.L2CAPSocket>
 
@@ -70,10 +74,17 @@ public class BluetoothLinuxTransport: ChatTransport {
             do {
                 try localCentral.connect(to: peripheral)
                 nearbyPeripherals[peripheral] = DiscoveredPeripheral()
+                log.info("Connected to \(peripheral.identifier), discovering services...")
 
-                log.info("Connected to \(peripheral.identifier)")
+                let services = try localCentral.discoverServices([serviceUUID], for: peripheral)
+                guard let service = services.first else { throw BluetoothLinuxError.noServices }
+                log.info("Discovered DistributedChat service, discovering characteristics...")
+
+                let characteristics = try localCentral.discoverCharacteristics([inboxCharacteristicUUID], for: service) // TODO: Discover user name/id
+                guard let inboxCharacteristic = characteristics.first else { throw BluetoothLinuxError.noCharacteristics }
+                log.info("Discovered inbox characteristic")
             } catch {
-                log.notice("Could not connect to peripheral: \(error)")
+                log.notice("Could not connect to/discover services on peripheral: \(error)")
             }
         }
     }
