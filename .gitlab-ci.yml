@@ -48,3 +48,12 @@ simulation-server:test:
     - (cd DistributedChatSimulationServer && swift test)
   needs:
     - simulation-server:build
+
+app:build:
+  stage: build-exes
+  tags:
+    - macos
+  script:
+    - xcodebuild build -scheme DistributedChatApp -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11,OS=14.3"
+  needs:
+    - distributed-chat:build

@@ -156,6 +156,10 @@ public class ChatController {
     private func update(logicalClock: Int) {
         me.logicalClock = max(me.logicalClock, logicalClock) + 1
     }
+
+    public func update(me: ChatUser) {
+        self.me = me
+    }
     
     public func update(name: String) {
         me.name = name
