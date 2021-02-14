@@ -62,7 +62,7 @@ public class BluetoothLinuxTransport: ChatTransport {
 
     private func handle(peripheralDiscovery scanData: ScanData<Peripheral, GATTCentral.Advertisement>) {
         let peripheral = scanData.peripheral
-        log.info("Discovered peripheral \(peripheral.identifier) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
+        log.debug("Discovered peripheral \(peripheral.identifier) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
 
         if !nearbyPeripherals.keys.contains(peripheral) {
             do {
