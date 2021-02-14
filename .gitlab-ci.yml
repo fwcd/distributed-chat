@@ -51,6 +51,8 @@ simulation-server:test:
 
 app:build:
   stage: build-exes
+  rules:
+    - when: manual
   tags:
     - macos
   script:
