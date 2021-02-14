@@ -80,11 +80,13 @@ public class BluetoothLinuxTransport: ChatTransport {
                 log.info("Connected to \(peripheral.identifier), discovering services...")
 
                 let services = try localCentral.discoverServices([serviceUUID], for: peripheral)
-                guard let service = services.first else { throw BluetoothLinuxError.noServices }
+                log.debug("Discovered services \(services)")
+                guard let service = services.first(where: { $0.uuid == serviceUUID }) else { throw BluetoothLinuxError.noServices }
                 log.info("Discovered DistributedChat service, discovering characteristics...")
 
                 let characteristics = try localCentral.discoverCharacteristics([inboxCharacteristicUUID], for: service) // TODO: Discover user name/id
-                guard let inboxCharacteristic = characteristics.first else { throw BluetoothLinuxError.noCharacteristics }
+                log.debug("Discovered characteristics \(characteristics)")
+                guard let inboxCharacteristic = characteristics.first(where: { $0.uuid == inboxCharacteristicUUID }) else { throw BluetoothLinuxError.noCharacteristics }
                 log.info("Discovered inbox characteristic")
 
                 state.inboxCharacteristic = inboxCharacteristic
