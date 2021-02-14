@@ -37,7 +37,7 @@ public class BluetoothLinuxTransport: ChatTransport {
         var inboxCharacteristic: Characteristic<Peripheral>? = nil
     }
 
-    public init() throws {
+    public init(actAsPeripheral: Bool = true, actAsCentral: Bool = true) throws {
         guard let hostController = BluetoothLinux.HostController.default else { throw BluetoothLinuxError.noHostController }
         log.info("Found host controller \(hostController.identifier) with address \(try! hostController.readDeviceAddress())")
 
@@ -46,45 +46,49 @@ public class BluetoothLinuxTransport: ChatTransport {
 
         // Set up local GATT peripheral for receiving messages
 
-        // TODO
-        // localPeripheral.newConnection = {
-        // }
-        localPeripheral.willWrite = { [unowned self] request in
-            log.info("Peripheral: Got write request: \(request)")
+        if actAsPeripheral {
             // TODO
-            return nil
-        }
+            // localPeripheral.newConnection = {
+            // }
+            localPeripheral.willWrite = { [unowned self] request in
+                log.info("Peripheral: Got write request: \(request)")
+                // TODO
+                return nil
+            }
 
-        peripheralQueue.async { [weak self] in
-            do {
-                try self?.localPeripheral.start()
-            } catch {
-                log.error("Peripheral: Starting failed: \(error)")
+            peripheralQueue.async { [weak self] in
+                do {
+                    try self?.localPeripheral.start()
+                } catch {
+                    log.error("Peripheral: Starting failed: \(error)")
+                }
             }
         }
 
         // Set up local GATT central for sending messages
 
-        localCentral.newConnection = { (scanData, advReport) in
-            try BluetoothLinux.L2CAPSocket.lowEnergyClient(
-                destination: (address: advReport.address, type: .init(lowEnergy: advReport.addressType))
-            )
-        }
-        localCentral.didDisconnect = { [unowned self] peripheral in
-            log.info("Central: Disconnected from \(peripheral.identifier)")
-            nearbyPeripherals[peripheral] = nil
-        }
-        localCentral.log = { msg in
-            log.debug("Central: (internal) \(msg)")
-        }
+        if actAsCentral {
+            localCentral.newConnection = { (scanData, advReport) in
+                try BluetoothLinux.L2CAPSocket.lowEnergyClient(
+                    destination: (address: advReport.address, type: .init(lowEnergy: advReport.addressType))
+                )
+            }
+            localCentral.didDisconnect = { [unowned self] peripheral in
+                log.info("Central: Disconnected from \(peripheral.identifier)")
+                nearbyPeripherals[peripheral] = nil
+            }
+            localCentral.log = { msg in
+                log.debug("Central: (internal) \(msg)")
+            }
 
-        centralQueue.async { [weak self] in
-            do {
-                try self?.localCentral.scan(filterDuplicates: false) { scanData in
-                    self?.handle(peripheralDiscovery: scanData)
+            centralQueue.async { [weak self] in
+                do {
+                    try self?.localCentral.scan(filterDuplicates: false) { scanData in
+                        self?.handle(peripheralDiscovery: scanData)
+                    }
+                } catch {
+                    log.error("Central: Scanning failed: \(error)")
                 }
-            } catch {
-                log.error("Central: Scanning failed: \(error)")
             }
         }
     }
