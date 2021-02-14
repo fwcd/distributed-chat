@@ -8,6 +8,7 @@ import GATT
 
 fileprivate let log = Logger(label: "DistributedChatCLI.BluetoothLinuxTransport")
 
+// TODO: Genericize this class by parameterizing over HostController/L2CAP like GATTCentral/GATTPeripheral
 // TODO: Ideally move these constants into a module shared with the CoreBluetooth version
 // TODO: Share more code with the CoreBluetooth variant (e.g. chunking)
 
@@ -56,9 +57,12 @@ public class BluetoothLinuxTransport: ChatTransport {
         // Set up local GATT peripheral for receiving messages
 
         if let localPeripheral = localPeripheral {
-            // TODO
-            // localPeripheral.newConnection = {
-            // }
+            let serverSocket = try BluetoothLinux.L2CAPSocket.lowEnergyServer()
+
+            localPeripheral.newConnection = {
+                let clientSocket = try serverSocket.waitForConnection()
+                return (socket: clientSocket, central: Central(identifier: clientSocket.address))
+            }
             localPeripheral.log = { msg in
                 log.info("Peripheral (internal): \(msg)")
             }
