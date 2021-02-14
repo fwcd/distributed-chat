@@ -1,5 +1,6 @@
 #if os(Linux)
 import DistributedChat
+import Dispatch
 import Foundation
 import Logging
 import BluetoothLinux
@@ -18,6 +19,7 @@ typealias GATTCentral = GATT.GATTCentral<BluetoothLinux.HostController, Bluetoot
 
 public class BluetoothLinuxTransport: ChatTransport {
     private let central: GATTCentral
+    private let queue = DispatchQueue(label: "DistributedChatCLI.BluetoothLinuxTransport")
 
     private var nearbyPeripherals: [Peripheral: DiscoveredPeripheral] = [:]
 
@@ -33,14 +35,25 @@ public class BluetoothLinuxTransport: ChatTransport {
 
         central = GATTCentral(hostController: hostController)
         central.newConnection = { (scanData, advReport) in
-            try BluetoothLinux.L2CAPSocket(controllerAddress: scanData.peripheral.identifier)
+            try BluetoothLinux.L2CAPSocket(
+                controllerAddress: advReport.address,
+                addressType: .init(lowEnergy: advReport.addressType)
+            )
         }
         central.didDisconnect = { [unowned self] peripheral in
             log.info("Disconnected from \(peripheral.identifier)")
             nearbyPeripherals[peripheral] = nil
         }
 
-        try central.scan(filterDuplicates: false, foundDevice: handle(peripheralDiscovery:))
+        queue.async { [weak self] in
+            do {
+                try self?.central.scan(filterDuplicates: false) { scanData in
+                    self?.handle(peripheralDiscovery: scanData)
+                }
+            } catch {
+                log.error("Scanning failed: \(error)")
+            }
+        }
     }
 
     deinit {
