@@ -81,13 +81,13 @@ public class BluetoothLinuxTransport: ChatTransport {
                     ),
                     .init(
                         uuid: userNameCharacteristicUUID,
-                        // TODO: value
+                        value: me.name.data(using: .utf8) ?? Data(),
                         permissions: [.read],
                         properties: [.read]
                     ),
                     .init(
                         uuid: userIDCharacteristicUUID,
-                        // TODO: value
+                        value: me.id.uuidString.data(using: .utf8) ?? Data(),
                         permissions: [.read],
                         properties: [.read]
                     )
