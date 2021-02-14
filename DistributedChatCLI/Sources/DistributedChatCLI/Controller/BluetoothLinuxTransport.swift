@@ -42,7 +42,7 @@ public class BluetoothLinuxTransport: ChatTransport {
 
     public init(
         actAsPeripheral: Bool = true,
-        actAsCentral: Bool = false, // WIP
+        actAsCentral: Bool = true,
         me: ChatUser
     ) throws {
         // Set up controllers. Note that you need at least 2 controller if
