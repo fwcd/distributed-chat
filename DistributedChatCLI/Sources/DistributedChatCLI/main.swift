@@ -17,8 +17,11 @@ struct DistributedChatCLI: ParsableCommand {
     @Option(help: "The username to use.")
     var name: String
 
+    @Option(help: "The logging level")
+    var level: Logger.Level = .info
+
     func run() throws {
-        LoggingSystem.bootstrap { CLILogHandler(label: $0) }
+        LoggingSystem.bootstrap { CLILogHandler(label: $0, logLevel: level) }
 
         if bluetooth {
             try runWithBluetoothLE()
