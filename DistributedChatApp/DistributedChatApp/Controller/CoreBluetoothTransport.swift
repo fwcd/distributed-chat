@@ -430,7 +430,7 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
         }
         
         if !chunk.isEmpty {
-            log.info("Writing chunk of outgoing data...")
+            log.debug("Writing chunk of outgoing data: '\(String(data: chunk, encoding: .utf8) ?? "?")'")
             peripheral.writeValue(chunk, for: characteristic, type: writeType)
         }
     }
@@ -445,7 +445,10 @@ class CoreBluetoothTransport: NSObject, ChatTransport, CBPeripheralManagerDelega
             return
         }
         
+        log.debug("Did write value for characteristic, still writing: \(state.isWriting)")
+        
         if state.isWriting {
+            log.debug("Writing next chunk...")
             writeOutgoingData(of: peripheral)
         }
     }
