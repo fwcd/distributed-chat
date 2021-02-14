@@ -35,9 +35,8 @@ public class BluetoothLinuxTransport: ChatTransport {
 
         central = GATTCentral(hostController: hostController)
         central.newConnection = { (scanData, advReport) in
-            try BluetoothLinux.L2CAPSocket(
-                controllerAddress: advReport.address,
-                addressType: .init(lowEnergy: advReport.addressType)
+            try BluetoothLinux.L2CAPSocket.lowEnergyClient(
+                destination: (address: advReport.address, type: .init(lowEnergy: advReport.addressType))
             )
         }
         central.didDisconnect = { [unowned self] peripheral in
