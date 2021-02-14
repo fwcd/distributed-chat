@@ -6,7 +6,7 @@ import Bluetooth
 import BluetoothHCI
 import BluetoothLinux
 
-fileprivate let log = Logger(label: "BluetoothLinuxTransport")
+fileprivate let log = Logger(label: "DistributedChatCLI.BluetoothLinuxTransport")
 
 // TODO: Ideally move these constants into a module shared with the CoreBluetooth version
 

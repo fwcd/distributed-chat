@@ -5,7 +5,7 @@ import Foundation
 import Logging
 import LineNoise
 
-fileprivate let log = Logger(label: "main")
+fileprivate let log = Logger(label: "DistributedChatCLI.main")
 
 struct DistributedChatCLI: ParsableCommand {
     @Argument(help: "The messaging WebSocket URL of the simulation server to connect to.")
