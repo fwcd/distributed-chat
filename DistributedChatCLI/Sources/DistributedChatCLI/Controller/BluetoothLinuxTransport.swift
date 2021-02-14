@@ -62,7 +62,7 @@ public class BluetoothLinuxTransport: ChatTransport {
 
         if let localPeripheral = localPeripheral {
             localPeripheral.log = { msg in
-                log.info("Peripheral (internal): \(msg)")
+                log.debug("Peripheral (internal): \(msg)")
             }
             localPeripheral.willWrite = { [unowned self] request in
                 log.info("Peripheral: Got write request: \(request)")
