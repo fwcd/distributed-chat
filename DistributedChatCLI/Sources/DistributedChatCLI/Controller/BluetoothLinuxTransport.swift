@@ -21,10 +21,14 @@ fileprivate let userNameCharacteristicUUID = BluetoothUUID(rawValue: "b2234f40-2
 fileprivate let userIDCharacteristicUUID = BluetoothUUID(rawValue: "13a4d26e-0a75-4fde-9340-4974e3da3100")
 
 typealias GATTCentral = GATT.GATTCentral<BluetoothLinux.HostController, BluetoothLinux.L2CAPSocket>
+typealias GATTPeripheral = GATT.GATTPeripheral<BluetoothLinux.HostController, BluetoothLinux.L2CAPSocket>
 
 public class BluetoothLinuxTransport: ChatTransport {
     private let localCentral: GATTCentral
-    private let queue = DispatchQueue(label: "DistributedChatCLI.BluetoothLinuxTransport")
+    private let localPeripheral: GATTPeripheral
+
+    private let centralQueue = DispatchQueue(label: "DistributedChatCLI.BluetoothLinuxTransport: Central")
+    private let peripheralQueue = DispatchQueue(label: "DistributedChatCLI.BluetoothLinuxTransport: Peripheral")
 
     private var nearbyPeripherals: [Peripheral: DiscoveredPeripheral] = [:]
 
@@ -37,29 +41,50 @@ public class BluetoothLinuxTransport: ChatTransport {
         guard let hostController = BluetoothLinux.HostController.default else { throw BluetoothLinuxError.noHostController }
         log.info("Found host controller \(hostController.identifier) with address \(try! hostController.readDeviceAddress())")
 
-        // TODO: Act as a peripheral too
-
+        localPeripheral = GATTPeripheral(controller: hostController)
         localCentral = GATTCentral(hostController: hostController)
+
+        // Set up local GATT peripheral for receiving messages
+
+        // TODO
+        // localPeripheral.newConnection = {
+        // }
+        localPeripheral.willWrite = { [unowned self] request in
+            log.info("Peripheral: Got write request: \(request)")
+            // TODO
+            return nil
+        }
+
+        peripheralQueue.async { [weak self] in
+            do {
+                try self?.localPeripheral.start()
+            } catch {
+                log.error("Peripheral: Starting failed: \(error)")
+            }
+        }
+
+        // Set up local GATT central for sending messages
+
         localCentral.newConnection = { (scanData, advReport) in
             try BluetoothLinux.L2CAPSocket.lowEnergyClient(
                 destination: (address: advReport.address, type: .init(lowEnergy: advReport.addressType))
             )
         }
         localCentral.didDisconnect = { [unowned self] peripheral in
-            log.info("Disconnected from \(peripheral.identifier)")
+            log.info("Central: Disconnected from \(peripheral.identifier)")
             nearbyPeripherals[peripheral] = nil
         }
         localCentral.log = { msg in
-            log.debug("Internal: \(msg)")
+            log.debug("Central: (internal) \(msg)")
         }
 
-        queue.async { [weak self] in
+        centralQueue.async { [weak self] in
             do {
                 try self?.localCentral.scan(filterDuplicates: false) { scanData in
                     self?.handle(peripheralDiscovery: scanData)
                 }
             } catch {
-                log.error("Scanning failed: \(error)")
+                log.error("Central: Scanning failed: \(error)")
             }
         }
     }
@@ -70,28 +95,28 @@ public class BluetoothLinuxTransport: ChatTransport {
 
     private func handle(peripheralDiscovery scanData: ScanData<Peripheral, GATTCentral.Advertisement>) {
         let peripheral = scanData.peripheral
-        log.debug("Discovered peripheral \(peripheral.identifier) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
+        log.debug("Central: Discovered peripheral \(peripheral.identifier) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
 
         if !nearbyPeripherals.keys.contains(peripheral) {
             do {
                 try localCentral.connect(to: peripheral)
                 let state = DiscoveredPeripheral()
                 nearbyPeripherals[peripheral] = state
-                log.info("Connected to \(peripheral.identifier), discovering services...")
+                log.info("Central: Connected to \(peripheral.identifier), discovering services...")
 
                 let services = try localCentral.discoverServices([serviceUUID], for: peripheral)
-                log.debug("Discovered services \(services)")
+                log.debug("Central: Discovered services \(services)")
                 guard let service = services.first(where: { $0.uuid == serviceUUID }) else { throw BluetoothLinuxError.noServices }
-                log.info("Discovered DistributedChat service, discovering characteristics...")
+                log.info("Central: Discovered DistributedChat service, discovering characteristics...")
 
                 let characteristics = try localCentral.discoverCharacteristics([inboxCharacteristicUUID], for: service) // TODO: Discover user name/id
-                log.debug("Discovered characteristics \(characteristics)")
+                log.debug("Central: Discovered characteristics \(characteristics)")
                 guard let inboxCharacteristic = characteristics.first(where: { $0.uuid == inboxCharacteristicUUID }) else { throw BluetoothLinuxError.noCharacteristics }
-                log.info("Discovered inbox characteristic")
+                log.info("Central: Discovered inbox characteristic")
 
                 state.inboxCharacteristic = inboxCharacteristic
             } catch {
-                log.notice("Could not connect to/discover services on peripheral: \(error)")
+                log.notice("Central: Could not connect to/discover services on peripheral: \(error)")
             }
         }
     }
