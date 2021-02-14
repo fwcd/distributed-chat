@@ -24,8 +24,8 @@ typealias GATTCentral = GATT.GATTCentral<BluetoothLinux.HostController, Bluetoot
 typealias GATTPeripheral = GATT.GATTPeripheral<BluetoothLinux.HostController, BluetoothLinux.L2CAPSocket>
 
 public class BluetoothLinuxTransport: ChatTransport {
-    private let localCentral: GATTCentral
-    private let localPeripheral: GATTPeripheral
+    private let localCentral: GATTCentral?
+    private let localPeripheral: GATTPeripheral?
 
     private let centralQueue = DispatchQueue(label: "DistributedChatCLI.BluetoothLinuxTransport: Central")
     private let peripheralQueue = DispatchQueue(label: "DistributedChatCLI.BluetoothLinuxTransport: Peripheral")
@@ -41,12 +41,12 @@ public class BluetoothLinuxTransport: ChatTransport {
         guard let hostController = BluetoothLinux.HostController.default else { throw BluetoothLinuxError.noHostController }
         log.info("Found host controller \(hostController.identifier) with address \(try! hostController.readDeviceAddress())")
 
-        localPeripheral = GATTPeripheral(controller: hostController)
-        localCentral = GATTCentral(hostController: hostController)
+        localPeripheral = actAsPeripheral ? GATTPeripheral(controller: hostController) : nil
+        localCentral = actAsCentral ? GATTCentral(hostController: hostController) : nil
 
         // Set up local GATT peripheral for receiving messages
 
-        if actAsPeripheral {
+        if let localPeripheral = localPeripheral {
             // TODO
             // localPeripheral.newConnection = {
             // }
@@ -56,9 +56,9 @@ public class BluetoothLinuxTransport: ChatTransport {
                 return nil
             }
 
-            peripheralQueue.async { [weak self] in
+            peripheralQueue.async {
                 do {
-                    try self?.localPeripheral.start()
+                    try localPeripheral.start()
                 } catch {
                     log.error("Peripheral: Starting failed: \(error)")
                 }
@@ -67,7 +67,7 @@ public class BluetoothLinuxTransport: ChatTransport {
 
         // Set up local GATT central for sending messages
 
-        if actAsCentral {
+        if let localCentral = localCentral {
             localCentral.newConnection = { (scanData, advReport) in
                 try BluetoothLinux.L2CAPSocket.lowEnergyClient(
                     destination: (address: advReport.address, type: .init(lowEnergy: advReport.addressType))
@@ -83,7 +83,7 @@ public class BluetoothLinuxTransport: ChatTransport {
 
             centralQueue.async { [weak self] in
                 do {
-                    try self?.localCentral.scan(filterDuplicates: false) { scanData in
+                    try localCentral.scan(filterDuplicates: false) { scanData in
                         self?.handle(peripheralDiscovery: scanData)
                     }
                 } catch {
@@ -94,10 +94,13 @@ public class BluetoothLinuxTransport: ChatTransport {
     }
 
     deinit {
-        localCentral.stopScan()
+        localCentral?.stopScan()
+        localPeripheral?.stop()
     }
 
     private func handle(peripheralDiscovery scanData: ScanData<Peripheral, GATTCentral.Advertisement>) {
+        guard let localCentral = localCentral else { return }
+
         let peripheral = scanData.peripheral
         log.debug("Central: Discovered peripheral \(peripheral.identifier) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
 
@@ -126,6 +129,8 @@ public class BluetoothLinuxTransport: ChatTransport {
     }
 
     public func broadcast(_ raw: String) {
+        guard let localCentral = localCentral else { return }
+
         // TODO: 512 byte chunking
         guard let data = "\(raw)\n".data(using: .utf8) else {
             log.error("Could not encode string with UTF-8: '\(raw)'")
