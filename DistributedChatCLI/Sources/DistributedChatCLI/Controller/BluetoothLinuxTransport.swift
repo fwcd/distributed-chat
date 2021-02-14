@@ -45,6 +45,7 @@ public class BluetoothLinuxTransport: ChatTransport {
         let requiredCount = [actAsCentral, actAsPeripheral].filter { $0 }.count
         var hostControllers = BluetoothLinux.HostController.controllers
         log.info("Found host controllers \(hostControllers.map(\.identifier))")
+
         if hostControllers.count < requiredCount {
             throw BluetoothLinuxError.tooFewHostControllers("At least \(requiredCount) host controller(s) are required, but only \(hostControllers.count) was/were found.")
         }
@@ -58,6 +59,9 @@ public class BluetoothLinuxTransport: ChatTransport {
             // TODO
             // localPeripheral.newConnection = {
             // }
+            localPeripheral.log = { msg in
+                log.info("Peripheral (internal): \(msg)")
+            }
             localPeripheral.willWrite = { [unowned self] request in
                 log.info("Peripheral: Got write request: \(request)")
                 // TODO
