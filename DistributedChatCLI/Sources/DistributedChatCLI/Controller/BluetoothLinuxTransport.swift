@@ -23,9 +23,14 @@ public class BluetoothLinuxTransport: ChatTransport {
         guard let hostController = BluetoothLinux.HostController.default else { throw BluetoothLinuxError.noHostController }
         log.info("Found host controller \(hostController.identifier) with address \(try! hostController.readDeviceAddress())")
 
+        // TODO: Act as a peripheral too
+
         central = GATTCentral(hostController: hostController)
         central.newConnection = { (scanData, advReport) in
             try BluetoothLinux.L2CAPSocket(controllerAddress: scanData.peripheral.identifier)
+        }
+        central.didDisconnect = { peripheral in
+            log.info("Disconnected from \(peripheral.identifier)")
         }
 
         try central.scan(foundDevice: handle(peripheralDiscovery:))
@@ -36,7 +41,15 @@ public class BluetoothLinuxTransport: ChatTransport {
     }
 
     private func handle(peripheralDiscovery scanData: ScanData<Peripheral, GATTCentral.Advertisement>) {
-        log.info("Discovered peripheral \(scanData.peripheral.identifier) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
+        let peripheral = scanData.peripheral
+        log.info("Discovered peripheral \(peripheral.identifier) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
+
+        do {
+            try central.connect(to: peripheral)
+            log.info("Connected to \(peripheral.identifier)")
+        } catch {
+            log.notice("Could not connect to peripheral: \(error)")
+        }
     }
 
     public func broadcast(_ raw: String) {
