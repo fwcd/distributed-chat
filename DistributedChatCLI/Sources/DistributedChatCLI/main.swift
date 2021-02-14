@@ -11,8 +11,24 @@ struct DistributedChatCLI: ParsableCommand {
     @Argument(help: "The messaging WebSocket URL of the simulation server to connect to.")
     var simulationMessagingURL: URL = URL(string: "ws://localhost:8080/messaging")!
 
-    @Flag(help: "Use Bluetooth LE-based transport instead of the simulation server. This enables communication with 'real' iOS nodes. Currently only supported on Linux.")
+    @Flag(help: """
+        Use Bluetooth LE-based transport instead of the simulation server.
+        This enables communication with 'real' iOS nodes and is currently only supported on Linux.
+        Note that this also enables both central and peripheral mode by default, which requires 2 host controllers (i.e. bluetooth adapters). If you only want one of these modes, set --central-only or --peripheral-only.
+        """)
     var bluetooth: Bool = false
+
+    @Flag(help: """
+        Whether to only act as a GATT central (i.e. only be able to send messages) via Bluetooth LE.
+        Only used if --bluetooth is set.
+        """)
+    var centralOnly: Bool = false
+
+    @Flag(help: """
+        Whether to only act as a GATT peripheral (i.e. only be able to receive messages) via Bluetooth LE.
+        Only used if --bluetooth is set.
+        """)
+    var peripheralOnly: Bool = false
 
     @Option(help: "The username to use.")
     var name: String
@@ -37,7 +53,17 @@ struct DistributedChatCLI: ParsableCommand {
     private func runWithBluetoothLE(me: ChatUser) throws {
         #if os(Linux)
         log.info("Initializing Bluetooth Linux transport...")
-        try runREPL(transport: BluetoothLinuxTransport(me: me), me: me)
+
+        var actAsCentral = centralOnly
+        var actAsPeripheral = peripheralOnly
+
+        if !centralOnly && !peripheralOnly {
+            actAsCentral = true
+            actAsPeripheral = true
+        }
+
+        let transport = try BluetoothLinuxTransport(actAsPeripheral: actAsPeripheral, actAsCentral: actAsCentral, me: me)
+        runREPL(transport: transport, me: me)
         #else
         log.error("The Bluetooth stack is currently Linux-only! (TODO: Share the CoreBluetooth-based backend from the iOS app with a potential Mac version of the CLI)")
         #endif
