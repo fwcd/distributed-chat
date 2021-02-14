@@ -42,7 +42,7 @@ struct DistributedChatCLI: ParsableCommand {
         SimulationTransport.connect(url: simulationMessagingURL, name: name) { transport in
             DispatchQueue.main.async {
                 log.info("Connected to \(simulationMessagingURL)")
-                try! runREPL(transport: transport)
+                runREPL(transport: transport)
             }
         }
 
