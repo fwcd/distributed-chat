@@ -1,5 +1,5 @@
 public enum BluetoothLinuxError: Error {
-    case noHostController
+    case tooFewHostControllers(String)
     case noServices
     case noCharacteristics
     case bleScanFailed(String)

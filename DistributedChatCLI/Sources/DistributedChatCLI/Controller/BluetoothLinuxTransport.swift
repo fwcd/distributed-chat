@@ -38,11 +38,19 @@ public class BluetoothLinuxTransport: ChatTransport {
     }
 
     public init(actAsPeripheral: Bool = true, actAsCentral: Bool = true) throws {
-        guard let hostController = BluetoothLinux.HostController.default else { throw BluetoothLinuxError.noHostController }
-        log.info("Found host controller \(hostController.identifier) with address \(try! hostController.readDeviceAddress())")
+        // Set up controllers. Note that you need at least 2 controller if
+        // you want to run both as a peripheral and central (which is required
+        // to both send and receive messages).
 
-        localPeripheral = actAsPeripheral ? GATTPeripheral(controller: hostController) : nil
-        localCentral = actAsCentral ? GATTCentral(hostController: hostController) : nil
+        let requiredCount = [actAsCentral, actAsPeripheral].filter { $0 }.count
+        var hostControllers = BluetoothLinux.HostController.controllers
+        log.info("Found host controllers \(hostControllers.map(\.identifier))")
+        if hostControllers.count < requiredCount {
+            throw BluetoothLinuxError.tooFewHostControllers("At least \(requiredCount) host controller(s) are required, but only \(hostControllers.count) was/were found.")
+        }
+
+        localPeripheral = actAsPeripheral ? GATTPeripheral(controller: hostControllers.popLast()!) : nil
+        localCentral = actAsCentral ? GATTCentral(hostController: hostControllers.popLast()!) : nil
 
         // Set up local GATT peripheral for receiving messages
 
