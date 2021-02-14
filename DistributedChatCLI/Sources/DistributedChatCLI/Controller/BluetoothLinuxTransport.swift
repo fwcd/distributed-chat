@@ -34,7 +34,7 @@ public class BluetoothLinuxTransport: ChatTransport {
     private var nearbyPeripherals: [Peripheral: DiscoveredPeripheral] = [:]
 
     private class DiscoveredPeripheral {
-        // TODO: Other characteristics
+        // TODO: Discover and store user name/id here
         var inboxCharacteristic: Characteristic<Peripheral>? = nil
     }
 
