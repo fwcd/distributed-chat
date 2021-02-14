@@ -16,13 +16,19 @@ fileprivate let characteristicUUID = UUID(uuidString: "440a594c-3cc2-494a-a08a-b
 
 typealias GATTCentral = GATT.GATTCentral<BluetoothLinux.HostController, BluetoothLinux.L2CAPSocket>
 
-public struct BluetoothLinuxTransport: ChatTransport {
+public class BluetoothLinuxTransport: ChatTransport {
+    private let central: GATTCentral
+
     public init() throws {
         guard let hostController = BluetoothLinux.HostController.default else { throw BluetoothLinuxError.noHostController }
         log.info("Found host controller \(hostController.identifier) with address \(try! hostController.readDeviceAddress())")
 
-        let central = GATTCentral(hostController: hostController)
+        central = GATTCentral(hostController: hostController)
         try central.scan(foundDevice: handle(discovery:))
+    }
+
+    deinit {
+        central.stopScan()
     }
 
     private func handle(discovery: ScanData<Peripheral, GATTCentral.Advertisement>) {
