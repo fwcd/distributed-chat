@@ -96,13 +96,16 @@ public class BluetoothLinuxTransport: ChatTransport {
 
             let serverSocket = try BluetoothLinux.L2CAPSocket.lowEnergyServer()
             localPeripheral.newConnection = {
+                log.info("Peripheral: Waiting for connection...")
                 let clientSocket = try serverSocket.waitForConnection()
+                log.info("Peripheral: Connected to central")
                 return (socket: clientSocket, central: Central(identifier: clientSocket.address))
             }
 
             peripheralQueue.async {
                 do {
                     try localPeripheral.start()
+                    log.info("Peripheral: Started, advertising...")
                 } catch {
                     log.error("Peripheral: Starting failed: \(error)")
                 }
