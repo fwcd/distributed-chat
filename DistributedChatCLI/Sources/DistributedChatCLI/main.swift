@@ -21,7 +21,9 @@ struct DistributedChatCLI: ParsableCommand {
     var level: Logger.Level = .info
 
     func run() throws {
-        LoggingSystem.bootstrap { CLILogHandler(label: $0, logLevel: level) }
+        LoggingSystem.bootstrap { label in
+            CLILogHandler(label: label, logLevel: label.starts(with: "DistributedChatCLI.") ? level : .info)
+        }
 
         if bluetooth {
             try runWithBluetoothLE()

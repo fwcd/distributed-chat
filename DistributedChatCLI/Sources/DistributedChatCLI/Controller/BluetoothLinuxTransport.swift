@@ -44,6 +44,9 @@ public class BluetoothLinuxTransport: ChatTransport {
             log.info("Disconnected from \(peripheral.identifier)")
             nearbyPeripherals[peripheral] = nil
         }
+        central.log = { msg in
+            log.debug("Internal: \(msg)")
+        }
 
         queue.async { [weak self] in
             do {
