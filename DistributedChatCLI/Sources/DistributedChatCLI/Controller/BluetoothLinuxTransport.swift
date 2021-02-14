@@ -66,7 +66,7 @@ public class BluetoothLinuxTransport: ChatTransport {
             localPeripheral.log = { msg in
                 log.trace("Peripheral (internal): \(msg)")
             }
-            localPeripheral.willWrite = { [unowned self] request in
+            localPeripheral.didWrite = { [unowned self] request in
                 log.debug("Peripheral: Got write request: \(request)")
 
                 if request.uuid == inboxCharacteristicUUID {
@@ -82,7 +82,6 @@ public class BluetoothLinuxTransport: ChatTransport {
                         log.warning("Peripheral: Could not decode write to inbox as UTF-8")
                     }
                 }
-                return nil
             }
 
             try localPeripheral.add(service: .init(
