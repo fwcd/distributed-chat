@@ -28,6 +28,8 @@ public class BluetoothLinuxTransport: ChatTransport {
     private let localCentral: GATTCentral?
     private let localPeripheral: GATTPeripheral?
 
+    private var listeners = [(String) -> Void]()
+
     private let centralQueue = DispatchQueue(label: "DistributedChatCLI.BluetoothLinuxTransport: Central")
     private let peripheralQueue = DispatchQueue(label: "DistributedChatCLI.BluetoothLinuxTransport: Peripheral")
 
@@ -65,8 +67,21 @@ public class BluetoothLinuxTransport: ChatTransport {
                 log.debug("Peripheral (internal): \(msg)")
             }
             localPeripheral.willWrite = { [unowned self] request in
-                log.info("Peripheral: Got write request: \(request)")
-                // TODO
+                log.debug("Peripheral: Got write request: \(request)")
+
+                if request.uuid == inboxCharacteristicUUID {
+                    // TODO: Handle 512 byte (or more precisely: maximumValueLength) chunking
+                    if let msgs = String(data: request.value, encoding: .utf8)?.split(separator: "\n").map(String.init) {
+                        for msg in msgs {
+                            log.info("Peripheral: Wrote to inbox: \(msg)")
+                            for listener in listeners {
+                                listener(msg)
+                            }
+                        }
+                    } else {
+                        log.warning("Peripheral: Could not decode write to inbox as UTF-8")
+                    }
+                }
                 return nil
             }
 
@@ -179,7 +194,7 @@ public class BluetoothLinuxTransport: ChatTransport {
     public func broadcast(_ raw: String) {
         guard let localCentral = localCentral else { return }
 
-        // TODO: 512 byte chunking
+        // TODO: Handle 512 byte (or more precisely: maximumValueLength) chunking
         guard let data = "\(raw)\n".data(using: .utf8) else {
             log.error("Could not encode string with UTF-8: '\(raw)'")
             return
@@ -197,7 +212,7 @@ public class BluetoothLinuxTransport: ChatTransport {
     }
 
     public func onReceive(_ handler: @escaping (String) -> Void) {
-        // TODO
+        listeners.append(handler)
     }
 }
 #endif
