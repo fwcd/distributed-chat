@@ -9,6 +9,7 @@ import GATT
 fileprivate let log = Logger(label: "DistributedChatCLI.BluetoothLinuxTransport")
 
 // TODO: Ideally move these constants into a module shared with the CoreBluetooth version
+// TODO: Share more code with the CoreBluetooth variant (e.g. chunking)
 
 /// Custom UUID specifically for the 'Distributed Chat' service
 fileprivate let serviceUUID = BluetoothUUID(rawValue: "59553ceb-2ffa-4018-8a6c-453a5292044d")!
@@ -28,7 +29,8 @@ public class BluetoothLinuxTransport: ChatTransport {
     private var nearbyPeripherals: [Peripheral: DiscoveredPeripheral] = [:]
 
     private class DiscoveredPeripheral {
-        // TODO
+        // TODO: Other characteristics
+        var inboxCharacteristic: Characteristic<Peripheral>? = nil
     }
 
     public init() throws {
@@ -73,7 +75,8 @@ public class BluetoothLinuxTransport: ChatTransport {
         if !nearbyPeripherals.keys.contains(peripheral) {
             do {
                 try localCentral.connect(to: peripheral)
-                nearbyPeripherals[peripheral] = DiscoveredPeripheral()
+                let state = DiscoveredPeripheral()
+                nearbyPeripherals[peripheral] = state
                 log.info("Connected to \(peripheral.identifier), discovering services...")
 
                 let services = try localCentral.discoverServices([serviceUUID], for: peripheral)
@@ -83,6 +86,8 @@ public class BluetoothLinuxTransport: ChatTransport {
                 let characteristics = try localCentral.discoverCharacteristics([inboxCharacteristicUUID], for: service) // TODO: Discover user name/id
                 guard let inboxCharacteristic = characteristics.first else { throw BluetoothLinuxError.noCharacteristics }
                 log.info("Discovered inbox characteristic")
+
+                state.inboxCharacteristic = inboxCharacteristic
             } catch {
                 log.notice("Could not connect to/discover services on peripheral: \(error)")
             }
@@ -90,7 +95,21 @@ public class BluetoothLinuxTransport: ChatTransport {
     }
 
     public func broadcast(_ raw: String) {
-        // TODO
+        // TODO: 512 byte chunking
+        guard let data = "\(raw)\n".data(using: .utf8) else {
+            log.error("Could not encode string with UTF-8: '\(raw)'")
+            return
+        }
+
+        for (peripheral, state) in nearbyPeripherals {
+            if let characteristic = state.inboxCharacteristic {
+                do {
+                    try localCentral.writeValue(data, for: characteristic, withResponse: true)
+                } catch {
+                    log.warning("Could not send to \(peripheral.identifier): \(error)")
+                }
+            }
+        }
     }
 
     public func onReceive(_ handler: @escaping (String) -> Void) {
