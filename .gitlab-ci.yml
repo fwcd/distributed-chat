@@ -52,7 +52,7 @@ simulation-server:test:
 app:build:
   stage: build-exes
   rules:
-    - when: manual
+    - when: never # TODO: Reenable
   tags:
     - macos
   script:
