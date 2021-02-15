@@ -45,7 +45,7 @@ public class BluetoothLinuxTransport: ChatTransport {
         actAsCentral: Bool = true,
         me: ChatUser
     ) throws {
-        // Set up controllers. Note that you need at least 2 controller if
+        // Set up controllers. Note that you need at least 2 controllers if
         // you want to run both as a peripheral and central (which is required
         // to both send and receive messages).
 
