@@ -3,6 +3,7 @@ import DistributedChat
 import Dispatch
 import Foundation
 import Logging
+import Bluetooth
 import BluetoothLinux
 import GATT
 
@@ -84,7 +85,7 @@ public class BluetoothLinuxTransport: ChatTransport {
                 }
             }
 
-            try localPeripheral.add(service: .init(
+            let _ = try localPeripheral.add(service: .init(
                 uuid: serviceUUID,
                 primary: true,
                 characteristics: [
@@ -108,6 +109,11 @@ public class BluetoothLinuxTransport: ChatTransport {
                 ]
             ))
 
+            guard case let .bit128(uuid) = serviceUUID else { fatalError("DistributedChat service UUID should be 128-bit") }
+            let gapData = [GAPIncompleteListOf128BitServiceClassUUIDs(uuids: [UUID(uuid)])]
+            let advertisingData = try GAPDataEncoder().encodeAdvertisingData(gapData)
+            try localPeripheral.controller.setLowEnergyAdvertisingData(advertisingData)
+
             let serverSocket = try BluetoothLinux.L2CAPSocket.lowEnergyServer()
             localPeripheral.newConnection = {
                 log.debug("Peripheral: Waiting for connection...")
@@ -119,7 +125,7 @@ public class BluetoothLinuxTransport: ChatTransport {
             peripheralQueue.async {
                 do {
                     try localPeripheral.start()
-                    log.info("Peripheral: Started, advertising...")
+                    log.info("Peripheral: Started to advertise...")
                 } catch {
                     log.error("Peripheral: Starting failed: \(error)")
                 }
