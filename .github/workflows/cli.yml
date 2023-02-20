@@ -9,10 +9,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
+        os: ['ubuntu-latest', 'macos-12']
         swift: ['5.7']
+    runs-on: '${{ matrix.os }}'
     
     steps:
     - uses: actions/checkout@v3
