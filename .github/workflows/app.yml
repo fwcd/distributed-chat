@@ -5,9 +5,6 @@ on: [push]
 jobs:
   build:
     runs-on: macos-latest
-    strategy:
-      matrix:
-        swift: ['5.3']
     
     steps:
     - uses: actions/checkout@v2
