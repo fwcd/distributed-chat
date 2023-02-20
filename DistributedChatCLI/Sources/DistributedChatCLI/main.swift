@@ -51,7 +51,7 @@ struct DistributedChatCLI: ParsableCommand {
     }
 
     private func runWithBluetoothLE(me: ChatUser) throws {
-        #if os(Linux)
+        #if os(Linux) && canImport(BluetoothLinux)
         log.info("Initializing Bluetooth Linux transport...")
 
         var actAsCentral = centralOnly
@@ -65,7 +65,7 @@ struct DistributedChatCLI: ParsableCommand {
         let transport = try BluetoothLinuxTransport(actAsPeripheral: actAsPeripheral, actAsCentral: actAsCentral, me: me)
         runREPL(transport: transport, me: me)
         #else
-        log.error("The Bluetooth stack is currently Linux-only! (TODO: Share the CoreBluetooth-based backend from the iOS app with a potential Mac version of the CLI)")
+        log.error("The Bluetooth stack is currently Linux-only and requires BluetoothLinux! (TODO: Share the CoreBluetooth-based backend from the iOS app with a potential Mac version of the CLI)")
         #endif
     }
 
