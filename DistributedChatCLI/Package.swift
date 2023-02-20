@@ -35,7 +35,8 @@ let package = Package(
                 .product(name: "DistributedChatSimulationProtocol", package: "DistributedChatSimulationProtocol"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "WebSocketKit", package: "websocket-kit"),
-                .product(name: "BluetoothLinux", package: "BluetoothLinux", condition: .when(platforms: [.linux])),
+                // TODO: Reenable once build issues with BluetoothLinux are fixed
+                // .product(name: "BluetoothLinux", package: "BluetoothLinux", condition: .when(platforms: [.linux])),
                 .product(name: "GATT", package: "GATT"),
                 .product(name: "LineNoise", package: "LineNoise"),
             ]

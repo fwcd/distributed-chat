@@ -1,4 +1,4 @@
-#if os(Linux)
+#if os(Linux) && canImport(BluetoothLinux)
 import DistributedChat
 import Dispatch
 import Foundation
