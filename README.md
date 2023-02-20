@@ -1,10 +1,10 @@
 # Distributed Chat
 
-[![Distributed Chat Build](https://github.com/fwcd/distributed-chat/workflows/Distributed%20Chat/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3A"Distributed+Chat")
-[![App Build](https://github.com/fwcd/distributed-chat/workflows/App/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3AApp)
-[![CLI Build](https://github.com/fwcd/distributed-chat/workflows/CLI/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3ACLI)
-[![Simulation Protocol Build](https://github.com/fwcd/distributed-chat/workflows/Simulation%20Protocol/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3A"Simulation+Protocol")
-[![Simulation Server Build](https://github.com/fwcd/distributed-chat/workflows/Simulation%20Server/badge.svg)](https://github.com/fwcd/distributed-chat/actions?query=workflow%3A"Simulation+Server")
+[![Distributed Chat](https://github.com/fwcd/distributed-chat/actions/workflows/distributed-chat.yml/badge.svg)](https://github.com/fwcd/distributed-chat/actions/workflows/distributed-chat.yml)
+[![App](https://github.com/fwcd/distributed-chat/actions/workflows/app.yml/badge.svg)](https://github.com/fwcd/distributed-chat/actions/workflows/app.yml)
+[![CLI](https://github.com/fwcd/distributed-chat/actions/workflows/cli.yml/badge.svg)](https://github.com/fwcd/distributed-chat/actions/workflows/cli.yml)
+[![Simulation Protocol](https://github.com/fwcd/distributed-chat/actions/workflows/simulation-protocol.yml/badge.svg)](https://github.com/fwcd/distributed-chat/actions/workflows/simulation-protocol.yml)
+[![Simulation Server](https://github.com/fwcd/distributed-chat/actions/workflows/simulation-server.yml/badge.svg)](https://github.com/fwcd/distributed-chat/actions/workflows/simulation-server.yml)
 
 <div align="center">
 <p>
