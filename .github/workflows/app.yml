@@ -14,6 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build
-      run: xcodebuild build -scheme DistributedChatApp -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11,OS=14.3"
+      run: xcodebuild build -scheme DistributedChatApp -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 14"
       working-directory: DistributedChatApp
 

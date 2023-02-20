@@ -1280,7 +1280,7 @@
 			repositoryURL = "https://github.com/youjinp/SwiftUIKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.14;
+				minimumVersion = 0.0.17;
 			};
 		};
 		C7ED97BF25C60055002ACC5A /* XCRemoteSwiftPackageReference "FDWaveformView" */ = {
