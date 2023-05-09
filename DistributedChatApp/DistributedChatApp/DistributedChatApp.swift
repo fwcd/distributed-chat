@@ -106,6 +106,7 @@ struct DistributedChatApp: App {
                                     content.title = "\(message.author.displayName) in \(message.channel.displayName(with: state.network))"
                                     content.body = message.displayContent
                                     content.targetContentIdentifier = "distributedchat:///message/\(message.id)"
+                                    content.sound = UNNotificationSound.default       
                                     let request = UNNotificationRequest(identifier: "DistributedChat message", content: content, trigger: nil)
                                     center.add(request) { error in
                                         if let error = error {
