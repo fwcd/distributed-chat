@@ -47,17 +47,13 @@ struct MessageView: View {
                     Image(systemName: "circlebadge.fill")
                 }
             }
-            Button(action: {
-                ShareSheet(items: [message.displayContent]).presentIndependently()
-            }) {
+            ShareLink(item: message.displayContent) {
                 Text("Share Text")
                 Image(systemName: "square.and.arrow.up")
             }
             ForEach(message.attachments ?? []) { attachment in
                 if let url = attachment.content.asURL {
-                    Button(action: {
-                        ShareSheet(items: [url.smartResolved]).presentIndependently()
-                    }) {
+                    ShareLink(item: url.smartResolved) {
                         Text("Share \(attachment.name)")
                         Image(systemName: "square.and.arrow.up")
                     }

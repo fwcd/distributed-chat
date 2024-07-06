@@ -11,7 +11,7 @@ import Logging
 
 fileprivate let log = Logger(label: "DistributedChatApp.ImagePicker")
 
-struct ImagePicker: SimpleUIViewControllerRepresentable {
+struct ImagePicker: UIViewControllerRepresentable {
     let sourceType: SourceType
     let onComplete: (URL?) -> Void
     
@@ -19,10 +19,10 @@ struct ImagePicker: SimpleUIViewControllerRepresentable {
         Coordinator(onComplete: onComplete)
     }
     
-    func makeUIViewController(coordinator: Coordinator) -> UIImagePickerController {
+    func makeUIViewController(context: Context) -> UIImagePickerController {
         let vc = UIImagePickerController()
         vc.sourceType = sourceType.usingUIKit
-        vc.delegate = coordinator
+        vc.delegate = context.coordinator
         return vc
     }
     

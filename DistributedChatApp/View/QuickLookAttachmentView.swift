@@ -13,7 +13,6 @@ struct QuickLookAttachmentView<Content>: View where Content: View {
     private let content: () -> Content
     
     @State private var quickLookShown: Bool = false
-    @State private var shareSheetShown: Bool = false
     
     var body: some View {
         Button(action: { quickLookShown = true }) {
@@ -22,11 +21,13 @@ struct QuickLookAttachmentView<Content>: View where Content: View {
         .sheet(isPresented: $quickLookShown) {
             VStack {
                 HStack {
-                    Button(action: { shareSheetShown = true }) {
-                        Image(systemName: "square.and.arrow.up")
-                            .font(.system(size: iconSize))
+                    if let url = attachment.content.asURL?.smartResolved {
+                        ShareLink(item: url) {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(.system(size: iconSize))
+                        }
+                        Spacer()
                     }
-                    Spacer()
                     Button(action: { quickLookShown = false }) {
                         Text("Close")
                             .foregroundColor(.primary)
@@ -36,9 +37,6 @@ struct QuickLookAttachmentView<Content>: View where Content: View {
                 if let item = try? QuickLookAttachment(attachment: attachment) {
                     QuickLookView(item: item)
                 }
-            }
-            .sheet(isPresented: $shareSheetShown) {
-                ShareSheet(items: [attachment.content.asURL?.smartResolved].compactMap { $0 })
             }
         }
     }
