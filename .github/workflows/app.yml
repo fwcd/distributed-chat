@@ -9,11 +9,10 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-14
     
     steps:
     - uses: actions/checkout@v4
     - name: Build
-      run: xcodebuild build -scheme DistributedChatApp -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 14"
-      working-directory: DistributedChatApp
+      run: xcodebuild build -scheme DistributedChatApp -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 15 Pro"
 
