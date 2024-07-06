@@ -115,8 +115,8 @@ struct DistributedChatApp: App {
                                     }
                                 }
                                 state.subscriptions.append(state.messages.$unreadMessageIds.sink { unread in
-                                    DispatchQueue.main.async {
-                                        UIApplication.shared.applicationIconBadgeNumber = unread.count
+                                    Task {
+                                        try await UNUserNotificationCenter.current().setBadgeCount(unread.count)
                                     }
                                 })
                                 log.info("Registered notification handler!")
