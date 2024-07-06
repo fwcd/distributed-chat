@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -829,7 +829,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacApp;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat.Mac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -855,7 +855,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacApp;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat.Mac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -877,7 +877,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacAppTests;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat.MacTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -900,7 +900,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacAppTests;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat.MacTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -922,7 +922,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacAppUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat.MacUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -944,7 +944,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatMacAppUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat.MacUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -1084,7 +1084,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.14;
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatApp;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1107,7 +1107,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.14;
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatApp;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1128,7 +1128,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatAppTests;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1150,7 +1150,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatAppTests;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1170,7 +1170,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatAppUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat.UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1190,7 +1190,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = fwcd.DistributedChatAppUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat.UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
