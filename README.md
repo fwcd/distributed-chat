@@ -58,7 +58,7 @@ The dependency graph between these packages looks like this:
 
 ## Building and Running
 
-First, make sure to have Swift 5.7+ or newer installed. Recent versions for Ubuntu and macOS can be found [here](https://swift.org/download/).
+First, make sure to have Swift 5.10+ or newer installed. Recent versions for Ubuntu and macOS can be found [here](https://swift.org/download/).
 
 ### Simulation Server
 
@@ -92,8 +92,8 @@ Scripts/start_clis Alice Bob Charles Dave
 
 Building and running the iOS app is only possible on macOS, so make sure to have the following available:
 
-* Xcode 14.1+
-* Swift 5.7 (should be included with Xcode)
+* Xcode 15.4+
+* Swift 5.10+ (should be included with Xcode)
 * optionally an iOS device
 
 The open the `DistributedChatApp` subdirectory in Xcode and build/run the project.
