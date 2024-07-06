@@ -6,15 +6,11 @@
 //
 
 import Foundation
-import MobileCoreServices
+import UniformTypeIdentifiers
 
 extension URL {
     var mimeType: String {
-        if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, pathExtension as NSString, nil),
-           let mt = UTTypeCopyPreferredTagWithClass(uti.takeRetainedValue(), kUTTagClassMIMEType) {
-            return mt.takeRetainedValue() as String
-        }
-        return "application/octet-stream"
+        UTType(filenameExtension: pathExtension)?.preferredMIMEType ?? "application/octet-stream"
     }
     
     var isDistributedChatSchemed: Bool {

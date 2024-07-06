@@ -39,7 +39,7 @@ struct MessageHistoryView: View {
                         scrollView.scrollTo(id)
                     }
                 }
-                .onChange(of: messages.messages) { _ in
+                .onChange(of: messages.messages) {
                     if let id = messages[channel].last?.id {
                         scrollView.scrollTo(id)
                     }
