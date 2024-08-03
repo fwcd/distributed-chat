@@ -1,0 +1,28 @@
+name: Bluetooth
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: ['ubuntu-latest', 'macos-14']
+        swift: ['5.10']
+    runs-on: '${{ matrix.os }}'
+    
+    steps:
+    - uses: actions/checkout@v4
+    - uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: ${{ matrix.swift }}
+    - name: Build
+      run: swift build
+      working-directory: DistributedChatBluetooth
+    - name: Test
+      run: swift test
+      working-directory: DistributedChatBluetooth
