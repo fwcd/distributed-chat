@@ -7,7 +7,7 @@
 
 import AVFoundation
 import AVKit
-import DistributedChat
+import DistributedChatKit
 import SwiftUI
 
 struct VoiceNoteAttachmentView: View {

@@ -5,7 +5,7 @@
 //  Created by Fredrik on 1/24/21.
 //
 
-import DistributedChat
+import DistributedChatKit
 import Foundation
 import Combine
 import Logging

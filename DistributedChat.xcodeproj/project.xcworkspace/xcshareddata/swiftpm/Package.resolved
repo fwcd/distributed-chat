@@ -1,4 +1,5 @@
 {
+  "originHash" : "9587ed0db91ffbb8fe24cfcb01cabda27914878af1a64de67fde2c837278dc5d",
   "pins" : [
     {
       "identity" : "fdwaveformview",
@@ -46,5 +47,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

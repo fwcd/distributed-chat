@@ -6,7 +6,7 @@
 //
 
 import Combine
-import DistributedChat
+import DistributedChatKit
 import Foundation
 import Logging
 

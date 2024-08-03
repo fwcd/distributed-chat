@@ -1,4 +1,4 @@
-import DistributedChat
+import DistributedChatKit
 import Foundation
 
 class Network {

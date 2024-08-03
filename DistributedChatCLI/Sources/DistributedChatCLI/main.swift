@@ -1,6 +1,6 @@
 import ArgumentParser
 import Dispatch
-import DistributedChat
+import DistributedChatKit
 import Foundation
 import Logging
 import LineNoise

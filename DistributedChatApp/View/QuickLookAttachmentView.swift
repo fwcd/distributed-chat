@@ -5,7 +5,7 @@
 //  Created by Fredrik on 2/2/21.
 //
 
-import DistributedChat
+import DistributedChatKit
 import SwiftUI
 
 struct QuickLookAttachmentView<Content>: View where Content: View {

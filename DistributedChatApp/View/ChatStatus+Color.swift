@@ -5,7 +5,7 @@
 //  Created by Fredrik on 1/28/21.
 //
 
-import DistributedChat
+import DistributedChatKit
 import SwiftUI
 
 extension ChatStatus {

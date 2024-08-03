@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		354F777B2C5E65A3004F5FA3 /* DistributedChatKit in Frameworks */ = {isa = PBXBuildFile; productRef = 354F777A2C5E65A3004F5FA3 /* DistributedChatKit */; };
 		C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */; };
 		C707E1E525C8960800164EF7 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707E1E425C8960700164EF7 /* MessageView.swift */; };
 		C75441BF25BF3A9A003E2F71 /* NearbyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75441BE25BF3A9A003E2F71 /* NearbyUser.swift */; };
@@ -50,7 +51,6 @@
 		C7BC335925B3C00900989E95 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7BC335825B3C00900989E95 /* Preview Assets.xcassets */; };
 		C7BC336425B3C00900989E95 /* DistributedChatAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC336325B3C00900989E95 /* DistributedChatAppTests.swift */; };
 		C7BC336F25B3C00900989E95 /* DistributedChatAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC336E25B3C00900989E95 /* DistributedChatAppUITests.swift */; };
-		C7BC338A25B3C2EE00989E95 /* DistributedChat in Frameworks */ = {isa = PBXBuildFile; productRef = C7BC338925B3C2EE00989E95 /* DistributedChat */; };
 		C7C24EA325C8B42100222AAA /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EA225C8B42100222AAA /* ImagePicker.swift */; };
 		C7C24EE825C8D4E200222AAA /* SwiftUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = C7C24EE725C8D4E200222AAA /* SwiftUIKit */; };
 		C7C24EF025C8DD6A00222AAA /* QuickLookAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EEF25C8DD6900222AAA /* QuickLookAttachmentView.swift */; };
@@ -85,6 +85,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		354F77792C5E64A9004F5FA3 /* DistributedChatKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatKit; sourceTree = "<group>"; };
 		35C810F02C399CF2007B587C /* DistributedChatApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DistributedChatApp.entitlements; sourceTree = "<group>"; };
 		C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatStatus+Color.swift"; sourceTree = "<group>"; };
 		C707E1E425C8960700164EF7 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
@@ -134,7 +135,6 @@
 		C7BC336A25B3C00900989E95 /* DistributedChatAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DistributedChatAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7BC336E25B3C00900989E95 /* DistributedChatAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatAppUITests.swift; sourceTree = "<group>"; };
 		C7BC337025B3C00900989E95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C7BC337F25B3C1D100989E95 /* DistributedChat */ = {isa = PBXFileReference; lastKnownFileType = folder; path = DistributedChat; sourceTree = "<group>"; };
 		C7C24EA225C8B42100222AAA /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		C7C24EEF25C8DD6900222AAA /* QuickLookAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookAttachmentView.swift; sourceTree = "<group>"; };
 		C7C24EFD25C8DE3F00222AAA /* ImageAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAttachmentView.swift; sourceTree = "<group>"; };
@@ -154,8 +154,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7BC338A25B3C2EE00989E95 /* DistributedChat in Frameworks */,
 				C7C24EE825C8D4E200222AAA /* SwiftUIKit in Frameworks */,
+				354F777B2C5E65A3004F5FA3 /* DistributedChatKit in Frameworks */,
 				C7ED97C125C60055002ACC5A /* FDWaveformView in Frameworks */,
 				C7734D4B25BDF52C0057DF96 /* LoggingOSLog in Frameworks */,
 			);
@@ -263,7 +263,7 @@
 		C7BC334525B3C00700989E95 = {
 			isa = PBXGroup;
 			children = (
-				C7BC337F25B3C1D100989E95 /* DistributedChat */,
+				354F77792C5E64A9004F5FA3 /* DistributedChatKit */,
 				C7BC335025B3C00700989E95 /* DistributedChatApp */,
 				C7BC336225B3C00900989E95 /* DistributedChatAppTests */,
 				C7BC336D25B3C00900989E95 /* DistributedChatAppUITests */,
@@ -360,10 +360,10 @@
 			);
 			name = DistributedChatApp;
 			packageProductDependencies = (
-				C7BC338925B3C2EE00989E95 /* DistributedChat */,
 				C7734D4A25BDF52C0057DF96 /* LoggingOSLog */,
 				C7ED97C025C60055002ACC5A /* FDWaveformView */,
 				C7C24EE725C8D4E200222AAA /* SwiftUIKit */,
+				354F777A2C5E65A3004F5FA3 /* DistributedChatKit */,
 			);
 			productName = DistributedChatApp;
 			productReference = C7BC334E25B3C00700989E95 /* DistributedChatApp.app */;
@@ -751,7 +751,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SS8V8UGLY8;
 				INFOPLIST_FILE = DistributedChatAppTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -773,7 +773,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SS8V8UGLY8;
 				INFOPLIST_FILE = DistributedChatAppTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -896,6 +896,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		354F777A2C5E65A3004F5FA3 /* DistributedChatKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DistributedChatKit;
+		};
 		C76545D925CE19E0004F14E8 /* DistributedChat */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DistributedChat;
@@ -904,10 +908,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C7734D4925BDF52B0057DF96 /* XCRemoteSwiftPackageReference "swift-log-oslog" */;
 			productName = LoggingOSLog;
-		};
-		C7BC338925B3C2EE00989E95 /* DistributedChat */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = DistributedChat;
 		};
 		C7C24EE725C8D4E200222AAA /* SwiftUIKit */ = {
 			isa = XCSwiftPackageProductDependency;

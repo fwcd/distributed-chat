@@ -5,7 +5,7 @@
 //  Created by Fredrik on 1/30/21.
 //
 
-import DistributedChat
+import DistributedChatKit
 import SwiftUI
 
 struct FileAttachmentView: View {

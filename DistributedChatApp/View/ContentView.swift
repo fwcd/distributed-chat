@@ -5,7 +5,7 @@
 //  Created by Fredrik on 1/17/21.
 //
 
-import DistributedChat
+import DistributedChatKit
 import SwiftUI
 
 struct ContentView: View {

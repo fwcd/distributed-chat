@@ -1,5 +1,5 @@
 import XCTest
-@testable import DistributedChat
+@testable import DistributedChatKit
 
 fileprivate let encoder = JSONEncoder()
 fileprivate let decoder = JSONDecoder()

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import DistributedChat
+import DistributedChatKit
 
 // TODO: Support creation of DM channels
 

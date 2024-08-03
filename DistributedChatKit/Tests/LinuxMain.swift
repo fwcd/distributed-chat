@@ -1,6 +1,6 @@
 import XCTest
 
-import DistributedChatTests
+import DistributedChatKitTests
 
 var tests = [XCTestCaseEntry]()
 tests += DistributedChatTests.allTests()

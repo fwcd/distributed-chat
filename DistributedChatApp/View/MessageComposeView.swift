@@ -5,7 +5,7 @@
 //  Created by Fredrik on 1/24/21.
 //
 
-import DistributedChat
+import DistributedChatKit
 import Contacts
 import Logging
 import SwiftUI

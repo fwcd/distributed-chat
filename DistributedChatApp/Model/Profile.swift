@@ -6,7 +6,7 @@
 //
 
 import Combine
-import DistributedChat
+import DistributedChatKit
 
 class Profile: ObservableObject {
     @Published(persistingTo: "Profile/presence.json") var presence: ChatPresence = ChatPresence()

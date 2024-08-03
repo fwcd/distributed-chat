@@ -5,7 +5,7 @@
 //  Created by Fredrik on 1/25/21.
 //
 
-import DistributedChat
+import DistributedChatKit
 import Foundation
 
 struct NearbyUser: Identifiable, Hashable {

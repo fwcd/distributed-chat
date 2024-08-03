@@ -1,5 +1,5 @@
 #if os(Linux) && canImport(BluetoothLinux)
-import DistributedChat
+import DistributedChatKit
 import Dispatch
 import Foundation
 import Logging

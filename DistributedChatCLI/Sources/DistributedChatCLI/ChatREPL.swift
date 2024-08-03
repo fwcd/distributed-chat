@@ -1,6 +1,6 @@
 import Foundation
 import LineNoise
-import DistributedChat
+import DistributedChatKit
 
 fileprivate let globalChannelName = "global"
 

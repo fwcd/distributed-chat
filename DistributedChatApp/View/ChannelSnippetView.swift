@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import DistributedChat
+import DistributedChatKit
 
 struct ChannelSnippetView: View {
     let channel: ChatChannel?

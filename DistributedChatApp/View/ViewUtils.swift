@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import DistributedChat
+import DistributedChatKit
 
 /// The size of icons e.g. in the compose bar
 let iconSize: CGFloat = 22
