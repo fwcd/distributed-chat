@@ -28,43 +28,43 @@ struct NetworkView: View {
                         }
                         .contextMenu {
                             if let chatUser = user.chatUser {
-                                Button(action: {
+                                Button {
                                     UIPasteboard.general.string = chatUser.id.uuidString
-                                }) {
+                                } label: {
                                     Text("Copy User ID")
                                     Image(systemName: "doc.on.doc")
                                 }
-                                Button(action: {
+                                Button {
                                     UIPasteboard.general.string = chatUser.name
-                                }) {
+                                } label: {
                                     Text("Copy User Name")
                                     Image(systemName: "doc.on.doc")
                                 }
-                                Button(action: {
+                                Button {
                                     navigation.open(channel: .dm([network.myId, chatUser.id]))
-                                }) {
+                                } label: {
                                     Text("Open DM channel")
                                     Image(systemName: "at")
                                 }
                             }
-                            Button(action: {
+                            Button {
                                 UIPasteboard.general.string = user.peripheralIdentifier.uuidString
-                            }) {
+                            } label: {
                                 Text("Copy Peripheral ID")
                                 Image(systemName: "doc.on.doc")
                             }
                             if let peripheralName = user.peripheralName {
-                                Button(action: {
+                                Button {
                                     UIPasteboard.general.string = peripheralName
-                                }) {
+                                } label: {
                                     Text("Copy Peripheral Name")
                                     Image(systemName: "doc.on.doc")
                                 }
                             }
                             if let rssi = user.rssi {
-                                Button(action: {
+                                Button {
                                     UIPasteboard.general.string = String(rssi)
-                                }) {
+                                } label: {
                                     Text("Copy RSSI")
                                     Image(systemName: "doc.on.doc")
                                 }

@@ -20,29 +20,29 @@ struct MessageView: View {
     
     var body: some View {
         let menuItems = Group {
-            Button(action: {
+            Button {
                 messages.deleteMessage(id: message.id)
-            }) {
+            } label: {
                 Text("Delete Locally")
                 Image(systemName: "trash")
             }
-            Button(action: {
+            Button {
                 replyingToMessageId = message.id
-            }) {
+            } label: {
                 Text("Reply")
                 Image(systemName: "arrowshape.turn.up.left.fill")
             }
             if messages.unreadMessageIds.contains(message.id) {
-                Button(action: {
+                Button {
                     messages.unreadMessageIds.remove(message.id)
-                }) {
+                } label: {
                     Text("Mark as Read")
                     Image(systemName: "circlebadge")
                 }
             } else {
-                Button(action: {
+                Button {
                     messages.unreadMessageIds.insert(message.id)
-                }) {
+                } label: {
                     Text("Mark as Unread")
                     Image(systemName: "circlebadge.fill")
                 }
@@ -62,41 +62,41 @@ struct MessageView: View {
                 }
             }
             if !message.displayContent.isEmpty {
-                Button(action: {
+                Button {
                     UIPasteboard.general.string = message.displayContent
-                }) {
+                } label: {
                     Text("Copy Text")
                     Image(systemName: "doc.on.doc")
                 }
             }
-            Button(action: {
+            Button {
                 UIPasteboard.general.string = message.id.uuidString
-            }) {
+            } label: {
                 Text("Copy Message ID")
                 Image(systemName: "doc.on.doc")
             }
-            Button(action: {
+            Button {
                 UIPasteboard.general.url = URL(string: "distributedchat:///message/\(message.id)")
-            }) {
+            } label: {
                 Text("Copy Message URL")
                 Image(systemName: "doc.on.doc.fill")
             }
             Group {
-                Button(action: {
+                Button {
                     UIPasteboard.general.string = message.author.id.uuidString
-                }) {
+                } label: {
                     Text("Copy Author ID")
                     Image(systemName: "doc.on.doc")
                 }
-                Button(action: {
+                Button {
                     UIPasteboard.general.string = message.author.name
-                }) {
+                } label: {
                     Text("Copy Author Name")
                     Image(systemName: "doc.on.doc")
                 }
-                Button(action: {
+                Button {
                     navigation.open(channel: .dm([controller.me.id, message.author.id]))
-                }) {
+                } label: {
                     Text("Open DM channel")
                     Image(systemName: "at")
                 }

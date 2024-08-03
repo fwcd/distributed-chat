@@ -18,9 +18,9 @@ struct BubbleMessageView: View {
     var body: some View {
         VStack(alignment: isMe ? .trailing : .leading) {
             if let id = message.repliedToMessageId, let referenced = messages[id] {
-                Button(action: {
+                Button {
                     onPressRepliedMessage?(id)
-                }) {
+                } label: {
                     HStack {
                         Image(systemName: "arrowshape.turn.up.backward")
                         PlainMessageView(message: referenced)

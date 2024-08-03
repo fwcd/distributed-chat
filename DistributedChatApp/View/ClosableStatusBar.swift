@@ -23,7 +23,7 @@ struct ClosableStatusBar<V>: View where V: View {
 }
 
 #Preview {
-    ClosableStatusBar(onClose: {}) {
+    ClosableStatusBar {} content: {
         Text("Test")
     }
 }

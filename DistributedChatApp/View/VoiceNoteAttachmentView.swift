@@ -19,9 +19,9 @@ struct VoiceNoteAttachmentView: View {
     var body: some View {
         HStack {
             if player.isReady {
-                Button(action: {
+                Button {
                     player.isPlaying = !player.isPlaying
-                }) {
+                } label: {
                     if player.isPlaying {
                         Image(systemName: "pause.fill")
                     } else {

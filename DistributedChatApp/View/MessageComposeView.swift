@@ -110,9 +110,9 @@ struct MessageComposeView: View {
             
             VStack {
                 if let id = replyingToMessageId, let message = messages[id] {
-                    ClosableStatusBar(onClose: {
+                    ClosableStatusBar {
                         replyingToMessageId = nil
-                    }) {
+                    } content: {
                         HStack {
                             Text("Replying to")
                             PlainMessageView(message: message)
@@ -121,14 +121,16 @@ struct MessageComposeView: View {
                 }
                 let attachmentCount = draftAttachments.count
                 if attachmentCount > 0 {
-                    ClosableStatusBar(onClose: {
+                    ClosableStatusBar {
                         clearAttachments()
-                    }) {
+                    } content: {
                         Text("\(attachmentCount) \("attachment".pluralized(with: attachmentCount))")
                     }
                 }
                 HStack {
-                    Button(action: { attachmentActionSheetShown = true }) {
+                    Button {
+                        attachmentActionSheetShown = true
+                    } label: {
                         Image(systemName: "plus")
                             .font(.system(size: iconSize))
                     }

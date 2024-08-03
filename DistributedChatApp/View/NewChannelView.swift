@@ -36,7 +36,9 @@ struct NewChannelView: View {
             Text("...or add a DM channel:")
                 .font(.caption)
             List(network.allPresences) { presence in
-                Button(action: { onCommit(.dm([network.myId, presence.user.id])) }) {
+                Button {
+                    onCommit(.dm([network.myId, presence.user.id]))
+                } label: {
                     PresenceView(presence: presence)
                 }
             }

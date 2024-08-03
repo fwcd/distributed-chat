@@ -15,7 +15,9 @@ struct QuickLookAttachmentView<Content>: View where Content: View {
     @State private var quickLookShown: Bool = false
     
     var body: some View {
-        Button(action: { quickLookShown = true }) {
+        Button {
+            quickLookShown = true
+        } label: {
             content()
         }
         .sheet(isPresented: $quickLookShown) {

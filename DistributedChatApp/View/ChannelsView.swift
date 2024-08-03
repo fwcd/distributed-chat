@@ -39,45 +39,45 @@ struct ChannelsView: View {
                         ChannelSnippetView(channel: channel)
                     }
                     .contextMenu {
-                        Button(action: {
+                        Button {
                             deletingChannels = [channel]
                             deletionConfirmationShown = true
-                        }) {
+                        } label: {
                             Text("Delete Locally")
                             Image(systemName: "trash")
                         }
                         if messages.unreadChannels.contains(channel) {
-                            Button(action: {
+                            Button {
                                 messages.markAsRead(channel: channel)
-                            }) {
+                            } label: {
                                 Text("Mark as Read")
                                 Image(systemName: "circlebadge")
                             }
                         }
                         if !messages.pinnedChannels.contains(channel) {
-                            Button(action: {
+                            Button {
                                 messages.pin(channel: channel)
-                            }) {
+                            } label: {
                                 Text("Pin")
                                 Image(systemName: "pin.fill")
                             }
                         } else if channel != .global {
-                            Button(action: {
+                            Button {
                                 messages.unpin(channel: channel)
-                            }) {
+                            } label: {
                                 Text("Unpin")
                                 Image(systemName: "pin.slash.fill")
                             }
                         }
-                        Button(action: {
+                        Button {
                             UIPasteboard.general.string = channel.displayName(with: network)
-                        }) {
+                        } label: {
                             Text("Copy Channel Name")
                             Image(systemName: "doc.on.doc")
                         }
-                        Button(action: {
+                        Button {
                             UIPasteboard.general.url = URL(string: "distributedchat:///channel/\(channel)")
-                        }) {
+                        } label: {
                             Text("Copy Channel URL")
                             Image(systemName: "doc.on.doc.fill")
                         }
@@ -92,9 +92,9 @@ struct ChannelsView: View {
             .navigationTitle("Channels")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
+                    Button {
                         channelDraftSheetShown = true
-                    }) {
+                    } label: {
                         Image(systemName: "square.and.pencil")
                             .resizable()
                     }

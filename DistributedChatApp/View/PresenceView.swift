@@ -30,29 +30,29 @@ struct PresenceView: View {
             }
         }
         .contextMenu {
-            Button(action: {
+            Button {
                 UIPasteboard.general.string = presence.user.id.uuidString
-            }) {
+            } label: {
                 Text("Copy User ID")
                 Image(systemName: "doc.on.doc")
             }
-            Button(action: {
+            Button {
                 UIPasteboard.general.string = presence.user.name
-            }) {
+            } label: {
                 Text("Copy User Name")
                 Image(systemName: "doc.on.doc")
             }
             if !presence.info.isEmpty {
-                Button(action: {
+                Button {
                     UIPasteboard.general.string = presence.info
-                }) {
+                } label: {
                     Text("Copy Status Info")
                     Image(systemName: "doc.on.doc")
                 }
             }
-            Button(action: {
+            Button {
                 navigation.open(channel: .dm([network.myId, presence.user.id]))
-            }) {
+            } label: {
                 Text("Open DM channel")
                 Image(systemName: "at")
             }
