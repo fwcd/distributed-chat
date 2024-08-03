@@ -4,5 +4,4 @@ Packages
 *.xcodeproj
 xcuserdata
 db.sqlite
-.swiftpm
 DerivedData/
