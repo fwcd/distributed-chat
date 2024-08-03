@@ -9,7 +9,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
     public var timestamp: Date
     public var author: ChatUser
     public var content: ChatMessageContent
-    public var channel: ChatChannel?
+    public var channel: ChatChannel
     public var attachments: [ChatAttachment]?
     public var repliedToMessageId: UUID?
     public var wasEncrypted: Bool?
@@ -31,7 +31,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
         timestamp: Date = Date(),
         author: ChatUser,
         content: ChatMessageContent,
-        channel: ChatChannel? = nil,
+        channel: ChatChannel = .global,
         attachments: [ChatAttachment]? = nil,
         repliedToMessageId: UUID? = nil,
         wasEncrypted: Bool? = nil
@@ -49,7 +49,7 @@ public struct ChatMessage: Identifiable, Hashable, Codable {
     /// Checks whether the given user id should receive the message.
     public func isReceived(by userId: UUID) -> Bool {
         switch channel {
-        case .dm(let userIds)?:
+        case .dm(let userIds):
             return userIds.contains(userId)
         default:
             return true

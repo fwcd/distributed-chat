@@ -4,6 +4,8 @@ fileprivate let separator: Character = ":"
 fileprivate let userIdSeparator: Character = ","
 
 public enum ChatChannel: Codable, Hashable, CustomStringConvertible {
+    /// The global channel.
+    case global
     /// A public chatroom-style channel.
     case room(String)
     /// A direct messaging channel. All included members' ids are specified here.
@@ -11,6 +13,8 @@ public enum ChatChannel: Codable, Hashable, CustomStringConvertible {
     
     public var description: String {
         switch self {
+        case .global:
+            return "global"
         case .room(let name):
             return "room\(separator)\(name)"
         case .dm(let userIds):
@@ -39,16 +43,20 @@ public enum ChatChannel: Codable, Hashable, CustomStringConvertible {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(String.self, forKey: .type)
-        let data = try container.decode(String.self, forKey: .data)
+        let data = try container.decodeIfPresent(String.self, forKey: .data)
         
         try self.init(type: type, data: data)
     }
     
-    private init(type: String, data: String) throws {
+    private init(type: String, data: String?) throws {
         switch type {
+        case "global":
+            self = .global
         case "room":
+            guard let data else { throw DecodeError.missingChannelData }
             self = .room(data)
         case "dm":
+            guard let data else { throw DecodeError.missingChannelData }
             let userIds = try Set(data
                 .split(separator: userIdSeparator)
                 .map(String.init)
@@ -72,6 +80,8 @@ public enum ChatChannel: Codable, Hashable, CustomStringConvertible {
         case .dm(let userIds):
             try container.encode("dm", forKey: .type)
             try container.encode(userIds.map(\.uuidString).joined(separator: String(userIdSeparator)), forKey: .data)
+        case .global:
+            try container.encode("global", forKey: .type)
         }
     }
 }

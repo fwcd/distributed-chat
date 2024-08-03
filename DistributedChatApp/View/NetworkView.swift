@@ -14,7 +14,7 @@ struct NetworkView: View {
     @EnvironmentObject private var navigation: Navigation
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("Nearby Users")) {
                     List(network.nearbyUsers) { user in
@@ -81,7 +81,6 @@ struct NetworkView: View {
             }
             .navigationTitle("Network")
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

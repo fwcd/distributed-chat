@@ -11,7 +11,7 @@ struct ProfileView: View {
     @EnvironmentObject private var profile: Profile
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(alignment: .center, spacing: 40) {
                 EnumPicker(selection: $profile.presence.status, label: ZStack(alignment: .bottomTrailing) {
                     Image(systemName: "person.circle.fill")
@@ -35,7 +35,6 @@ struct ProfileView: View {
             .padding(20)
             .navigationTitle("Profile")
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

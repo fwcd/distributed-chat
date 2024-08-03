@@ -13,16 +13,16 @@ import Logging
 fileprivate let log = Logger(label: "DistributedChatApp.Messages")
 
 class Messages: ObservableObject {
-    @Published var autoReadChannels: Set<ChatChannel?> = []
+    @Published var autoReadChannels: Set<ChatChannel> = []
     @Published(persistingTo: "Messages/unreadMessageIds.json") var unreadMessageIds: Set<UUID> = []
-    @Published(persistingTo: "Messages/pinnedChannels.json") private(set) var pinnedChannels: Set<ChatChannel?> = [nil]
+    @Published(persistingTo: "Messages/pinnedChannels.json") private(set) var pinnedChannels: Set<ChatChannel> = [.global]
     @Published(persistingTo: "Messages/messages.json") private(set) var messages: [UUID: ChatMessage] = [:]
     
-    var unreadChannels: Set<ChatChannel?> { Set(unreadMessageIds.compactMap { messages[$0] }.map(\.channel)) }
-    var channels: [ChatChannel?] {
-        pinnedChannels.sorted { ($0.map { "\($0)" } ?? "") < ($1.map { "\($0)" } ?? "") } + messages.values
+    var unreadChannels: Set<ChatChannel> { Set(unreadMessageIds.compactMap { messages[$0] }.map(\.channel)) }
+    var channels: [ChatChannel] {
+        pinnedChannels.sorted { String(describing: $0) < String(describing: $1) } + messages.values
             .sorted { $0.timestamp > $1.timestamp }
-            .compactMap(\.channel)
+            .map(\.channel)
             .filter { !pinnedChannels.contains($0) }
             .distinct
     }
@@ -97,12 +97,12 @@ class Messages: ObservableObject {
         unreadMessageIds = unreadMessageIds.filter { messages[$0]?.channel != channel }
     }
     
-    func pin(channel: ChatChannel?) {
+    func pin(channel: ChatChannel) {
         pinnedChannels.insert(channel)
     }
     
-    func unpin(channel: ChatChannel?) {
-        if channel != nil { // #global cannot be unpinned
+    func unpin(channel: ChatChannel) {
+        if channel != .global { // #global cannot be unpinned
             pinnedChannels.remove(channel)
         }
     }

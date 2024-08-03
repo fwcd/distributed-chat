@@ -9,7 +9,7 @@ import DistributedChatKit
 import SwiftUI
 
 struct ChannelsView: View {
-    let channels: [ChatChannel?]
+    let channels: [ChatChannel]
     let controller: ChatController
     
     @EnvironmentObject private var messages: Messages
@@ -18,16 +18,16 @@ struct ChannelsView: View {
     @EnvironmentObject private var network: Network
     @State private var newChannels: [ChatChannel] = []
     @State private var channelDraftSheetShown: Bool = false
-    @State private var deletingChannels: [ChatChannel?] = []
+    @State private var deletingChannels: [ChatChannel] = []
     @State private var deletionConfirmationShown: Bool = false
     
-    private var allChannels: [ChatChannel?] {
+    private var allChannels: [ChatChannel] {
         channels + newChannels.filter { !channels.contains($0) }
     }
     
     var body: some View {
-        NavigationView {
-            List {
+        NavigationSplitView {
+            List(selection: $navigation.activeChannel) {
                 let nearbyCount = network.nearbyUsers.count
                 let reachableCount = network.presences.filter { $0.key != controller.me.id }.count
                 HStack {
@@ -35,7 +35,7 @@ struct ChannelsView: View {
                     Text("\(reachableCount) \("user".pluralized(with: reachableCount)) reachable, \(nearbyCount) \("user".pluralized(with: nearbyCount)) nearby")
                 }
                 ForEach(allChannels, id: \.self) { channel in
-                    NavigationLink(destination: ChannelView(channel: channel, controller: controller), tag: channel, selection: $navigation.activeChannel) {
+                    NavigationLink(value: channel) {
                         ChannelSnippetView(channel: channel)
                     }
                     .contextMenu {
@@ -61,7 +61,7 @@ struct ChannelsView: View {
                                 Text("Pin")
                                 Image(systemName: "pin.fill")
                             }
-                        } else if channel != nil {
+                        } else if channel != .global {
                             Button(action: {
                                 messages.unpin(channel: channel)
                             }) {
@@ -69,16 +69,14 @@ struct ChannelsView: View {
                                 Image(systemName: "pin.slash.fill")
                             }
                         }
-                        if let channel = channel {
-                            Button(action: {
-                                UIPasteboard.general.string = channel.displayName(with: network)
-                            }) {
-                                Text("Copy Channel Name")
-                                Image(systemName: "doc.on.doc")
-                            }
+                        Button(action: {
+                            UIPasteboard.general.string = channel.displayName(with: network)
+                        }) {
+                            Text("Copy Channel Name")
+                            Image(systemName: "doc.on.doc")
                         }
                         Button(action: {
-                            UIPasteboard.general.url = URL(string: "distributedchat:///channel\(channel.map { "/\($0)" } ?? "")")
+                            UIPasteboard.general.url = URL(string: "distributedchat:///channel/\(channel)")
                         }) {
                             Text("Copy Channel URL")
                             Image(systemName: "doc.on.doc.fill")
@@ -102,8 +100,13 @@ struct ChannelsView: View {
                     }
                 }
             }
+        } detail: {
+            Group {
+                if let channel = navigation.activeChannel {
+                    ChannelView(channel: channel, controller: controller)
+                }
+            }
         }
-        .navigationViewStyle(DoubleColumnNavigationViewStyle())
         .sheet(isPresented: $channelDraftSheetShown) {
             NewChannelView {
                 channelDraftSheetShown = false

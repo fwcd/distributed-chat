@@ -9,7 +9,7 @@ import SwiftUI
 import DistributedChatKit
 
 struct ChannelSnippetView: View {
-    let channel: ChatChannel?
+    let channel: ChatChannel
     
     @EnvironmentObject private var messages: Messages
     @EnvironmentObject private var settings: Settings

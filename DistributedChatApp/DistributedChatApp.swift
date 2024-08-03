@@ -165,7 +165,7 @@ struct DistributedChatApp: App {
                                 }
                             } else {
                                 log.debug("Parsed URL as #global...")
-                                state.navigation.open(channel: nil)
+                                state.navigation.open(channel: .global)
                             }
                         case ["/", "message"]:
                             if components.count == 3, let id = UUID(uuidString: components[2]), let message = state.messages[id] {
