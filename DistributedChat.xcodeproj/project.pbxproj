@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		351461662C5E8D2800DFB5CB /* DistributedChatBluetooth in Frameworks */ = {isa = PBXBuildFile; productRef = 351461652C5E8D2800DFB5CB /* DistributedChatBluetooth */; };
 		354F777B2C5E65A3004F5FA3 /* DistributedChatKit in Frameworks */ = {isa = PBXBuildFile; productRef = 354F777A2C5E65A3004F5FA3 /* DistributedChatKit */; };
 		C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */; };
 		C707E1E525C8960800164EF7 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707E1E425C8960700164EF7 /* MessageView.swift */; };
-		C75441BF25BF3A9A003E2F71 /* NearbyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75441BE25BF3A9A003E2F71 /* NearbyUser.swift */; };
 		C75F7EC125CDC4190098FD9C /* EnvironmentUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75F7EC025CDC4190098FD9C /* EnvironmentUtils.swift */; };
 		C76F1CA525C4E53A005DE1C6 /* ChannelSnippetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F1CA425C4E53A005DE1C6 /* ChannelSnippetView.swift */; };
 		C76F1CAD25C4E676005DE1C6 /* NewChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F1CAC25C4E676005DE1C6 /* NewChannelView.swift */; };
@@ -44,7 +44,6 @@
 		C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D2125BB8885000DC0F1 /* ChannelsView.swift */; };
 		C7982D2A25BB8981000DC0F1 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D2925BB8981000DC0F1 /* ChannelView.swift */; };
 		C7982D4125BB8A57000DC0F1 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7982D4025BB8A57000DC0F1 /* Messages.swift */; };
-		C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */; };
 		C7BC335225B3C00700989E95 /* DistributedChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335125B3C00700989E95 /* DistributedChatApp.swift */; };
 		C7BC335425B3C00700989E95 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC335325B3C00700989E95 /* ContentView.swift */; };
 		C7BC335625B3C00900989E95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7BC335525B3C00900989E95 /* Assets.xcassets */; };
@@ -89,10 +88,10 @@
 		354F777C2C5E66E9004F5FA3 /* DistributedChatCLI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatCLI; sourceTree = "<group>"; };
 		354F777D2C5E6A83004F5FA3 /* DistributedChatSimulationProtocol */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatSimulationProtocol; sourceTree = "<group>"; };
 		354F777E2C5E6A87004F5FA3 /* DistributedChatSimulationServer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatSimulationServer; sourceTree = "<group>"; };
+		35BB6B542C5E8AE1006BF8D5 /* DistributedChatBluetooth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatBluetooth; sourceTree = "<group>"; };
 		35C810F02C399CF2007B587C /* DistributedChatApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DistributedChatApp.entitlements; sourceTree = "<group>"; };
 		C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatStatus+Color.swift"; sourceTree = "<group>"; };
 		C707E1E425C8960700164EF7 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
-		C75441BE25BF3A9A003E2F71 /* NearbyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUser.swift; sourceTree = "<group>"; };
 		C75F7EC025CDC4190098FD9C /* EnvironmentUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentUtils.swift; sourceTree = "<group>"; };
 		C76F1CA425C4E53A005DE1C6 /* ChannelSnippetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelSnippetView.swift; sourceTree = "<group>"; };
 		C76F1CAC25C4E676005DE1C6 /* NewChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChannelView.swift; sourceTree = "<group>"; };
@@ -125,7 +124,6 @@
 		C7982D2125BB8885000DC0F1 /* ChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsView.swift; sourceTree = "<group>"; };
 		C7982D2925BB8981000DC0F1 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
 		C7982D4025BB8A57000DC0F1 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
-		C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreBluetoothTransport.swift; sourceTree = "<group>"; };
 		C7BC334E25B3C00700989E95 /* DistributedChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7BC335125B3C00700989E95 /* DistributedChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatApp.swift; sourceTree = "<group>"; };
 		C7BC335325B3C00700989E95 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -157,6 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				351461662C5E8D2800DFB5CB /* DistributedChatBluetooth in Frameworks */,
 				C7C24EE825C8D4E200222AAA /* SwiftUIKit in Frameworks */,
 				354F777B2C5E65A3004F5FA3 /* DistributedChatKit in Frameworks */,
 				C7ED97C125C60055002ACC5A /* FDWaveformView in Frameworks */,
@@ -211,18 +210,9 @@
 				C77D499C25BC76010073A964 /* Settings.swift */,
 				C77D499425BC75B40073A964 /* MessageHistoryStyle.swift */,
 				C7734CA825BCDB1D0057DF96 /* Network.swift */,
-				C75441BE25BF3A9A003E2F71 /* NearbyUser.swift */,
 				C77DBABE25CCBC8100D66EB5 /* Users.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		C7AFC9B725BB52E400AF9526 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				C7AFC9B225BB52D500AF9526 /* CoreBluetoothTransport.swift */,
-			);
-			path = Controller;
 			sourceTree = "<group>";
 		};
 		C7AFC9B825BB52F200AF9526 /* View */ = {
@@ -268,6 +258,7 @@
 			children = (
 				354F77792C5E64A9004F5FA3 /* DistributedChatKit */,
 				354F777C2C5E66E9004F5FA3 /* DistributedChatCLI */,
+				35BB6B542C5E8AE1006BF8D5 /* DistributedChatBluetooth */,
 				354F777D2C5E6A83004F5FA3 /* DistributedChatSimulationProtocol */,
 				354F777E2C5E6A87004F5FA3 /* DistributedChatSimulationServer */,
 				C7BC335025B3C00700989E95 /* DistributedChatApp */,
@@ -297,7 +288,6 @@
 				C7734DA425BE36E20057DF96 /* ViewModel */,
 				C7ED978825C5CC14002ACC5A /* Audio */,
 				C7AFC9B825BB52F200AF9526 /* View */,
-				C7AFC9B725BB52E400AF9526 /* Controller */,
 				C7BC335125B3C00700989E95 /* DistributedChatApp.swift */,
 				C7BC335525B3C00900989E95 /* Assets.xcassets */,
 				C7BC335A25B3C00900989E95 /* Info.plist */,
@@ -370,6 +360,7 @@
 				C7ED97C025C60055002ACC5A /* FDWaveformView */,
 				C7C24EE725C8D4E200222AAA /* SwiftUIKit */,
 				354F777A2C5E65A3004F5FA3 /* DistributedChatKit */,
+				351461652C5E8D2800DFB5CB /* DistributedChatBluetooth */,
 			);
 			productName = DistributedChatApp;
 			productReference = C7BC334E25B3C00700989E95 /* DistributedChatApp.app */;
@@ -526,11 +517,9 @@
 				C77D499525BC75B40073A964 /* MessageHistoryStyle.swift in Sources */,
 				C77D49B325BC777E0073A964 /* CompactMessageView.swift in Sources */,
 				C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */,
-				C75441BF25BF3A9A003E2F71 /* NearbyUser.swift in Sources */,
 				C77DBACD25CCC92D00D66EB5 /* PresenceView.swift in Sources */,
 				C7734D2E25BDE1D90057DF96 /* PersistenceUtils.swift in Sources */,
 				C7C24F0625C8E35400222AAA /* DataUtils.swift in Sources */,
-				C7AFC9B325BB52D500AF9526 /* CoreBluetoothTransport.swift in Sources */,
 				C7734CEE25BCFE5D0057DF96 /* QuickLookView.swift in Sources */,
 				C7ED978A25C5CD28002ACC5A /* AudioRecorder.swift in Sources */,
 				C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */,
@@ -902,6 +891,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		351461652C5E8D2800DFB5CB /* DistributedChatBluetooth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DistributedChatBluetooth;
+		};
 		354F777A2C5E65A3004F5FA3 /* DistributedChatKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DistributedChatKit;

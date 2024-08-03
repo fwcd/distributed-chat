@@ -6,6 +6,7 @@
 //
 
 import DistributedChatKit
+import DistributedChatBluetooth
 import Combine
 import Foundation
 
