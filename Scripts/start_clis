@@ -12,7 +12,7 @@ for name in $@; do
     else
         subcommand="split-window -v"
     fi
-    command+="$subcommand 'cd $CLI_DIR && swift run DistributedChatCLI --name $name' \; "
+    command+="$subcommand 'cd $CLI_DIR && swift run distributed-chat --name $name' \; "
 done
 
 if [ -n "$command" ]; then
