@@ -29,6 +29,8 @@ public class BluetoothLinuxTransport: ChatTransport {
     private let localCentral: GATTCentral?
     private let localPeripheral: GATTPeripheral?
 
+    private var localCentralScanTask: Task<Void, Never>?
+
     private var listeners = [(String) -> Void]()
 
     private var nearbyPeripherals: [Peripheral: DiscoveredPeripheral] = [:]
@@ -146,10 +148,10 @@ public class BluetoothLinuxTransport: ChatTransport {
                 )
             }
 
-            Task {
+            localCentralScanTask = Task { [weak self] in
                 do {
-                    try localCentral.scan(filterDuplicates: false) { scanData in
-                        self?.handle(peripheralDiscovery: scanData)
+                    for try await scanData in try await localCentral.scan(filterDuplicates: false) {
+                        await self?.handle(peripheralDiscovery: scanData)
                     }
                 } catch {
                     log.error("Central: Scanning failed: \(error)")
@@ -160,6 +162,7 @@ public class BluetoothLinuxTransport: ChatTransport {
 
     deinit {
         Task {
+            localCentralScanTask?.cancel()
             await localPeripheral?.stop()
         }
     }
