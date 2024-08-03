@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		351461662C5E8D2800DFB5CB /* DistributedChatBluetooth in Frameworks */ = {isa = PBXBuildFile; productRef = 351461652C5E8D2800DFB5CB /* DistributedChatBluetooth */; };
 		354F777B2C5E65A3004F5FA3 /* DistributedChatKit in Frameworks */ = {isa = PBXBuildFile; productRef = 354F777A2C5E65A3004F5FA3 /* DistributedChatKit */; };
+		3557C2E52C5EE3750035A879 /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557C2E42C5EE3750035A879 /* ContactPicker.swift */; };
 		C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */; };
 		C707E1E525C8960800164EF7 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707E1E425C8960700164EF7 /* MessageView.swift */; };
 		C75F7EC125CDC4190098FD9C /* EnvironmentUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75F7EC025CDC4190098FD9C /* EnvironmentUtils.swift */; };
@@ -51,7 +52,6 @@
 		C7BC336425B3C00900989E95 /* DistributedChatAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC336325B3C00900989E95 /* DistributedChatAppTests.swift */; };
 		C7BC336F25B3C00900989E95 /* DistributedChatAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BC336E25B3C00900989E95 /* DistributedChatAppUITests.swift */; };
 		C7C24EA325C8B42100222AAA /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EA225C8B42100222AAA /* ImagePicker.swift */; };
-		C7C24EE825C8D4E200222AAA /* SwiftUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = C7C24EE725C8D4E200222AAA /* SwiftUIKit */; };
 		C7C24EF025C8DD6A00222AAA /* QuickLookAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EEF25C8DD6900222AAA /* QuickLookAttachmentView.swift */; };
 		C7C24EFE25C8DE3F00222AAA /* ImageAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24EFD25C8DE3F00222AAA /* ImageAttachmentView.swift */; };
 		C7C24F0625C8E35400222AAA /* DataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C24F0525C8E35400222AAA /* DataUtils.swift */; };
@@ -88,6 +88,7 @@
 		354F777C2C5E66E9004F5FA3 /* DistributedChatCLI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatCLI; sourceTree = "<group>"; };
 		354F777D2C5E6A83004F5FA3 /* DistributedChatSimulationProtocol */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatSimulationProtocol; sourceTree = "<group>"; };
 		354F777E2C5E6A87004F5FA3 /* DistributedChatSimulationServer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatSimulationServer; sourceTree = "<group>"; };
+		3557C2E42C5EE3750035A879 /* ContactPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPicker.swift; sourceTree = "<group>"; };
 		35BB6B542C5E8AE1006BF8D5 /* DistributedChatBluetooth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatBluetooth; sourceTree = "<group>"; };
 		35C810F02C399CF2007B587C /* DistributedChatApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DistributedChatApp.entitlements; sourceTree = "<group>"; };
 		C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatStatus+Color.swift"; sourceTree = "<group>"; };
@@ -156,7 +157,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				351461662C5E8D2800DFB5CB /* DistributedChatBluetooth in Frameworks */,
-				C7C24EE825C8D4E200222AAA /* SwiftUIKit in Frameworks */,
 				354F777B2C5E65A3004F5FA3 /* DistributedChatKit in Frameworks */,
 				C7ED97C125C60055002ACC5A /* FDWaveformView in Frameworks */,
 				C7734D4B25BDF52C0057DF96 /* LoggingOSLog in Frameworks */,
@@ -249,6 +249,7 @@
 				C7734CED25BCFE5D0057DF96 /* QuickLookView.swift */,
 				C7734D1125BD00330057DF96 /* QuickLookAttachment.swift */,
 				C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */,
+				3557C2E42C5EE3750035A879 /* ContactPicker.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -358,7 +359,6 @@
 			packageProductDependencies = (
 				C7734D4A25BDF52C0057DF96 /* LoggingOSLog */,
 				C7ED97C025C60055002ACC5A /* FDWaveformView */,
-				C7C24EE725C8D4E200222AAA /* SwiftUIKit */,
 				354F777A2C5E65A3004F5FA3 /* DistributedChatKit */,
 				351461652C5E8D2800DFB5CB /* DistributedChatBluetooth */,
 			);
@@ -437,7 +437,6 @@
 			packageReferences = (
 				C7734D4925BDF52B0057DF96 /* XCRemoteSwiftPackageReference "swift-log-oslog" */,
 				C7ED97BF25C60055002ACC5A /* XCRemoteSwiftPackageReference "FDWaveformView" */,
-				C7C24EE625C8D4E200222AAA /* XCRemoteSwiftPackageReference "SwiftUIKit" */,
 			);
 			productRefGroup = C7BC334F25B3C00700989E95 /* Products */;
 			projectDirPath = "";
@@ -512,6 +511,7 @@
 				C7734D3C25BDE9B50057DF96 /* Profile.swift in Sources */,
 				C75F7EC125CDC4190098FD9C /* EnvironmentUtils.swift in Sources */,
 				C7ED97A825C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift in Sources */,
+				3557C2E52C5EE3750035A879 /* ContactPicker.swift in Sources */,
 				C7982D2A25BB8981000DC0F1 /* ChannelView.swift in Sources */,
 				C7C24EA325C8B42100222AAA /* ImagePicker.swift in Sources */,
 				C77D499525BC75B40073A964 /* MessageHistoryStyle.swift in Sources */,
@@ -707,8 +707,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Debug;
 		};
@@ -733,8 +734,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Release;
 		};
@@ -872,14 +874,6 @@
 				minimumVersion = 0.2.2;
 			};
 		};
-		C7C24EE625C8D4E200222AAA /* XCRemoteSwiftPackageReference "SwiftUIKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/youjinp/SwiftUIKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.17;
-			};
-		};
 		C7ED97BF25C60055002ACC5A /* XCRemoteSwiftPackageReference "FDWaveformView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/fulldecent/FDWaveformView.git";
@@ -907,11 +901,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C7734D4925BDF52B0057DF96 /* XCRemoteSwiftPackageReference "swift-log-oslog" */;
 			productName = LoggingOSLog;
-		};
-		C7C24EE725C8D4E200222AAA /* SwiftUIKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C7C24EE625C8D4E200222AAA /* XCRemoteSwiftPackageReference "SwiftUIKit" */;
-			productName = SwiftUIKit;
 		};
 		C7ED97C025C60055002ACC5A /* FDWaveformView */ = {
 			isa = XCSwiftPackageProductDependency;
