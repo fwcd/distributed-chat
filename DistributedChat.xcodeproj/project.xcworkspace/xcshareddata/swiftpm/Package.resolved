@@ -1,304 +1,303 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "async-http-client",
-        "repositoryURL": "https://github.com/swift-server/async-http-client.git",
-        "state": {
-          "branch": null,
-          "revision": "0ae99db85b2b9d1e79b362bd31fd1ffe492f7c47",
-          "version": "1.21.2"
-        }
-      },
-      {
-        "package": "async-kit",
-        "repositoryURL": "https://github.com/vapor/async-kit.git",
-        "state": {
-          "branch": null,
-          "revision": "e048c8ee94967e8d8a1c2ec0e1156d6f7fa34d31",
-          "version": "1.20.0"
-        }
-      },
-      {
-        "package": "Bluetooth",
-        "repositoryURL": "https://github.com/PureSwift/Bluetooth.git",
-        "state": {
-          "branch": null,
-          "revision": "974ee4313fc8fe707bd5298009b810c0bca45d44",
-          "version": "6.4.3"
-        }
-      },
-      {
-        "package": "BluetoothLinux",
-        "repositoryURL": "https://github.com/PureSwift/BluetoothLinux.git",
-        "state": {
-          "branch": "master",
-          "revision": "372fd17a1fcff56d13b8bdc4d082478cda1e9f65",
-          "version": null
-        }
-      },
-      {
-        "package": "console-kit",
-        "repositoryURL": "https://github.com/vapor/console-kit.git",
-        "state": {
-          "branch": null,
-          "revision": "9f7932f22ab6f64aafadc14491e694179b7d0f6f",
-          "version": "4.14.3"
-        }
-      },
-      {
-        "package": "FDWaveformView",
-        "repositoryURL": "https://github.com/fulldecent/FDWaveformView.git",
-        "state": {
-          "branch": null,
-          "revision": "8ddf6107d54dccb3892f0a1aa70d5431d61d75f6",
-          "version": "5.0.1"
-        }
-      },
-      {
-        "package": "GATT",
-        "repositoryURL": "https://github.com/PureSwift/GATT.git",
-        "state": {
-          "branch": "master",
-          "revision": "113a71d853b9c59cf2119c49fbc4bfc1421d9ae2",
-          "version": null
-        }
-      },
-      {
-        "package": "leaf",
-        "repositoryURL": "https://github.com/vapor/leaf.git",
-        "state": {
-          "branch": null,
-          "revision": "dd799be2a92e7207ad86c567e4fc7dd37413ff60",
-          "version": "4.4.0"
-        }
-      },
-      {
-        "package": "leaf-kit",
-        "repositoryURL": "https://github.com/vapor/leaf-kit.git",
-        "state": {
-          "branch": null,
-          "revision": "c04e54753fb30a985b42c3be8530bb94442da9c6",
-          "version": "1.11.0"
-        }
-      },
-      {
-        "package": "LineNoise",
-        "repositoryURL": "https://github.com/andybest/linenoise-swift.git",
-        "state": {
-          "branch": "master",
-          "revision": "cbf0a35c6e159e4fe6a03f76c8a17ef08e907b0e",
-          "version": null
-        }
-      },
-      {
-        "package": "multipart-kit",
-        "repositoryURL": "https://github.com/vapor/multipart-kit.git",
-        "state": {
-          "branch": null,
-          "revision": "a31236f24bfd2ea2f520a74575881f6731d7ae68",
-          "version": "4.7.0"
-        }
-      },
-      {
-        "package": "Nimble",
-        "repositoryURL": "https://github.com/Quick/Nimble.git",
-        "state": {
-          "branch": null,
-          "revision": "7a46a5fc86cb917f69e3daf79fcb045283d8f008",
-          "version": "8.1.2"
-        }
-      },
-      {
-        "package": "routing-kit",
-        "repositoryURL": "https://github.com/vapor/routing-kit.git",
-        "state": {
-          "branch": null,
-          "revision": "8c9a227476555c55837e569be71944e02a056b72",
-          "version": "4.9.1"
-        }
-      },
-      {
-        "package": "Socket",
-        "repositoryURL": "https://github.com/PureSwift/Socket.git",
-        "state": {
-          "branch": "main",
-          "revision": "489e63b9cf0998f820f9f994f25cd5cb5f602404",
-          "version": null
-        }
-      },
-      {
-        "package": "swift-algorithms",
-        "repositoryURL": "https://github.com/apple/swift-algorithms.git",
-        "state": {
-          "branch": null,
-          "revision": "f6919dfc309e7f1b56224378b11e28bab5bccc42",
-          "version": "1.2.0"
-        }
-      },
-      {
-        "package": "swift-argument-parser",
-        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
-        "state": {
-          "branch": null,
-          "revision": "6b2aa2748a7881eebb9f84fb10c01293e15b52ca",
-          "version": "0.5.0"
-        }
-      },
-      {
-        "package": "swift-atomics",
-        "repositoryURL": "https://github.com/apple/swift-atomics.git",
-        "state": {
-          "branch": null,
-          "revision": "cd142fd2f64be2100422d658e7411e39489da985",
-          "version": "1.2.0"
-        }
-      },
-      {
-        "package": "swift-collections",
-        "repositoryURL": "https://github.com/apple/swift-collections.git",
-        "state": {
-          "branch": null,
-          "revision": "ee97538f5b81ae89698fd95938896dec5217b148",
-          "version": "1.1.1"
-        }
-      },
-      {
-        "package": "swift-crypto",
-        "repositoryURL": "https://github.com/apple/swift-crypto.git",
-        "state": {
-          "branch": null,
-          "revision": "60f13f60c4d093691934dc6cfdf5f508ada1f894",
-          "version": "2.6.0"
-        }
-      },
-      {
-        "package": "swift-http-types",
-        "repositoryURL": "https://github.com/apple/swift-http-types",
-        "state": {
-          "branch": null,
-          "revision": "1ddbea1ee34354a6a2532c60f98501c35ae8edfa",
-          "version": "1.2.0"
-        }
-      },
-      {
-        "package": "swift-log",
-        "repositoryURL": "https://github.com/apple/swift-log.git",
-        "state": {
-          "branch": null,
-          "revision": "9cb486020ebf03bfa5b5df985387a14a98744537",
-          "version": "1.6.1"
-        }
-      },
-      {
-        "package": "LoggingOSLog",
-        "repositoryURL": "https://github.com/chrisaljoudi/swift-log-oslog.git",
-        "state": {
-          "branch": null,
-          "revision": "176d41d46429e79c806333025b226e0c50a0c602",
-          "version": "0.2.2"
-        }
-      },
-      {
-        "package": "swift-metrics",
-        "repositoryURL": "https://github.com/apple/swift-metrics.git",
-        "state": {
-          "branch": null,
-          "revision": "e0165b53d49b413dd987526b641e05e246782685",
-          "version": "2.5.0"
-        }
-      },
-      {
-        "package": "swift-nio",
-        "repositoryURL": "https://github.com/apple/swift-nio.git",
-        "state": {
-          "branch": null,
-          "revision": "fc79798d5a150d61361a27ce0c51169b889e23de",
-          "version": "2.68.0"
-        }
-      },
-      {
-        "package": "swift-nio-extras",
-        "repositoryURL": "https://github.com/apple/swift-nio-extras.git",
-        "state": {
-          "branch": null,
-          "revision": "05c36b57453d23ea63785d58a7dbc7b70ba1745e",
-          "version": "1.23.0"
-        }
-      },
-      {
-        "package": "swift-nio-http2",
-        "repositoryURL": "https://github.com/apple/swift-nio-http2.git",
-        "state": {
-          "branch": null,
-          "revision": "a0224f3d20438635dd59c9fcc593520d80d131d0",
-          "version": "1.33.0"
-        }
-      },
-      {
-        "package": "swift-nio-ssl",
-        "repositoryURL": "https://github.com/apple/swift-nio-ssl.git",
-        "state": {
-          "branch": null,
-          "revision": "2b09805797f21c380f7dc9bedaab3157c5508efb",
-          "version": "2.27.0"
-        }
-      },
-      {
-        "package": "swift-nio-transport-services",
-        "repositoryURL": "https://github.com/apple/swift-nio-transport-services.git",
-        "state": {
-          "branch": null,
-          "revision": "38ac8221dd20674682148d6451367f89c2652980",
-          "version": "1.21.0"
-        }
-      },
-      {
-        "package": "swift-numerics",
-        "repositoryURL": "https://github.com/apple/swift-numerics.git",
-        "state": {
-          "branch": null,
-          "revision": "0a5bc04095a675662cf24757cc0640aa2204253b",
-          "version": "1.0.2"
-        }
-      },
-      {
-        "package": "swift-system",
-        "repositoryURL": "https://github.com/apple/swift-system.git",
-        "state": {
-          "branch": "feature/dynamic-lib",
-          "revision": "bd3d1f6321a489ee443860ebe0f26ff689c938ad",
-          "version": null
-        }
-      },
-      {
-        "package": "SwiftUIKit",
-        "repositoryURL": "https://github.com/youjinp/SwiftUIKit.git",
-        "state": {
-          "branch": null,
-          "revision": "a83aedd996bcb59ca846346bb507f090a7350e34",
-          "version": "0.0.17"
-        }
-      },
-      {
-        "package": "vapor",
-        "repositoryURL": "https://github.com/vapor/vapor.git",
-        "state": {
-          "branch": null,
-          "revision": "a823735db57b46100b0c61cdfc5a08525b1e7cad",
-          "version": "4.102.1"
-        }
-      },
-      {
-        "package": "websocket-kit",
-        "repositoryURL": "https://github.com/vapor/websocket-kit.git",
-        "state": {
-          "branch": null,
-          "revision": "4232d34efa49f633ba61afde365d3896fc7f8740",
-          "version": "2.15.0"
-        }
+  "originHash" : "f72696b5ccdf43728b12267ff97bbeffac45bb59219af8e5bebff8dbd4359197",
+  "pins" : [
+    {
+      "identity" : "async-http-client",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-server/async-http-client.git",
+      "state" : {
+        "revision" : "0ae99db85b2b9d1e79b362bd31fd1ffe492f7c47",
+        "version" : "1.21.2"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "async-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/async-kit.git",
+      "state" : {
+        "revision" : "e048c8ee94967e8d8a1c2ec0e1156d6f7fa34d31",
+        "version" : "1.20.0"
+      }
+    },
+    {
+      "identity" : "bluetooth",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PureSwift/Bluetooth.git",
+      "state" : {
+        "revision" : "974ee4313fc8fe707bd5298009b810c0bca45d44",
+        "version" : "6.4.3"
+      }
+    },
+    {
+      "identity" : "bluetoothlinux",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PureSwift/BluetoothLinux.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "372fd17a1fcff56d13b8bdc4d082478cda1e9f65"
+      }
+    },
+    {
+      "identity" : "console-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/console-kit.git",
+      "state" : {
+        "revision" : "9f7932f22ab6f64aafadc14491e694179b7d0f6f",
+        "version" : "4.14.3"
+      }
+    },
+    {
+      "identity" : "fdwaveformview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/fulldecent/FDWaveformView.git",
+      "state" : {
+        "revision" : "8ddf6107d54dccb3892f0a1aa70d5431d61d75f6",
+        "version" : "5.0.1"
+      }
+    },
+    {
+      "identity" : "gatt",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PureSwift/GATT.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "113a71d853b9c59cf2119c49fbc4bfc1421d9ae2"
+      }
+    },
+    {
+      "identity" : "leaf",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/leaf.git",
+      "state" : {
+        "revision" : "dd799be2a92e7207ad86c567e4fc7dd37413ff60",
+        "version" : "4.4.0"
+      }
+    },
+    {
+      "identity" : "leaf-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/leaf-kit.git",
+      "state" : {
+        "revision" : "c04e54753fb30a985b42c3be8530bb94442da9c6",
+        "version" : "1.11.0"
+      }
+    },
+    {
+      "identity" : "linenoise-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/andybest/linenoise-swift.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "cbf0a35c6e159e4fe6a03f76c8a17ef08e907b0e"
+      }
+    },
+    {
+      "identity" : "multipart-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/multipart-kit.git",
+      "state" : {
+        "revision" : "a31236f24bfd2ea2f520a74575881f6731d7ae68",
+        "version" : "4.7.0"
+      }
+    },
+    {
+      "identity" : "nimble",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Quick/Nimble.git",
+      "state" : {
+        "revision" : "7a46a5fc86cb917f69e3daf79fcb045283d8f008",
+        "version" : "8.1.2"
+      }
+    },
+    {
+      "identity" : "routing-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/routing-kit.git",
+      "state" : {
+        "revision" : "8c9a227476555c55837e569be71944e02a056b72",
+        "version" : "4.9.1"
+      }
+    },
+    {
+      "identity" : "socket",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PureSwift/Socket.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "489e63b9cf0998f820f9f994f25cd5cb5f602404"
+      }
+    },
+    {
+      "identity" : "swift-algorithms",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-algorithms.git",
+      "state" : {
+        "revision" : "f6919dfc309e7f1b56224378b11e28bab5bccc42",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser.git",
+      "state" : {
+        "revision" : "6b2aa2748a7881eebb9f84fb10c01293e15b52ca",
+        "version" : "0.5.0"
+      }
+    },
+    {
+      "identity" : "swift-atomics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-atomics.git",
+      "state" : {
+        "revision" : "cd142fd2f64be2100422d658e7411e39489da985",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "ee97538f5b81ae89698fd95938896dec5217b148",
+        "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "swift-crypto",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-crypto.git",
+      "state" : {
+        "revision" : "60f13f60c4d093691934dc6cfdf5f508ada1f894",
+        "version" : "2.6.0"
+      }
+    },
+    {
+      "identity" : "swift-http-types",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-http-types",
+      "state" : {
+        "revision" : "1ddbea1ee34354a6a2532c60f98501c35ae8edfa",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "swift-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-log.git",
+      "state" : {
+        "revision" : "9cb486020ebf03bfa5b5df985387a14a98744537",
+        "version" : "1.6.1"
+      }
+    },
+    {
+      "identity" : "swift-log-oslog",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/chrisaljoudi/swift-log-oslog.git",
+      "state" : {
+        "revision" : "176d41d46429e79c806333025b226e0c50a0c602",
+        "version" : "0.2.2"
+      }
+    },
+    {
+      "identity" : "swift-metrics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-metrics.git",
+      "state" : {
+        "revision" : "e0165b53d49b413dd987526b641e05e246782685",
+        "version" : "2.5.0"
+      }
+    },
+    {
+      "identity" : "swift-nio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio.git",
+      "state" : {
+        "revision" : "fc79798d5a150d61361a27ce0c51169b889e23de",
+        "version" : "2.68.0"
+      }
+    },
+    {
+      "identity" : "swift-nio-extras",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio-extras.git",
+      "state" : {
+        "revision" : "05c36b57453d23ea63785d58a7dbc7b70ba1745e",
+        "version" : "1.23.0"
+      }
+    },
+    {
+      "identity" : "swift-nio-http2",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio-http2.git",
+      "state" : {
+        "revision" : "a0224f3d20438635dd59c9fcc593520d80d131d0",
+        "version" : "1.33.0"
+      }
+    },
+    {
+      "identity" : "swift-nio-ssl",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio-ssl.git",
+      "state" : {
+        "revision" : "2b09805797f21c380f7dc9bedaab3157c5508efb",
+        "version" : "2.27.0"
+      }
+    },
+    {
+      "identity" : "swift-nio-transport-services",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio-transport-services.git",
+      "state" : {
+        "revision" : "38ac8221dd20674682148d6451367f89c2652980",
+        "version" : "1.21.0"
+      }
+    },
+    {
+      "identity" : "swift-numerics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-numerics.git",
+      "state" : {
+        "revision" : "0a5bc04095a675662cf24757cc0640aa2204253b",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swift-system",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-system.git",
+      "state" : {
+        "branch" : "feature/dynamic-lib",
+        "revision" : "bd3d1f6321a489ee443860ebe0f26ff689c938ad"
+      }
+    },
+    {
+      "identity" : "swiftuikit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/youjinp/SwiftUIKit.git",
+      "state" : {
+        "revision" : "a83aedd996bcb59ca846346bb507f090a7350e34",
+        "version" : "0.0.17"
+      }
+    },
+    {
+      "identity" : "vapor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/vapor.git",
+      "state" : {
+        "revision" : "a823735db57b46100b0c61cdfc5a08525b1e7cad",
+        "version" : "4.102.1"
+      }
+    },
+    {
+      "identity" : "websocket-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/websocket-kit.git",
+      "state" : {
+        "revision" : "4232d34efa49f633ba61afde365d3896fc7f8740",
+        "version" : "2.15.0"
+      }
+    }
+  ],
+  "version" : 3
 }

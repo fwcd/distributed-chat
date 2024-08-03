@@ -8,6 +8,7 @@
 import AVFoundation
 import Combine
 import DistributedChatKit
+import DistributedChatBluetooth
 import Dispatch
 import Logging
 import LoggingOSLog
@@ -33,7 +34,13 @@ private class AppState {
         let navigation = Navigation()
         let messages = Messages()
         let network = Network(myId: profile.me.id, messages: messages)
-        let transport = CoreBluetoothTransport(settings: settings, network: network, profile: profile)
+        let transport = CoreBluetoothTransport(
+            settings: settings.$bluetooth.eraseToAnyPublisher(),
+            me: profile.$presence.map(\.user).eraseToAnyPublisher(),
+            onUpdateNearbyUsers: { users in
+                network.nearbyUsers = users
+            }
+        )
         let controller = ChatController(me: profile.me, transport: transport)
         
         controller.onAddChatMessage { [unowned messages] message in

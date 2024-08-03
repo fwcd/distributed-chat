@@ -1,5 +1,6 @@
 import ArgumentParser
 import Dispatch
+import DistributedChatBluetooth
 import DistributedChatKit
 import Foundation
 import Logging
@@ -55,7 +56,7 @@ struct DistributedChatCLI: ParsableCommand {
     }
 
     private func runWithBluetoothLE(me: ChatUser) throws {
-        #if os(Linux) && canImport(BluetoothLinux)
+        #if os(Linux)
         log.info("Initializing Bluetooth Linux transport...")
 
         var actAsCentral = centralOnly

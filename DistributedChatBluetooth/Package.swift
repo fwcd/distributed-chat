@@ -18,6 +18,8 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../DistributedChatKit"),
+        .package(url: "https://github.com/PureSwift/BluetoothLinux.git", .branch("master")),
+        .package(url: "https://github.com/PureSwift/GATT.git", .branch("master")),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -26,6 +28,9 @@ let package = Package(
             name: "DistributedChatBluetooth",
             dependencies: [
                 .product(name: "DistributedChatKit", package: "DistributedChatKit"),
+                // TODO: Reenable once build issues with BluetoothLinux are fixed
+                // .product(name: "BluetoothLinux", package: "BluetoothLinux", condition: .when(platforms: [.linux])),
+                .product(name: "GATT", package: "GATT"),
             ]
         ),
         .testTarget(

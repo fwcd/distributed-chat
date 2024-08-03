@@ -7,7 +7,7 @@ import Bluetooth
 import BluetoothLinux
 import GATT
 
-fileprivate let log = Logger(label: "DistributedChatCLI.BluetoothLinuxTransport")
+fileprivate let log = Logger(label: "DistributedChatBluetooth.BluetoothLinuxTransport")
 
 // TODO: Genericize this class by parameterizing over HostController/L2CAP like GATTCentral/GATTPeripheral
 // TODO: Ideally move these constants into a module shared with the CoreBluetooth version
@@ -31,8 +31,8 @@ public class BluetoothLinuxTransport: ChatTransport {
 
     private var listeners = [(String) -> Void]()
 
-    private let centralQueue = DispatchQueue(label: "DistributedChatCLI.BluetoothLinuxTransport: Central")
-    private let peripheralQueue = DispatchQueue(label: "DistributedChatCLI.BluetoothLinuxTransport: Peripheral")
+    private let centralQueue = DispatchQueue(label: "DistributedChatBluetooth.BluetoothLinuxTransport: Central")
+    private let peripheralQueue = DispatchQueue(label: "DistributedChatBluetooth.BluetoothLinuxTransport: Peripheral")
 
     private var nearbyPeripherals: [Peripheral: DiscoveredPeripheral] = [:]
 

@@ -22,8 +22,6 @@ let package = Package(
         .package(path: "../DistributedChatSimulationProtocol"),
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.2"),
         .package(url: "https://github.com/vapor/websocket-kit.git", from: "2.6.1"),
-        .package(url: "https://github.com/PureSwift/BluetoothLinux.git", .branch("master")),
-        .package(url: "https://github.com/PureSwift/GATT.git", .branch("master")),
         .package(name: "LineNoise", url: "https://github.com/andybest/linenoise-swift.git", .branch("master")),
     ],
     targets: [
@@ -37,9 +35,6 @@ let package = Package(
                 .product(name: "DistributedChatSimulationProtocol", package: "DistributedChatSimulationProtocol"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "WebSocketKit", package: "websocket-kit"),
-                // TODO: Reenable once build issues with BluetoothLinux are fixed
-                // .product(name: "BluetoothLinux", package: "BluetoothLinux", condition: .when(platforms: [.linux])),
-                .product(name: "GATT", package: "GATT"),
                 .product(name: "LineNoise", package: "LineNoise"),
             ]
         )
