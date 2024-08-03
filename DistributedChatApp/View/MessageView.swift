@@ -47,23 +47,27 @@ struct MessageView: View {
                     Image(systemName: "circlebadge.fill")
                 }
             }
-            ShareLink(item: message.displayContent) {
-                Text("Share Text")
-                Image(systemName: "square.and.arrow.up")
+            if !message.displayContent.isEmpty {
+                ShareLink(item: message.displayContent) {
+                    Text("Share Text")
+                    Image(systemName: "square.and.arrow.up")
+                }
             }
             ForEach(message.attachments ?? []) { attachment in
                 if let url = attachment.content.asURL {
                     ShareLink(item: url.smartResolved) {
-                        Text("Share \(attachment.name)")
+                        Text("Share \(attachment.type) (\(attachment.name))")
                         Image(systemName: "square.and.arrow.up")
                     }
                 }
             }
-            Button(action: {
-                UIPasteboard.general.string = message.displayContent
-            }) {
-                Text("Copy Text")
-                Image(systemName: "doc.on.doc")
+            if !message.displayContent.isEmpty {
+                Button(action: {
+                    UIPasteboard.general.string = message.displayContent
+                }) {
+                    Text("Copy Text")
+                    Image(systemName: "doc.on.doc")
+                }
             }
             Button(action: {
                 UIPasteboard.general.string = message.id.uuidString

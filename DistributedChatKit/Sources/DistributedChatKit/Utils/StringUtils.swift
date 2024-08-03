@@ -6,7 +6,7 @@
 //
 
 extension String {
-    func pluralized(with n: Int) -> String {
+    public func pluralized(with n: Int) -> String {
         n == 1 ? self : "\(self)s"
     }
 }
