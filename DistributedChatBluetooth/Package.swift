@@ -28,8 +28,7 @@ let package = Package(
             name: "DistributedChatBluetooth",
             dependencies: [
                 .product(name: "DistributedChatKit", package: "DistributedChatKit"),
-                // TODO: Reenable once build issues with BluetoothLinux are fixed
-                // .product(name: "BluetoothLinux", package: "BluetoothLinux", condition: .when(platforms: [.linux])),
+                .product(name: "BluetoothLinux", package: "BluetoothLinux", condition: .when(platforms: [.linux])),
                 .product(name: "GATT", package: "GATT"),
             ]
         ),
