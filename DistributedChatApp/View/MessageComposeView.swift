@@ -17,7 +17,7 @@ fileprivate let log = Logger(label: "DistributedChatApp.MessageComposeView")
 fileprivate let compression: ChatAttachment.Compression = .lzfse
 
 struct MessageComposeView: View {
-    let channel: ChatChannel?
+    let channel: ChatChannel
     let controller: ChatController
     @Binding var replyingToMessageId: UUID?
     
@@ -217,7 +217,7 @@ struct MessageComposeView_Previews: PreviewProvider {
     @StateObject static var network = Network(messages: messages)
     @State static var replyingToMessageId: UUID? = nil
     static var previews: some View {
-        MessageComposeView(channel: nil, controller: controller, replyingToMessageId: $replyingToMessageId)
+        MessageComposeView(channel: .global, controller: controller, replyingToMessageId: $replyingToMessageId)
             .environmentObject(messages)
             .environmentObject(network)
     }

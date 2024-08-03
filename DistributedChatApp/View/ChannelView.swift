@@ -9,7 +9,7 @@ import DistributedChatKit
 import SwiftUI
 
 struct ChannelView: View {
-    let channel: ChatChannel?
+    let channel: ChatChannel
     let controller: ChatController
     
     @EnvironmentObject private var messages: Messages
@@ -47,7 +47,7 @@ struct ChatView_Previews: PreviewProvider {
     @StateObject static var network = Network(myId: controller.me.id, messages: messages)
     @StateObject static var navigation = Navigation()
     static var previews: some View {
-        ChannelView(channel: nil, controller: controller)
+        ChannelView(channel: .global, controller: controller)
             .environmentObject(messages)
             .environmentObject(settings)
             .environmentObject(network)

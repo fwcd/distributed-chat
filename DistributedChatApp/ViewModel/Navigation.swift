@@ -9,9 +9,9 @@ import Combine
 import DistributedChatKit
 
 class Navigation: ObservableObject {
-    @Published var activeChannel: ChatChannel?? = nil
+    @Published var activeChannel: ChatChannel? = nil
     
-    func open(channel: ChatChannel?) {
-        activeChannel = Optional.some(channel)
+    func open(channel: ChatChannel) {
+        activeChannel = channel
     }
 }

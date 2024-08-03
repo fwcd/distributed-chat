@@ -52,17 +52,17 @@ class ChatREPL {
         ]
     }
 
-    private func displayName(of channel: ChatChannel?) -> String {
+    private func displayName(of channel: ChatChannel) -> String {
         switch channel {
-        case .dm(let userIds)?:
+        case .dm(let userIds):
             let name = userIds
                 .filter { $0 != controller.me.id }
                 .map { network.presences[$0]?.user.displayName ?? $0.uuidString }
                 .joined(separator: ",")
             return "@\(name)"
-        case .room(let name)?:
+        case .room(let name):
             return "#\(name)"
-        case nil:
+        case .global:
             return "#\(globalChannelName)"
         }
     }
@@ -73,19 +73,19 @@ class ChatREPL {
         case "@"?:
             return resolveUser(from: name).map { .dm([controller.me.id, $0]) }
         case "#"?:
-            return name == globalChannelName ? nil : .room(name)
+            return name == globalChannelName ? .global : .room(name)
         default:
             return nil
         }
     }
 
-    private func parseMessage(from raw: String) -> (String, ChatChannel?) {
+    private func parseMessage(from raw: String) -> (String, ChatChannel) {
         let split = raw.split(separator: " ", maxSplits: 1).map(String.init)
 
         if split.count == 2, let channel = parseChannel(from: split[0]) {
             return (split[1], channel)
         } else {
-            return (raw, nil) // on #global
+            return (raw, .global)
         }
     }
 
@@ -127,7 +127,7 @@ class ChatREPL {
                 command()
             } else {
                 let (content, channel) = parseMessage(from: input)
-                controller.send(content: content, on: channel)
+                controller.send(content: content, on: channel ?? .global)
             }
         }
 

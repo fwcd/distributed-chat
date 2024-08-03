@@ -14,12 +14,12 @@ let iconSize: CGFloat = 22
 /// The displayed name of the 'global' channel, internally represented with nil
 fileprivate let globalChannelName = "global"
 
-extension Optional where Wrapped == ChatChannel {
+extension ChatChannel {
     func rawDisplayName(with network: Network) -> String {
         switch self {
-        case .room(let name)?:
+        case .room(let name):
             return name
-        case .dm(let userIds)?:
+        case .dm(let userIds):
             if userIds.count == 1, let userId = userIds.first {
                 return name(of: userId, with: network)
             } else {
@@ -28,7 +28,7 @@ extension Optional where Wrapped == ChatChannel {
                     .map { name(of: $0, with: network) }
                     .joined(separator: ",")
             }
-        case nil:
+        case .global:
             return globalChannelName
         }
     }
@@ -44,15 +44,5 @@ extension Optional where Wrapped == ChatChannel {
         default:
             return "#\(rawDisplayName(with: network))"
         }
-    }
-}
-
-extension ChatChannel {
-    func rawDisplayName(with network: Network) -> String {
-        Optional.some(self).rawDisplayName(with: network)
-    }
-    
-    func displayName(with network: Network) -> String {
-        Optional.some(self).displayName(with: network)
     }
 }
