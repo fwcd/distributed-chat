@@ -35,55 +35,54 @@ struct ChannelsView: View {
                     Text("\(reachableCount) \("user".pluralized(with: reachableCount)) reachable, \(nearbyCount) \("user".pluralized(with: nearbyCount)) nearby")
                 }
                 ForEach(allChannels, id: \.self) { channel in
-                    NavigationLink(value: channel) {
-                        ChannelSnippetView(channel: channel)
-                    }
-                    .contextMenu {
-                        Button(action: {
-                            deletingChannels = [channel]
-                            deletionConfirmationShown = true
-                        }) {
-                            Text("Delete Locally")
-                            Image(systemName: "trash")
-                        }
-                        if messages.unreadChannels.contains(channel) {
+                    // Implementation note: It looks like SwiftUI sets .tag(channel) on the snippet views for us, so the selection "just works"
+                    ChannelSnippetView(channel: channel)
+                        .contextMenu {
                             Button(action: {
-                                messages.markAsRead(channel: channel)
+                                deletingChannels = [channel]
+                                deletionConfirmationShown = true
                             }) {
-                                Text("Mark as Read")
-                                Image(systemName: "circlebadge")
+                                Text("Delete Locally")
+                                Image(systemName: "trash")
+                            }
+                            if messages.unreadChannels.contains(channel) {
+                                Button(action: {
+                                    messages.markAsRead(channel: channel)
+                                }) {
+                                    Text("Mark as Read")
+                                    Image(systemName: "circlebadge")
+                                }
+                            }
+                            if !messages.pinnedChannels.contains(channel) {
+                                Button(action: {
+                                    messages.pin(channel: channel)
+                                }) {
+                                    Text("Pin")
+                                    Image(systemName: "pin.fill")
+                                }
+                            } else if channel != nil {
+                                Button(action: {
+                                    messages.unpin(channel: channel)
+                                }) {
+                                    Text("Unpin")
+                                    Image(systemName: "pin.slash.fill")
+                                }
+                            }
+                            if let channel = channel {
+                                Button(action: {
+                                    UIPasteboard.general.string = channel.displayName(with: network)
+                                }) {
+                                    Text("Copy Channel Name")
+                                    Image(systemName: "doc.on.doc")
+                                }
+                            }
+                            Button(action: {
+                                UIPasteboard.general.url = URL(string: "distributedchat:///channel\(channel.map { "/\($0)" } ?? "")")
+                            }) {
+                                Text("Copy Channel URL")
+                                Image(systemName: "doc.on.doc.fill")
                             }
                         }
-                        if !messages.pinnedChannels.contains(channel) {
-                            Button(action: {
-                                messages.pin(channel: channel)
-                            }) {
-                                Text("Pin")
-                                Image(systemName: "pin.fill")
-                            }
-                        } else if channel != nil {
-                            Button(action: {
-                                messages.unpin(channel: channel)
-                            }) {
-                                Text("Unpin")
-                                Image(systemName: "pin.slash.fill")
-                            }
-                        }
-                        if let channel = channel {
-                            Button(action: {
-                                UIPasteboard.general.string = channel.displayName(with: network)
-                            }) {
-                                Text("Copy Channel Name")
-                                Image(systemName: "doc.on.doc")
-                            }
-                        }
-                        Button(action: {
-                            UIPasteboard.general.url = URL(string: "distributedchat:///channel\(channel.map { "/\($0)" } ?? "")")
-                        }) {
-                            Text("Copy Channel URL")
-                            Image(systemName: "doc.on.doc.fill")
-                        }
-                    }
                 }
                 .onDelete { indexSet in
                     deletingChannels = indexSet.map { allChannels[$0] }
@@ -92,12 +91,6 @@ struct ChannelsView: View {
             }
             .listStyle(PlainListStyle())
             .navigationTitle("Channels")
-        } detail: {
-            Group {
-                if let channel = navigation.activeChannel {
-                    ChannelView(channel: channel, controller: controller)
-                }
-            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -106,6 +99,12 @@ struct ChannelsView: View {
                         Image(systemName: "square.and.pencil")
                             .resizable()
                     }
+                }
+            }
+        } detail: {
+            Group {
+                if let channel = navigation.activeChannel {
+                    ChannelView(channel: channel, controller: controller)
                 }
             }
         }
