@@ -86,6 +86,7 @@
 
 /* Begin PBXFileReference section */
 		354F77792C5E64A9004F5FA3 /* DistributedChatKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatKit; sourceTree = "<group>"; };
+		354F777C2C5E66E9004F5FA3 /* DistributedChatCLI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatCLI; sourceTree = "<group>"; };
 		35C810F02C399CF2007B587C /* DistributedChatApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DistributedChatApp.entitlements; sourceTree = "<group>"; };
 		C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatStatus+Color.swift"; sourceTree = "<group>"; };
 		C707E1E425C8960700164EF7 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
@@ -264,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				354F77792C5E64A9004F5FA3 /* DistributedChatKit */,
+				354F777C2C5E66E9004F5FA3 /* DistributedChatCLI */,
 				C7BC335025B3C00700989E95 /* DistributedChatApp */,
 				C7BC336225B3C00900989E95 /* DistributedChatAppTests */,
 				C7BC336D25B3C00900989E95 /* DistributedChatAppUITests */,
