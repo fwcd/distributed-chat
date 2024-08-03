@@ -17,11 +17,20 @@ struct ChannelView: View {
     @State private var replyingToMessageId: UUID?
     
     var body: some View {
-        VStack(alignment: .leading) {
-            MessageHistoryView(channel: channel, controller: controller, replyingToMessageId: $replyingToMessageId)
-            MessageComposeView(channel: channel, controller: controller, replyingToMessageId: $replyingToMessageId)
+        MessageHistoryView(
+            channel: channel,
+            controller: controller,
+            replyingToMessageId: $replyingToMessageId
+        )
+        .safeAreaInset(edge: .bottom) {
+            MessageComposeView(
+                channel: channel,
+                controller: controller,
+                replyingToMessageId: $replyingToMessageId
+            )
+            .padding(10)
+            .background(.regularMaterial)
         }
-        .padding(15)
         .navigationTitle(channel.displayName(with: network))
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
