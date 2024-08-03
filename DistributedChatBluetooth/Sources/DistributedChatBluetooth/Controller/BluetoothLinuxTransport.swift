@@ -113,14 +113,6 @@ public class BluetoothLinuxTransport: ChatTransport {
             let advertisingData = try GAPDataEncoder().encodeAdvertisingData(gapData)
             try await localPeripheral.hostController.setLowEnergyAdvertisingData(advertisingData)
 
-            let serverSocket = try BluetoothLinux.L2CAPSocket.lowEnergyServer()
-            localPeripheral.newConnection = {
-                log.debug("Peripheral: Waiting for connection...")
-                let clientSocket = try serverSocket.waitForConnection()
-                log.info("Peripheral: Connected to \(clientSocket.address)")
-                return (socket: clientSocket, central: Central(id: clientSocket.address))
-            }
-
             Task {
                 do {
                     try await localPeripheral.start()
@@ -134,18 +126,8 @@ public class BluetoothLinuxTransport: ChatTransport {
         // Set up local GATT central for sending messages
 
         if let localCentral = localCentral {
-            localCentral.didDisconnect = { [unowned self] peripheral in
-                log.info("Central: Disconnected from \(peripheral.id)")
-                nearbyPeripherals[peripheral] = nil
-            }
             localCentral.log = { msg in
                 log.trace("Central: (internal) \(msg)")
-            }
-
-            localCentral.newConnection = { (scanData, advReport) in
-                try BluetoothLinux.L2CAPSocket.lowEnergyClient(
-                    destination: (address: advReport.address, type: .init(lowEnergy: advReport.addressType))
-                )
             }
 
             localCentralScanTask = Task { [weak self] in
