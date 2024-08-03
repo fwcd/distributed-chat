@@ -26,8 +26,8 @@ struct ChannelsView: View {
     }
     
     var body: some View {
-        NavigationView {
-            List {
+        NavigationSplitView {
+            List(selection: $navigation.activeChannel) {
                 let nearbyCount = network.nearbyUsers.count
                 let reachableCount = network.presences.filter { $0.key != controller.me.id }.count
                 HStack {
@@ -35,7 +35,7 @@ struct ChannelsView: View {
                     Text("\(reachableCount) \("user".pluralized(with: reachableCount)) reachable, \(nearbyCount) \("user".pluralized(with: nearbyCount)) nearby")
                 }
                 ForEach(allChannels, id: \.self) { channel in
-                    NavigationLink(destination: ChannelView(channel: channel, controller: controller), tag: channel, selection: $navigation.activeChannel) {
+                    NavigationLink(value: channel) {
                         ChannelSnippetView(channel: channel)
                     }
                     .contextMenu {
@@ -92,6 +92,12 @@ struct ChannelsView: View {
             }
             .listStyle(PlainListStyle())
             .navigationTitle("Channels")
+        } detail: {
+            Group {
+                if let channel = navigation.activeChannel {
+                    ChannelView(channel: channel, controller: controller)
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -103,7 +109,6 @@ struct ChannelsView: View {
                 }
             }
         }
-        .navigationViewStyle(DoubleColumnNavigationViewStyle())
         .sheet(isPresented: $channelDraftSheetShown) {
             NewChannelView {
                 channelDraftSheetShown = false
