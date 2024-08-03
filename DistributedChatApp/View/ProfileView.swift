@@ -38,10 +38,9 @@ struct ProfileView: View {
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-    @StateObject static var profile = Profile()
-    static var previews: some View {
-        ProfileView()
-            .environmentObject(profile)
-    }
+#Preview {
+    let profile = Profile()
+    
+    return ProfileView()
+        .environmentObject(profile)
 }

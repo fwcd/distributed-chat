@@ -71,21 +71,20 @@ struct BubbleMessageView: View {
     }
 }
 
-struct BubbleMessageView_Previews: PreviewProvider {
-    static let message1 = ChatMessage(author: ChatUser(name: "Alice"), content: "Hi!")
-    static let message2 = ChatMessage(author: ChatUser(name: "Bob"), content: "This is a long\nmultiline message!", repliedToMessageId: message1.id, wasEncrypted: true)
-    static let message3 = ChatMessage(author: ChatUser(name: "Charles"), content: .encrypted(ChatCryptoCipherData(sealed: Data(), signature: Data(), ephemeralPublicKey: Data())), repliedToMessageId: message1.id)
-    @StateObject static var messages = Messages(messages: [
+#Preview {
+    let message1 = ChatMessage(author: ChatUser(name: "Alice"), content: "Hi!")
+    let message2 = ChatMessage(author: ChatUser(name: "Bob"), content: "This is a long\nmultiline message!", repliedToMessageId: message1.id, wasEncrypted: true)
+    let message3 = ChatMessage(author: ChatUser(name: "Charles"), content: .encrypted(ChatCryptoCipherData(sealed: Data(), signature: Data(), ephemeralPublicKey: Data())), repliedToMessageId: message1.id)
+    let messages = Messages(messages: [
         message1,
         message2,
         message3
     ])
-    static var previews: some View {
-        VStack {
-            BubbleMessageView(message: message1, isMe: false)
-            BubbleMessageView(message: message2, isMe: true)
-            BubbleMessageView(message: message3, isMe: true)
-        }
-        .environmentObject(messages)
+    
+    return VStack {
+        BubbleMessageView(message: message1, isMe: false)
+        BubbleMessageView(message: message2, isMe: true)
+        BubbleMessageView(message: message3, isMe: true)
     }
+    .environmentObject(messages)
 }

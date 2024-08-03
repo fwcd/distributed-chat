@@ -21,8 +21,6 @@ struct FileAttachmentView: View {
     }
 }
 
-struct FileAttachmentView_Previews: PreviewProvider {
-    static var previews: some View {
-        AttachmentView(attachment: ChatAttachment(name: "test.txt", content: .url(URL(string: "data:text/plain;base64,dGVzdDEyMwo=")!)))
-    }
+#Preview {
+    AttachmentView(attachment: ChatAttachment(name: "test.txt", content: .url(URL(string: "data:text/plain;base64,dGVzdDEyMwo=")!)))
 }

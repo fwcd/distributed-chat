@@ -49,18 +49,17 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    @StateObject static var settings = Settings()
-    @StateObject static var messages = Messages()
-    @StateObject static var navigation = Navigation()
-    @StateObject static var profile = Profile()
-    @StateObject static var network = Network(myId: profile.me.id, messages: messages)
-    static var previews: some View {
-        ContentView(controller: ChatController(transport: MockTransport()))
-            .environmentObject(settings)
-            .environmentObject(messages)
-            .environmentObject(navigation)
-            .environmentObject(network)
-            .environmentObject(profile)
-    }
+#Preview {
+    let settings = Settings()
+    let messages = Messages()
+    let navigation = Navigation()
+    let profile = Profile()
+    let network = Network(myId: profile.me.id, messages: messages)
+    
+    return ContentView(controller: ChatController(transport: MockTransport()))
+        .environmentObject(settings)
+        .environmentObject(messages)
+        .environmentObject(navigation)
+        .environmentObject(network)
+        .environmentObject(profile)
 }

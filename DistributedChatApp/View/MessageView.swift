@@ -119,22 +119,21 @@ struct MessageView: View {
     }
 }
 
-struct MessageView_Previews: PreviewProvider {
-    static let controller = ChatController(transport: MockTransport())
-    static let alice = controller.me
-    static let bob = ChatUser(name: "Bob")
-    @StateObject static var messages = Messages(messages: [
+#Preview {
+    let controller = ChatController(transport: MockTransport())
+    let alice = controller.me
+    let bob = ChatUser(name: "Bob")
+    let messages = Messages(messages: [
         ChatMessage(author: alice, content: "Hello!"),
         ChatMessage(author: bob, content: "Hi!"),
         ChatMessage(author: bob, content: "This is fancy!"),
     ])
-    @StateObject static var settings = Settings()
-    @StateObject static var navigation = Navigation()
-    @State static var replyingToMessageId: UUID? = nil
-    static var previews: some View {
-        MessageView(message: messages.messages.values.first { $0.content == "Hello!" }!, controller: controller, replyingToMessageId: $replyingToMessageId)
-            .environmentObject(messages)
-            .environmentObject(settings)
-            .environmentObject(navigation)
-    }
+    let settings = Settings()
+    let navigation = Navigation()
+    let replyingToMessageId: UUID? = nil
+    
+    return MessageView(message: messages.messages.values.first { $0.content == "Hello!" }!, controller: controller, replyingToMessageId: .constant(replyingToMessageId))
+        .environmentObject(messages)
+        .environmentObject(settings)
+        .environmentObject(navigation)
 }

@@ -45,11 +45,9 @@ struct NewChannelView: View {
     }
 }
 
-struct NewChannelView_Previews: PreviewProvider {
-    @StateObject static var network = Network()
+#Preview {
+    let network = Network()
     
-    static var previews: some View {
-        NewChannelView { _ in }
-            .environmentObject(network)
-    }
+    return NewChannelView { _ in }
+        .environmentObject(network)
 }

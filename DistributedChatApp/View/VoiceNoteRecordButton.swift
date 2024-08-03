@@ -37,8 +37,6 @@ struct VoiceNoteRecordButton: View {
     }
 }
 
-struct VoiceNoteRecordButton_Previews: PreviewProvider {
-    static var previews: some View {
-        VoiceNoteRecordButton { _ in }
-    }
+#Preview {
+    VoiceNoteRecordButton { _ in }
 }

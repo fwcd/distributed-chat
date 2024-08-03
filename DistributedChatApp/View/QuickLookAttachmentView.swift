@@ -47,10 +47,8 @@ struct QuickLookAttachmentView<Content>: View where Content: View {
     }
 }
 
-struct QuickLookAttachmentView_Previews: PreviewProvider {
-    static var previews: some View {
-        QuickLookAttachmentView(attachment: ChatAttachment(name: "test.txt", content: .url(URL(string: "data:text/plain;base64,dGVzdDEyMwo=")!))) {
-            Text("Test")
-        }
+#Preview {
+    QuickLookAttachmentView(attachment: ChatAttachment(name: "test.txt", content: .url(URL(string: "data:text/plain;base64,dGVzdDEyMwo=")!))) {
+        Text("Test")
     }
 }

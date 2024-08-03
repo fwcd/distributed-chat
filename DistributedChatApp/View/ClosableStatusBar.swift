@@ -22,10 +22,8 @@ struct ClosableStatusBar<V>: View where V: View {
     }
 }
 
-struct ClosableStatusBar_Previews: PreviewProvider {
-    static var previews: some View {
-        ClosableStatusBar(onClose: {}) {
-            Text("Test")
-        }
+#Preview {
+    ClosableStatusBar(onClose: {}) {
+        Text("Test")
     }
 }

@@ -16,8 +16,6 @@ struct PlainMessageView: View {
     }
 }
 
-struct PlainMessageView_Previews: PreviewProvider {
-    static var previews: some View {
-        PlainMessageView(message: ChatMessage(author: ChatUser(name: "Alice"), content: "Test"))
-    }
+#Preview {
+    PlainMessageView(message: ChatMessage(author: ChatUser(name: "Alice"), content: "Test"))
 }
