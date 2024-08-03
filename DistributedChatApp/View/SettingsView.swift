@@ -54,10 +54,9 @@ struct SettingsView: View {
     }
 }
 
-struct SettingsView_Previews: PreviewProvider {
-    @StateObject static var settings = Settings()
-    static var previews: some View {
-        SettingsView()
-            .environmentObject(settings)
-    }
+#Preview {
+    let settings = Settings()
+    
+    return SettingsView()
+        .environmentObject(settings)
 }

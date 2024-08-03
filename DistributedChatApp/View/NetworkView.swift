@@ -84,21 +84,19 @@ struct NetworkView: View {
     }
 }
 
-struct NetworkView_Previews: PreviewProvider {
-    static let alice = ChatUser(name: "Alice")
-    static let bob = ChatUser(name: "Bob")
-    @StateObject static var network = Network(nearbyUsers: [
+#Preview {
+    let alice = ChatUser(name: "Alice")
+    let bob = ChatUser(name: "Bob")
+    let network = Network(nearbyUsers: [
         NearbyUser(peripheralIdentifier: UUID(uuidString: "6b61a69b-f4b4-4321-92db-9d61653ddaf6")!, chatUser: alice, rssi: -49),
         NearbyUser(peripheralIdentifier: UUID(uuidString: "b7b7d248-9640-490d-8187-44fc9ebfa1ff")!, chatUser: bob, rssi: -55),
     ], presences: [
         ChatPresence(user: alice, status: .online),
         ChatPresence(user: bob, status: .away, info: "At the gym"),
     ], messages: Messages())
-    @StateObject static var navigation = Navigation()
+    let navigation = Navigation()
     
-    static var previews: some View {
-        NetworkView()
-            .environmentObject(network)
-            .environmentObject(navigation)
-    }
+    return NetworkView()
+        .environmentObject(network)
+        .environmentObject(navigation)
 }

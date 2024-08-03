@@ -30,8 +30,6 @@ struct CompactMessageView: View {
     }
 }
 
-struct CompactMessageView_Previews: PreviewProvider {
-    static var previews: some View {
-        CompactMessageView(message: ChatMessage(author: ChatUser(name: "Alice"), content: "Test"))
-    }
+#Preview {
+    CompactMessageView(message: ChatMessage(author: ChatUser(name: "Alice"), content: "Test"))
 }

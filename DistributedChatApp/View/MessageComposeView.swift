@@ -211,14 +211,13 @@ struct MessageComposeView: View {
     }
 }
 
-struct MessageComposeView_Previews: PreviewProvider {
-    static let controller = ChatController(transport: MockTransport())
-    @StateObject static var messages = Messages()
-    @StateObject static var network = Network(messages: messages)
-    @State static var replyingToMessageId: UUID? = nil
-    static var previews: some View {
-        MessageComposeView(channel: .global, controller: controller, replyingToMessageId: $replyingToMessageId)
-            .environmentObject(messages)
-            .environmentObject(network)
-    }
+#Preview {
+    let controller = ChatController(transport: MockTransport())
+    let messages = Messages()
+    let network = Network(messages: messages)
+    let replyingToMessageId: UUID? = nil
+    
+    return MessageComposeView(channel: .global, controller: controller, replyingToMessageId: .constant(replyingToMessageId))
+        .environmentObject(messages)
+        .environmentObject(network)
 }

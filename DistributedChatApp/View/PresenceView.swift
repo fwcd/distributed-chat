@@ -60,13 +60,11 @@ struct PresenceView: View {
     }
 }
 
-struct PresenceView_Previews: PreviewProvider {
-    @StateObject static var network = Network()
-    @StateObject static var navigation = Navigation()
+#Preview {
+    let network = Network()
+    let navigation = Navigation()
     
-    static var previews: some View {
-        PresenceView(presence: ChatPresence(user: .init()))
-            .environmentObject(network)
-            .environmentObject(navigation)
-    }
+    return PresenceView(presence: ChatPresence(user: .init()))
+        .environmentObject(network)
+        .environmentObject(navigation)
 }
