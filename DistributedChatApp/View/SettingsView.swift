@@ -11,7 +11,7 @@ struct SettingsView: View {
     @EnvironmentObject private var settings: Settings
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("Presentation")) {
                     EnumPicker(selection: $settings.presentation.messageHistoryStyle, label: Text("Message History Style"))
@@ -51,7 +51,6 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
