@@ -31,42 +31,36 @@ struct NetworkView: View {
                                 Button {
                                     UIPasteboard.general.string = chatUser.id.uuidString
                                 } label: {
-                                    Text("Copy User ID")
-                                    Image(systemName: "doc.on.doc")
+                                    Label("Copy User ID", systemImage: "doc.on.doc")
                                 }
                                 Button {
                                     UIPasteboard.general.string = chatUser.name
                                 } label: {
-                                    Text("Copy User Name")
-                                    Image(systemName: "doc.on.doc")
+                                    Label("Copy User Name", systemImage: "doc.on.doc")
                                 }
                                 Button {
                                     navigation.open(channel: .dm([network.myId, chatUser.id]))
                                 } label: {
-                                    Text("Open DM channel")
-                                    Image(systemName: "at")
+                                    Label("Open DM channel", systemImage: "at")
                                 }
                             }
                             Button {
                                 UIPasteboard.general.string = user.peripheralIdentifier.uuidString
                             } label: {
-                                Text("Copy Peripheral ID")
-                                Image(systemName: "doc.on.doc")
+                                Label("Copy Peripheral ID", systemImage: "doc.on.doc")
                             }
                             if let peripheralName = user.peripheralName {
                                 Button {
                                     UIPasteboard.general.string = peripheralName
                                 } label: {
-                                    Text("Copy Peripheral Name")
-                                    Image(systemName: "doc.on.doc")
+                                    Label("Copy Peripheral Name", systemImage: "doc.on.doc")
                                 }
                             }
                             if let rssi = user.rssi {
                                 Button {
                                     UIPasteboard.general.string = String(rssi)
                                 } label: {
-                                    Text("Copy RSSI")
-                                    Image(systemName: "doc.on.doc")
+                                    Label("Copy RSSI", systemImage: "doc.on.doc")
                                 }
                             }
                         }

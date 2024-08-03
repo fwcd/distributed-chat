@@ -43,43 +43,37 @@ struct ChannelsView: View {
                             deletingChannels = [channel]
                             deletionConfirmationShown = true
                         } label: {
-                            Text("Delete Locally")
-                            Image(systemName: "trash")
+                            Label("Delete Locally", systemImage: "trash")
                         }
                         if messages.unreadChannels.contains(channel) {
                             Button {
                                 messages.markAsRead(channel: channel)
                             } label: {
-                                Text("Mark as Read")
-                                Image(systemName: "circlebadge")
+                                Label("Mark as Read", systemImage: "circlebadge")
                             }
                         }
                         if !messages.pinnedChannels.contains(channel) {
                             Button {
                                 messages.pin(channel: channel)
                             } label: {
-                                Text("Pin")
-                                Image(systemName: "pin.fill")
+                                Label("Pin", systemImage: "pin.fill")
                             }
                         } else if channel != .global {
                             Button {
                                 messages.unpin(channel: channel)
                             } label: {
-                                Text("Unpin")
-                                Image(systemName: "pin.slash.fill")
+                                Label("Unpin", systemImage: "pin.slash.fill")
                             }
                         }
                         Button {
                             UIPasteboard.general.string = channel.displayName(with: network)
                         } label: {
-                            Text("Copy Channel Name")
-                            Image(systemName: "doc.on.doc")
+                            Label("Copy Channel Name", systemImage: "doc.on.doc")
                         }
                         Button {
                             UIPasteboard.general.url = URL(string: "distributedchat:///channel/\(channel)")
                         } label: {
-                            Text("Copy Channel URL")
-                            Image(systemName: "doc.on.doc.fill")
+                            Label("Copy Channel URL", systemImage: "doc.on.doc.fill")
                         }
                     }
                 }

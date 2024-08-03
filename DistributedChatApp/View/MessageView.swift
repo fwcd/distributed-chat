@@ -23,41 +23,35 @@ struct MessageView: View {
             Button {
                 messages.deleteMessage(id: message.id)
             } label: {
-                Text("Delete Locally")
-                Image(systemName: "trash")
+                Label("Delete Locally", systemImage: "trash")
             }
             Button {
                 replyingToMessageId = message.id
             } label: {
-                Text("Reply")
-                Image(systemName: "arrowshape.turn.up.left.fill")
+                Label("Reply", systemImage: "arrowshape.turn.up.left.fill")
             }
             if messages.unreadMessageIds.contains(message.id) {
                 Button {
                     messages.unreadMessageIds.remove(message.id)
                 } label: {
-                    Text("Mark as Read")
-                    Image(systemName: "circlebadge")
+                    Label("Mark as Read", systemImage: "circlebadge")
                 }
             } else {
                 Button {
                     messages.unreadMessageIds.insert(message.id)
                 } label: {
-                    Text("Mark as Unread")
-                    Image(systemName: "circlebadge.fill")
+                    Label("Mark as Unread", systemImage: "circlebadge.fill")
                 }
             }
             if !message.displayContent.isEmpty {
                 ShareLink(item: message.displayContent) {
-                    Text("Share Text")
-                    Image(systemName: "square.and.arrow.up")
+                    Label("Share Text", systemImage: "square.and.arrow.up")
                 }
             }
             ForEach(message.attachments ?? []) { attachment in
                 if let url = attachment.content.asURL {
                     ShareLink(item: url.smartResolved) {
-                        Text("Share \(attachment.type) (\(attachment.name))")
-                        Image(systemName: "square.and.arrow.up")
+                        Label("Share \(attachment.type) (\(attachment.name))", systemImage: "square.and.arrow.up")
                     }
                 }
             }
@@ -65,41 +59,33 @@ struct MessageView: View {
                 Button {
                     UIPasteboard.general.string = message.displayContent
                 } label: {
-                    Text("Copy Text")
-                    Image(systemName: "doc.on.doc")
+                    Label("Copy Text", systemImage: "doc.on.doc")
                 }
             }
             Button {
                 UIPasteboard.general.string = message.id.uuidString
             } label: {
-                Text("Copy Message ID")
-                Image(systemName: "doc.on.doc")
+                Label("Copy Message ID", systemImage: "doc.on.doc")
             }
             Button {
                 UIPasteboard.general.url = URL(string: "distributedchat:///message/\(message.id)")
             } label: {
-                Text("Copy Message URL")
-                Image(systemName: "doc.on.doc.fill")
+                Label("Copy Message URL", systemImage: "doc.on.doc.fill")
             }
-            Group {
-                Button {
-                    UIPasteboard.general.string = message.author.id.uuidString
-                } label: {
-                    Text("Copy Author ID")
-                    Image(systemName: "doc.on.doc")
-                }
-                Button {
-                    UIPasteboard.general.string = message.author.name
-                } label: {
-                    Text("Copy Author Name")
-                    Image(systemName: "doc.on.doc")
-                }
-                Button {
-                    navigation.open(channel: .dm([controller.me.id, message.author.id]))
-                } label: {
-                    Text("Open DM channel")
-                    Image(systemName: "at")
-                }
+            Button {
+                UIPasteboard.general.string = message.author.id.uuidString
+            } label: {
+                Label("Copy Author ID", systemImage: "doc.on.doc")
+            }
+            Button {
+                UIPasteboard.general.string = message.author.name
+            } label: {
+                Label("Copy Author Name", systemImage: "doc.on.doc")
+            }
+            Button {
+                navigation.open(channel: .dm([controller.me.id, message.author.id]))
+            } label: {
+                Label("Open DM channel", systemImage: "at")
             }
         }
         
