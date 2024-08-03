@@ -41,6 +41,7 @@ The project consists of the following components:
 The dependency graph between these packages looks like this:
 
 ```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 flowchart BT
     subgraph cross-platform
         DistributedChatCLI --> DistributedChatKit
