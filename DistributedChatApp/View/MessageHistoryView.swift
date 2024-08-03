@@ -46,6 +46,7 @@ struct MessageHistoryView: View {
                 }
             }
         }
+        .scrollDismissesKeyboard(.interactively)
     }
 }
 
