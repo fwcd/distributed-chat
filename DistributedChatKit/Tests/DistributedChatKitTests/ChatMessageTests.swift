@@ -5,10 +5,6 @@ fileprivate let encoder = JSONEncoder()
 fileprivate let decoder = JSONDecoder()
 
 final class ChatMessageTests: XCTestCase {
-    static var allTests = [
-        ("testSerialization", testSerialization),
-    ]
-
     func testSerialization() throws {
         let alice = ChatUser(name: "Alice")
         let bob = ChatUser(name: "Bob")

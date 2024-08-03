@@ -2,9 +2,6 @@
 import XCTVapor
 
 final class DistributedChatSimulationServerTests: XCTestCase {
-    static var allTests = [
-        ("testWebFrontend", testWebFrontend)
-    ]
     var app: Application!
 
     override func setUpWithError() throws {
