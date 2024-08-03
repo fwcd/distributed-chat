@@ -40,20 +40,12 @@ The project consists of the following components:
 
 The dependency graph between these packages looks like this:
 
-```
-          +--------------------+  +-----------------------------------+
-          | DistributedChatKit |  | DistributedChatSimulationProtocol |
-          +--------------------+  +-----------------------------------+
-                      ^                      ^
-                      |                      |
-           +----------+-------------+   +---------+
-           |                        |   |         |
-+--------------------+ +--------------------+ +---------------------------------+
-| DistributedChatApp | | DistributedChatCLI | | DistributedChatSimulationServer |
-+--------------------+ +--------------------+ +---------------------------------+
-
- \__________________/   \______________________________________________________/
-       iOS only                     cross-platform, for testing
+```mermaid
+flowchart BT
+    DistributedChatApp --> DistributedChatKit
+    DistributedChatCLI --> DistributedChatKit
+    DistributedChatCLI --> DistributedChatSimulationProtocol
+    DistributedChatSimulationServer --> DistributedChatSimulationProtocol
 ```
 
 ## Building and Running
