@@ -9,7 +9,6 @@ import DistributedChatKit
 import Contacts
 import Logging
 import SwiftUI
-import SwiftUIKit
 
 fileprivate let log = Logger(label: "DistributedChatApp.MessageComposeView")
 
