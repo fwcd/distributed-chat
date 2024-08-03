@@ -32,6 +32,7 @@ A distributed chat messenger that uses Bluetooth LE mesh networks.
 The project consists of the following components:
 
 * `DistributedChatKit`: The abstract application, platform-independent, transport-independent (uses interface for broadcasting/receiving messages)
+* `DistributedChatBluetooth`: An abstraction over platform-specific Bluetooth LE transports
 * `DistributedChatApp`: The iOS/macOS implementation, uses Bluetooth LE as transport, does **not** require a server
 * `DistributedChatCLI`: The CLI implementation, uses either HTTP/WebSockets as transport with the simulation server or Bluetooth LE (WIP)
 * `DistributedChatSimulationProtocol`: The high-level JSON-based protocol used between CLI and simulation server
