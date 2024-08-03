@@ -10,6 +10,10 @@
 		351461662C5E8D2800DFB5CB /* DistributedChatBluetooth in Frameworks */ = {isa = PBXBuildFile; productRef = 351461652C5E8D2800DFB5CB /* DistributedChatBluetooth */; };
 		354F777B2C5E65A3004F5FA3 /* DistributedChatKit in Frameworks */ = {isa = PBXBuildFile; productRef = 354F777A2C5E65A3004F5FA3 /* DistributedChatKit */; };
 		3557C2E52C5EE3750035A879 /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557C2E42C5EE3750035A879 /* ContactPicker.swift */; };
+		3557C2E92C5EE7CA0035A879 /* ChatMessage+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557C2E82C5EE7CA0035A879 /* ChatMessage+Transferable.swift */; };
+		3557C2EF2C5EE9AA0035A879 /* ChatAttachment+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557C2EE2C5EE9AA0035A879 /* ChatAttachment+Transferable.swift */; };
+		3557C2F12C5EEBCE0035A879 /* TransferableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557C2F02C5EEBCE0035A879 /* TransferableError.swift */; };
+		3557C2F32C5EECA80035A879 /* UTType+ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557C2F22C5EECA80035A879 /* UTType+ChatMessage.swift */; };
 		C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */; };
 		C707E1E525C8960800164EF7 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707E1E425C8960700164EF7 /* MessageView.swift */; };
 		C75F7EC125CDC4190098FD9C /* EnvironmentUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75F7EC025CDC4190098FD9C /* EnvironmentUtils.swift */; };
@@ -89,6 +93,10 @@
 		354F777D2C5E6A83004F5FA3 /* DistributedChatSimulationProtocol */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatSimulationProtocol; sourceTree = "<group>"; };
 		354F777E2C5E6A87004F5FA3 /* DistributedChatSimulationServer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatSimulationServer; sourceTree = "<group>"; };
 		3557C2E42C5EE3750035A879 /* ContactPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPicker.swift; sourceTree = "<group>"; };
+		3557C2E82C5EE7CA0035A879 /* ChatMessage+Transferable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMessage+Transferable.swift"; sourceTree = "<group>"; };
+		3557C2EE2C5EE9AA0035A879 /* ChatAttachment+Transferable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatAttachment+Transferable.swift"; sourceTree = "<group>"; };
+		3557C2F02C5EEBCE0035A879 /* TransferableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferableError.swift; sourceTree = "<group>"; };
+		3557C2F22C5EECA80035A879 /* UTType+ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UTType+ChatMessage.swift"; sourceTree = "<group>"; };
 		35BB6B542C5E8AE1006BF8D5 /* DistributedChatBluetooth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatBluetooth; sourceTree = "<group>"; };
 		35C810F02C399CF2007B587C /* DistributedChatApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DistributedChatApp.entitlements; sourceTree = "<group>"; };
 		C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatStatus+Color.swift"; sourceTree = "<group>"; };
@@ -211,6 +219,10 @@
 				C77D499425BC75B40073A964 /* MessageHistoryStyle.swift */,
 				C7734CA825BCDB1D0057DF96 /* Network.swift */,
 				C77DBABE25CCBC8100D66EB5 /* Users.swift */,
+				3557C2F22C5EECA80035A879 /* UTType+ChatMessage.swift */,
+				3557C2F02C5EEBCE0035A879 /* TransferableError.swift */,
+				3557C2E82C5EE7CA0035A879 /* ChatMessage+Transferable.swift */,
+				3557C2EE2C5EE9AA0035A879 /* ChatAttachment+Transferable.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -490,6 +502,7 @@
 				C7982D4125BB8A57000DC0F1 /* Messages.swift in Sources */,
 				C7ED97B825C5F4BA002ACC5A /* PersistenceError.swift in Sources */,
 				C7C24EF025C8DD6A00222AAA /* QuickLookAttachmentView.swift in Sources */,
+				3557C2E92C5EE7CA0035A879 /* ChatMessage+Transferable.swift in Sources */,
 				C77C1DE025BBB127005D0B7C /* ViewUtils.swift in Sources */,
 				C7BC335425B3C00700989E95 /* ContentView.swift in Sources */,
 				C77DBABF25CCBC8100D66EB5 /* Users.swift in Sources */,
@@ -506,8 +519,10 @@
 				C76F1CAD25C4E676005DE1C6 /* NewChannelView.swift in Sources */,
 				C76F1CA525C4E53A005DE1C6 /* ChannelSnippetView.swift in Sources */,
 				C7734CC225BCE8910057DF96 /* MessageComposeView.swift in Sources */,
+				3557C2F32C5EECA80035A879 /* UTType+ChatMessage.swift in Sources */,
 				C77D499D25BC76010073A964 /* Settings.swift in Sources */,
 				C7734CD825BCF4760057DF96 /* URLUtils.swift in Sources */,
+				3557C2F12C5EEBCE0035A879 /* TransferableError.swift in Sources */,
 				C7734D3C25BDE9B50057DF96 /* Profile.swift in Sources */,
 				C75F7EC125CDC4190098FD9C /* EnvironmentUtils.swift in Sources */,
 				C7ED97A825C5E5D6002ACC5A /* VoiceNoteAttachmentView.swift in Sources */,
@@ -521,6 +536,7 @@
 				C7734D2E25BDE1D90057DF96 /* PersistenceUtils.swift in Sources */,
 				C7C24F0625C8E35400222AAA /* DataUtils.swift in Sources */,
 				C7734CEE25BCFE5D0057DF96 /* QuickLookView.swift in Sources */,
+				3557C2EF2C5EE9AA0035A879 /* ChatAttachment+Transferable.swift in Sources */,
 				C7ED978A25C5CD28002ACC5A /* AudioRecorder.swift in Sources */,
 				C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */,
 				C7734CBA25BCE6CE0057DF96 /* MessageHistoryView.swift in Sources */,

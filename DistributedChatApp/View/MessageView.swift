@@ -116,6 +116,7 @@ struct MessageView: View {
                 }
             }
         }
+        .draggable(message)
     }
 }
 
