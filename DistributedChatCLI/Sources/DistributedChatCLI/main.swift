@@ -8,6 +8,10 @@ import LineNoise
 fileprivate let log = Logger(label: "DistributedChatCLI.main")
 
 struct DistributedChatCLI: ParsableCommand {
+    static let configuration = CommandConfiguration(
+        commandName: "distributed-chat"
+    )
+    
     @Argument(help: "The messaging WebSocket URL of the simulation server to connect to.")
     var simulationMessagingURL: URL = URL(string: "ws://localhost:8080/messaging")!
 
@@ -31,7 +35,7 @@ struct DistributedChatCLI: ParsableCommand {
     var peripheralOnly: Bool = false
 
     @Option(help: "The username to use.")
-    var name: String
+    var name: String = "CLI"
 
     @Option(help: "The logging level")
     var level: Logger.Level = .info

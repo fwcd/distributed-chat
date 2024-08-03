@@ -11,7 +11,7 @@ let package = Package(
     ],
     products: [
         .executable(
-            name: "DistributedChatCLI",
+            name: "distributed-chat",
             targets: ["DistributedChatCLI"]
         )
     ],
