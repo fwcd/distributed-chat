@@ -22,8 +22,8 @@ jobs:
         swift-version: ${{ matrix.swift }}
     - name: Build
       run: swift build
-      working-directory: DistributedChat
+      working-directory: DistributedChatKit
     - name: Test
       run: swift test
-      working-directory: DistributedChat
+      working-directory: DistributedChatKit
 

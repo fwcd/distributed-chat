@@ -13,12 +13,12 @@ cache:
 distributed-chat:build:
   stage: build-libs
   script:
-    - (cd DistributedChat && swift build)
+    - (cd DistributedChatKit && swift build)
 
 distributed-chat:test:
   stage: test-libs
   script:
-    - (cd DistributedChat && swift test)
+    - (cd DistributedChatKit && swift test)
   needs:
     - distributed-chat:build
 
