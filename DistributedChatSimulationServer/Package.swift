@@ -10,7 +10,7 @@ let package = Package(
     ],
     products: [
         .executable(
-            name: "DistributedChatSimulationServer",
+            name: "distributed-chat-simulation-server",
             targets: ["DistributedChatSimulationServerMain"]
         )
     ],

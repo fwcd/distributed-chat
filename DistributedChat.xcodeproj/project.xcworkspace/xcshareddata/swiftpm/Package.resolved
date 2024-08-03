@@ -2,6 +2,24 @@
   "object": {
     "pins": [
       {
+        "package": "async-http-client",
+        "repositoryURL": "https://github.com/swift-server/async-http-client.git",
+        "state": {
+          "branch": null,
+          "revision": "0ae99db85b2b9d1e79b362bd31fd1ffe492f7c47",
+          "version": "1.21.2"
+        }
+      },
+      {
+        "package": "async-kit",
+        "repositoryURL": "https://github.com/vapor/async-kit.git",
+        "state": {
+          "branch": null,
+          "revision": "e048c8ee94967e8d8a1c2ec0e1156d6f7fa34d31",
+          "version": "1.20.0"
+        }
+      },
+      {
         "package": "Bluetooth",
         "repositoryURL": "https://github.com/PureSwift/Bluetooth.git",
         "state": {
@@ -17,6 +35,15 @@
           "branch": "master",
           "revision": "372fd17a1fcff56d13b8bdc4d082478cda1e9f65",
           "version": null
+        }
+      },
+      {
+        "package": "console-kit",
+        "repositoryURL": "https://github.com/vapor/console-kit.git",
+        "state": {
+          "branch": null,
+          "revision": "9f7932f22ab6f64aafadc14491e694179b7d0f6f",
+          "version": "4.14.3"
         }
       },
       {
@@ -38,12 +65,39 @@
         }
       },
       {
+        "package": "leaf",
+        "repositoryURL": "https://github.com/vapor/leaf.git",
+        "state": {
+          "branch": null,
+          "revision": "dd799be2a92e7207ad86c567e4fc7dd37413ff60",
+          "version": "4.4.0"
+        }
+      },
+      {
+        "package": "leaf-kit",
+        "repositoryURL": "https://github.com/vapor/leaf-kit.git",
+        "state": {
+          "branch": null,
+          "revision": "c04e54753fb30a985b42c3be8530bb94442da9c6",
+          "version": "1.11.0"
+        }
+      },
+      {
         "package": "LineNoise",
         "repositoryURL": "https://github.com/andybest/linenoise-swift.git",
         "state": {
           "branch": "master",
           "revision": "cbf0a35c6e159e4fe6a03f76c8a17ef08e907b0e",
           "version": null
+        }
+      },
+      {
+        "package": "multipart-kit",
+        "repositoryURL": "https://github.com/vapor/multipart-kit.git",
+        "state": {
+          "branch": null,
+          "revision": "a31236f24bfd2ea2f520a74575881f6731d7ae68",
+          "version": "4.7.0"
         }
       },
       {
@@ -56,12 +110,30 @@
         }
       },
       {
+        "package": "routing-kit",
+        "repositoryURL": "https://github.com/vapor/routing-kit.git",
+        "state": {
+          "branch": null,
+          "revision": "8c9a227476555c55837e569be71944e02a056b72",
+          "version": "4.9.1"
+        }
+      },
+      {
         "package": "Socket",
         "repositoryURL": "https://github.com/PureSwift/Socket.git",
         "state": {
           "branch": "main",
           "revision": "489e63b9cf0998f820f9f994f25cd5cb5f602404",
           "version": null
+        }
+      },
+      {
+        "package": "swift-algorithms",
+        "repositoryURL": "https://github.com/apple/swift-algorithms.git",
+        "state": {
+          "branch": null,
+          "revision": "f6919dfc309e7f1b56224378b11e28bab5bccc42",
+          "version": "1.2.0"
         }
       },
       {
@@ -114,8 +186,8 @@
         "repositoryURL": "https://github.com/apple/swift-log.git",
         "state": {
           "branch": null,
-          "revision": "173f567a2dfec11d74588eea82cecea555bdc0bc",
-          "version": "1.4.0"
+          "revision": "9cb486020ebf03bfa5b5df985387a14a98744537",
+          "version": "1.6.1"
         }
       },
       {
@@ -125,6 +197,15 @@
           "branch": null,
           "revision": "176d41d46429e79c806333025b226e0c50a0c602",
           "version": "0.2.2"
+        }
+      },
+      {
+        "package": "swift-metrics",
+        "repositoryURL": "https://github.com/apple/swift-metrics.git",
+        "state": {
+          "branch": null,
+          "revision": "e0165b53d49b413dd987526b641e05e246782685",
+          "version": "2.5.0"
         }
       },
       {
@@ -173,8 +254,17 @@
         }
       },
       {
+        "package": "swift-numerics",
+        "repositoryURL": "https://github.com/apple/swift-numerics.git",
+        "state": {
+          "branch": null,
+          "revision": "0a5bc04095a675662cf24757cc0640aa2204253b",
+          "version": "1.0.2"
+        }
+      },
+      {
         "package": "swift-system",
-        "repositoryURL": "https://github.com/PureSwift/swift-system",
+        "repositoryURL": "https://github.com/apple/swift-system.git",
         "state": {
           "branch": "feature/dynamic-lib",
           "revision": "bd3d1f6321a489ee443860ebe0f26ff689c938ad",
@@ -188,6 +278,15 @@
           "branch": null,
           "revision": "a83aedd996bcb59ca846346bb507f090a7350e34",
           "version": "0.0.17"
+        }
+      },
+      {
+        "package": "vapor",
+        "repositoryURL": "https://github.com/vapor/vapor.git",
+        "state": {
+          "branch": null,
+          "revision": "a823735db57b46100b0c61cdfc5a08525b1e7cad",
+          "version": "4.102.1"
         }
       },
       {
