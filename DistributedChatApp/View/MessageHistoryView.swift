@@ -27,6 +27,7 @@ struct MessageHistoryView: View {
                         }
                     }
                 }
+                .padding(15)
                 .frame( // Ensure that the VStack actually fills the parent's width
                     minWidth: 0,
                     maxWidth: .infinity,
