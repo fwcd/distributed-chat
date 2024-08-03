@@ -125,7 +125,7 @@
 		C7982D2125BB8885000DC0F1 /* ChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsView.swift; sourceTree = "<group>"; };
 		C7982D2925BB8981000DC0F1 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
 		C7982D4025BB8A57000DC0F1 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
-		C7BC334E25B3C00700989E95 /* DistributedChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DistributedChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7BC334E25B3C00700989E95 /* Distributed Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Distributed Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7BC335125B3C00700989E95 /* DistributedChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedChatApp.swift; sourceTree = "<group>"; };
 		C7BC335325B3C00700989E95 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C7BC335525B3C00900989E95 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -273,7 +273,7 @@
 		C7BC334F25B3C00700989E95 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C7BC334E25B3C00700989E95 /* DistributedChatApp.app */,
+				C7BC334E25B3C00700989E95 /* Distributed Chat.app */,
 				C7BC335F25B3C00900989E95 /* DistributedChatAppTests.xctest */,
 				C7BC336A25B3C00900989E95 /* DistributedChatAppUITests.xctest */,
 			);
@@ -363,7 +363,7 @@
 				351461652C5E8D2800DFB5CB /* DistributedChatBluetooth */,
 			);
 			productName = DistributedChatApp;
-			productReference = C7BC334E25B3C00700989E95 /* DistributedChatApp.app */;
+			productReference = C7BC334E25B3C00700989E95 /* Distributed Chat.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C7BC335E25B3C00900989E95 /* DistributedChatAppTests */ = {
@@ -697,6 +697,8 @@
 				DEVELOPMENT_TEAM = SS8V8UGLY8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = DistributedChatApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -704,7 +706,8 @@
 				);
 				MARKETING_VERSION = 1.0.14;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "Distributed Chat";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -724,6 +727,8 @@
 				DEVELOPMENT_TEAM = SS8V8UGLY8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = DistributedChatApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -731,7 +736,8 @@
 				);
 				MARKETING_VERSION = 1.0.14;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fwcd.DistributedChat;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "Distributed Chat";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
