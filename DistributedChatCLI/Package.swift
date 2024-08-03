@@ -18,6 +18,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(path: "../DistributedChatKit"),
+        .package(path: "../DistributedChatBluetooth"),
         .package(path: "../DistributedChatSimulationProtocol"),
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.2"),
         .package(url: "https://github.com/vapor/websocket-kit.git", from: "2.6.1"),
@@ -32,6 +33,7 @@ let package = Package(
             name: "DistributedChatCLI",
             dependencies: [
                 .product(name: "DistributedChatKit", package: "DistributedChatKit"),
+                .product(name: "DistributedChatBluetooth", package: "DistributedChatBluetooth"),
                 .product(name: "DistributedChatSimulationProtocol", package: "DistributedChatSimulationProtocol"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "WebSocketKit", package: "websocket-kit"),
