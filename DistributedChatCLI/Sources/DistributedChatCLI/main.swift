@@ -8,7 +8,7 @@ import LineNoise
 
 fileprivate let log = Logger(label: "DistributedChatCLI.main")
 
-struct DistributedChatCLI: ParsableCommand {
+struct DistributedChatCLI: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "distributed-chat"
     )
@@ -41,7 +41,7 @@ struct DistributedChatCLI: ParsableCommand {
     @Option(help: "The logging level")
     var level: Logger.Level = .info
 
-    func run() throws {
+    func run() async throws {
         LoggingSystem.bootstrap { label in
             CLILogHandler(label: label, logLevel: label.starts(with: "DistributedChatCLI.") ? level : .info)
         }
@@ -49,13 +49,13 @@ struct DistributedChatCLI: ParsableCommand {
         let me = ChatUser(name: name)
 
         if bluetooth {
-            try runWithBluetoothLE(me: me)
+            try await runWithBluetoothLE(me: me)
         } else {
             runWithSimulationServer(me: me)
         }
     }
 
-    private func runWithBluetoothLE(me: ChatUser) throws {
+    private func runWithBluetoothLE(me: ChatUser) async throws {
         #if os(Linux)
         log.info("Initializing Bluetooth Linux transport...")
 
@@ -67,7 +67,7 @@ struct DistributedChatCLI: ParsableCommand {
             actAsPeripheral = true
         }
 
-        let transport = try BluetoothLinuxTransport(actAsPeripheral: actAsPeripheral, actAsCentral: actAsCentral, me: me)
+        let transport = try await BluetoothLinuxTransport(actAsPeripheral: actAsPeripheral, actAsCentral: actAsCentral, me: me)
         runREPL(transport: transport, me: me)
         #else
         log.error("The Bluetooth stack is currently Linux-only and requires BluetoothLinux! (TODO: Share the CoreBluetooth-based backend from the iOS app with a potential Mac version of the CLI)")

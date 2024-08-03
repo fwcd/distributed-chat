@@ -31,35 +31,32 @@ public class BluetoothLinuxTransport: ChatTransport {
 
     private var listeners = [(String) -> Void]()
 
-    private let centralQueue = DispatchQueue(label: "DistributedChatBluetooth.BluetoothLinuxTransport: Central")
-    private let peripheralQueue = DispatchQueue(label: "DistributedChatBluetooth.BluetoothLinuxTransport: Peripheral")
-
     private var nearbyPeripherals: [Peripheral: DiscoveredPeripheral] = [:]
 
     private class DiscoveredPeripheral {
         // TODO: Discover and store user name/id here
-        var inboxCharacteristic: Characteristic<Peripheral>? = nil
+        var inboxCharacteristic: Characteristic<Peripheral, GATTCentral.AttributeID>? = nil
     }
 
     public init(
         actAsPeripheral: Bool = true,
         actAsCentral: Bool = true,
         me: ChatUser
-    ) throws {
+    ) async throws {
         // Set up controllers. Note that you need at least 2 controllers if
         // you want to run both as a peripheral and central (which is required
         // to both send and receive messages).
 
         let requiredCount = [actAsCentral, actAsPeripheral].filter { $0 }.count
-        var hostControllers = BluetoothLinux.HostController.controllers
-        log.info("Found host controllers \(hostControllers.map(\.identifier))")
+        var hostControllers = await BluetoothLinux.HostController.controllers
+        log.info("Found host controllers \(hostControllers.map(\.id))")
 
         if hostControllers.count < requiredCount {
             throw BluetoothLinuxError.tooFewHostControllers("At least \(requiredCount) host controller(s) are required, but only \(hostControllers.count) was/were found.")
         }
 
-        localPeripheral = actAsPeripheral ? GATTPeripheral(controller: hostControllers.popLast()!) : nil
-        localCentral = actAsCentral ? GATTCentral(hostController: hostControllers.popLast()!) : nil
+        localPeripheral = actAsPeripheral ? GATTPeripheral(hostController: hostControllers.popLast()!, socket: BluetoothLinux.L2CAPSocket.self) : nil
+        localCentral = actAsCentral ? GATTCentral(hostController: hostControllers.popLast()!, socket: BluetoothLinux.L2CAPSocket.self) : nil
 
         // Set up local GATT peripheral for receiving messages
 
@@ -85,7 +82,7 @@ public class BluetoothLinuxTransport: ChatTransport {
                 }
             }
 
-            let _ = try localPeripheral.add(service: .init(
+            let _ = try await localPeripheral.add(service: .init(
                 uuid: serviceUUID,
                 primary: true,
                 characteristics: [
@@ -112,19 +109,19 @@ public class BluetoothLinuxTransport: ChatTransport {
             guard case let .bit128(uuid) = serviceUUID else { fatalError("DistributedChat service UUID should be 128-bit") }
             let gapData = [GAPIncompleteListOf128BitServiceClassUUIDs(uuids: [UUID(uuid)])]
             let advertisingData = try GAPDataEncoder().encodeAdvertisingData(gapData)
-            try localPeripheral.controller.setLowEnergyAdvertisingData(advertisingData)
+            try await localPeripheral.hostController.setLowEnergyAdvertisingData(advertisingData)
 
             let serverSocket = try BluetoothLinux.L2CAPSocket.lowEnergyServer()
             localPeripheral.newConnection = {
                 log.debug("Peripheral: Waiting for connection...")
                 let clientSocket = try serverSocket.waitForConnection()
                 log.info("Peripheral: Connected to \(clientSocket.address)")
-                return (socket: clientSocket, central: Central(identifier: clientSocket.address))
+                return (socket: clientSocket, central: Central(id: clientSocket.address))
             }
 
-            peripheralQueue.async {
+            Task {
                 do {
-                    try localPeripheral.start()
+                    try await localPeripheral.start()
                     log.info("Peripheral: Started to advertise...")
                 } catch {
                     log.error("Peripheral: Starting failed: \(error)")
@@ -136,7 +133,7 @@ public class BluetoothLinuxTransport: ChatTransport {
 
         if let localCentral = localCentral {
             localCentral.didDisconnect = { [unowned self] peripheral in
-                log.info("Central: Disconnected from \(peripheral.identifier)")
+                log.info("Central: Disconnected from \(peripheral.id)")
                 nearbyPeripherals[peripheral] = nil
             }
             localCentral.log = { msg in
@@ -149,7 +146,7 @@ public class BluetoothLinuxTransport: ChatTransport {
                 )
             }
 
-            centralQueue.async { [weak self] in
+            Task {
                 do {
                     try localCentral.scan(filterDuplicates: false) { scanData in
                         self?.handle(peripheralDiscovery: scanData)
@@ -162,29 +159,30 @@ public class BluetoothLinuxTransport: ChatTransport {
     }
 
     deinit {
-        localCentral?.stopScan()
-        localPeripheral?.stop()
+        Task {
+            await localPeripheral?.stop()
+        }
     }
 
-    private func handle(peripheralDiscovery scanData: ScanData<Peripheral, GATTCentral.Advertisement>) {
+    private func handle(peripheralDiscovery scanData: ScanData<Peripheral, GATTCentral.Advertisement>) async {
         guard let localCentral = localCentral else { return }
 
         let peripheral = scanData.peripheral
-        log.debug("Central: Discovered peripheral \(peripheral.identifier) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
+        log.debug("Central: Discovered peripheral \(peripheral.id) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
 
         if !nearbyPeripherals.keys.contains(peripheral) {
             do {
-                try localCentral.connect(to: peripheral)
+                try await localCentral.connect(to: peripheral)
                 let state = DiscoveredPeripheral()
                 nearbyPeripherals[peripheral] = state
-                log.info("Central: Connected to \(peripheral.identifier), discovering services...")
+                log.info("Central: Connected to \(peripheral.id), discovering services...")
 
-                let services = try localCentral.discoverServices([serviceUUID], for: peripheral)
+                let services = try await localCentral.discoverServices([serviceUUID], for: peripheral)
                 log.debug("Central: Discovered services \(services)")
                 guard let service = services.first(where: { $0.uuid == serviceUUID }) else { throw BluetoothLinuxError.noServices }
                 log.info("Central: Discovered DistributedChat service, discovering characteristics...")
 
-                let characteristics = try localCentral.discoverCharacteristics([inboxCharacteristicUUID], for: service) // TODO: Discover user name/id
+                let characteristics = try await localCentral.discoverCharacteristics([inboxCharacteristicUUID], for: service) // TODO: Discover user name/id
                 log.debug("Central: Discovered characteristics \(characteristics)")
                 guard let inboxCharacteristic = characteristics.first(where: { $0.uuid == inboxCharacteristicUUID }) else { throw BluetoothLinuxError.noCharacteristics }
                 log.info("Central: Discovered inbox characteristic")
@@ -207,10 +205,12 @@ public class BluetoothLinuxTransport: ChatTransport {
 
         for (peripheral, state) in nearbyPeripherals {
             if let characteristic = state.inboxCharacteristic {
-                do {
-                    try localCentral.writeValue(data, for: characteristic, withResponse: true)
-                } catch {
-                    log.warning("Could not send to \(peripheral.identifier): \(error)")
+                Task {
+                    do {
+                        try await localCentral.writeValue(data, for: characteristic, withResponse: true)
+                    } catch {
+                        log.warning("Could not send to \(peripheral.id): \(error)")
+                    }
                 }
             }
         }

@@ -1,6 +1,42 @@
 {
-  "originHash" : "09e6d10cf090a364a0cf297fb72254491ca3fe6b53d2d6b6da0c253edd5183f4",
+  "originHash" : "e87f5d47364fb89fcf77fc0f369785dee2b937cb81059f72753dede915152106",
   "pins" : [
+    {
+      "identity" : "bluetooth",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PureSwift/Bluetooth.git",
+      "state" : {
+        "revision" : "974ee4313fc8fe707bd5298009b810c0bca45d44",
+        "version" : "6.4.3"
+      }
+    },
+    {
+      "identity" : "bluetoothlinux",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PureSwift/BluetoothLinux.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "372fd17a1fcff56d13b8bdc4d082478cda1e9f65"
+      }
+    },
+    {
+      "identity" : "gatt",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PureSwift/GATT.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "113a71d853b9c59cf2119c49fbc4bfc1421d9ae2"
+      }
+    },
+    {
+      "identity" : "socket",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PureSwift/Socket.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "489e63b9cf0998f820f9f994f25cd5cb5f602404"
+      }
+    },
     {
       "identity" : "swift-crypto",
       "kind" : "remoteSourceControl",
@@ -17,6 +53,15 @@
       "state" : {
         "revision" : "9cb486020ebf03bfa5b5df985387a14a98744537",
         "version" : "1.6.1"
+      }
+    },
+    {
+      "identity" : "swift-system",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PureSwift/swift-system",
+      "state" : {
+        "branch" : "feature/dynamic-lib",
+        "revision" : "bd3d1f6321a489ee443860ebe0f26ff689c938ad"
       }
     }
   ],
