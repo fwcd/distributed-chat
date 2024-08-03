@@ -66,7 +66,7 @@ First, make sure to have Swift 5.10+ or newer installed. Recent versions for Ubu
 
 To run the simulation server, navigate into the directory `DistributedChatSimulationServer` and execute:
 
-```
+```sh
 swift run
 ```
 
@@ -76,15 +76,15 @@ The web interface should now be accessible at `http://localhost:8080`.
 
 To start a single instance of the CLI, make sure that the simulation server is running, navigate into `DistributedChatCLI` and execute:
 
-```
-swift run DistributedChatCLI --name Alice
+```sh
+swift run distributed-chat --name Alice
 ```
 
 You can substitute any name for Alice. Once the CLI has started, the chosen name should show up as a node in the simulation server's web interface.
 
 For convenience, there is a bash script for starting multiple instances of the CLI together in a single `tmux` session. To use it, navigate into the root directory of this repository and run
 
-```
+```sh
 Scripts/start_clis Alice Bob Charles Dave
 ```
 
