@@ -13,8 +13,8 @@ var targetDependencies: [Target.Dependency] = [
 
 #if os(Linux)
 packageDependencies += [
-    .package(url: "https://github.com/PureSwift/BluetoothLinux.git", .branch("master")),
-    .package(url: "https://github.com/PureSwift/GATT.git", .branch("master")),
+    .package(url: "https://github.com/PureSwift/BluetoothLinux.git", branch: "master"),
+    .package(url: "https://github.com/PureSwift/GATT.git", branch: "master"),
 ]
 
 targetDependencies += [
