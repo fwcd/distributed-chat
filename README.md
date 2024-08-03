@@ -32,7 +32,7 @@ A distributed chat messenger that uses Bluetooth LE mesh networks.
 The project consists of the following components:
 
 * `DistributedChatKit`: The abstract application, platform-independent, transport-independent (uses interface for broadcasting/receiving messages)
-* `DistributedChatApp`: The iOS implementation, uses Bluetooth LE as transport, does **not** require a server
+* `DistributedChatApp`: The iOS/macOS implementation, uses Bluetooth LE as transport, does **not** require a server
 * `DistributedChatCLI`: The CLI implementation, uses either HTTP/WebSockets as transport with the simulation server or Bluetooth LE (WIP)
 * `DistributedChatSimulationProtocol`: The high-level JSON-based protocol used between CLI and simulation server
 * `DistributedChatSimulationServer`: The companion server for the CLI, relays messages between connected CLI nodes, provides web-interface for configuring links between nodes
@@ -42,10 +42,14 @@ The dependency graph between these packages looks like this:
 
 ```mermaid
 flowchart BT
-    DistributedChatApp --> DistributedChatKit
-    DistributedChatCLI --> DistributedChatKit
-    DistributedChatCLI --> DistributedChatSimulationProtocol
-    DistributedChatSimulationServer --> DistributedChatSimulationProtocol
+    subgraph cross-platform
+        DistributedChatCLI --> DistributedChatKit
+        DistributedChatCLI --> DistributedChatSimulationProtocol
+        DistributedChatSimulationServer --> DistributedChatSimulationProtocol
+    end
+    subgraph "Apple platforms"
+        DistributedChatApp --> DistributedChatKit
+    end
 ```
 
 ## Building and Running
