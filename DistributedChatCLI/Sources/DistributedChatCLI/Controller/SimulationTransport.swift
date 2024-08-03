@@ -42,14 +42,16 @@ public class SimulationTransport: ChatTransport {
     }
 
     public func onReceive(_ handler: @escaping (String) -> Void) {
-        ws.onText { _, raw in
-            do {
-                let protoMessage = try decoder.decode(SimulationProtocol.Message.self, from: raw.data(using: .utf8)!)
-                if case let .broadcastNotification(bc) = protoMessage {
-                    handler(bc.content)
+        ws.eventLoop.execute {
+            self.ws.onText { _, raw in
+                do {
+                    let protoMessage = try decoder.decode(SimulationProtocol.Message.self, from: raw.data(using: .utf8)!)
+                    if case let .broadcastNotification(bc) = protoMessage {
+                        handler(bc.content)
+                    }
+                } catch {
+                    log.error("Could not decode simulation protocol message: \(error)")
                 }
-            } catch {
-                log.error("Could not decode simulation protocol message: \(error)")
             }
         }
     }
