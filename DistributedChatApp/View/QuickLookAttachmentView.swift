@@ -19,23 +19,26 @@ struct QuickLookAttachmentView<Content>: View where Content: View {
             content()
         }
         .sheet(isPresented: $quickLookShown) {
-            VStack {
-                HStack {
-                    if let url = attachment.content.asURL?.smartResolved {
-                        ShareLink(item: url) {
-                            Image(systemName: "square.and.arrow.up")
-                                .font(.system(size: iconSize))
-                        }
-                        Spacer()
-                    }
-                    Button(action: { quickLookShown = false }) {
-                        Text("Close")
-                            .foregroundColor(.primary)
+            NavigationStack {
+                Group {
+                    if let item = try? QuickLookAttachment(attachment: attachment) { QuickLookView(item: item)
+                            .ignoresSafeArea()
                     }
                 }
-                .padding(15)
-                if let item = try? QuickLookAttachment(attachment: attachment) {
-                    QuickLookView(item: item)
+                .navigationTitle(attachment.name)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        ShareLink(item: attachment, preview: SharePreview("Test")) {
+                            Image(systemName: "square.and.arrow.up")
+                        }
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Close") {
+                            quickLookShown = false
+                        }
+                        .foregroundColor(.primary)
+                    }
                 }
             }
         }
