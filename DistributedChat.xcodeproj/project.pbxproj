@@ -30,7 +30,7 @@
 		C7734DA625BE37310057DF96 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7734DA525BE37310057DF96 /* Navigation.swift */; };
 		C77C1DE025BBB127005D0B7C /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DDF25BBB127005D0B7C /* ViewUtils.swift */; };
 		C77C1DE825BBC465005D0B7C /* AutoFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */; };
-		C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */; };
+		C77C1DF625BBC815005D0B7C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C1DF525BBC815005D0B7C /* ProfileView.swift */; };
 		C77D498725BC73F70073A964 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77D498625BC73F70073A964 /* SettingsView.swift */; };
 		C77D499525BC75B40073A964 /* MessageHistoryStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77D499425BC75B40073A964 /* MessageHistoryStyle.swift */; };
 		C77D499D25BC76010073A964 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77D499C25BC76010073A964 /* Settings.swift */; };
@@ -110,7 +110,7 @@
 		C7734DA525BE37310057DF96 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		C77C1DDF25BBB127005D0B7C /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
 		C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFocusTextField.swift; sourceTree = "<group>"; };
-		C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVIew.swift; sourceTree = "<group>"; };
+		C77C1DF525BBC815005D0B7C /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		C77D498625BC73F70073A964 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C77D499425BC75B40073A964 /* MessageHistoryStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHistoryStyle.swift; sourceTree = "<group>"; };
 		C77D499C25BC76010073A964 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -240,7 +240,7 @@
 				C7C24EEF25C8DD6900222AAA /* QuickLookAttachmentView.swift */,
 				C77D49D625BC7B600073A964 /* NetworkView.swift */,
 				C77DBACC25CCC92D00D66EB5 /* PresenceView.swift */,
-				C77C1DF525BBC815005D0B7C /* ProfileVIew.swift */,
+				C77C1DF525BBC815005D0B7C /* ProfileView.swift */,
 				C77D498625BC73F70073A964 /* SettingsView.swift */,
 				C77C1DDF25BBB127005D0B7C /* ViewUtils.swift */,
 				C77C1DE725BBC465005D0B7C /* AutoFocusTextField.swift */,
@@ -487,7 +487,7 @@
 				C7734DA625BE37310057DF96 /* Navigation.swift in Sources */,
 				C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */,
 				C7734D1225BD00330057DF96 /* QuickLookAttachment.swift in Sources */,
-				C77C1DF625BBC815005D0B7C /* ProfileVIew.swift in Sources */,
+				C77C1DF625BBC815005D0B7C /* ProfileView.swift in Sources */,
 				C7982D4125BB8A57000DC0F1 /* Messages.swift in Sources */,
 				C7ED97B825C5F4BA002ACC5A /* PersistenceError.swift in Sources */,
 				C7C24EF025C8DD6A00222AAA /* QuickLookAttachmentView.swift in Sources */,
