@@ -35,7 +35,7 @@ struct DistributedChatCLI: ParsableCommand {
     var peripheralOnly: Bool = false
 
     @Option(help: "The username to use.")
-    var name: String = "CLI"
+    var name: String = "\(ProcessInfo.processInfo.environment.keys.contains("IDE_DISABLED_OS_ACTIVITY_DT_MODE") ? "Xcode" : "CLI") User \(Int.random(in: 10_000..<100_000))"
 
     @Option(help: "The logging level")
     var level: Logger.Level = .info
