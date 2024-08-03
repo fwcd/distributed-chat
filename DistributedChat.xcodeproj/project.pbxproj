@@ -14,6 +14,8 @@
 		3557C2EF2C5EE9AA0035A879 /* ChatAttachment+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557C2EE2C5EE9AA0035A879 /* ChatAttachment+Transferable.swift */; };
 		3557C2F12C5EEBCE0035A879 /* TransferableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557C2F02C5EEBCE0035A879 /* TransferableError.swift */; };
 		3557C2F32C5EECA80035A879 /* UTType+ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557C2F22C5EECA80035A879 /* UTType+ChatMessage.swift */; };
+		3557C2F52C5EFAAF0035A879 /* URL+ChatChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557C2F42C5EFAAF0035A879 /* URL+ChatChannel.swift */; };
+		3557C2F72C5EFAFA0035A879 /* ChatChannel+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557C2F62C5EFAFA0035A879 /* ChatChannel+Transferable.swift */; };
 		C706F98925C3640E005A4ED6 /* ChatStatus+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */; };
 		C707E1E525C8960800164EF7 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707E1E425C8960700164EF7 /* MessageView.swift */; };
 		C75F7EC125CDC4190098FD9C /* EnvironmentUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75F7EC025CDC4190098FD9C /* EnvironmentUtils.swift */; };
@@ -96,6 +98,8 @@
 		3557C2EE2C5EE9AA0035A879 /* ChatAttachment+Transferable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatAttachment+Transferable.swift"; sourceTree = "<group>"; };
 		3557C2F02C5EEBCE0035A879 /* TransferableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferableError.swift; sourceTree = "<group>"; };
 		3557C2F22C5EECA80035A879 /* UTType+ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UTType+ChatMessage.swift"; sourceTree = "<group>"; };
+		3557C2F42C5EFAAF0035A879 /* URL+ChatChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+ChatChannel.swift"; sourceTree = "<group>"; };
+		3557C2F62C5EFAFA0035A879 /* ChatChannel+Transferable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatChannel+Transferable.swift"; sourceTree = "<group>"; };
 		35BB6B542C5E8AE1006BF8D5 /* DistributedChatBluetooth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DistributedChatBluetooth; sourceTree = "<group>"; };
 		35C810F02C399CF2007B587C /* DistributedChatApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DistributedChatApp.entitlements; sourceTree = "<group>"; };
 		C706F98825C3640E005A4ED6 /* ChatStatus+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatStatus+Color.swift"; sourceTree = "<group>"; };
@@ -217,9 +221,11 @@
 				C7734CA825BCDB1D0057DF96 /* Network.swift */,
 				C77DBABE25CCBC8100D66EB5 /* Users.swift */,
 				3557C2F22C5EECA80035A879 /* UTType+ChatMessage.swift */,
+				3557C2F42C5EFAAF0035A879 /* URL+ChatChannel.swift */,
 				3557C2F02C5EEBCE0035A879 /* TransferableError.swift */,
 				3557C2E82C5EE7CA0035A879 /* ChatMessage+Transferable.swift */,
 				3557C2EE2C5EE9AA0035A879 /* ChatAttachment+Transferable.swift */,
+				3557C2F62C5EFAFA0035A879 /* ChatChannel+Transferable.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -489,11 +495,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3557C2F52C5EFAAF0035A879 /* URL+ChatChannel.swift in Sources */,
 				C77D49E525BC85F70073A964 /* PlainMessageView.swift in Sources */,
 				C7ED979225C5D226002ACC5A /* VoiceNoteRecordButton.swift in Sources */,
 				C7734CCA25BCF09B0057DF96 /* ClosableStatusBar.swift in Sources */,
 				C7734DA625BE37310057DF96 /* Navigation.swift in Sources */,
 				C7982D2225BB8885000DC0F1 /* ChannelsView.swift in Sources */,
+				3557C2F72C5EFAFA0035A879 /* ChatChannel+Transferable.swift in Sources */,
 				C7734D1225BD00330057DF96 /* QuickLookAttachment.swift in Sources */,
 				C77C1DF625BBC815005D0B7C /* ProfileView.swift in Sources */,
 				C7982D4125BB8A57000DC0F1 /* Messages.swift in Sources */,

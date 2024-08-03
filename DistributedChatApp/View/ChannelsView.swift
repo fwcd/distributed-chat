@@ -38,6 +38,7 @@ struct ChannelsView: View {
                     NavigationLink(value: channel) {
                         ChannelSnippetView(channel: channel)
                     }
+                    .draggable(channel)
                     .contextMenu {
                         Button {
                             deletingChannels = [channel]
@@ -71,7 +72,7 @@ struct ChannelsView: View {
                             Label("Copy Channel Name", systemImage: "doc.on.doc")
                         }
                         Button {
-                            UIPasteboard.general.url = URL(string: "distributedchat:///channel/\(channel)")
+                            UIPasteboard.general.url = URL(channel)
                         } label: {
                             Label("Copy Channel URL", systemImage: "doc.on.doc.fill")
                         }
