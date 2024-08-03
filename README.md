@@ -44,12 +44,15 @@ The dependency graph between these packages looks like this:
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 flowchart BT
     subgraph cross-platform
+        DistributedChatBluetooth --> DistributedChatKit
         DistributedChatCLI --> DistributedChatKit
+        DistributedChatCLI --> DistributedChatBluetooth
         DistributedChatCLI --> DistributedChatSimulationProtocol
         DistributedChatSimulationServer --> DistributedChatSimulationProtocol
     end
     subgraph "Apple platforms"
         DistributedChatApp --> DistributedChatKit
+        DistributedChatApp --> DistributedChatBluetooth
     end
 ```
 
