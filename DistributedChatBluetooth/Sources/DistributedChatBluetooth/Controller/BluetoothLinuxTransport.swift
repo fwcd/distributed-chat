@@ -33,7 +33,7 @@ public class BluetoothLinuxTransport: ChatTransport {
 
     private var listeners = [(String) -> Void]()
 
-    private var nearbyPeripherals: [Peripheral: DiscoveredPeripheral] = [:]
+    private var discoveredPeripherals: [Peripheral: DiscoveredPeripheral] = [:]
 
     private class DiscoveredPeripheral {
         // TODO: Discover and store user name/id here
@@ -155,11 +155,11 @@ public class BluetoothLinuxTransport: ChatTransport {
         let peripheral = scanData.peripheral
         log.debug("Central: Discovered peripheral \(peripheral.id) (RSSI: \(scanData.rssi), connectable: \(scanData.isConnectable))")
 
-        if !nearbyPeripherals.keys.contains(peripheral) {
+        if !discoveredPeripherals.keys.contains(peripheral) {
             do {
                 try await localCentral.connect(to: peripheral)
                 let state = DiscoveredPeripheral()
-                nearbyPeripherals[peripheral] = state
+                discoveredPeripherals[peripheral] = state
                 log.info("Central: Connected to \(peripheral.id), discovering services...")
 
                 let services = try await localCentral.discoverServices([serviceUUID], for: peripheral)
@@ -188,7 +188,7 @@ public class BluetoothLinuxTransport: ChatTransport {
             return
         }
 
-        for (peripheral, state) in nearbyPeripherals {
+        for (peripheral, state) in discoveredPeripherals {
             if let characteristic = state.inboxCharacteristic {
                 Task {
                     do {
