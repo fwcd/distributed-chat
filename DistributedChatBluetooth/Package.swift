@@ -29,7 +29,7 @@ let package = Package(
             dependencies: [
                 .product(name: "DistributedChatKit", package: "DistributedChatKit"),
                 .product(name: "BluetoothLinux", package: "BluetoothLinux", condition: .when(platforms: [.linux])),
-                .product(name: "GATT", package: "GATT"),
+                .product(name: "GATT", package: "GATT", condition: .when(platforms: [.linux])),
             ]
         ),
         .testTarget(
