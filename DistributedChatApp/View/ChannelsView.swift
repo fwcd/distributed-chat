@@ -103,9 +103,20 @@ struct ChannelsView: View {
             }
         }
         .sheet(isPresented: $channelDraftSheetShown) {
-            NewChannelView {
-                channelDraftSheetShown = false
-                newChannels = [$0]
+            NavigationStack {
+                NewChannelView {
+                    channelDraftSheetShown = false
+                    newChannels = [$0]
+                }
+                .navigationTitle("New Channel")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            channelDraftSheetShown = false
+                        }
+                    }
+                }
             }
         }
         .actionSheet(isPresented: $deletionConfirmationShown) {
