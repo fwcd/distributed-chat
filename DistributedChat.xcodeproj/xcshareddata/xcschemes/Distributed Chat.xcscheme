@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C7BC334D25B3C00700989E95"
-               BuildableName = "DistributedChatApp.app"
+               BuildableName = "Distributed Chat.app"
                BlueprintName = "DistributedChatApp"
                ReferencedContainer = "container:DistributedChat.xcodeproj">
             </BuildableReference>
@@ -67,7 +67,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C7BC334D25B3C00700989E95"
-            BuildableName = "DistributedChatApp.app"
+            BuildableName = "Distributed Chat.app"
             BlueprintName = "DistributedChatApp"
             ReferencedContainer = "container:DistributedChat.xcodeproj">
          </BuildableReference>
@@ -84,7 +84,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C7BC334D25B3C00700989E95"
-            BuildableName = "DistributedChatApp.app"
+            BuildableName = "Distributed Chat.app"
             BlueprintName = "DistributedChatApp"
             ReferencedContainer = "container:DistributedChat.xcodeproj">
          </BuildableReference>
@@ -95,6 +95,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
+      customArchiveName = "Distributed Chat"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
